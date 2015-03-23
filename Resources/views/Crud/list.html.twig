@@ -40,7 +40,7 @@
                     </tr>
                     {%- for key, value in record -%}
                         <tr>
-                            <td>{{- key + 1 -}}</td>
+                            <td>{{- page + key + 1 -}}</td>
                             {%- for i, v in value -%}
                                 <td>
                                 {%- if v.timezone is defined -%}
