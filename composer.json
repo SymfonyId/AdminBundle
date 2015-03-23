@@ -1,11 +1,15 @@
 {
-    "name": "ihsanudin/simple-admin-bundle",
+    "name": "symfonyid/admin-bundle",
     "type": "symfony-bundle",
     "description": "Provide Admin Generator with KISS Principle",
     "keywords": ["crud", "simple admin", "admin", "admin generator", "symfony admin", "crud generator", "symfony2", "bundle", "ihsanudin"],
-    "homepage": "http://github.com/ihsanudin/SimpleAdminBundle",
+    "homepage": "https://github.com/SymfonyId/AdminBundle",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Komunitas Symfony Indonesia",
+            "homepage": "https://github.com/SymfonyId/AdminBundle"
+        },
         {
             "name": "Muhammad Surya Ihsanuddin",
             "homepage": "http://blog.khodam.org"
@@ -22,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ihsan\\SimpleAdminBundle\\": ""
+            "Symfonian\\Indonesia\\AdminBundle\\": ""
         }
     },
     "extra": {
