@@ -65,6 +65,7 @@ class Configuration implements ConfigurationInterface
                                     ->isRequired()
                                     ->cannotBeEmpty()
                                 ->end()
+                                ->booleanNode('auto_enable')->defaultTrue()->end()
                                 ->arrayNode('show_fields')
                                     ->prototype('scalar')->end()
                                     ->defaultValue(array('username', 'email', 'roles'))
