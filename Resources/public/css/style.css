@@ -9,3 +9,9 @@
 .margin-left-7 {
     margin-left: 7px !important;
 }
+
+label.required:after {
+    content: '*';
+    padding-left: 3px;
+    color: red;
+}
