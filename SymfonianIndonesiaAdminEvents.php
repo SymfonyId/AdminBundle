@@ -20,4 +20,6 @@ class SymfonianIndonesiaAdminEvents
     const FILTER_LIST_EVENT = 'symfonian_id.admin.filter_list_event';//GetQueryEvent
 
     const PRE_DELETE_EVENT = 'symfonian_id.admin.pre_delete_event';//GetEntityResponseEvent
+
+    const PRE_SHOW_EVENT = 'symfonian_id.admin.pre_show_event';//GetDataEvent
 }

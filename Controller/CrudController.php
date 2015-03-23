@@ -18,6 +18,7 @@ use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
 abstract class CrudController extends Controller implements OverridableTemplateInterface
@@ -47,18 +48,15 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         $event = new GetFormResponseEvent();
         $event->setController($this);
 
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch(Event::PRE_FORM_CREATE_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_CREATE_EVENT, $event);
 
         $response = $event->getResponse();
-
         if ($response) {
 
             return $response;
         }
 
         $entity = $event->getFormData();
-
         if (! $entity) {
             $entity = new $this->entityClass();
         }
@@ -77,18 +75,15 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         $event = new GetFormResponseEvent();
         $event->setController($this);
 
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch(Event::PRE_FORM_CREATE_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_CREATE_EVENT, $event);
 
         $response = $event->getResponse();
-
         if ($response) {
 
             return $response;
         }
 
         $entity = $event->getFormData();
-
         if (! $entity) {
             $entity = $this->findOr404Error($id);
         }
@@ -107,7 +102,6 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         $entity = $this->findOr404Error($id);
 
         $data = array();
-
         foreach ($this->showFields() as $key => $property) {
             $method = 'get'.ucfirst($property);
 
@@ -127,6 +121,11 @@ abstract class CrudController extends Controller implements OverridableTemplateI
                 }
             }
         }
+
+        $event = new GetDataEvent();
+        $event->setData($data);
+
+        $this->fireEvent(Event::PRE_SHOW_EVENT, $event);
 
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -156,8 +155,7 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         $event->setEntity($entity);
         $event->setEntityMeneger($entityManager);
 
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch(Event::PRE_DELETE_EVENT, $event);
+        $this->fireEvent(Event::PRE_DELETE_EVENT, $event);
 
         if ($event->getResponse()) {
 
@@ -192,8 +190,7 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         $event->setEntityAlias(self::ENTITY_ALIAS);
         $event->setEntityClass($this->entityClass);
 
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch(Event::FILTER_LIST_EVENT, $event);
+        $this->fireEvent(Event::FILTER_LIST_EVENT, $event);
 
         $page = $request->query->get('page', 1);
         $paginator  = $this->container->get('knp_paginator');
@@ -202,7 +199,6 @@ abstract class CrudController extends Controller implements OverridableTemplateI
 
         $data = array();
         $identifier = array();
-
         foreach ($pagination as $key => $record) {
             $temp = array();
             $identifier[$key] = $record->getId();
@@ -248,18 +244,15 @@ abstract class CrudController extends Controller implements OverridableTemplateI
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-        $dispatcher = $this->container->get('event_dispatcher');
-
         $form = $this->getForm($data);
 
         $event = new GetFormResponseEvent();
         $event->setController($this);
         $event->setFormData($data);
 
-        $dispatcher->dispatch(Event::PRE_FORM_SUBMIT_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_SUBMIT_EVENT, $event);
 
         $response = $event->getResponse();
-
         if ($response) {
 
             return $response;
@@ -278,12 +271,12 @@ abstract class CrudController extends Controller implements OverridableTemplateI
             $preFormValidationEvent = new GetResponseEvent();
             $preFormValidationEvent->setRequest($request);
 
-            $dispatcher->dispatch(Event::PRE_FORM_VALIDATION_EVENT, $preFormValidationEvent);
+            $this->fireEvent(Event::PRE_FORM_VALIDATION_EVENT, $preFormValidationEvent);
 
             if (! $form->isValid()) {
 
                 $this->outputParameter['errors'] = true;
-            } else if ($form->isValid()) {
+            } else {
                 $entity = $form->getData();
                 $entityManager = $this->getDoctrine()->getManager();
 
@@ -296,12 +289,12 @@ abstract class CrudController extends Controller implements OverridableTemplateI
                 $postSaveEvent->setEntityMeneger($entityManager);
                 $postSaveEvent->setEntity($entity);
 
-                $dispatcher->dispatch(Event::PRE_SAVE_EVENT, $preSaveEvent);
+                $this->fireEvent(Event::PRE_SAVE_EVENT, $preSaveEvent);
 
                 $entityManager->persist($entity);
                 $entityManager->flush();
 
-                $dispatcher->dispatch(Event::POST_SAVE_EVENT, $postSaveEvent);
+                $this->fireEvent(Event::POST_SAVE_EVENT, $postSaveEvent);
 
                 $this->outputParameter['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }
@@ -344,6 +337,12 @@ abstract class CrudController extends Controller implements OverridableTemplateI
         }
 
         return $this->entityProperties();
+    }
+
+    protected function fireEvent($name, $handler)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+        $dispatcher->dispatch($name, $handler);
     }
 
     /**
