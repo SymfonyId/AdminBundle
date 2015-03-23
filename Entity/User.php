@@ -12,7 +12,7 @@ use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="ihsan_simple_admin_user")
+ * @ORM\Table(name="siab_user")
  */
 class User extends BaseUser implements UserInterface
 {
