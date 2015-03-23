@@ -29,6 +29,8 @@ services:
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
+        arguments:
+            - @service_container
         tags:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
