@@ -8,6 +8,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
 
 class UpdateUserListener
 {
