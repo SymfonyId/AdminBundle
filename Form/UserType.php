@@ -24,7 +24,7 @@ class UserType extends AbstractType
     public function __construct(ContainerInterface $container, array $roleHierarchy)
     {
         $this->container = $container;
-        $this->roleHierarchy = array_merge(array('ROLE_USER'), array_keys($roleHierarchy));
+        $this->roleHierarchy = array_keys($roleHierarchy);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -53,7 +53,6 @@ class UserType extends AbstractType
                 )
             ))
             ->add('plainPassword', 'repeated', array(
-                'label' => 'form.label.password',
                 'type' => 'password',
                 'invalid_message' => 'message.password_must_match',
                 'options' => array(

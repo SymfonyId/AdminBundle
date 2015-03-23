@@ -16,7 +16,7 @@ services:
         arguments:
             - @annotation_reader
         tags:
-            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.delete_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
@@ -25,40 +25,40 @@ services:
             - @security.token_storage
             - @translator
         tags:
-            - { name: "kernel.event_listener", event: "symfonian_id.admin.pre_delete_event", method: "onDeleteUser" }
+            - { name: kernel.event_listener, event: symfonian_id.admin.pre_delete_event, method: onDeleteUser }
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         tags:
-            - { name: "kernel.event_listener", event: "symfonian_id.admin.pre_save_event", method: "onPreSaveUser" }
+            - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
     symfonian_id.admin.controller_default_view_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\OverrideControllerDefaultViewPass
         arguments:
             - @service_container
         tags:
-            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.user_controller_dependency_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerDependencyPass
         arguments:
             - @service_container
         tags:
-            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.index_controller_dependency_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\IndexControllerDependencyPass
         arguments:
             - @service_container
         tags:
-            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.twig_global_variable_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigGlobaVariablePass
         arguments:
             - @service_container
         tags:
-            - { name: "kernel.event_listener", event: "kernel.request", method: "onKernelRequest" }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     symfonian_id.admin.menu:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder

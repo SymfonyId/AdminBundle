@@ -7,14 +7,17 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  */
 
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Translation\TranslatorInterface;
-use FOS\UserBundle\Model\UserInterface;
 
 class UpdateUserListener
 {
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function onPreSaveUser(GetEntityResponseEvent $event)
     {
         $entity = $event->getEntity();
