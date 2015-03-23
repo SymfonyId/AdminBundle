@@ -1,0 +1,83 @@
+services:
+    output_filter:
+        class: Ihsan\Compressor\Bridge\Symfony\HtmlCompressorOutputFilter
+        arguments:
+            - @kernel
+        tags:
+           - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    css_filter:
+        class: Ihsan\Compressor\Bridge\Symfony\AsseticCssFilter
+        tags:
+           - { name: assetic.filter, alias: css_compressor }
+
+    symfonian_id.admin.annotation:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\AnnotationListener
+        arguments:
+            - @annotation_reader
+        tags:
+            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+
+    symfonian_id.admin.delete_user:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
+        arguments:
+            - @service_container
+            - @security.token_storage
+            - @translator
+        tags:
+            - { name: "kernel.event_listener", event: "symfonian_id.admin.pre_delete_event", method: "onDeleteUser" }
+
+    symfonian_id.admin.controller_default_view_pass:
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\OverrideControllerDefaultViewPass
+        arguments:
+            - @service_container
+        tags:
+            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+
+    symfonian_id.admin.user_controller_dependency_pass:
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerDependencyPass
+        arguments:
+            - @service_container
+        tags:
+            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+
+    symfonian_id.admin.index_controller_dependency_pass:
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\IndexControllerDependencyPass
+        arguments:
+            - @service_container
+        tags:
+            - { name: "kernel.event_listener", event: "kernel.controller", method: "onKernelController" }
+
+    symfonian_id.admin.twig_global_variable_pass:
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigGlobaVariablePass
+        arguments:
+            - @service_container
+        tags:
+            - { name: "kernel.event_listener", event: "kernel.request", method: "onKernelRequest" }
+
+    symfonian_id.admin.menu:
+        class: Symfonian\Indonesia\AdminBundle\Menu\Builder
+        arguments:
+            - @router
+            - @service_container
+
+    symfonian_id.admin.main_menu:
+        class: Knp\Menu\MenuItem
+        factory_service: symfonian_id.admin.menu
+        factory_method: mainMenu
+        arguments:
+            - @knp_menu.factory
+            - []
+        tags:
+            - { name: knp_menu.menu, alias: symfonian_indonesia_admin_main_menu }
+
+    symfonian_id.admin.change_password_form:
+        class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
+        arguments:
+            - @service_container
+
+    symfonian_id.admin.user_form:
+        class: Symfonian\Indonesia\AdminBundle\Form\UserType
+        arguments:
+            - @service_container
+            - %security.role_hierarchy.roles%

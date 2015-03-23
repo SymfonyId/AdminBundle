@@ -1,0 +1,118 @@
+{%- extends 'SymfonianIndonesiaAdminBundle::layout.html.twig' -%}
+
+{%- form_theme form form_theme -%}
+
+{%- block breadcrumb -%}
+    <li><a href="#" class="active">{{- page_title -}}</a></li>
+    <li><a href="#" class="active">{{- action_method ~ ' ' ~ page_title -}}</a></li>
+{%- endblock -%}
+
+{%- block page_title -%}
+    {{- page_title -}}
+{%- endblock -%}
+
+{%- block page_description -%}
+    {{- page_description -}}
+{%- endblock -%}
+
+{%- block menu -%}
+    {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
+{%- endblock -%}
+
+{%- block content -%}
+    {%- if success is defined -%}
+        <div class="modal modal-success success-message">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{- success -}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+
+    {%- if errors is defined -%}
+        <div class="modal modal-warning error-message">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{- 'message.error' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <a href="#" class="btn btn-primary pull-right back-to-list">{{- 'action.back_to_list' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+            </div>
+            <div class="box-body">
+                {{- form_start(form, {attr: { role: 'form' }}) -}}
+                    <div class="box-body with-border">
+                        {{- form_widget(form) -}}
+                    </div>
+                {{- form_end(form) -}}
+            </div>
+        </div>
+    </div>
+{%- endblock -%}
+
+{%- block javascript -%}
+    {%- if success is defined -%}
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('.success-message').modal({
+                    backdrop: 'static'
+                });
+            });
+        </script>
+    {%- endif -%}
+
+    {%- if errors is defined -%}
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('.error-message').modal({
+                    backdrop: 'static'
+                });
+            });
+        </script>
+    {%- endif -%}
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery('.back-to-list').on('click', function () {
+                var url = document.URL.split('/');
+                var queryString = document.URL.slice(document.URL.indexOf('?'));
+
+                if ('edit' === url[url.length - 2]) {
+                    url.pop();
+                    url.pop();
+                    url.pop();
+                } else {
+                    url.pop();
+                    url.pop();
+                }
+
+                url.push('list');
+
+                window.location = url.join('/') + queryString;
+            });
+        });
+    </script>
+{%- endblock -%}

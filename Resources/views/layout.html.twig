@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        {%- include 'SymfonianIndonesiaAdminBundle:Layout:header.html.twig' with { page_title: block('page_title'), css: block('css') } -%}
+    </head>
+    <body class="skin-green">
+        <div class="wrapper">
+            {%- include 'SymfonianIndonesiaAdminBundle:Layout:body_header.html.twig'
+            with {
+                logo: block('logo'),
+                widget: block('widget'),
+                user_panel: block('user_panel')
+            }
+            -%}
+
+            {%- include 'SymfonianIndonesiaAdminBundle:Layout:menu.html.twig' with { menu: block('menu') } -%}
+
+            {%- include 'SymfonianIndonesiaAdminBundle:Layout:content.html.twig'
+            with {
+                breadcrumb: block('breadcrumb'),
+                content: block('content'),
+                page_title: block('page_title'),
+                page_description: block('page_description')
+            }
+            -%}
+
+            {%- include 'SymfonianIndonesiaAdminBundle:Layout:footer.html.twig'
+            with {
+                javascript: block('javascript')
+            }
+            -%}
+        </div>
+    </body>
+</html>

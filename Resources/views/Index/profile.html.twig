@@ -1,0 +1,50 @@
+{%- extends 'SymfonianIndonesiaAdminBundle::layout.html.twig' -%}
+
+{%- block breadcrumb -%}
+    <li><a href="#" class="active">{{- page_title -}}</a></li>
+{%- endblock -%}
+
+{%- block page_title -%}
+    {{- page_title -}}
+{%- endblock -%}
+
+{%- block page_description -%}
+    {{- page_description -}}
+{%- endblock -%}
+
+{%- block menu -%}
+    {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
+{%- endblock -%}
+
+{%- block content -%}
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <h3 class="box-title">{{- page_title -}}</h3>
+            </div>
+            <div class="box-body">
+                {%- for property in data -%}
+                    <p>
+                        {{- property.name | humanize -}}:
+                        {%- if property.value.timezone is defined -%}
+                            {{- property.value | date(date_time_format) -}}
+                        {%- else -%}
+                            {%- if property.value is iterable -%}
+                                {%- set value = '' -%}
+                                {%- for i, v in property.value -%}
+                                    {%- set value = value ~ v ~ ', ' -%}
+                                {%- endfor -%}
+                                {{- value | trim(', ')-}}
+                            {%- else -%}
+                                {{- property.value -}}
+                            {%- endif -%}
+                        {%- endif -%}
+                    </p>
+                {%- endfor-%}
+                <div>
+                    <a href="{{- url('home') -}}" class="btn btn-primary">{{- 'action.back_to_home' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock -%}

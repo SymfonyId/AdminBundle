@@ -1,0 +1,33 @@
+{
+    "name": "ihsanudin/simple-admin-bundle",
+    "type": "symfony-bundle",
+    "description": "Provide Admin Generator with KISS Principle",
+    "keywords": ["crud", "simple admin", "admin", "admin generator", "symfony admin", "crud generator", "symfony2", "bundle", "ihsanudin"],
+    "homepage": "http://github.com/ihsanudin/SimpleAdminBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Muhammad Surya Ihsanuddin",
+            "homepage": "http://blog.khodam.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "~2.6",
+        "twig/twig": "~1.18",
+        "knplabs/knp-paginator-bundle": "~2.4",
+        "knplabs/knp-menu-bundle": "~2",
+        "friendsofsymfony/user-bundle": "2.0.x-dev",
+        "ihsanudin/compressor": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ihsan\\SimpleAdminBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    }
+}

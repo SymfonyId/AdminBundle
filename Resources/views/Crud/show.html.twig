@@ -1,0 +1,120 @@
+{%- extends 'SymfonianIndonesiaAdminBundle::layout.html.twig' -%}
+
+{%- block breadcrumb -%}
+    <li><a href="#" class="active">{{- page_title -}}</a></li>
+    <li><a href="#" class="active">{{- action_method ~ ' ' ~ page_title -}}</a></li>
+{%- endblock -%}
+
+{%- block page_title -%}
+    {{- page_title -}}
+{%- endblock -%}
+
+{%- block page_description -%}
+    {{- page_description -}}
+{%- endblock -%}
+
+{%- block menu -%}
+    {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
+{%- endblock -%}
+
+{%- block content -%}
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <h3 class="box-title">{{- page_title -}}</h3>
+            </div>
+            <div class="box-body">
+                {%- for property in data -%}
+                    <p>
+                        {{- property.name | humanize -}}:
+                        {%- if property.value.timezone is defined -%}
+                            {{- property.value | date(date_time_format) -}}
+                        {%- else -%}
+                            {%- if property.value is iterable -%}
+                                {%- set value = '' -%}
+                                {%- for i, v in property.value -%}
+                                    {%- set value = value ~ v ~ ', ' -%}
+                                {%- endfor -%}
+                                {{- value | trim(', ')-}}
+                            {%- else -%}
+                                {{- property.value -}}
+                            {%- endif -%}
+                        {%- endif -%}
+                    </p>
+                {%- endfor-%}
+                <div>
+                    <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                    {%- for i, v in action -%}
+                        {%- if v is sameas('delete') -%}
+                            <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-warning delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                    <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock -%}
+
+{%- block javascript -%}
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var url = document.URL.slice(document.URL.indexOf('?'));
+
+            if ('delete' === url.substr(1, 6)) {
+                setTimeout(function() {
+                    jQuery('.delete').trigger('click');
+                }, 10);
+            }
+
+            jQuery('.delete').on('click', function () {
+                jQuery('.delete-modal').modal({
+                    backdrop: 'static'
+                });
+            });
+
+            jQuery('.delete-action').on('click', function () {
+                var url = document.URL.replace('show', 'delete');
+                jQuery.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function (response) {
+                        if (true === response.status) {
+                            var url = document.URL.split('/');
+
+                            url.pop();
+                            url.pop();
+                            url.pop();
+                            url.push('list');
+
+                            window.location = url.join('/');
+                        } else {
+                            jQuery('.response-message').html(response.message);
+                            jQuery('.delete-action').remove();
+                            jQuery('.delete-modal').modal({
+                                backdrop: 'static'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{%- endblock -%}

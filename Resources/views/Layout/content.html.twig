@@ -1,0 +1,25 @@
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            {%- if page_title is not empty -%}
+                {{- page_title | raw -}}
+            {%- endif -%}
+            <small>
+                {%- if page_description is not empty -%}
+                    {{- page_description | raw -}}
+                {%- endif -%}
+            </small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{- url('home') -}}"><i class="fa fa-dashboard"></i> {{- 'link.home' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a></li>
+            {%- if breadcrumb is not empty -%}
+                {{- breadcrumb | raw -}}
+            {%- endif -%}
+        </ol>
+    </section>
+    <section class="content">
+        {%- if content is not empty -%}
+            {{- content | raw -}}
+        {%- endif -%}
+    </section>
+</div>

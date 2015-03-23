@@ -1,0 +1,28 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <strong>{{- title -}}</strong>
+    </div>
+    <strong>Copyright &copy; 2015 <a href="https://github.com/ihsanudin">Muhammad Surya Ihsanddin</a>.</strong> All rights reserved.
+</footer>
+
+{%- javascripts
+    '@SymfonianIndonesiaAdminBundle/Resources/public/js/jquery-2.1.3.min.js'
+    '@SymfonianIndonesiaAdminBundle/Resources/public/js/bootstrap.min.js'
+    '@SymfonianIndonesiaAdminBundle/Resources/public/js/fastclick.min.js'
+    '@SymfonianIndonesiaAdminBundle/Resources/public/js/jquery.slimscroll.min.js'
+    '@SymfonianIndonesiaAdminBundle/Resources/public/js/app.min.js'
+
+    filter='closure'
+-%}
+    <script src="{{- asset_url -}}" type="text/javascript"></script>
+{%- endjavascripts -%}
+
+{%- if javascript is not empty -%}
+    {{- javascript | raw -}}
+{%- endif -%}
+
+<!--[if IE 8]>
+
+<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+
+<![endif]-->

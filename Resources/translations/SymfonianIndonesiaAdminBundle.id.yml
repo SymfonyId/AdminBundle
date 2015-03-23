@@ -1,0 +1,70 @@
+'Bad credentials.': 'Username dan Password tidak sesuai'
+message:
+    error: 'Terjadi kesalahan, silahkan perbaiki dan kemudian kirimkan kembali.'
+    search: 'Masukkan kata kunci'
+    info: 'Pesan Informasi'
+    login_title: 'Halaman Login'
+    error_title: 'Terjadi kesalahan'
+    username: 'Masukkan username'
+    password: 'Masukkan password'
+    remember_me: 'Ingat saya selalu'
+    delete_confirmation: 'Apakah Anda yakin akan menghapus data ini?'
+    data_saved: 'Data berhasil disimpan'
+    data_not_found: 'Data dengan id %id% tidak ditemukan'
+    request_not_found: 'Halaman yang Anda minta tidak ditemukan'
+    password_must_match: 'Password Harus Sama'
+    access_denied: 'Anda tidak boleh mengakses halaman ini'
+    old_password_invalid: 'Password lama yang Anda masukkan salah'
+    cant_delete_your_self: 'Anda tidak dapat menghapus data Anda sendiri'
+    select_empty: '---Pilih Salah Satu---'
+
+action:
+    login: 'Masuk'
+    back: 'Kembali ke halaman sebelumnya'
+    back_to_list: 'Kembali ke halaman list'
+    back_to_home: 'Kembali ke halaman awal'
+    close: 'Tutup'
+    add: 'Tambah baru'
+    show: 'Detail'
+    edit: 'Edit'
+    delete: 'Hapus'
+    submit: 'Simpan'
+
+link:
+    home: 'Dashboard'
+    logout: 'Logout'
+    profile: 'Profil'
+
+page:
+    new: 'Tambah Baru'
+    edit: 'Perbaharui Informasi'
+    show: 'Tampil Data'
+    list: 'Daftar'
+    user:
+        title: 'User'
+        description: 'Tambah, Lihat, Ubah dan Hapus User'
+    profile:
+        title: 'Profil Anda'
+        description: ''
+    change_password:
+        title: 'Ubah Password'
+        description: ''
+
+menu:
+    dashboard: 'Home'
+    profile: 'Profil'
+    user:
+        title: 'User'
+        change_password: 'Ubah Password'
+        add: 'Tambah User'
+        list: 'Daftar User'
+
+form:
+    label:
+        username: 'Username'
+        role: 'Hak Akses'
+        email: 'Email'
+        password: 'Password'
+        current_password: 'Password Lama'
+        new_password: 'Password Baru'
+        repeat_password: 'Ulangi Password'
