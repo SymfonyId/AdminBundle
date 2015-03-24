@@ -24,10 +24,10 @@ class ProfileController extends Controller
     public function profileAction(Request $request)
     {
         $entity = $this->getUser();
-
         $data = array();
+        $showFields = $this->container->getParameter('symfonian_id.admin.security.show_fields');
 
-        foreach ($this->showFields() as $key => $property) {
+        foreach ($showFields as $key => $property) {
             $method = 'get'.ucfirst($property);
 
             if (method_exists($entity, $method)) {
