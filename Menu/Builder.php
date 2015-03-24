@@ -69,7 +69,7 @@ class Builder
 
         $menu['Profile']->addChild('UserProfile', array(
             'label' => $this->translator->trans('menu.profile', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_index_profile',
+            'route' => 'symfonian_indonesia_admin_profile_profile',
             'attributes' => array(
                 'class' => 'treeview'
             )
@@ -77,7 +77,7 @@ class Builder
 
         $menu['Profile']->addChild('ChangePassword', array(
             'label' => $this->translator->trans('menu.user.change_password', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_index_changepassword',
+            'route' => 'symfonian_indonesia_admin_profile_changepassword',
             'attributes' => array(
                 'class' => 'treeview'
             )

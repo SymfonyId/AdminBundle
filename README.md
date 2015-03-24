@@ -16,6 +16,10 @@ Repo Asli: [IhsanSimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBund
 8. Mudah membuat menu dengan [KNPMenuBundle](https://github.com/KnpLabs/KnpMenuBundle)
 9. Sangat mudah dipelajari karena dibangun dengan KISS (Keep It Simple Stupid) principle
 
+####Instalasi####
+
+Untuk cara instalasi dapat dibaca pada dokumentasi[versi Indonesia](Resources/doc/id/instalation.md) versi Inggris (belum tersedia)
+
 ####Kontributor####
 Dimaintenance oleh: [Muhammad Surya Ihsanuddin](https://github.com/ihsanudin) dan Para [Kontributor](https://github.com/SymfonyId/AdminBundle/graphs/contributors)
 
