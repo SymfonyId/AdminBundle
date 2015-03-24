@@ -37,6 +37,8 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.security.show_fields', $config['security']['user']['show_fields']);
         $container->setParameter('symfonian_id.admin.security.grid_fields', $config['security']['user']['grid_fields']);
         $container->setParameter('symfonian_id.admin.security.change_password', $config['security']['change_password']['form_class']);
+        $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
+        $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
 
         $action = array();
         if ($config['grid_action']['show']) {

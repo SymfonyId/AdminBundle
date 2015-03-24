@@ -15,19 +15,8 @@ use FOS\UserBundle\Model\UserInterface;
 use Symfonian\Indonesia\AdminBundle\Event\PostSaveEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
-class IndexController extends Controller
+class ProfileController extends Controller
 {
-    /**
-     * @Route("/", name="home")
-     * @Method({"GET"})
-     */
-    public function indexAction()
-    {
-        return $this->render($this->container->getParameter('symfonian_id.admin.themes.dashboard'), array(
-            'menu' => $this->container->getParameter('symfonian_id.admin.menu'),
-        ));
-    }
-
     /**
      * @Route("/profile/")
      * @Method({"GET"})

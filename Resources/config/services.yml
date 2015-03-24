@@ -88,3 +88,10 @@ services:
         arguments:
             - @service_container
             - %security.role_hierarchy.roles%
+
+    symfonian_id.admin.home_route_loader:
+        class: Symfonian\Indonesia\AdminBundle\Routing\HomeRouteLoader
+        arguments:
+            - @service_container
+        tags:
+            - { name: routing.loader }
