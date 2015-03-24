@@ -3,8 +3,8 @@
 {%- form_theme form form_theme -%}
 
 {%- block breadcrumb -%}
-    <li><a href="#" class="active">{{- page_title -}}</a></li>
-    <li><a href="#" class="active">{{- action_method ~ ' ' ~ page_title -}}</a></li>
+    <li><a href="#" class="active">{{- page_title | upper -}}</a></li>
+    <li><a href="#" class="active">{{- action_method ~ ' ' ~ page_title | upper -}}</a></li>
 {%- endblock -%}
 
 {%- block page_title -%}

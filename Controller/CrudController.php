@@ -21,7 +21,7 @@ use Symfonian\Indonesia\AdminBundle\Event\GetResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
-abstract class CrudController extends Controller implements OverridableTemplateInterface
+abstract class CrudController extends Controller
 {
     protected $outputParameter = array();
 

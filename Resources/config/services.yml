@@ -16,7 +16,7 @@ services:
         arguments:
             - @annotation_reader
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
     symfonian_id.admin.delete_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
@@ -39,7 +39,7 @@ services:
         arguments:
             - @service_container
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
 
     symfonian_id.admin.user_controller_dependency_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerDependencyPass
