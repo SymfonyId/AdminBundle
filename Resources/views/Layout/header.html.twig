@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="{{- asset_url -}}" />
 {%- endstylesheets -%}
 
+{%- if css is not empty -%}
+    {{- css | raw -}}
+{%- endif -%}
+
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
 <!--[if lt IE 9]>
