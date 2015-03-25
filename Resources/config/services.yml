@@ -49,7 +49,7 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.index_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\IndexControllerDependencyPass
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ProfileControllerDependencyPass
         arguments:
             - @service_container
         tags:
