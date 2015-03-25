@@ -223,21 +223,19 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        return $this->render($this->listActionTemplate,
-            array(
-                'pagination' => $pagination,
-                'start' => ($page - 1) * $this->container->getParameter('symfonian_id.admin.per_page'),
-                'menu' => $this->container->getParameter('symfonian_id.admin.menu'),
-                'header' => array_merge($this->gridFields(), array('action')),
-                'page_title' => $translator->trans($this->pageTitle, array(), $translationDomain),
-                'action_method' => $translator->trans('page.list', array(), $translationDomain),
-                'page_description' => $translator->trans($this->pageDescription, array(), $translationDomain),
-                'identifier' => $identifier,
-                'action' => $this->container->getParameter('symfonian_id.admin.grid_action'),
-                'record' => $data,
-                'filter' => $filter,
-            )
-        );
+        $this->outputParameter['pagination'] = $pagination;
+        $this->outputParameter['start'] = ($page - 1) * $this->container->getParameter('symfonian_id.admin.per_page');
+        $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        $this->outputParameter['header'] = array_merge($this->gridFields(), array('action'));
+        $this->outputParameter['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
+        $this->outputParameter['action_method'] = $translator->trans('page.list', array(), $translationDomain);
+        $this->outputParameter['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
+        $this->outputParameter['identifier'] = $identifier;
+        $this->outputParameter['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
+        $this->outputParameter['record'] = $data;
+        $this->outputParameter['filter'] = $filter;
+
+        return $this->render($this->listActionTemplate, $this->outputParameter);
     }
 
     protected function handle(Request $request, $data, $template, $action = 'new')
