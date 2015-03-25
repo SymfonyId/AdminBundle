@@ -25,9 +25,8 @@ class ProfileController extends Controller
     {
         $entity = $this->getUser();
         $data = array();
-        $showFields = $this->container->getParameter('symfonian_id.admin.security.show_fields');
 
-        foreach ($showFields as $key => $property) {
+        foreach ($this->showFields() as $key => $property) {
             $method = 'get'.ucfirst($property);
 
             if (method_exists($entity, $method)) {

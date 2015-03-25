@@ -9,9 +9,9 @@ namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Symfonian\Indonesia\AdminBundle\Controller\IndexController;
+use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 
-final class IndexControllerDependencyPass
+final class ProfileControllerDependencyPass
 {
     /**
      * @var ContainerInterface
