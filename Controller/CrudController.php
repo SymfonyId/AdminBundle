@@ -130,15 +130,15 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        return $this->render($this->showActionTemplate, array(
-            'data' => $data,
-            'menu' => $this->container->getParameter('symfonian_id.admin.menu'),
-            'page_title' => $translator->trans($this->pageTitle, array(), $translationDomain),
-            'action_method' => $translator->trans('page.show', array(), $translationDomain),
-            'page_description' => $translator->trans($this->pageDescription, array(), $translationDomain),
-            'back' => $request->headers->get('referer'),
-            'action' => $this->container->getParameter('symfonian_id.admin.grid_action'),
-        ));
+        $this->outputParameter['data'] = $data;
+        $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        $this->outputParameter['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
+        $this->outputParameter['action_method'] = $translator->trans('page.show', array(), $translationDomain);
+        $this->outputParameter['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
+        $this->outputParameter['back'] = $request->headers->get('referer');
+        $this->outputParameter['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
+
+        return $this->render($this->showActionTemplate, $this->outputParameter);
     }
 
     /**
@@ -430,11 +430,10 @@ abstract class CrudController extends Controller
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function allowOverrideTemplate()
+    public function includeJavascript($javascriptTwigPath)
     {
-        return true;
+        $this->outputParameter['include_javascript'] = $javascriptTwigPath;
+
+        return $this;
     }
 }

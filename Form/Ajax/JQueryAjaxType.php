@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 
 abstract class JQueryAjaxType extends AbstractType
 {
@@ -31,28 +32,22 @@ abstract class JQueryAjaxType extends AbstractType
             'method' => 'GET',
             'event' => 'onkeydown',
             'function' => null,
+            'callback' => null,
         ));
 
-        $resolver->setOptional(array('target', 'event', 'callback'));
-        $resolver->setRequired(array('action'));
+        $resolver->setOptional(array('event', 'callback'));
+        $resolver->setRequired(array('target', 'action'));
 
         $resolver->setAllowedValues(array(
-            'method' => array('post', 'POST'),
+            'method' => array('post', 'POST', 'get', 'GET'),
             'event' => array('onchange', 'onkeydown'),
         ));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if (isset($options['target'])) {
-
-            if ('id' === $options['target']['type']) {
-
-                $options['target']['selector'] = sprintf('#%s', $options['target']['selector']);
-            } elseif ('class' === $options['target']['type']) {
-
-                $options['target']['selector'] = sprintf('.%s', $options['target']['selector']);
-            }
+        if (! is_array($options['target']) || ! isset($options['target']['selector'])) {
+            throw new InvalidArgumentException('options target must be an array with key selector (required) and hendler (optional)');
         }
 
         if ($options['javascript']) {
@@ -84,20 +79,16 @@ function %function%(field) {
 }
 </script>
 EOD;
-            $success = '';
-            if (isset($options['target'])) {
+            if (isset($options['target']['handler'])) {
 
-                if (isset($options['target']['handler'])) {
+                $success = strtr($options['target']['handler'], array('target:selector' => $options['target']['selector']));
+            } else {
 
-                    $success = strtr($options['target']['handler'], array('%target-selector%' => $options['target']['selector']));
-                } else {
-
-                    $success = sprintf('jQuery("%s").val(data)', $options['target']['selector']);
-                }
+                $success = sprintf('jQuery("%s").val(data)', $options['target']['selector']);
             }
 
             $view->vars['javascript'] = strtr($view->vars['javascript'], array(
-                '%function%' => $options['function'],
+                '%function%' => $options['callback'],
                 '%method%' => $options['method'],
                 '%url%' => $this->router->generate($options['action']),
                 '%target%' => $success,

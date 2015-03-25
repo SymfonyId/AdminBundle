@@ -33,7 +33,7 @@ class UserType extends AbstractType
             ->add('username', 'text', array(
                 'label' => 'form.label.username',
                 'attr' => array(
-                    'class' => 'form-control',
+                    'class' => 'form-control username',
                 )
             ))
             ->add($builder->create(

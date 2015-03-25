@@ -95,3 +95,24 @@ services:
             - @service_container
         tags:
             - { name: routing.loader }
+
+    symfonian_id.admin.form.ajax_type.choice:
+        class: Symfonian\Indonesia\AdminBundle\Form\Ajax\XChoiceType
+        arguments:
+            - @router
+        tags:
+            - { name: form.type, alias: xchoice }
+
+    symfonian_id.admin.form.ajax_type.entity:
+        class: Symfonian\Indonesia\AdminBundle\Form\Ajax\XEntityType
+        arguments:
+            - @router
+        tags:
+            - { name: form.type, alias: xentity }
+
+    symfonian_id.admin.form.ajax_type.text:
+        class: Symfonian\Indonesia\AdminBundle\Form\Ajax\XTextType
+        arguments:
+            - @router
+        tags:
+            - { name: form.type, alias: xtext }

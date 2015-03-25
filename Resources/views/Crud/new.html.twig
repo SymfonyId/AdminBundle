@@ -66,7 +66,13 @@
             <div class="box-body">
                 {{- form_start(form, {attr: { role: 'form' }}) -}}
                     <div class="box-body with-border">
-                        {{- form_widget(form) -}}
+                        {%- for field in form.children -%}
+                            {{- form_row(field) -}}
+
+                            {%- if field.vars.javascript is defined -%}
+                                {{- field.vars.javascript | raw -}}
+                            {%- endif -%}
+                        {%- endfor -%}
                     </div>
                 {{- form_end(form) -}}
             </div>
@@ -115,4 +121,7 @@
             });
         });
     </script>
+    {%- if include_javascript is defined -%}
+        {%- include include_javascript -%}
+    {%- endif -%}
 {%- endblock -%}

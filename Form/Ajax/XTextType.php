@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Form\Ajax;
  */
 
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class XTextType extends JQueryAjaxType
 {
@@ -18,10 +19,6 @@ class XTextType extends JQueryAjaxType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-
-        $resolver->setDefaults(array(
-            'event' => 'onchange',
-        ));
     }
 
     public function getParent()

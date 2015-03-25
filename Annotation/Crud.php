@@ -35,4 +35,6 @@ final class Crud
     public $showActionTemplate;
 
     public $listActionTemplate;
+
+    public $includeJavascript;
 }

@@ -23,6 +23,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\NewActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\EditActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\ShowActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\ListActionTemplate;
+use Symfonian\Indonesia\AdminBundle\Annotation\IncludeJavascript;
 
 final class AnnotationListener
 {
@@ -85,6 +86,10 @@ final class AnnotationListener
                     $controller->setListActionTemplate($annotation->listActionTemplate);
                 }
 
+                if ($annotation->includeJavascript) {
+                    $controller->includeJavascript($annotation->includeJavascript);
+                }
+
                 if ('true' === strtolower($annotation->normalizeFilter)) {
                     $controller->normalizeFilter();
                 }
@@ -143,6 +148,12 @@ final class AnnotationListener
             if ($annotation instanceof ListActionTemplate) {
                 if ($annotation->value) {
                     $controller->setListActionTemplate($annotation->value);
+                }
+            }
+
+            if ($annotation instanceof IncludeJavascript) {
+                if ($annotation->value) {
+                    $controller->includeJavascript($annotation->value);
                 }
             }
 
