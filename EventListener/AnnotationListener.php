@@ -103,70 +103,48 @@ final class AnnotationListener
                 }
             }
 
-            if ($annotation instanceof EntityClass) {
-                if ($annotation->value) {
-                    $controller->setEntityClass($annotation->value);
-                }
+            if ($annotation instanceof EntityClass && $annotation->value) {
+                $controller->setEntityClass($annotation->value);
             }
 
-            if ($annotation instanceof FormClass) {
-                if ($annotation->value) {
-                    $controller->setFormClass($annotation->value);
-                }
+            if ($annotation instanceof FormClass && $annotation->value) {
+                $controller->setFormClass($annotation->value);
             }
 
-            if ($annotation instanceof PageTitle) {
-                if ($annotation->value) {
-                    $controller->setPageTitle($annotation->value);
-                }
+            if ($annotation instanceof PageTitle && $annotation->value) {
+                $controller->setPageTitle($annotation->value);
             }
 
-            if ($annotation instanceof PageDescription) {
-                if ($annotation->value) {
-                    $controller->setPageDescription($annotation->value);
-                }
+            if ($annotation instanceof PageDescription && $annotation->value) {
+                $controller->setPageDescription($annotation->value);
             }
 
-            if ($annotation instanceof NewActionTemplate) {
-                if ($annotation->value) {
-                    $controller->setNewActionTemplate($annotation->value);
-                }
+            if ($annotation instanceof NewActionTemplate && $annotation->value) {
+                $controller->setNewActionTemplate($annotation->value);
             }
 
-            if ($annotation instanceof EditActionTemplate) {
-                if ($annotation->value) {
-                    $controller->setEditActionTemplate($annotation->value);
-                }
+            if ($annotation instanceof EditActionTemplate && $annotation->value) {
+                $controller->setEditActionTemplate($annotation->value);
             }
 
-            if ($annotation instanceof ShowActionTemplate) {
-                if ($annotation->value) {
-                    $controller->setShowActioinTemplate($annotation->value);
-                }
+            if ($annotation instanceof ShowActionTemplate && $annotation->value) {
+                $controller->setShowActioinTemplate($annotation->value);
             }
 
-            if ($annotation instanceof ListActionTemplate) {
-                if ($annotation->value) {
-                    $controller->setListActionTemplate($annotation->value);
-                }
+            if ($annotation instanceof ListActionTemplate && $annotation->value) {
+                $controller->setListActionTemplate($annotation->value);
             }
 
-            if ($annotation instanceof IncludeJavascript) {
-                if ($annotation->value) {
-                    $controller->includeJavascript($annotation->value);
-                }
+            if ($annotation instanceof IncludeJavascript && $annotation->value) {
+                $controller->includeJavascript($annotation->value);
             }
 
-            if ($annotation instanceof ShowFields) {
-                if ($annotation->isValid()) {
-                    $controller->setShowFields($annotation->value);
-                }
+            if ($annotation instanceof ShowFields && $annotation->value) {
+                $controller->setShowFields($annotation->value);
             }
 
-            if ($annotation instanceof GridFields) {
-                if ($annotation->isValid()) {
-                    $controller->setGridFields($annotation->value);
-                }
+            if ($annotation instanceof GridFields && $annotation->isValid()) {
+                $controller->setGridFields($annotation->value);
             }
 
             if ($annotation instanceof NormalizeFilter) {

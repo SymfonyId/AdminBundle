@@ -46,14 +46,14 @@ services:
         arguments:
             - @service_container
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.index_controller_dependency_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ProfileControllerDependencyPass
         arguments:
             - @service_container
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.twig_global_variable_pass:
         class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigGlobaVariablePass

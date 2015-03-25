@@ -34,7 +34,7 @@ final class ProfileControllerDependencyPass
 
         $controller = $controller[0];
 
-        if (! $controller instanceof IndexController) {
+        if (! $controller instanceof ProfileController) {
 
             return;
         }
