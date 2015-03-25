@@ -10,14 +10,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Controller\Controller;
 
 class GenericFormType extends AbstractType
 {
     const FORM_NAME = 'generic';
 
     /**
-     * @var CrudController
+     * @var Controller
      */
     protected $controller;
 
@@ -26,7 +26,7 @@ class GenericFormType extends AbstractType
      */
     protected $container;
 
-    public function __construct(CrudController $controller, ContainerInterface $container)
+    public function __construct(Controller $controller, ContainerInterface $container)
     {
         $this->controller = $controller;
         $this->container = $container;
