@@ -105,4 +105,23 @@ abstract class Controller extends BaseController
 
         return $this;
     }
+
+    /**
+     * @param string $entityClass
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = $entityClass;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
 }
