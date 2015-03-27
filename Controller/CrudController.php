@@ -409,9 +409,13 @@ abstract class CrudController extends Controller
         return $this;
     }
 
-    public function includeJavascript($javascriptTwigPath)
+    public function includeJavascript($javascriptTwigPath, $includeRoute = null)
     {
         $this->outputParameter['include_javascript'] = $javascriptTwigPath;
+
+        if ($includeRoute) {
+            $this->outputParameter['include_route'] = $includeRoute;
+        }
 
         return $this;
     }

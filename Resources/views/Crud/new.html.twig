@@ -122,6 +122,6 @@
         });
     </script>
     {%- if include_javascript is defined -%}
-        {%- include include_javascript -%}
+        {%- include include_javascript with { route: include_route } -%}
     {%- endif -%}
 {%- endblock -%}

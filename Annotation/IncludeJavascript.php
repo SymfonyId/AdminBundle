@@ -13,4 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
 class IncludeJavascript
 {
     public $value;
+
+    public $includeRoute;
 }

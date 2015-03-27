@@ -11,7 +11,6 @@ use Doctrine\Common\Annotations\Reader;
 
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\FormClass;
 use Symfonian\Indonesia\AdminBundle\Annotation\EntityClass;
 use Symfonian\Indonesia\AdminBundle\Annotation\NormalizeFilter;
@@ -53,56 +52,6 @@ final class AnnotationListener
         $reflectionObject = new \ReflectionObject($controller);
 
         foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
-            if ($annotation instanceof Crud) {
-                if ($annotation->entityClass) {
-                    $controller->setEntityClass($annotation->entityClass);
-                }
-
-                if ($annotation->formClass) {
-                    $controller->setFormClass($annotation->formClass);
-                }
-
-                if ($annotation->pageTitle) {
-                    $controller->setPageTitle($annotation->pageTitle);
-                }
-
-                if ($annotation->pageDescription) {
-                    $controller->setPageDescription($annotation->pageDescription);
-                }
-
-                if ($annotation->newActionTemplate) {
-                    $controller->setNewActionTemplate($annotation->newActionTemplate);
-                }
-
-                if ($annotation->editActionTemplate) {
-                    $controller->setEditActionTemplate($annotation->editActionTemplate);
-                }
-
-                if ($annotation->showActionTemplate) {
-                    $controller->setShowActioinTemplate($annotation->showActionTemplate);
-                }
-
-                if ($annotation->listActionTemplate) {
-                    $controller->setListActionTemplate($annotation->listActionTemplate);
-                }
-
-                if ($annotation->includeJavascript) {
-                    $controller->includeJavascript($annotation->includeJavascript);
-                }
-
-                if ('true' === strtolower($annotation->normalizeFilter)) {
-                    $controller->normalizeFilter();
-                }
-
-                if (is_array($annotation->showFields)) {
-                    $controller->setShowFields($annotation->showFields);
-                }
-
-                if (is_array($annotation->gridFields)) {
-                    $controller->setGridFields($annotation->gridFields);
-                }
-            }
-
             if ($annotation instanceof EntityClass && $annotation->value) {
                 $controller->setEntityClass($annotation->value);
             }
@@ -136,7 +85,7 @@ final class AnnotationListener
             }
 
             if ($annotation instanceof IncludeJavascript && $annotation->value) {
-                $controller->includeJavascript($annotation->value);
+                $controller->includeJavascript($annotation->value, $annotation->includeRoute);
             }
 
             if ($annotation instanceof ShowFields && $annotation->value) {
