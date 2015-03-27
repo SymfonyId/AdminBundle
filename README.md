@@ -20,6 +20,10 @@ Repo Asli: [IhsanSimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBund
 
 Untuk cara instalasi dapat dibaca pada dokumentasi[versi Indonesia](Resources/doc/id/instalation.md) versi Inggris (belum tersedia)
 
+####Skeleton####
+
+Tak mau repot-repot dan ingin langsung jalan? Gunakan [SIABSkeleton](https://github.com/SymfonyId/SIABSkeleton)
+
 ####Kontributor####
 Dimaintenance oleh: [Muhammad Surya Ihsanuddin](https://github.com/ihsanudin) dan Para [Kontributor](https://github.com/SymfonyId/AdminBundle/graphs/contributors)
 

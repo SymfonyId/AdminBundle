@@ -31,7 +31,7 @@ action:
     submit: 'Simpan'
 
 link:
-    home: 'Dashboard'
+    home: 'DASHBOARD'
     logout: 'Logout'
     profile: 'Profil'
 
