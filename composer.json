@@ -22,7 +22,7 @@
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-menu-bundle": "~2",
         "friendsofsymfony/user-bundle": "2.0.x-dev",
-        "ihsanudin/compressor": "~1"
+        "ihsanudin/compressor": "2.0-dev"
     },
     "autoload": {
         "psr-4": {
