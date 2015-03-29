@@ -82,6 +82,7 @@ class UserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
+            'validation_groups' =>  array('Registration', 'Default'),
             'intention'  => self::FORM_NAME,
         ));
     }
