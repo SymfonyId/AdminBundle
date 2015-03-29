@@ -9,6 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -30,6 +31,7 @@ class User extends BaseUser implements UserInterface
 
     /**
      * @ORM\Column(name="full_name", type="string", length=77, nullable=true)
+     * @Assert\NotBlank(groups={"Registration"})
      */
     protected $fullName;
 

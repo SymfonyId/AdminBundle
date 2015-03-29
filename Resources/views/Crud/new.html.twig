@@ -32,6 +32,7 @@
                         {{- success -}}
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary add_new pull-left" data-dismiss="modal">{{- 'action.add_new' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
                         <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
                     </div>
                 </div>
@@ -118,6 +119,12 @@
                 url.push('list');
 
                 window.location = url.join('/') + queryString;
+            });
+
+            jQuery('.add_new').on('click', function () {
+                var loc = window.location;
+
+                window.location =  loc.protocol + '//' + loc.host + loc.pathname + loc.search;
             });
         });
     </script>
