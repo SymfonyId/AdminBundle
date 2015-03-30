@@ -1,0 +1,18 @@
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('.sfid-pagination a.btn-success').on('click', function (e) {
+            e.preventDefault();
+
+            var url = jQuery(this).attr('href');
+
+            jQuery.ajax({
+                url: url,
+                data: { sfid: 'Symfonian Indonesia' },
+                type:'GET',
+                dataType: 'json'
+            }).done (function (response) {
+                jQuery('.result-content').html(response);
+            });
+        });
+    });
+</script>

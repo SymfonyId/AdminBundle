@@ -1,0 +1,59 @@
+<table class="table table-hover table-bordered">
+    <tr>
+        <td>#</td>
+        {%- for i, value in header -%}
+            <td>{{- value | humanize-}}</td>
+        {%- endfor -%}
+    </tr>
+    {%- for key, value in record -%}
+        <tr>
+            <td>{{- start + key + 1 -}}</td>
+            {%- for i, v in value -%}
+                <td>
+                {%- if v.timezone is defined -%}
+                    {{- v | date(date_time_format) -}}
+                {%- else -%}
+                    {%- if v is iterable -%}
+                        {%- set value = '' -%}
+                        {%- for i, v in v -%}
+                            {%- set value = value ~ v ~ ', ' -%}
+                        {%- endfor -%}
+                        {{- value | trim(', ')-}}
+                    {%- else -%}
+                        {{- v -}}
+                    {%- endif -%}
+                {%- endif -%}
+                </td>
+            {%- endfor -%}
+            <td width="22%">
+                <div class="btn-group" role="group">
+                    {%- for i, v in action -%}
+                        {%- if v is sameas('show') -%}
+                            <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-success show">
+                                <span class="btn-label"><i class="fa fa-share"></i></span>{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                            </button>
+                        {%- endif -%}
+                        {%- if v is sameas('edit') -%}
+                            <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-warning edit">
+                                <span class="btn-label"><i class="fa fa-pencil"></i></span>{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                            </button>
+                        {%- endif -%}
+                        {%- if v is sameas('delete') -%}
+                            <button data-record="{{- identifier[key] -}}" class="delete btn btn-labeled btn-danger delete">
+                                <span class="btn-label"><i class="fa fa-trash"></i></span>{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                            </button>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </div>
+            </td>
+        </tr>
+    {%- endfor -%}
+</table>
+<div class="padding-top-7">
+    <div class="pull-left">
+        <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+    </div>
+    <div class="pull-right">
+        {{- knp_pagination_render(pagination) -}}
+    </div>
+</div>
