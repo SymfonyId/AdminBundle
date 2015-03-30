@@ -25,7 +25,6 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
                     </div>
                     <div class="modal-body">
@@ -33,7 +32,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary add_new pull-left" data-dismiss="modal">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                        <button type="button" class="btn btn-primary success-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
                     </div>
                 </div>
             </div>
@@ -45,7 +44,6 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
                     </div>
                     <div class="modal-body">
@@ -125,6 +123,10 @@
                 var loc = window.location;
 
                 window.location =  loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+            });
+
+            jQuery(document).on('click', '.success-close', function () {
+                jQuery('.back-to-list').trigger('click');
             });
         });
     </script>
