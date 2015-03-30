@@ -27,7 +27,7 @@
                         {%- if app.user.fullName is null -%}
                             {{- app.user.username | humanize -}}
                         {%- else -%}
-                            {{- app.user.fullName -}}
+                            {{- app.user.fullName | humanize -}}
                         {%- endif -%}
                     </span>
                 </a>

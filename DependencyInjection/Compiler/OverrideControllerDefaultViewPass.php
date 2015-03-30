@@ -44,6 +44,9 @@ final class OverrideControllerDefaultViewPass
         $controller->setShowTemplate($this->container->getParameter('symfonian_id.admin.themes.show_view'));
         $controller->setListTemplate($this->container->getParameter('symfonian_id.admin.themes.list_view'));
         $controller->setFilterFields($this->container->getParameter('symfonian_id.admin.filter'));
-        $controller->setListAjaxTemplate($this->container->getParameter('symfonian_id.admin.themes.list_ajax'));
+        $controller->setListAjaxTemplate(
+            $this->container->getParameter('symfonian_id.admin.themes.list_ajax'),
+            $this->container->getParameter('symfonian_id.admin.list.use_ajax')
+        );
     }
 }

@@ -424,12 +424,13 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
+     * @param boolean $useAjax
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setListAjaxTemplate($template)
+    public function setListAjaxTemplate($template, $useAjax = true)
     {
         $this->listAjaxActionTemplate = $template;
-        $this->useAjaxList = true;
+        $this->useAjaxList = $useAjax;
 
         return $this;
     }

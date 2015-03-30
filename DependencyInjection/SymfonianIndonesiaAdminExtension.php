@@ -30,7 +30,7 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.themes.edit_view', $config['themes']['edit_view']);
         $container->setParameter('symfonian_id.admin.themes.show_view', $config['themes']['show_view']);
         $container->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
-        $container->setParameter('symfonian_id.admin.themes.list_ajax', $config['themes']['list_ajax']);
+        $container->setParameter('symfonian_id.admin.themes.list_ajax', $config['list']['ajax_template']);
         $container->setParameter('symfonian_id.admin.themes.pagination', $config['themes']['pagination']);
         $container->setParameter('symfonian_id.admin.security.user_form', $config['security']['user']['form_class']);
         $container->setParameter('symfonian_id.admin.security.auto_enable', $config['security']['user']['auto_enable']);
@@ -40,6 +40,7 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.security.change_password', $config['security']['change_password']['form_class']);
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
+        $container->setParameter('symfonian_id.admin.list.use_ajax', $config['list']['use_ajax']);
 
         $action = array();
         if ($config['grid_action']['show']) {
