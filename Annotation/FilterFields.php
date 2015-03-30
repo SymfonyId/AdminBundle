@@ -10,9 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-class ListActionTemplate
+class FilterFields
 {
     public $value;
-
-    public $listAjaxTemplate;
 }

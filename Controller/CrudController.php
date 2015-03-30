@@ -37,6 +37,12 @@ abstract class CrudController extends Controller
 
     protected $listActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
 
+    protected $listAjaxActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
+
+    protected $useAjaxList = false;
+
+    protected $filterFields = array();
+
     const ENTITY_ALIAS = 'o';
 
     /**
@@ -177,12 +183,16 @@ abstract class CrudController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository($this->entityClass);
 
-        $qb = $repo->createQueryBuilder(self::ENTITY_ALIAS)->select(self::ENTITY_ALIAS)->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
+        $qb = $repo->createQueryBuilder(self::ENTITY_ALIAS)
+            ->select(self::ENTITY_ALIAS)
+            ->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
         $filter = $this->normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
 
         if ($filter) {
-            $qb->andWhere(sprintf('%s.%s LIKE :filter', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.filter')));
-            $qb->setParameter('filter', strtr('%filter%', array('filter' => $filter)));
+            foreach ($this->filterFields as $key => $value) {
+                $qb->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
+                $qb->setParameter($key, strtr('%filter%', array('filter' => $filter)));
+            }
         }
 
         $event = new GetQueryEvent();
@@ -224,6 +234,7 @@ abstract class CrudController extends Controller
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         $this->outputParameter['pagination'] = $pagination;
+        $this->outputParameter['use_ajax'] = $this->useAjaxList;
         $this->outputParameter['start'] = ($page - 1) * $this->container->getParameter('symfonian_id.admin.per_page');
         $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
         $this->outputParameter['header'] = array_merge($this->gridFields(), array('action'));
@@ -235,7 +246,9 @@ abstract class CrudController extends Controller
         $this->outputParameter['record'] = $data;
         $this->outputParameter['filter'] = $filter;
 
-        return $this->render($this->listActionTemplate, $this->outputParameter);
+        $listTemplate = $request->isXmlHttpRequest() ? $this->listAjaxActionTemplate : $this->listActionTemplate;
+
+        return $this->render($listTemplate, $this->outputParameter);
     }
 
     protected function handle(Request $request, $data, $template, $action = 'new')
@@ -369,7 +382,7 @@ abstract class CrudController extends Controller
      * @param string $template
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setNewActionTemplate($template)
+    public function setNewTemplate($template)
     {
         $this->newActionTemplate = $template;
 
@@ -380,7 +393,7 @@ abstract class CrudController extends Controller
      * @param string $template
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setEditActionTemplate($template)
+    public function setEditTemplate($template)
     {
         $this->editActionTemplate = $template;
 
@@ -391,7 +404,7 @@ abstract class CrudController extends Controller
      * @param string $template
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setShowActioinTemplate($template)
+    public function setShowTemplate($template)
     {
         $this->showActionTemplate = $template;
 
@@ -402,13 +415,37 @@ abstract class CrudController extends Controller
      * @param string $template
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setListActionTemplate($template)
+    public function setListTemplate($template)
     {
         $this->listActionTemplate = $template;
 
         return $this;
     }
 
+    /**
+     * @param string $template
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function setListAjaxTemplate($template)
+    {
+        $this->listAjaxActionTemplate = $template;
+        $this->useAjaxList = true;
+
+        return $this;
+    }
+
+    public function setFilterFields(array $fields)
+    {
+        $this->filterFields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * @param string $javascriptTwigPath
+     * @param string $includeRoute
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
     public function includeJavascript($javascriptTwigPath, $includeRoute = null)
     {
         $this->outputParameter['include_javascript'] = $javascriptTwigPath;

@@ -23,6 +23,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\EditActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\ShowActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\ListActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\IncludeJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
 
 final class AnnotationListener
 {
@@ -69,19 +70,29 @@ final class AnnotationListener
             }
 
             if ($annotation instanceof NewActionTemplate && $annotation->value) {
-                $controller->setNewActionTemplate($annotation->value);
+                $controller->setNewTemplate($annotation->value);
             }
 
             if ($annotation instanceof EditActionTemplate && $annotation->value) {
-                $controller->setEditActionTemplate($annotation->value);
+                $controller->setEditTemplate($annotation->value);
             }
 
             if ($annotation instanceof ShowActionTemplate && $annotation->value) {
-                $controller->setShowActioinTemplate($annotation->value);
+                $controller->setShowTemplate($annotation->value);
             }
 
-            if ($annotation instanceof ListActionTemplate && $annotation->value) {
-                $controller->setListActionTemplate($annotation->value);
+            if ($annotation instanceof ListActionTemplate) {
+                if ($annotation->value) {
+                    $controller->setListTemplate($annotation->value);
+                }
+
+                if ($annotation->listAjaxTemplate) {
+                    $controller->setListAjaxTemplate($annotation->listAjaxTemplate);
+                }
+            }
+
+            if ($annotation instanceof FilterFields && is_array($annotation->value)) {
+                $controller->setFilterFields($annotation->value);
             }
 
             if ($annotation instanceof IncludeJavascript && $annotation->value) {

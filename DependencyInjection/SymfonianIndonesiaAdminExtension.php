@@ -30,6 +30,7 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.themes.edit_view', $config['themes']['edit_view']);
         $container->setParameter('symfonian_id.admin.themes.show_view', $config['themes']['show_view']);
         $container->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
+        $container->setParameter('symfonian_id.admin.themes.list_ajax', $config['themes']['list_ajax']);
         $container->setParameter('symfonian_id.admin.themes.pagination', $config['themes']['pagination']);
         $container->setParameter('symfonian_id.admin.security.user_form', $config['security']['user']['form_class']);
         $container->setParameter('symfonian_id.admin.security.auto_enable', $config['security']['user']['auto_enable']);

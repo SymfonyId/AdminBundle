@@ -9,7 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Symfonian\Indonesia\AdminBundle\Controller\OverridableTemplateInterface;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 final class OverrideControllerDefaultViewPass
 {
@@ -34,18 +34,16 @@ final class OverrideControllerDefaultViewPass
 
         $controller = $controller[0];
 
-        if (! $controller instanceof OverridableTemplateInterface) {
+        if (! $controller instanceof CrudController) {
 
             return;
         }
 
-        if (! $controller->allowOverrideTemplate()) {
-            return;
-        }
-
-        $controller->setNewActionTemplate($this->container->getParameter('symfonian_id.admin.themes.new_view'));
-        $controller->setEditActionTemplate($this->container->getParameter('symfonian_id.admin.themes.edit_view'));
-        $controller->setShowActioinTemplate($this->container->getParameter('symfonian_id.admin.themes.show_view'));
-        $controller->setListActionTemplate($this->container->getParameter('symfonian_id.admin.themes.list_view'));
+        $controller->setNewTemplate($this->container->getParameter('symfonian_id.admin.themes.new_view'));
+        $controller->setEditTemplate($this->container->getParameter('symfonian_id.admin.themes.edit_view'));
+        $controller->setShowTemplate($this->container->getParameter('symfonian_id.admin.themes.show_view'));
+        $controller->setListTemplate($this->container->getParameter('symfonian_id.admin.themes.list_view'));
+        $controller->setFilterFields($this->container->getParameter('symfonian_id.admin.filter'));
+        $controller->setListAjaxTemplate($this->container->getParameter('symfonian_id.admin.themes.list_ajax'));
     }
 }
