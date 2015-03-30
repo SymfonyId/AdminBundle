@@ -9,6 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 
 class GetResponseEvent extends Event
 {
