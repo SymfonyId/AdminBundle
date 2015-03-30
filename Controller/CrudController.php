@@ -447,7 +447,7 @@ abstract class CrudController extends Controller
      * @param string $includeRoute
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function includeJavascript($javascriptTwigPath, $includeRoute = null)
+    public function includeJavascript($javascriptTwigPath, array $includeRoute = null)
     {
         $this->outputParameter['include_javascript'] = $javascriptTwigPath;
 

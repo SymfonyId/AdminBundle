@@ -96,7 +96,7 @@ final class AnnotationListener
             }
 
             if ($annotation instanceof IncludeJavascript && $annotation->value) {
-                $controller->includeJavascript($annotation->value, $annotation->includeRoute);
+                $controller->includeJavascript($annotation->value, (array) $annotation->includeRoute);
             }
 
             if ($annotation instanceof ShowFields && $annotation->value) {
