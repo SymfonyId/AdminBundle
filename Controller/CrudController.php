@@ -260,6 +260,7 @@ abstract class CrudController extends Controller
         $event = new GetFormResponseEvent();
         $event->setController($this);
         $event->setFormData($data);
+        $event->setForm($form);
 
         $this->fireEvent(Event::PRE_FORM_SUBMIT_EVENT, $event);
 
@@ -281,6 +282,7 @@ abstract class CrudController extends Controller
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new GetResponseEvent();
             $preFormValidationEvent->setRequest($request);
+            $preFormValidationEvent->setForm($form);
 
             $this->fireEvent(Event::PRE_FORM_VALIDATION_EVENT, $preFormValidationEvent);
 
@@ -295,6 +297,7 @@ abstract class CrudController extends Controller
                 $preSaveEvent->setRequest($request);
                 $preSaveEvent->setEntity($entity);
                 $preSaveEvent->setEntityMeneger($entityManager);
+                $preSaveEvent->setForm($form);
 
                 $postSaveEvent = new GetEntityEvent();
                 $postSaveEvent->setEntityMeneger($entityManager);

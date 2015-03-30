@@ -16,6 +16,23 @@ class GetResponseEvent extends Event
 
     protected $response;
 
+    protected $form;
+
+    public function setForm(FormInterface $form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @return FormInterface
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
     public function setRequest(Request $request)
     {
         $this->request = $request;

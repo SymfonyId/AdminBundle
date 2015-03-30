@@ -10,6 +10,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 
 class GetFormResponseEvent extends Event
 {
@@ -19,6 +20,23 @@ class GetFormResponseEvent extends Event
 
     protected $response;
 
+    protected $form;
+
+    public function setForm(FormInterface $form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @return FormInterface
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
     public function setController(CrudController $controller)
     {
         $this->controller = $controller;
@@ -26,6 +44,9 @@ class GetFormResponseEvent extends Event
         return $this;
     }
 
+    /**
+     * @return CrudController
+     */
     public function getController()
     {
         return $this->controller;
