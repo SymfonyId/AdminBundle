@@ -84,13 +84,13 @@
                 }, 10);
             }
 
-            jQuery('.delete').on('click', function () {
+            jQuery(document).on('click', '.delete', function () {
                 jQuery('.delete-modal').modal({
                     backdrop: 'static'
                 });
             });
 
-            jQuery('.delete-action').on('click', function () {
+            jQuery(document).on('click', '.delete-action', function () {
                 var url = document.URL.replace('show', 'delete');
                 jQuery.ajax({
                     url: url,

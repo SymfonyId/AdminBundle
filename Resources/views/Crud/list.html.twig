@@ -42,24 +42,24 @@
 {%- block javascript -%}
     <script type="text/javascript">
         jQuery(document).ready(function () {
-            jQuery('.add-new').on('click', function () {
+            jQuery(document).on('click', '.add-new', function () {
                 var url = document.URL.replace('list', 'new');
                 window.location = url;
             });
 
-            jQuery('.show').on('click', function () {
+            jQuery(document).on('click', '.show', function () {
                 var url = document.URL.replace('list', jQuery(this).data('record') + '/show');
 
                 window.location = url;
             });
 
-            jQuery('.edit').on('click', function () {
+            jQuery(document).on('click', '.edit', function () {
                 var url = document.URL.replace('list', jQuery(this).data('record') + '/edit');
 
                 window.location = url;
             });
 
-            jQuery('.delete').on('click', function () {
+            jQuery(document).on('click', '.delete', function () {
                 var url = document.URL.replace('list', jQuery(this).data('record') + '/show?delete');
 
                 window.location = url;
