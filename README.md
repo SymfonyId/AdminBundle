@@ -31,5 +31,3 @@ Dimaintenance oleh: [Muhammad Surya Ihsanuddin](https://github.com/ihsanudin) da
 MIT tanpa ada garansi apapun.
 
 ####TODO####
-
-Add Ajax Paging

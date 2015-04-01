@@ -1,11 +1,4 @@
 services:
-    output_filter:
-        class: Ihsan\Compressor\Bridge\Symfony\HtmlCompressorOutputFilter
-        arguments:
-            - @kernel
-        tags:
-           - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-
     css_filter:
         class: Ihsan\Compressor\Bridge\Symfony\AsseticCssFilter
         tags:

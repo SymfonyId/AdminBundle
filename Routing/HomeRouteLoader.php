@@ -29,7 +29,7 @@ final class HomeRouteLoader implements LoaderInterface
     public function load($resource, $type = null)
     {
         if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "extra" loader twice');
+            throw new \RuntimeException('Do not add the "siab" loader twice');
         }
 
         $routes = new RouteCollection();
