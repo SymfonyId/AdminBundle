@@ -26,10 +26,6 @@ class IsDependenciesPassedPass implements CompilerPassInterface
            throw new InvalidDefinitionException('KnpMenuBundle is not loaded.');
         }
 
-        if (! interface_exists('Ihsan\Compressor\CompressorInterface')) {
-           throw new InvalidDefinitionException('Ihsan\Compressor is not loaded.');
-        }
-
         $container->setParameter('knp_paginator.template.pagination', $container->getParameter('symfonian_id.admin.themes.pagination'));
     }
 }
