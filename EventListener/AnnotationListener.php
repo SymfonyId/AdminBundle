@@ -48,7 +48,7 @@ final class AnnotationListener
     }
 
     /**
-     * @Observe(KernelEvents::CONTROLLER, priority = --255)
+     * @Observe(KernelEvents::CONTROLLER, priority = -255)
      */
     public function onKernelController(FilterControllerEvent $event)
     {        $controller = $event->getController();
