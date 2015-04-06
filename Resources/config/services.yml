@@ -1,16 +1,4 @@
 services:
-    css_filter:
-        class: Ihsan\Compressor\Bridge\Symfony\AsseticCssFilter
-        tags:
-           - { name: assetic.filter, alias: css_compressor }
-
-    symfonian_id.admin.annotation:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\AnnotationListener
-        arguments:
-            - @annotation_reader
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
-
     symfonian_id.admin.delete_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
         arguments:

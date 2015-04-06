@@ -14,7 +14,7 @@
     'bundles/symfonianindonesiaadmin/css/AdminLTE.min.css'
     'bundles/symfonianindonesiaadmin/plugins/iCheck/square/blue.css'
 
-    filter='css_compressor, cssrewrite'
+    filter='uglifycss, cssrewrite'
 -%}
     <link rel="stylesheet" href="{{- asset_url -}}" />
 {%- endstylesheets -%}

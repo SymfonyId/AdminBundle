@@ -9,6 +9,11 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Doctrine\Common\Annotations\Reader;
 
+use JMS\DiExtraBundle\Annotation\Service;
+use JMS\DiExtraBundle\Annotation\InjectParams;
+use JMS\DiExtraBundle\Annotation\Observe;
+use Symfony\Component\HttpKernel\KernelEvents;
+
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\FormClass;
@@ -25,18 +30,28 @@ use Symfonian\Indonesia\AdminBundle\Annotation\ListActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
 
+/**
+ * @Service("some.service.id", public=false)
+ */
 final class AnnotationListener
 {
     private $reader;
 
+    /**
+     * @InjectParams({
+     *     "reader" = @Inject("annotation_reader")
+     * })
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @Observe(KernelEvents::CONTROLLER, priority = --255)
+     */
     public function onKernelController(FilterControllerEvent $event)
-    {
-        $controller = $event->getController();
+    {        $controller = $event->getController();
 
         if (! is_array($controller)) {
 
