@@ -11,6 +11,7 @@ use Doctrine\Common\Annotations\Reader;
 
 use JMS\DiExtraBundle\Annotation\Service;
 use JMS\DiExtraBundle\Annotation\InjectParams;
+use JMS\DiExtraBundle\Annotation\Tag;
 use JMS\DiExtraBundle\Annotation\Observe;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -31,7 +32,8 @@ use Symfonian\Indonesia\AdminBundle\Annotation\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
 
 /**
- * @Service("some.service.id", public=false)
+ * @Service("symfonian_id.admin.annotation", public=false)
+ * @Tag("kernel.event_listener")
  */
 final class AnnotationListener
 {
