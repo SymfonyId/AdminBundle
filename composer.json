@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "ext-apcu": "*",
         "symfony/symfony": "~2.6",
         "twig/twig": "~1.18",
         "knplabs/knp-paginator-bundle": "~2.4",

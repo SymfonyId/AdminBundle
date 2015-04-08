@@ -35,9 +35,15 @@ class GenericFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->controller->entityProperties() as $key => $value) {
+
+            if ('id' === $value) {
+                
+                continue;
+            }
+
             $builder->add($value, null, array(
                 'attr' => array(
-                    'class' => 'btn btn-primary',
+                    'class' => 'form-control',
                 )
             ));
         }
