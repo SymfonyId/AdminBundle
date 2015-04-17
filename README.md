@@ -4,7 +4,7 @@ Repo Asli: [IhsanSimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBund
 
 <img src="AdminBundle.png" alt="SymfonianIndonesiaAdminBundle membantu Anda membuat halaman backend dengan cepat dan memukau" title="SymfonianIndonesiaAdminBundle" align="center" />
 
-**SymfonianIndonesiaAdminBundle (SIAB)** membantu Anda membuat halaman Admin dengan cepat, mudah dan indah dipandang mata. Didedikasikan untuk semua pengguna Symfony dan dimaintenance oleh Komunitas Symfony Framework Indonesia.
+**Symfonian Indonesia Admin Bundle (SIAB)** membantu Anda membuat halaman Admin dengan cepat, mudah dan indah dipandang mata. Didedikasikan untuk semua pengguna Symfony dan dimaintenance oleh Komunitas Symfony Framework Indonesia.
 
 ####Fitur Utama####
 1. DRY (Don't Repeat Yourself) CRUD (Create Read Update and Delete) Generator
