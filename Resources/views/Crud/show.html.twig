@@ -35,9 +35,9 @@
                                 {%- for i, v in property.value -%}
                                     {%- set value = value ~ v ~ ', ' -%}
                                 {%- endfor -%}
-                                {{- value | trim(', ')-}}
+                                {{- value | trim(', ') | raw -}}
                             {%- else -%}
-                                {{- property.value -}}
+                                {{- property.value | raw -}}
                             {%- endif -%}
                         {%- endif -%}
                     </p>
