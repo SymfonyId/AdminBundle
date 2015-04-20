@@ -26,5 +26,6 @@ final class TwigGlobaVariablePass
         $twig = $this->container->get('twig');
         $twig->addGlobal('title', $this->container->getParameter('symfonian_id.admin.app_title'));
         $twig->addGlobal('date_time_format', $this->container->getParameter('symfonian_id.admin.date_time_format'));
+        $twig->addGlobal('menu', $this->container->getParameter('symfonian_id.admin.menu'));
     }
 }
