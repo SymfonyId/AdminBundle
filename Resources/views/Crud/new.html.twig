@@ -128,6 +128,8 @@
             jQuery(document).on('click', '.success-close', function () {
                 jQuery('.back-to-list').trigger('click');
             });
+
+            jQuery(".textarea").wysihtml5();
         });
     </script>
     {%- if include_javascript is defined -%}
