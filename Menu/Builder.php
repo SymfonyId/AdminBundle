@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Menu;
  */
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Router;
 
@@ -90,7 +91,7 @@ class Builder
         return $menu;
     }
 
-    protected function addUserMenu($menu)
+    protected function addUserMenu(ItemInterface $menu)
     {
         if (! $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return ;
