@@ -13,7 +13,7 @@
             }
             -%}
 
-            {%- include 'SymfonianIndonesiaAdminBundle:Layout:menu.html.twig' with { menu: menu } -%}
+            {%- include 'SymfonianIndonesiaAdminBundle:Layout:menu.html.twig' with { menu: knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) } -%}
 
             {%- include 'SymfonianIndonesiaAdminBundle:Layout:content.html.twig'
             with {
