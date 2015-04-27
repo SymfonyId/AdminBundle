@@ -24,7 +24,7 @@
                     " class="user-image" alt="User Image"/>
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                     <span class="hidden-xs">
-                        {%- if app.user is defined -%}
+                        {%- if app.user is defined and app.user is not null -%}
                             {%- if app.user.fullName is not defined -%}
                                 {{- app.user.username | humanize -}}
                             {%- else -%}
