@@ -32,7 +32,10 @@ final class DeleteUserListener
 
     public function __construct(ContainerInterface $container, TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
     {
-        $this->user = $tokenStorage->getToken()->getUser();
+        $token = $tokenStorage->getToken();
+        if ($token) {
+            $this->user = $token->getUser();
+        }
         $this->translator = $translator;
         $this->container = $container;
     }
