@@ -21,7 +21,8 @@
         "twig/twig": "~1.18",
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-menu-bundle": "~2",
-        "friendsofsymfony/user-bundle": "~2.0@dev"
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "almasaeed2010/adminlte": "dev-master"
     },
     "autoload": {
         "psr-4": {
