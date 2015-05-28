@@ -2,7 +2,7 @@
     <section class="content-header">
         <h1>
             {%- if page_title is not empty -%}
-                {{- page_title | raw -}}
+                {{- page_title ~ ' | ' | raw -}}
             {%- endif -%}
             <small>
                 {%- if page_description is not empty -%}
