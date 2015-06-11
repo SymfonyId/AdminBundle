@@ -67,7 +67,7 @@ abstract class CrudController extends Controller
             $entity = new $this->entityClass();
         }
 
-        return $this->handle($request, $entity, $this->newActionTemplate, 'new');
+        return $this->handle($request, $entity, $this->newActionTemplate, 'new', $event->getForm());
     }
 
     /**
@@ -94,7 +94,7 @@ abstract class CrudController extends Controller
             $entity = $this->findOr404Error($id);
         }
 
-        return $this->handle($request, $entity, $this->editActionTemplate, 'edit');
+        return $this->handle($request, $entity, $this->editActionTemplate, 'edit', $event->getForm());
     }
 
     /**
@@ -251,11 +251,11 @@ abstract class CrudController extends Controller
         return $this->render($listTemplate, $this->outputParameter);
     }
 
-    protected function handle(Request $request, $data, $template, $action = 'new')
+    protected function handle(Request $request, $data, $template, $action = 'new', $formObject = null)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-        $form = $this->getForm($data);
+        $form = $formObject?: $this->getForm($data);
 
         $event = new GetFormResponseEvent();
         $event->setController($this);
