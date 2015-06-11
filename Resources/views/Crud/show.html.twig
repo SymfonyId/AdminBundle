@@ -24,12 +24,12 @@
                 <h3 class="box-title">{{- page_title -}}</h3>
             </div>
             <div class="box-body">
-                <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="col-md-12 col-lg-12 col-sm-12 margin-bottom-7">
                 {%- for property in data -%}
-                    <div class="col-md-4 col-lg-4 col-sm-4">
+                    <div class="col-md-2 col-lg-2 col-sm-2 border-left">
                         {{- property.name | humanize -}}
                     </div>
-                    <div class="col-md-8 col-lg-8 col-sm-8">
+                    <div class="col-md-10 col-lg-10 col-sm-10 border-left border-right">
                         {%- if property.value.timezone is defined -%}
                             {{- property.value | date(date_time_format) -}}
                         {%- else -%}

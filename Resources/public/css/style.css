@@ -10,6 +10,10 @@
     margin-left: 7px !important;
 }
 
+.margin-bottom-7 {
+    margin-bottom: 7px !important;
+}
+
 label.required:after {
     content: '*';
     padding-left: 3px;
