@@ -29,7 +29,7 @@
                     <div class="col-md-2 col-lg-2 col-sm-2 border-left">
                         {{- property.name | humanize -}}
                     </div>
-                    <div class="col-md-10 col-lg-10 col-sm-10 border-left border-right">
+                    <div class="col-md-10 col-lg-10 col-sm-10">
                         {%- if property.value.timezone is defined -%}
                             {{- property.value | date(date_time_format) -}}
                         {%- else -%}
