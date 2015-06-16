@@ -1,8 +1,8 @@
 <table class="table table-hover table-bordered">
     <tr>
-        <td>No</td>
+        <td><strong>No</strong></td>
         {%- for i, value in header -%}
-            <td><strong>{{- value | upper -}}</strong></td>
+            <td><strong>{{- value | humanize | upper -}}</strong></td>
         {%- endfor -%}
     </tr>
     {%- for key, value in record -%}
