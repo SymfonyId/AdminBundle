@@ -23,9 +23,12 @@
                 <h3 class="box-title">{{- page_title -}}</h3>
             </div>
             <div class="box-body">
+                <div class="col-md-12 col-lg-12 col-sm-12 margin-bottom-7">
                 {%- for property in data -%}
-                    <p>
-                        {{- property.name | humanize -}}:
+                    <div class="col-md-2 col-lg-2 col-sm-2 border-left">
+                        {{- property.name | humanize -}}
+                    </div>
+                    <div class="col-md-10 col-lg-10 col-sm-10">
                         {%- if property.value.timezone is defined -%}
                             {{- property.value | date(date_time_format) -}}
                         {%- else -%}
@@ -34,13 +37,14 @@
                                 {%- for i, v in property.value -%}
                                     {%- set value = value ~ v ~ ', ' -%}
                                 {%- endfor -%}
-                                {{- value | trim(', ')-}}
+                                {{- value | trim(', ') | raw -}}
                             {%- else -%}
-                                {{- property.value -}}
+                                {{- property.value | raw -}}
                             {%- endif -%}
                         {%- endif -%}
-                    </p>
+                    </div>
                 {%- endfor-%}
+                </div>
                 <div>
                     <a href="{{- url('home') -}}" class="btn btn-primary">{{- 'action.back_to_home' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
                 </div>
