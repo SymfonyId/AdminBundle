@@ -52,8 +52,14 @@ class SymfonianIndonesiaAdminExtension extends Extension
         if ($config['grid_action']['delete']) {
             array_push($action, 'delete');
         }
-
         $container->setParameter('symfonian_id.admin.grid_action', $action);
+
+        $number = array(
+            'decimal_precision' => $config['number']['decimal_precision'],
+            'decimal_separator' => $config['number']['decimal_precision'],
+            'thousand_separator' => $config['number']['decimal_precision'],
+        );
+        $container->setParameter('symfonian_id.admin.number', $number);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
