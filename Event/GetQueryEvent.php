@@ -3,7 +3,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: http://blog.khodam.org
+ * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\EventDispatcher\Event;

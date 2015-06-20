@@ -3,7 +3,7 @@ namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: http://blog.khodam.org
+ * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;

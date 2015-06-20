@@ -3,7 +3,7 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: http://blog.khodam.org
+ * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +37,7 @@ class GenericFormType extends AbstractType
         foreach ($this->controller->entityProperties() as $key => $value) {
 
             if ('id' === $value) {
-                
+
                 continue;
             }
 

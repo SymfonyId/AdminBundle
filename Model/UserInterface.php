@@ -3,7 +3,7 @@ namespace Symfonian\Indonesia\AdminBundle\Model;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: http://blog.khodam.org
+ * Url: https://github.com/ihsanudin
  */
 
 interface UserInterface extends EntityInterface
