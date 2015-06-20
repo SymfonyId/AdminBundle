@@ -40,7 +40,11 @@
                                 {%- endfor -%}
                                 {{- value | trim(', ') | raw -}}
                             {%- else -%}
-                                {{- property.value | raw -}}
+                                {% if property.value is numeric %}
+                                    {{- property.value | number_format(0, ',', '.') | raw -}}
+                                {% else %}
+                                    {{- property.value | raw -}}
+                                {% endif %}
                             {%- endif -%}
                         {%- endif -%}
                     </div>

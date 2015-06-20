@@ -83,3 +83,8 @@ services:
             - @service_container
         tags:
             - { name: routing.loader }
+
+    symfonian_id.twig.is_number:
+        class: Symfonian\Indonesia\AdminBundle\Twig\NumberTest
+        tags:
+            - { name: twig.extension }

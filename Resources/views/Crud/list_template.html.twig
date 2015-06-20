@@ -20,7 +20,11 @@
                         {%- endfor -%}
                         {{- value | trim(', ')-}}
                     {%- else -%}
-                        {{- v -}}
+                        {% if v is numeric %}
+                            {{- v | number_format(0, ',', '.') -}}
+                        {% else %}
+                            {{- v -}}
+                        {% endif %}
                     {%- endif -%}
                 {%- endif -%}
                 </td>
