@@ -39,7 +39,7 @@ class UserType extends AbstractType
             ->add($builder->create(
                 'roles', 'choice', array(
                     'label' => 'form.label.role',
-                    'choice_list' => new ChoiceList($this->roleHierarchy, $this->roleHierarchy),
+                    'choices' => $this->buildRoleList(),
                     'empty_value' => 'message.select_empty',
                     'attr' => array(
                         'class' => 'form-control',
@@ -85,6 +85,16 @@ class UserType extends AbstractType
             'validation_groups' =>  array('Registration', 'Default'),
             'intention'  => self::FORM_NAME,
         ));
+    }
+
+    protected function buildRoleList()
+    {
+        $roleList = array();
+        foreach ($this->roleHierarchy as $key => $value) {
+            $roleList[$value] = $value;
+        }
+
+        return $roleList;
     }
 
     public function getName()
