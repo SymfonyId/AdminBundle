@@ -55,9 +55,9 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.grid_action', $action);
 
         $number = array(
-            'decimal_precision' => $config['number']['decimal_precision'],
-            'decimal_separator' => $config['number']['decimal_precision'],
-            'thousand_separator' => $config['number']['decimal_precision'],
+            'decimal_precision' => $config['number_format']['decimal_precision'],
+            'decimal_separator' => $config['number_format']['decimal_precision'],
+            'thousand_separator' => $config['number_format']['decimal_precision'],
         );
         $container->setParameter('symfonian_id.admin.number', $number);
 

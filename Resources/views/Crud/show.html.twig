@@ -41,7 +41,7 @@
                                 {{- value | trim(', ') | raw -}}
                             {%- else -%}
                                 {% if property.value is numeric %}
-                                    {{- property.value | number_format(number['decimal_precision'], number['decimal_sepearator'], number['thousand_separator']) -}}
+                                    {{- property.value | number_format(number_format['decimal_precision'], number_format['decimal_sepearator'], number_format['thousand_separator']) -}}
                                 {% else %}
                                     {{- property.value | raw -}}
                                 {% endif %}
