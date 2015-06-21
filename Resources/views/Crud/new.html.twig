@@ -130,6 +130,10 @@
             });
 
             jQuery(".editor").wysihtml5();
+
+            jQuery('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
         });
     </script>
     {%- if include_javascript is defined -%}
