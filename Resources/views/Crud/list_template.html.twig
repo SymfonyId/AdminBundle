@@ -21,7 +21,7 @@
                         {{- value | trim(', ')-}}
                     {%- else -%}
                         {% if v is numeric %}
-                            {{- v | number_format(number_format['decimal_precision'], number_format['decimal_sepearator'], number_format['thousand_separator']) -}}
+                            {{- v | number_format(number_format['decimal_precision'], number_format['decimal_separator'], number_format['thousand_separator']) -}}
                         {% else %}
                             {{- v -}}
                         {% endif %}
