@@ -149,38 +149,32 @@
             {%- endif -%}
 
             {%- if use_file_style is sameas(true) -%}
-                jQuery(":file").filestyle({input: false});
+                jQuery(':file').filestyle({input: false});
             {%- endif -%}
 
             {%- if use_editor is sameas(true) -%}
-                jQuery(".editor").wysihtml5();
+                jQuery('.editor').wysihtml5();
             {%- endif -%}
 
             {%- if autocomplete is not empty -%}
-                jQuery(".typeahead").typeahead({
-                    onSelect: function(item) {
-                        console.log(item);
-                    },
-                    ajax: {
-                        url: '{{- autocomplete['route'] -}}',
-                        timeout: 500,
-                        displayField: "title",
-                        triggerLength: 1,
-                        method: "get",
-                        loadingClass: "loading-circle",
-                        preDispatch: function (query) {
+                    jQuery('.autocomplete').select2({
+                        ajax: {
+                        url: Routing.generate('{{- autocomplete['route'] -}}'),
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
                             return {
-                                query: query
-                            }
+                                query: params.term
+                            };
                         },
-                        preProcess: function (data) {
-                            if (data.success === false) {
-                                return false;
-                            }
-                            return data.mylist;
+                        processResults: function (data, page) {
+                            return {
+                                results: data
+                            };
+                        },
+                        cache: true
                         }
-                    }
-                });
+                    });
             {%- endif -%}
         });
     </script>
