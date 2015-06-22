@@ -143,6 +143,7 @@ abstract class CrudController extends Controller
         $this->outputParameter['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
         $this->outputParameter['back'] = $request->headers->get('referer');
         $this->outputParameter['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
+        $this->outputParameter['number_format'] = $this->container->getParameter('symfonian_id.admin.number');
 
         return $this->render($this->showActionTemplate, $this->outputParameter);
     }
