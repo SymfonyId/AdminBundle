@@ -24,6 +24,9 @@ use Symfonian\Indonesia\AdminBundle\Annotation\ShowActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\ListActionTemplate;
 use Symfonian\Indonesia\AdminBundle\Annotation\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
+use Symfonian\Indonesia\AdminBundle\Annotation\UseDatePicker;
+use Symfonian\Indonesia\AdminBundle\Annotation\UseFileStyle;
+use Symfonian\Indonesia\AdminBundle\Annotation\UseEditor;
 
 final class AnnotationListener
 {
@@ -108,6 +111,18 @@ final class AnnotationListener
 
             if ($annotation instanceof NormalizeFilter) {
                 $controller->normalizeFilter();
+            }
+
+            if ($annotation instanceof UseDatePicker && $annotation->value) {
+                $controller->useDatePicker();
+            }
+
+            if ($annotation instanceof UseFileStyle && $annotation->value) {
+                $controller->useFileStyle();
+            }
+
+            if ($annotation instanceof UseEditor && $annotation->value) {
+                $controller->useEditor();
             }
         }
     }

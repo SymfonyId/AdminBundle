@@ -4,7 +4,7 @@
 
 {%- block breadcrumb -%}
     <li><a href="#" class="active">{{- page_title | upper -}}</a></li>
-    <li><a href="#" class="active">{{- action_method | upper ~ ' ' ~ page_title | upper -}}</a></li>
+    <li><a href="#" class="active">{{- (action_method ~ ' ' ~ page_title) | upper -}}</a></li>
 {%- endblock -%}
 
 {%- block page_title -%}
@@ -13,6 +13,18 @@
 
 {%- block page_description -%}
     {{- page_description -}}
+{%- endblock -%}
+
+{%- block date_picker -%}
+    {{- use_date_picker -}}
+{%- endblock -%}
+
+{%- block file_style -%}
+    {{- use_file_style -}}
+{%- endblock -%}
+
+{%- block editor -%}
+    {{- use_editor -}}
 {%- endblock -%}
 
 {%- block menu -%}
@@ -67,10 +79,6 @@
                     <div class="box-body with-border">
                         {%- for field in form.children -%}
                             {{- form_row(field) -}}
-
-                            {%- if field.vars.javascript is defined -%}
-                                {{- field.vars.javascript | raw -}}
-                            {%- endif -%}
                         {%- endfor -%}
                     </div>
                 {{- form_end(form) -}}
@@ -129,14 +137,20 @@
                 jQuery('.back-to-list').trigger('click');
             });
 
-            jQuery(".editor").wysihtml5();
+            {%- if use_date_picker is sameas(true) -%}
+                jQuery(".editor").wysihtml5();
+            {%- endif -%}
 
-            jQuery('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true
-            });
+            {%- if use_file_style is sameas(true) -%}
+                jQuery('.datepicker').datepicker({
+                    format: 'yyyy-mm-dd',
+                    autoclose: true
+                });
+            {%- endif -%}
 
-            jQuery(":file").filestyle({input: false});
+            {%- if use_editor is sameas(true) -%}
+                jQuery(":file").filestyle({input: false});
+            {%- endif -%}
         });
     </script>
     {%- if include_javascript is defined -%}

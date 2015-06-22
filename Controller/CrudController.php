@@ -41,6 +41,12 @@ abstract class CrudController extends Controller
 
     protected $useAjaxList = false;
 
+    protected $useDatePicker = false;
+
+    protected $useFileStyle = false;
+
+    protected $useEditor = false;
+
     protected $filterFields = array();
 
     const ENTITY_ALIAS = 'o';
@@ -281,6 +287,9 @@ abstract class CrudController extends Controller
         $this->outputParameter['form'] = $form->createView();
         $this->outputParameter['form_theme'] = $this->container->getParameter('symfonian_id.admin.themes.form_theme');
         $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        $this->outputParameter['use_date_picker'] = false;
+        $this->outputParameter['use_file_style'] = false;
+        $this->outputParameter['use_editor'] = false;
 
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new GetResponseEvent();
@@ -460,6 +469,36 @@ abstract class CrudController extends Controller
         if ($includeRoute) {
             $this->outputParameter['include_route'] = $includeRoute;
         }
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function useDatePicker()
+    {
+        $this->useDatePicker = true;
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function useFileStyle()
+    {
+        $this->useFileStyle = true;
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function useEditor()
+    {
+        $this->useEditor = true;
 
         return $this;
     }

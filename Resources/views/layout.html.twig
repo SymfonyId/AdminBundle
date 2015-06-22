@@ -20,13 +20,19 @@
                 breadcrumb: block('breadcrumb'),
                 content: block('content'),
                 page_title: block('page_title'),
-                page_description: block('page_description')
+                page_description: block('page_description'),
+                use_date_picker: block('date_picker'),
+                use_file_style: block('file_style'),
+                use_editor: block('editor')
             }
             -%}
 
             {%- include 'SymfonianIndonesiaAdminBundle:Layout:footer.html.twig'
             with {
-                javascript: block('javascript')
+                javascript: block('javascript'),
+                use_date_picker: block('date_picker'),
+                use_file_style: block('file_style'),
+                use_editor: block('editor')
             }
             -%}
         </div>
