@@ -43,7 +43,11 @@
                                 {% if property.value is numeric %}
                                     {{- property.value | number_format(number_format['decimal_precision'], number_format['decimal_separator'], number_format['thousand_separator']) -}}
                                 {% else %}
-                                    {{- property.value | raw -}}
+                                    {% if string matches '/\.(?:png|jpg|jpeg|xls|xlsx|pdf|doc|docx|mp3|mp4|3gp|mkv)$/' %}
+                                        <a href="{{- property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
+                                    {% else %}
+                                        {{- property.value | raw -}}
+                                    {% endif %}
                                 {% endif %}
                             {%- endif -%}
                         {%- endif -%}
