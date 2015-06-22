@@ -7,17 +7,12 @@
     '@SymfonianIndonesiaAdminBundle/Resources/public/js/bootstrap.min.js'
     '@SymfonianIndonesiaAdminBundle/Resources/public/js/fastclick.min.js'
     '@SymfonianIndonesiaAdminBundle/Resources/public/js/jquery.slimscroll.min.js'
-
     '@SymfonianIndonesiaAdminBundle/Resources/public/js/app.min.js'
 
     filter='uglifyjs2'
 -%}
     <script src="{{- asset_url -}}" type="text/javascript"></script>
 {%- endjavascripts -%}
-
-{%- if javascript is not empty -%}
-    {{- javascript | raw -}}
-{%- endif -%}
 
 {%- if use_date_picker is not empty -%}
     {%- javascripts
@@ -36,6 +31,14 @@
 
 {%- if use_editor is not empty -%}
     <script src="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') -}}" type="text/javascript"></script>
+{%- endif -%}
+
+{%- if use_autocomplete is not empty -%}
+    <script src="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-typeahead/bootstrap-typeahead.min.js') -}}" type="text/javascript"></script>
+{%- endif -%}
+
+{%- if javascript is not empty -%}
+    {{- javascript | raw -}}
 {%- endif -%}
 
 <!--[if IE 8]>

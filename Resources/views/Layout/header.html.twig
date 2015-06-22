@@ -15,13 +15,19 @@
     'bundles/symfonianindonesiaadmin/css/AdminLTE.min.css'
     'bundles/symfonianindonesiaadmin/css/skins/skin-green.min.css'
     'bundles/symfonianindonesiaadmin/css/style.css'
-    'bundles/symfonianindonesiaadmin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'
-    'bundles/symfonianindonesiaadmin/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'
 
     filter='uglifycss, cssrewrite'
 -%}
     <link rel="stylesheet" href="{{- asset_url -}}" />
 {%- endstylesheets -%}
+
+{%- if use_date_picker is not empty -%}
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') -}}" />
+{%- endif -%}
+
+{%- if use_editor is not empty -%}
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') -}}" />
+{%- endif -%}
 
 {%- if css is not empty -%}
     {{- css | raw -}}

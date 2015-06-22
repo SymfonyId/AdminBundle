@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head>
-        {%- include 'SymfonianIndonesiaAdminBundle:Layout:header.html.twig' with { page_title: block('page_title'), css: block('css') } -%}
+        {%- include 'SymfonianIndonesiaAdminBundle:Layout:header.html.twig'
+        with {
+            page_title: block('page_title'),
+            css: block('css'),
+            use_date_picker: block('date_picker'),
+            use_editor: block('editor')
+        }
+        -%}
     </head>
     <body class="skin-green sidebar-collapse">
         <div class="wrapper">
@@ -32,7 +39,8 @@
                 javascript: block('javascript'),
                 use_date_picker: block('date_picker'),
                 use_file_style: block('file_style'),
-                use_editor: block('editor')
+                use_editor: block('editor'),
+                use_autocomplete: block('autocomplete')
             }
             -%}
         </div>

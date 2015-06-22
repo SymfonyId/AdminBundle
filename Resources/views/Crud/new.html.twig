@@ -27,6 +27,10 @@
     {{- use_editor -}}
 {%- endblock -%}
 
+{%- block autocomplete -%}
+    {{- autocomplete['route'] -}}
+{%- endblock -%}
+
 {%- block menu -%}
     {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
 {%- endblock -%}
@@ -138,18 +142,45 @@
             });
 
             {%- if use_date_picker is sameas(true) -%}
-                jQuery(".editor").wysihtml5();
-            {%- endif -%}
-
-            {%- if use_file_style is sameas(true) -%}
                 jQuery('.datepicker').datepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true
                 });
             {%- endif -%}
 
-            {%- if use_editor is sameas(true) -%}
+            {%- if use_file_style is sameas(true) -%}
                 jQuery(":file").filestyle({input: false});
+            {%- endif -%}
+
+            {%- if use_editor is sameas(true) -%}
+                jQuery(".editor").wysihtml5();
+            {%- endif -%}
+
+            {%- if autocomplete is not empty -%}
+                jQuery(".typeahead").typeahead({
+                    onSelect: function(item) {
+                        console.log(item);
+                    },
+                    ajax: {
+                        url: '{{- autocomplete['route'] -}}',
+                        timeout: 500,
+                        displayField: "title",
+                        triggerLength: 1,
+                        method: "get",
+                        loadingClass: "loading-circle",
+                        preDispatch: function (query) {
+                            return {
+                                query: query
+                            }
+                        },
+                        preProcess: function (data) {
+                            if (data.success === false) {
+                                return false;
+                            }
+                            return data.mylist;
+                        }
+                    }
+                });
             {%- endif -%}
         });
     </script>

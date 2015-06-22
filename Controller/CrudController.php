@@ -287,9 +287,10 @@ abstract class CrudController extends Controller
         $this->outputParameter['form'] = $form->createView();
         $this->outputParameter['form_theme'] = $this->container->getParameter('symfonian_id.admin.themes.form_theme');
         $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $this->outputParameter['use_date_picker'] = false;
-        $this->outputParameter['use_file_style'] = false;
-        $this->outputParameter['use_editor'] = false;
+        $this->outputParameter['use_date_picker'] = $this->useDatePicker;
+        $this->outputParameter['use_file_style'] = $this->useFileStyle;
+        $this->outputParameter['use_editor'] = $this->useEditor;
+        $this->outputParameter['autocomplete']['route'] = '/pilih/perusahaan';
 
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new GetResponseEvent();
