@@ -113,15 +113,15 @@ final class AnnotationListener
                 $controller->normalizeFilter();
             }
 
-            if ($annotation instanceof UseDatePicker && $annotation->value) {
+            if ($annotation instanceof UseDatePicker) {
                 $controller->useDatePicker();
             }
 
-            if ($annotation instanceof UseFileStyle && $annotation->value) {
+            if ($annotation instanceof UseFileStyle) {
                 $controller->useFileStyle();
             }
 
-            if ($annotation instanceof UseEditor && $annotation->value) {
+            if ($annotation instanceof UseEditor) {
                 $controller->useEditor();
             }
         }
