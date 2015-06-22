@@ -61,6 +61,11 @@ class SymfonianIndonesiaAdminExtension extends Extension
         );
         $container->setParameter('symfonian_id.admin.number', $number);
 
+        $container->setParameter('symfonian_id.admin.upload_dir', array(
+            'server_path' => $container->get('kernel')->getRootDir().'/../web/'.$config['upload_dir'],
+            'web_path' => $config['upload_dir'],
+        ));
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
