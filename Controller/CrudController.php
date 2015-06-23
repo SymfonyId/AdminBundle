@@ -47,6 +47,8 @@ abstract class CrudController extends Controller
 
     protected $useEditor = false;
 
+    protected $autocomplete = null;
+
     protected $filterFields = array();
 
     const ENTITY_ALIAS = 'o';
@@ -290,7 +292,7 @@ abstract class CrudController extends Controller
         $this->outputParameter['use_date_picker'] = $this->useDatePicker;
         $this->outputParameter['use_file_style'] = $this->useFileStyle;
         $this->outputParameter['use_editor'] = $this->useEditor;
-        $this->outputParameter['autocomplete']['route'] = '/pilih/perusahaan';
+        $this->outputParameter['autocomplete']['route'] = $this->autocomplete;
 
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new GetResponseEvent();
@@ -500,6 +502,18 @@ abstract class CrudController extends Controller
     public function useEditor()
     {
         $this->useEditor = true;
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param string $route
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function setAutoComplete($route)
+    {
+        $this->autocomplete = $route;
 
         return $this;
     }

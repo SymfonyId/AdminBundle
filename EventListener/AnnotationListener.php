@@ -27,6 +27,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
 use Symfonian\Indonesia\AdminBundle\Annotation\UseDatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\UseFileStyle;
 use Symfonian\Indonesia\AdminBundle\Annotation\UseEditor;
+use Symfonian\Indonesia\AdminBundle\Annotation\AutoComplete;
 
 final class AnnotationListener
 {
@@ -123,6 +124,10 @@ final class AnnotationListener
 
             if ($annotation instanceof UseEditor) {
                 $controller->useEditor();
+            }
+
+            if ($annotation instanceof AutoComplete && $annotation->value) {
+                $controller->setAutoComplete($annotation->value);
             }
         }
     }
