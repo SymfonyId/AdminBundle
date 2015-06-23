@@ -127,7 +127,7 @@ final class AnnotationListener
             }
 
             if ($annotation instanceof AutoComplete && $annotation->value) {
-                $controller->setAutoComplete($annotation->value);
+                $controller->setAutoComplete($annotation->value, $annotation->targetSelector);
             }
         }
     }

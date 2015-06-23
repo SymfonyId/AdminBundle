@@ -175,6 +175,9 @@
                         cache: true
                     }
                 });
+                jQuery(document).on('select2:select', '.autocomplete', function (e) {
+                    jQuery('{{- autocomplete['value_storage_selector']-}}').val(e.params.data.id);
+                });
             {%- endif -%}
         });
     </script>

@@ -47,7 +47,7 @@ abstract class CrudController extends Controller
 
     protected $useEditor = false;
 
-    protected $autocomplete = null;
+    protected $autocomplete = array();
 
     protected $filterFields = array();
 
@@ -280,7 +280,6 @@ abstract class CrudController extends Controller
 
             return $response;
         }
-
         $form->handleRequest($request);
 
         $this->outputParameter['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
@@ -292,7 +291,7 @@ abstract class CrudController extends Controller
         $this->outputParameter['use_date_picker'] = $this->useDatePicker;
         $this->outputParameter['use_file_style'] = $this->useFileStyle;
         $this->outputParameter['use_editor'] = $this->useEditor;
-        $this->outputParameter['autocomplete']['route'] = $this->autocomplete;
+        $this->outputParameter['autocomplete'] = $this->autocomplete;
 
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new GetResponseEvent();
@@ -511,9 +510,10 @@ abstract class CrudController extends Controller
      * @param string $route
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setAutoComplete($route)
+    public function setAutoComplete($route, $valueStorageSelector)
     {
-        $this->autocomplete = $route;
+        $this->autocomplete['route'] = $route;
+        $this->autocomplete['value_storage_selector'] = $valueStorageSelector;
 
         return $this;
     }

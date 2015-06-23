@@ -13,4 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
 class AutoComplete
 {
     public $value;
+
+    public $targetSelector;
 }
