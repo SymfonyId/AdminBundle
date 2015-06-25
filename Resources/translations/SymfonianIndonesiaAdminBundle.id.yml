@@ -5,6 +5,7 @@ message:
     info: 'Pesan Informasi'
     login_title: 'Halaman Login'
     error_title: 'Terjadi kesalahan'
+    fullName: 'Masukkan nama lengkap'
     username: 'Masukkan username'
     password: 'Masukkan password'
     remember_me: 'Ingat saya selalu'
