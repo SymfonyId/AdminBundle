@@ -282,6 +282,11 @@ abstract class CrudController extends Controller
         }
         $form->handleRequest($request);
 
+        if (empty($this->autocomplete)) {
+            $this->autocomplete['route'] = 'home';
+            $this->autocomplete['value_storage_selector'] = '.selector';
+        }
+
         $this->outputParameter['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
         $this->outputParameter['action_method'] = $translator->trans('page.'.$action, array(), $translationDomain);
         $this->outputParameter['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
