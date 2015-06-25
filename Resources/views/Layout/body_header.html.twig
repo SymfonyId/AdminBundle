@@ -25,7 +25,7 @@
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                     <span class="hidden-xs">
                         {%- if app.user is defined and app.user is not null -%}
-                            {%- if app.user.fullName is not null -%}
+                            {%- if app.user.fullName is null -%}
                                 {{- app.user.username | humanize -}}
                             {%- else -%}
                                 {{- app.user.fullName | humanize -}}
@@ -45,7 +45,7 @@
                         " class="img-circle" alt="User Image" />
                         <p>
                             {%- if app.user is defined and app.user is not null -%}
-                                {%- if app.user.fullName is not null -%}
+                                {%- if app.user.fullName is null -%}
                                     {{- app.user.username | upper -}}
                                 {%- else -%}
                                     {{- app.user.fullName | upper -}}
