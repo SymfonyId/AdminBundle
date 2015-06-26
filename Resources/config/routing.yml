@@ -1,0 +1,21 @@
+symfonian_indonesia_loader:
+    resource: .
+    type: siab
+
+symfonian_indonesia_index:
+    resource: @SymfonianIndonesiaAdminBundle/Controller
+    type: annotation
+
+symfonian_indonesia_security:
+    resource: @SymfonianIndonesiaAdminBundle/Security
+    type: annotation
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
