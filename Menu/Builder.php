@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Menu;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -45,8 +46,8 @@ class Builder
     {
         $menu = $factory->createItem('root', array(
             'childrenAttributes' => array(
-                'class' => 'sidebar-menu'
-            )
+                'class' => 'sidebar-menu',
+            ),
         ));
 
         $menu->addChild('Home', array(
@@ -54,8 +55,8 @@ class Builder
             'label' => sprintf('<i class="fa fa-dashboard"></i> %s</a>', $this->translator->trans('menu.dashboard', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
 
         $menu->addChild('Profile', array(
@@ -63,8 +64,8 @@ class Builder
             'label' => sprintf('<i class="fa fa-user"></i> %s<i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.profile', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
         $menu['Profile']->setChildrenAttribute('class', 'treeview-menu');
 
@@ -72,16 +73,16 @@ class Builder
             'label' => $this->translator->trans('menu.profile', array(), $this->translationDomain),
             'route' => 'symfonian_indonesia_admin_profile_profile',
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
 
         $menu['Profile']->addChild('ChangePassword', array(
             'label' => $this->translator->trans('menu.user.change_password', array(), $this->translationDomain),
             'route' => 'symfonian_indonesia_admin_profile_changepassword',
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
 
         if ($this->routeCollection->get('symfonian_indonesia_admin_security_user_new')) {
@@ -93,8 +94,8 @@ class Builder
 
     protected function addUserMenu(ItemInterface $menu)
     {
-        if (! $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            return ;
+        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
+            return;
         }
 
         $menu->addChild('User', array(
@@ -102,8 +103,8 @@ class Builder
             'label' => sprintf('<i class="fa fa-shield"></i> %s<i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.user.title', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
 
         $menu['User']->setChildrenAttribute('class', 'treeview-menu');
@@ -112,16 +113,16 @@ class Builder
             'label' => $this->translator->trans('menu.user.add', array(), $this->translationDomain),
             'route' => 'symfonian_indonesia_admin_security_user_new',
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
 
         $menu['User']->addChild('List', array(
             'label' => $this->translator->trans('menu.user.list', array(), $this->translationDomain),
             'route' => 'symfonian_indonesia_admin_security_user_list',
             'attributes' => array(
-                'class' => 'treeview'
-            )
+                'class' => 'treeview',
+            ),
         ));
     }
 }

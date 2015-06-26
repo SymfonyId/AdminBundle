@@ -1,9 +1,10 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+ * Url: https://github.com/ihsanudin.
  */
 
 /**

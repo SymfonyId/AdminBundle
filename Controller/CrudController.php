@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -10,9 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
@@ -66,12 +65,11 @@ abstract class CrudController extends Controller
 
         $response = $event->getResponse();
         if ($response) {
-
             return $response;
         }
 
         $entity = $event->getFormData();
-        if (! $entity) {
+        if (!$entity) {
             $entity = new $this->entityClass();
         }
 
@@ -93,12 +91,11 @@ abstract class CrudController extends Controller
 
         $response = $event->getResponse();
         if ($response) {
-
             return $response;
         }
 
         $entity = $event->getFormData();
-        if (! $entity) {
+        if (!$entity) {
             $entity = $this->findOr404Error($id);
         }
 
@@ -174,7 +171,6 @@ abstract class CrudController extends Controller
         $this->fireEvent(Event::PRE_DELETE_EVENT, $event);
 
         if ($event->getResponse()) {
-
             return $event->getResponse();
         }
 
@@ -213,7 +209,7 @@ abstract class CrudController extends Controller
         $this->fireEvent(Event::FILTER_LIST_EVENT, $event);
 
         $page = $request->query->get('page', 1);
-        $paginator  = $this->container->get('knp_paginator');
+        $paginator = $this->container->get('knp_paginator');
 
         $pagination = $paginator->paginate($qb, $page, $this->container->getParameter('symfonian_id.admin.per_page'));
 
@@ -266,7 +262,7 @@ abstract class CrudController extends Controller
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-        $form = $formObject?: $this->getForm($data);
+        $form = $formObject ?: $this->getForm($data);
 
         $event = new GetFormResponseEvent();
         $event->setController($this);
@@ -277,7 +273,6 @@ abstract class CrudController extends Controller
 
         $response = $event->getResponse();
         if ($response) {
-
             return $response;
         }
         $form->handleRequest($request);
@@ -305,8 +300,7 @@ abstract class CrudController extends Controller
 
             $this->fireEvent(Event::PRE_FORM_VALIDATION_EVENT, $preFormValidationEvent);
 
-            if (! $form->isValid()) {
-
+            if (!$form->isValid()) {
                 $this->outputParameter['errors'] = true;
             } else {
                 $entity = $form->getData();
@@ -343,7 +337,7 @@ abstract class CrudController extends Controller
 
         $entity = $this->getDoctrine()->getManager()->getRepository($this->entityClass)->find($id);
 
-        if (! $entity) {
+        if (!$entity) {
             throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));
         }
 
@@ -355,7 +349,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        if (! in_array($action, $this->container->getParameter('symfonian_id.admin.grid_action'))) {
+        if (!in_array($action, $this->container->getParameter('symfonian_id.admin.grid_action'))) {
             throw new NotFoundHttpException($translator->trans('message.request_not_found', array(), $translationDomain));
         }
 
@@ -364,8 +358,7 @@ abstract class CrudController extends Controller
 
     protected function gridFields()
     {
-        if (! empty($this->gridFields)) {
-
+        if (!empty($this->gridFields)) {
             return $this->gridFields;
         }
 
@@ -379,7 +372,8 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @param boolean $normalizeFilter
+     * @param bool $normalizeFilter
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function normalizeFilter($normalizeFilter = true)
@@ -391,6 +385,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param array $fields
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setGridFields(array $fields)
@@ -402,6 +397,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setNewTemplate($template)
@@ -413,6 +409,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setEditTemplate($template)
@@ -424,6 +421,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setShowTemplate($template)
@@ -435,6 +433,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setListTemplate($template)
@@ -446,7 +445,8 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
-     * @param boolean $useAjax
+     * @param bool   $useAjax
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setListAjaxTemplate($template, $useAjax = true)
@@ -467,6 +467,7 @@ abstract class CrudController extends Controller
     /**
      * @param string $javascriptTwigPath
      * @param string $includeRoute
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function includeJavascript($javascriptTwigPath, array $includeRoute = null)
@@ -511,8 +512,8 @@ abstract class CrudController extends Controller
     }
 
     /**
-     *
      * @param string $route
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setAutoComplete($route, $valueStorageSelector)

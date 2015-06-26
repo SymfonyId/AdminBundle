@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -23,16 +24,16 @@ class UpdateUserListener
     {
         $entity = $event->getEntity();
 
-        if (! $entity instanceof UserInterface) {
-            return ;
+        if (!$entity instanceof UserInterface) {
+            return;
         }
 
         if ($entity->getId() || $entity->isEnabled()) {
-            return ;
+            return;
         }
 
-        if (! $this->container->getParameter('symfonian_id.admin.security.auto_enable')) {
-            return ;
+        if (!$this->container->getParameter('symfonian_id.admin.security.auto_enable')) {
+            return;
         }
 
         $entity->setEnabled(true);

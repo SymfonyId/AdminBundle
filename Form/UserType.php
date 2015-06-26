@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Form;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -9,7 +10,6 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
 
@@ -34,13 +34,13 @@ class UserType extends AbstractType
                 'label' => 'form.label.fullname',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('username', 'text', array(
                 'label' => 'form.label.username',
                 'attr' => array(
                     'class' => 'form-control username',
-                )
+                ),
             ))
             ->add($builder->create(
                 'roles', 'choice', array(
@@ -49,14 +49,14 @@ class UserType extends AbstractType
                     'empty_value' => 'message.select_empty',
                     'attr' => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 )
             )->addModelTransformer(new RoleToArrayTransformer()))
             ->add('email', 'email', array(
                 'label' => 'form.label.email',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
@@ -67,7 +67,7 @@ class UserType extends AbstractType
                     ),
                 ),
                 'required' => true,
-                'first_options'  => array(
+                'first_options' => array(
                     'label' => 'form.label.password',
                 ),
                 'second_options' => array(
@@ -78,7 +78,7 @@ class UserType extends AbstractType
                 'label' => 'action.submit',
                 'attr' => array(
                     'class' => 'btn btn-primary',
-                )
+                ),
             ))
         ;
     }
@@ -88,8 +88,8 @@ class UserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'validation_groups' =>  array('Registration', 'Default'),
-            'intention'  => self::FORM_NAME,
+            'validation_groups' => array('Registration', 'Default'),
+            'intention' => self::FORM_NAME,
         ));
     }
 

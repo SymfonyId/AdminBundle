@@ -1,9 +1,10 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+ * Url: https://github.com/ihsanudin.
  */
 
 /**
@@ -16,7 +17,7 @@ class GridFields
 
     public function isValid()
     {
-        if (! is_array($this->value)) {
+        if (!is_array($this->value)) {
             return false;
         }
 

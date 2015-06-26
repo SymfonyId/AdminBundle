@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -44,14 +45,14 @@ final class DeleteUserListener
     {
         $entity = $event->getEntity();
 
-        if (! $entity instanceof UserInterface) {
-            return ;
+        if (!$entity instanceof UserInterface) {
+            return;
         }
 
         if ($this->user->getUsername() === $entity->getUsername()) {
             $response = new JsonResponse(array(
                 'status' => false,
-                'message' => $this->translator->trans('message.cant_delete_your_self', array(), $this->container->getParameter('symfonian_id.admin.translation_domain'))
+                'message' => $this->translator->trans('message.cant_delete_your_self', array(), $this->container->getParameter('symfonian_id.admin.translation_domain')),
             ));
 
             $event->setResponse($response);

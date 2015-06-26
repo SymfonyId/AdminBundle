@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Form;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -35,16 +36,14 @@ class GenericFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->controller->entityProperties() as $key => $value) {
-
             if ('id' === $value) {
-
                 continue;
             }
 
             $builder->add($value, null, array(
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ));
         }
 
@@ -52,7 +51,7 @@ class GenericFormType extends AbstractType
             'label' => 'action.submit',
             'attr' => array(
                 'class' => 'btn btn-primary',
-            )
+            ),
         ));
     }
 
@@ -61,7 +60,7 @@ class GenericFormType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->controller->getEntityClass(),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention'  => self::FORM_NAME,
+            'intention' => self::FORM_NAME,
         ));
     }
 

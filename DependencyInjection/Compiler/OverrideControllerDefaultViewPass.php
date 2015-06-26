@@ -1,14 +1,14 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 final class OverrideControllerDefaultViewPass
@@ -27,15 +27,13 @@ final class OverrideControllerDefaultViewPass
     {
         $controller = $event->getController();
 
-        if (! is_array($controller)) {
-
+        if (!is_array($controller)) {
             return;
         }
 
         $controller = $controller[0];
 
-        if (! $controller instanceof CrudController) {
-
+        if (!$controller instanceof CrudController) {
             return;
         }
 

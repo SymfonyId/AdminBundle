@@ -1,16 +1,15 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Doctrine\Common\Annotations\Reader;
-
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-
 use Symfonian\Indonesia\AdminBundle\Annotation\FormClass;
 use Symfonian\Indonesia\AdminBundle\Annotation\EntityClass;
 use Symfonian\Indonesia\AdminBundle\Annotation\NormalizeFilter;
@@ -39,17 +38,16 @@ final class AnnotationListener
     }
 
     public function onKernelController(FilterControllerEvent $event)
-    {        $controller = $event->getController();
+    {
+        $controller = $event->getController();
 
-        if (! is_array($controller)) {
-
+        if (!is_array($controller)) {
             return;
         }
 
         $controller = $controller[0];
 
-        if (! $controller instanceof CrudController) {
-
+        if (!$controller instanceof CrudController) {
             return;
         }
 

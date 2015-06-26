@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Form;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -42,7 +43,7 @@ class ChangePasswordType extends AbstractType
                     ),
                 ),
                 'required' => true,
-                'first_options'  => array(
+                'first_options' => array(
                     'label' => 'form.label.new_password',
                 ),
                 'second_options' => array(
@@ -53,7 +54,7 @@ class ChangePasswordType extends AbstractType
                 'label' => 'action.submit',
                 'attr' => array(
                     'class' => 'btn btn-primary',
-                )
+                ),
             ))
         ;
     }
@@ -63,7 +64,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention'  => self::FORM_NAME,
+            'intention' => self::FORM_NAME,
         ));
     }
 
