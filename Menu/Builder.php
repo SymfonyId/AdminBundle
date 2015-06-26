@@ -52,7 +52,7 @@ class Builder
 
         $menu->addChild('Home', array(
             'route' => 'home',
-            'label' => sprintf('<i class="fa fa-dashboard"></i> %s</a>', $this->translator->trans('menu.dashboard', array(), $this->translationDomain)),
+            'label' => sprintf('<i class="fa fa-dashboard"></i> <span>%s</span></a>', $this->translator->trans('menu.dashboard', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
                 'class' => 'treeview',
@@ -61,7 +61,7 @@ class Builder
 
         $menu->addChild('Profile', array(
             'uri' => '#',
-            'label' => sprintf('<i class="fa fa-user"></i> %s<i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.profile', array(), $this->translationDomain)),
+            'label' => sprintf('<i class="fa fa-user"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.profile', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
                 'class' => 'treeview',
@@ -100,7 +100,7 @@ class Builder
 
         $menu->addChild('User', array(
             'uri' => '#',
-            'label' => sprintf('<i class="fa fa-shield"></i> %s<i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.user.title', array(), $this->translationDomain)),
+            'label' => sprintf('<i class="fa fa-shield"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.user.title', array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
                 'class' => 'treeview',

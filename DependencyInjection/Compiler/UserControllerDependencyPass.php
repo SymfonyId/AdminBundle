@@ -1,14 +1,14 @@
 <?php
-
 namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
-/*
+/**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Symfonian\Indonesia\AdminBundle\Security\UserController;
 
 final class UserControllerDependencyPass
@@ -27,13 +27,15 @@ final class UserControllerDependencyPass
     {
         $controller = $event->getController();
 
-        if (!is_array($controller)) {
+        if (! is_array($controller)) {
+
             return;
         }
 
         $controller = $controller[0];
 
-        if (!$controller instanceof UserController) {
+        if (! $controller instanceof UserController) {
+
             return;
         }
 

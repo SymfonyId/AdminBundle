@@ -15,6 +15,7 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('symfonian_id.admin.app_title', $config['app_title']);
+        $container->setParameter('symfonian_id.admin.app_short_title', $config['app_short_title']);
         $container->setParameter('symfonian_id.admin.per_page', $config['per_page']);
         $container->setParameter('symfonian_id.admin.menu', $config['menu']);
         $container->setParameter('symfonian_id.admin.profile_fields', $config['profile_fields']);

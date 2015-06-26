@@ -1,8 +1,7 @@
 <?php
-
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
-/*
+/**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  *
@@ -12,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use FOS\UserBundle\Model\UserInterface;
+
 use Symfonian\Indonesia\AdminBundle\Event\PostSaveEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
@@ -67,7 +67,8 @@ class ProfileController extends Controller
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (! is_object($user) || ! $user instanceof UserInterface) {
+
             throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
         }
 
@@ -81,9 +82,10 @@ class ProfileController extends Controller
         $this->outputParameter['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            if (!$form->isValid()) {
+            if (! $form->isValid()) {
+
                 $this->outputParameter['errors'] = true;
-            } elseif ($form->isValid()) {
+            } else if ($form->isValid()) {
                 $encoderFactory = $this->container->get('security.encoder_factory');
                 $encoder = $encoderFactory->getEncoder($user);
                 $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
