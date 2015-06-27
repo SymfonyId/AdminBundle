@@ -18,8 +18,10 @@
         </ol>
     </section>
     <section class="content">
-        {%- if content is not empty -%}
-            {{- content | raw -}}
-        {%- endif -%}
+        <div class="row">
+            {%- if content is not empty -%}
+                {{- content | raw -}}
+            {%- endif -%}
+        </div>
     </section>
 </div>

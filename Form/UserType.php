@@ -42,16 +42,14 @@ class UserType extends AbstractType
                     'class' => 'form-control username',
                 ),
             ))
-            ->add($builder->create(
-                'roles', 'choice', array(
+            ->add($builder->create('roles', 'choice', array(
                     'label' => 'form.label.role',
                     'choices' => $this->buildRoleList(),
                     'empty_value' => 'message.select_empty',
                     'attr' => array(
                         'class' => 'form-control',
                     ),
-                )
-            )->addModelTransformer(new RoleToArrayTransformer()))
+            ))->addModelTransformer(new RoleToArrayTransformer()))
             ->add('email', 'email', array(
                 'label' => 'form.label.email',
                 'attr' => array(
