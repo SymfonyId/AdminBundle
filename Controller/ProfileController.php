@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use FOS\UserBundle\Model\UserInterface;
 
-use Symfonian\Indonesia\AdminBundle\Event\PostSaveEvent;
+use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
 class ProfileController extends Controller
@@ -102,7 +102,7 @@ class ProfileController extends Controller
                 $entityManager = $this->getDoctrine()->getManager();
                 $dispatcher = $this->container->get('event_dispatcher');
 
-                $event = new PostSaveEvent();
+                $event = new GetEntityEvent();
                 $event->setEntityMeneger($entityManager);
                 $event->setEntity($entity);
 
