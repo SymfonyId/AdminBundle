@@ -69,7 +69,9 @@ abstract class CrudController extends Controller
             $entity = new $this->entityClass();
         }
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->newTemplate, $entity, $event->getForm());
+        $form = $event->getForm()?: $this->getForm($entity);
+
+        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->newTemplate, $entity, $form);
     }
 
     /**
@@ -95,7 +97,9 @@ abstract class CrudController extends Controller
             $entity = $this->findOr404Error($id);
         }
 
-        return $this->handle($request, CrudHandler::ACTION_UPDATE, $this->editTemplate, $entity, $event->getForm());
+        $form = $event->getForm()?: $this->getForm($entity);
+
+        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->editTemplate, $entity, $form);
     }
 
     /**
@@ -107,6 +111,9 @@ abstract class CrudController extends Controller
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_SHOW);
         $entity = $this->findOr404Error($id);
 
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
         $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
 
@@ -114,7 +121,7 @@ abstract class CrudController extends Controller
         $handler->setEntityClass($this->entityClass);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($this->showTemplate);
-        $handler->showDetail($request, $entity, $this->showFields);
+        $handler->showDetail($request, $entity, $this->showFields());
 
         return $handler->getResponse();
     }
@@ -151,7 +158,7 @@ abstract class CrudController extends Controller
         $handler->setEntityClass($this->entityClass);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->showDetail($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
+        $handler->viewList($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
 
         return $handler->getResponse();
     }
@@ -178,7 +185,7 @@ abstract class CrudController extends Controller
         $handler->setEntityClass($this->entityClass);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($template);
-        $handler->createNewOrUpdate($request, $data, $form);
+        $handler->createNewOrUpdate($this, $request, $data, $form);
 
         return $handler->getResponse();
     }

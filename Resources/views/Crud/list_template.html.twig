@@ -32,17 +32,17 @@
             <td width="22%">
                 <div class="btn-group" role="group">
                     {%- for i, v in action -%}
-                        {%- if v is sameas('show') -%}
+                        {%- if v is sameas('GRID_ACTION_SHOW') -%}
                             <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-success show">
                                 <span class="btn-label"><i class="fa fa-share"></i></span>{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                             </button>
                         {%- endif -%}
-                        {%- if v is sameas('edit') -%}
+                        {%- if v is sameas('GRID_ACTION_EDIT') -%}
                             <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-warning edit">
                                 <span class="btn-label"><i class="fa fa-pencil"></i></span>{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                             </button>
                         {%- endif -%}
-                        {%- if v is sameas('delete') -%}
+                        {%- if v is sameas('GRID_ACTION_DELETE') -%}
                             <button data-record="{{- identifier[key] -}}" class="delete btn btn-labeled btn-danger delete">
                                 <span class="btn-label"><i class="fa fa-trash"></i></span>{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                             </button>

@@ -57,7 +57,7 @@
                 <div>
                     <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
                     {%- for i, v in action -%}
-                        {%- if v is sameas('delete') -%}
+                        {%- if v is sameas('GRID_ACTION_DELETE') -%}
                             <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
                         {%- endif -%}
                     {%- endfor -%}

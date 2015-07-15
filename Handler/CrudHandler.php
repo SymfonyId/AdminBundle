@@ -10,6 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
 use Symfonian\Indonesia\AdminBundle\Form\GenericFormType;
 use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
@@ -79,12 +80,12 @@ class CrudHandler
 
     public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false)
     {
-        $queryBuilder = $repo->createQueryBuilder(self::ENTITY_ALIAS);
+        $queryBuilder = $this->repository->createQueryBuilder(self::ENTITY_ALIAS);
         $queryBuilder->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
         $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
 
         if ($filter) {
-            foreach ($this->filterFields as $key => $value) {
+            foreach ($filterFields as $key => $value) {
                 $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
                 $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
             }
@@ -109,7 +110,7 @@ class CrudHandler
             $temp = array();
             $identifier[$key] = $record->getId();
 
-            foreach ($this->gridFields as $k => $property) {
+            foreach ($gridFields as $k => $property) {
                 $method = 'get'.ucfirst($property);
 
                 if (method_exists($record, $method)) {
@@ -132,7 +133,7 @@ class CrudHandler
         $viewParams['pagination'] = $pagination;
         $viewParams['start'] = ($page - 1) * $perPage;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['header'] = array_merge($this->gridFields, array('action'));
+        $viewParams['header'] = array_merge($gridFields, array('action'));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
@@ -140,7 +141,7 @@ class CrudHandler
         $viewParams['record'] = $data;
         $viewParams['filter'] = $filter;
 
-        $viewParams = array_merge($this->viewParams, $viewParams);
+        $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
     public function remove(EntityInterface $data)
@@ -201,7 +202,7 @@ class CrudHandler
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $viewParams['data'] = $data;
+        $viewParams['data'] = $output;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
         $viewParams['action_method'] = $translator->trans('page.show', array(), $translationDomain);
         $viewParams['back'] = $referer;
@@ -209,16 +210,16 @@ class CrudHandler
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['upload_dir'] = $this->container->getParameter('symfonian_id.admin.upload_dir');
 
-        $viewParams = array_merge($this->viewParams, $viewParams);
+        $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
-    public function createNewOrUpdate(Request $request, EntityInterface $data, FormInterface $form = null)
+    public function createNewOrUpdate(CrudController $controller, Request $request, EntityInterface $data, FormInterface $form = null)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         $event = new GetFormResponseEvent();
-        $event->setController($this);
+        $event->setController($controller);
         $event->setFormData($data);
         $event->setForm($form);
 
@@ -273,7 +274,7 @@ class CrudHandler
             }
         }
 
-        $viewParams = array_merge($this->viewParams, $viewParams);
+        $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
     protected function fireEvent($name, $handler)
