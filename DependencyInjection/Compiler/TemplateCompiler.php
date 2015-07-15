@@ -8,10 +8,9 @@ namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
-final class OverrideControllerDefaultViewPass
+final class TemplateCompiler
 {
     /**
      * @var ContainerInterface
@@ -28,14 +27,12 @@ final class OverrideControllerDefaultViewPass
         $controller = $event->getController();
 
         if (! is_array($controller)) {
-
             return;
         }
 
         $controller = $controller[0];
 
         if (! $controller instanceof CrudController) {
-
             return;
         }
 

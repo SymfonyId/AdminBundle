@@ -3,13 +3,13 @@
 namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\IsDependenciesPassedPass;
+use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\DependencyCheckerCompiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SymfonianIndonesiaAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new IsDependenciesPassedPass());
+        $container->addCompilerPass(new DependencyCheckerCompiler());
     }
 }

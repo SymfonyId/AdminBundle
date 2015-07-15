@@ -19,17 +19,17 @@ final class DeleteUserListener
     /**
      * @var FOS\UserBundle\Model\UserInterface
      */
-    protected $user;
+    private $user;
 
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     public function __construct(ContainerInterface $container, TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
     {

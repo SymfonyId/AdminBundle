@@ -11,9 +11,9 @@ use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
 
-class UpdateUserListener
+final class UpdateUserListener
 {
-    protected $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {

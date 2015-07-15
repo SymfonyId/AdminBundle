@@ -18,7 +18,7 @@ Repo Asli: [IhsanSimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBund
 
 ####Instalasi####
 
-Untuk cara instalasi dapat dibaca pada dokumentasi[versi Indonesia](Resources/doc/id/instalation.md) versi Inggris (belum tersedia)
+Untuk cara instalasi dapat dibaca pada dokumentasi [versi Indonesia](Resources/doc/id/instalation.md) versi Inggris (belum tersedia)
 
 ####Skeleton####
 

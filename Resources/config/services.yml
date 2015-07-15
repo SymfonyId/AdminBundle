@@ -23,28 +23,28 @@ services:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
     symfonian_id.admin.controller_default_view_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\OverrideControllerDefaultViewPass
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TemplateCompiler
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
     symfonian_id.admin.user_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerDependencyPass
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerCompiler
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.index_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ProfileControllerDependencyPass
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ProfileControllerCompiler
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.twig_global_variable_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigGlobaVariablePass
+        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigVariableCompiler
         arguments:
             - @service_container
         tags:
@@ -84,7 +84,12 @@ services:
         tags:
             - { name: routing.loader }
 
-    symfonian_id.twig.is_number:
+    symfonian_id.admin.twig.is_number:
         class: Symfonian\Indonesia\AdminBundle\Twig\NumberTest
         tags:
             - { name: twig.extension }
+
+    symfonian_id.admin.handler.crud:
+        class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
+        arguments:
+            - @service_container
