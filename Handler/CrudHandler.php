@@ -81,6 +81,24 @@ class CrudHandler
         $this->showFields = $showFields;
     }
 
+    public function delete(Request $request, EntityInterface $data)
+    {
+        $event = new GetEntityResponseEvent();
+        $event->setEntity($data);
+        $event->setEntityMeneger($this->manager);
+
+        $this->fireEvent(Event::PRE_DELETE_EVENT, $event);
+
+        if ($event->getResponse()) {
+            return $event->getResponse();
+        }
+
+        $this->manager->remove($data);
+        $this->manager->flush();
+
+        return true;
+    }
+
     public function show(Request $request, EntityInterface $data)
     {
         $session = $this->container->get('session');
@@ -171,21 +189,21 @@ class CrudHandler
             if (!$form->isValid()) {
                 $viewParams['errors'] = true;
             } else {
-                $entity = $form->getData();
+                $data = $form->getData();
 
                 $preSaveEvent = new GetEntityResponseEvent();
                 $preSaveEvent->setRequest($request);
-                $preSaveEvent->setEntity($entity);
+                $preSaveEvent->setEntity($data);
                 $preSaveEvent->setEntityMeneger($this->manager);
                 $preSaveEvent->setForm($form);
 
                 $postSaveEvent = new GetEntityEvent();
                 $postSaveEvent->setEntityMeneger($this->manager);
-                $postSaveEvent->setEntity($entity);
+                $postSaveEvent->setEntity($data);
 
                 $this->fireEvent(Event::PRE_SAVE_EVENT, $preSaveEvent);
 
-                $this->manager->persist($entity);
+                $this->manager->persist($data);
                 $this->manager->flush();
 
                 $this->fireEvent(Event::POST_SAVE_EVENT, $postSaveEvent);

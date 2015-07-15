@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -117,7 +116,7 @@ abstract class CrudController extends Controller
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($template);
-        $handler->show($request, $data);
+        $handler->show($request, $entity);
 
         return $handler->getResponse();
     }
@@ -130,22 +129,9 @@ abstract class CrudController extends Controller
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
         $entity = $this->findOr404Error($id);
-        $entityManager = $this->getDoctrine()->getManager();
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
-        $event = new GetEntityResponseEvent();
-        $event->setEntity($entity);
-        $event->setEntityMeneger($entityManager);
-
-        $this->fireEvent(Event::PRE_DELETE_EVENT, $event);
-
-        if ($event->getResponse()) {
-            return $event->getResponse();
-        }
-
-        $entityManager->remove($entity);
-        $entityManager->flush();
-
-        return new JsonResponse(array('status' => true));
+        return new JsonResponse(array('status' => $handler->delete()));
     }
 
     /**
