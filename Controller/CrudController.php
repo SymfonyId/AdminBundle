@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\AdminBundle\Manager\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
@@ -29,15 +28,15 @@ abstract class CrudController extends Controller
 
     protected $gridFields = array();
 
-    protected $newActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    protected $newTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $editActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    protected $editTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $showActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
+    protected $showTemplate = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
 
-    protected $listActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
+    protected $listTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
 
-    protected $listAjaxActionTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
+    protected $listAjaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
 
     protected $useAjaxList = false;
 
@@ -74,7 +73,7 @@ abstract class CrudController extends Controller
             $entity = new $this->entityClass();
         }
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->newActionTemplate, $entity, $event->getForm());
+        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->newTemplate, $entity, $event->getForm());
     }
 
     /**
@@ -83,7 +82,7 @@ abstract class CrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error('edit');
+        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_EDIT);
 
         $event = new GetFormResponseEvent();
         $event->setController($this);
@@ -100,7 +99,7 @@ abstract class CrudController extends Controller
             $entity = $this->findOr404Error($id);
         }
 
-        return $this->handle($request, CrudHandler::ACTION_UPDATE, $this->editActionTemplate, $entity, $event->getForm());
+        return $this->handle($request, CrudHandler::ACTION_UPDATE, $this->editTemplate, $entity, $event->getForm());
     }
 
     /**
@@ -109,50 +108,18 @@ abstract class CrudController extends Controller
      */
     public function showAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error('show');
-
+        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_SHOW);
         $entity = $this->findOr404Error($id);
 
-        $data = array();
-        foreach ($this->showFields() as $key => $property) {
-            $method = 'get'.ucfirst($property);
-
-            if (method_exists($entity, $method)) {
-                array_push($data, array(
-                    'name' => $property,
-                    'value' => call_user_func_array(array($entity, $method), array()),
-                ));
-            } else {
-                $method = 'is'.ucfirst($property);
-
-                if (method_exists($entity, $method)) {
-                    array_push($data, array(
-                        'name' => $property,
-                        'value' => call_user_func_array(array($entity, $method), array()),
-                    ));
-                }
-            }
-        }
-
-        $event = new GetDataEvent();
-        $event->setData($data);
-
-        $this->fireEvent(Event::PRE_SHOW_EVENT, $event);
-
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        $this->viewParams['data'] = $data;
-        $this->viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
         $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
-        $this->viewParams['action_method'] = $translator->trans('page.show', array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
-        $this->viewParams['back'] = $request->headers->get('referer');
-        $this->viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
-        $this->viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
-        $this->viewParams['upload_dir'] = $this->container->getParameter('symfonian_id.admin.upload_dir');
 
-        return $this->render($this->showActionTemplate, $this->viewParams);
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setViewParams($this->viewParams);
+        $handler->setTemplate($template);
+        $handler->show($request, $data);
+
+        return $handler->getResponse();
     }
 
     /**
@@ -161,7 +128,7 @@ abstract class CrudController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error('delete');
+        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
         $entity = $this->findOr404Error($id);
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -254,7 +221,7 @@ abstract class CrudController extends Controller
         $this->viewParams['record'] = $data;
         $this->viewParams['filter'] = $filter;
 
-        $listTemplate = $request->isXmlHttpRequest() ? $this->listAjaxActionTemplate : $this->listActionTemplate;
+        $listTemplate = $request->isXmlHttpRequest() ? $this->listAjaxTemplate : $this->listTemplate;
 
         return $this->render($listTemplate, $this->viewParams);
     }
@@ -279,7 +246,8 @@ abstract class CrudController extends Controller
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         $handler->setViewParams($this->viewParams);
-        $handler->handleRequest($request, $action, $template, $data, $form);
+        $handler->setTemplate($template);
+        $handler->createNewOrUpdate($request, $data, $form);
 
         return $handler->getResponse();
     }
@@ -356,7 +324,7 @@ abstract class CrudController extends Controller
      */
     public function setNewTemplate($template)
     {
-        $this->newActionTemplate = $template;
+        $this->newTemplate = $template;
 
         return $this;
     }
@@ -368,7 +336,7 @@ abstract class CrudController extends Controller
      */
     public function setEditTemplate($template)
     {
-        $this->editActionTemplate = $template;
+        $this->editTemplate = $template;
 
         return $this;
     }
@@ -380,7 +348,7 @@ abstract class CrudController extends Controller
      */
     public function setShowTemplate($template)
     {
-        $this->showActionTemplate = $template;
+        $this->showTemplate = $template;
 
         return $this;
     }
@@ -392,7 +360,7 @@ abstract class CrudController extends Controller
      */
     public function setListTemplate($template)
     {
-        $this->listActionTemplate = $template;
+        $this->listTemplate = $template;
 
         return $this;
     }
@@ -405,7 +373,7 @@ abstract class CrudController extends Controller
      */
     public function setListAjaxTemplate($template, $useAjax = true)
     {
-        $this->listAjaxActionTemplate = $template;
+        $this->listAjaxTemplate = $template;
         $this->useAjaxList = $useAjax;
 
         return $this;

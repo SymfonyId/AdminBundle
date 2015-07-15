@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 
 class SymfonianIndonesiaAdminExtension extends Extension
 {
@@ -45,13 +46,13 @@ class SymfonianIndonesiaAdminExtension extends Extension
 
         $action = array();
         if ($config['grid_action']['show']) {
-            array_push($action, 'show');
+            array_push($action, CrudHandler::GRID_ACTION_SHOW);
         }
         if ($config['grid_action']['edit']) {
-            array_push($action, 'edit');
+            array_push($action, CrudHandler::GRID_ACTION_EDIT);
         }
         if ($config['grid_action']['delete']) {
-            array_push($action, 'delete');
+            array_push($action, CrudHandler::GRID_ACTION_DELETE);
         }
         $container->setParameter('symfonian_id.admin.grid_action', $action);
 
