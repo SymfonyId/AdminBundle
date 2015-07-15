@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
-use Symfonian\Indonesia\AdminBundle\Manager\CrudHandler;
+use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
 use Symfony\Component\Form\FormInterface;
 
