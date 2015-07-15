@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\AdminBundle\Manager\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
@@ -48,8 +47,6 @@ abstract class CrudController extends Controller
     protected $autocomplete = array();
 
     protected $filterFields = array();
-
-    const ENTITY_ALIAS = 'o';
 
     /**
      * @Route("/new/")
@@ -114,9 +111,10 @@ abstract class CrudController extends Controller
         $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntityClass($this->entityClass);
         $handler->setViewParams($this->viewParams);
-        $handler->setTemplate($template);
-        $handler->show($request, $entity);
+        $handler->setTemplate($this->showTemplate);
+        $handler->showDetail($request, $entity, $this->showFields);
 
         return $handler->getResponse();
     }
@@ -125,13 +123,14 @@ abstract class CrudController extends Controller
      * @Route("/{id}/delete/")
      * @Method({"DELETE"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
         $entity = $this->findOr404Error($id);
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntityClass($this->entityClass);
 
-        return new JsonResponse(array('status' => $handler->delete()));
+        return new JsonResponse(array('status' => $handler->remove($entity)));
     }
 
     /**
@@ -140,76 +139,21 @@ abstract class CrudController extends Controller
      */
     public function listAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository($this->entityClass);
-
-        $qb = $repo->createQueryBuilder(self::ENTITY_ALIAS)
-            ->select(self::ENTITY_ALIAS)
-            ->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
-        $filter = $this->normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
-
-        if ($filter) {
-            foreach ($this->filterFields as $key => $value) {
-                $qb->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
-                $qb->setParameter($key, strtr('%filter%', array('filter' => $filter)));
-            }
-        }
-
-        $event = new GetQueryEvent();
-        $event->setQueryBuilder($qb);
-        $event->setEntityAlias(self::ENTITY_ALIAS);
-        $event->setEntityClass($this->entityClass);
-
-        $this->fireEvent(Event::FILTER_LIST_EVENT, $event);
-
-        $page = $request->query->get('page', 1);
-        $paginator = $this->container->get('knp_paginator');
-
-        $pagination = $paginator->paginate($qb, $page, $this->container->getParameter('symfonian_id.admin.per_page'));
-
-        $data = array();
-        $identifier = array();
-        foreach ($pagination as $key => $record) {
-            $temp = array();
-            $identifier[$key] = $record->getId();
-
-            foreach ($this->gridFields() as $k => $property) {
-                $method = 'get'.ucfirst($property);
-
-                if (method_exists($record, $method)) {
-                    array_push($temp, call_user_func_array(array($record, $method), array()));
-                } else {
-                    $method = 'is'.ucfirst($property);
-
-                    if (method_exists($record, $method)) {
-                        array_push($temp, call_user_func_array(array($record, $method), array()));
-                    }
-                }
-            }
-
-            $data[$key] = $temp;
-        }
-
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        $this->viewParams['pagination'] = $pagination;
-        $this->viewParams['use_ajax'] = $this->useAjaxList;
-        $this->viewParams['start'] = ($page - 1) * $this->container->getParameter('symfonian_id.admin.per_page');
-        $this->viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $this->viewParams['header'] = array_merge($this->gridFields(), array('action'));
-        $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
-        $this->viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
-        $this->viewParams['identifier'] = $identifier;
-        $this->viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
-        $this->viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
-        $this->viewParams['record'] = $data;
-        $this->viewParams['filter'] = $filter;
-
         $listTemplate = $request->isXmlHttpRequest() ? $this->listAjaxTemplate : $this->listTemplate;
 
-        return $this->render($listTemplate, $this->viewParams);
+        $this->viewParams['use_ajax'] = $this->useAjaxList;
+        $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
+
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntityClass($this->entityClass);
+        $handler->setViewParams($this->viewParams);
+        $handler->setTemplate($listTemplate);
+        $handler->showDetail($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
+
+        return $handler->getResponse();
     }
 
     protected function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
@@ -231,6 +175,7 @@ abstract class CrudController extends Controller
         $this->viewParams['autocomplete'] = $this->autocomplete;
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntityClass($this->entityClass);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($request, $data, $form);

@@ -16,6 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetResponseEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 
@@ -35,6 +36,8 @@ class CrudHandler
 
     const GRID_ACTION_DELETE = 'GRID_ACTION_DELETE';
 
+    const ENTITY_ALIAS = 'e';
+
     protected $container;
 
     protected $manager;
@@ -46,8 +49,6 @@ class CrudHandler
     protected $template;
 
     protected $viewParams = array();
-
-    protected $showFields = array();
 
     public function __construct(ContainerInterface $container)
     {
@@ -76,12 +77,73 @@ class CrudHandler
         $this->class = $this->manager->getClassMetadata($class)->getName();
     }
 
-    public function setShowFields(array $showFields)
+    public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false)
     {
-        $this->showFields = $showFields;
+        $queryBuilder = $repo->createQueryBuilder(self::ENTITY_ALIAS);
+        $queryBuilder->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
+        $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
+
+        if ($filter) {
+            foreach ($this->filterFields as $key => $value) {
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
+                $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
+            }
+        }
+
+        $event = new GetQueryEvent();
+        $event->setQueryBuilder($queryBuilder);
+        $event->setEntityAlias(self::ENTITY_ALIAS);
+        $event->setEntityClass($this->class);
+
+        $this->fireEvent(Event::FILTER_LIST_EVENT, $event);
+
+        $page = $request->query->get('page', 1);
+        $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
+        $paginator = $this->container->get('knp_paginator');
+
+        $pagination = $paginator->paginate($queryBuilder, $page, $perPage);
+
+        $data = array();
+        $identifier = array();
+        foreach ($pagination as $key => $record) {
+            $temp = array();
+            $identifier[$key] = $record->getId();
+
+            foreach ($this->gridFields as $k => $property) {
+                $method = 'get'.ucfirst($property);
+
+                if (method_exists($record, $method)) {
+                    array_push($temp, call_user_func_array(array($record, $method), array()));
+                } else {
+                    $method = 'is'.ucfirst($property);
+
+                    if (method_exists($record, $method)) {
+                        array_push($temp, call_user_func_array(array($record, $method), array()));
+                    }
+                }
+            }
+
+            $data[$key] = $temp;
+        }
+
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        $viewParams['pagination'] = $pagination;
+        $viewParams['start'] = ($page - 1) * $perPage;
+        $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        $viewParams['header'] = array_merge($this->gridFields, array('action'));
+        $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
+        $viewParams['identifier'] = $identifier;
+        $viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
+        $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
+        $viewParams['record'] = $data;
+        $viewParams['filter'] = $filter;
+
+        $viewParams = array_merge($this->viewParams, $viewParams);
     }
 
-    public function delete(Request $request, EntityInterface $data)
+    public function remove(EntityInterface $data)
     {
         $event = new GetEntityResponseEvent();
         $event->setEntity($data);
@@ -99,7 +161,7 @@ class CrudHandler
         return true;
     }
 
-    public function show(Request $request, EntityInterface $data)
+    public function showDetail(Request $request, EntityInterface $data, array $showFields)
     {
         $session = $this->container->get('session');
 
@@ -111,7 +173,7 @@ class CrudHandler
         }
 
         $output = array();
-        foreach ($this->showFields as $key => $property) {
+        foreach ($showFields as $key => $property) {
             $method = 'get'.ucfirst($property);
 
             if (method_exists($data, $method)) {
@@ -147,7 +209,7 @@ class CrudHandler
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['upload_dir'] = $this->container->getParameter('symfonian_id.admin.upload_dir');
 
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
+        $viewParams = array_merge($this->viewParams, $viewParams);
     }
 
     public function createNewOrUpdate(Request $request, EntityInterface $data, FormInterface $form = null)
@@ -212,7 +274,7 @@ class CrudHandler
             }
         }
 
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
+        $viewParams = array_merge($this->viewParams, $viewParams);
     }
 
     protected function getForm(EntityInterface $data)

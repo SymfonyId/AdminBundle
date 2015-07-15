@@ -52,4 +52,5 @@ MIT tanpa ada garansi apapun.
 
 ####TODO####
 
-Optional result cache
+- upload user avatar
+- Optional result cache
