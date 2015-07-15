@@ -216,7 +216,6 @@ class CrudHandler
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-        $form = $form ?: $this->getForm($data);
 
         $event = new GetFormResponseEvent();
         $event->setController($this);
@@ -275,24 +274,6 @@ class CrudHandler
         }
 
         $viewParams = array_merge($this->viewParams, $viewParams);
-    }
-
-    protected function getForm(EntityInterface $data)
-    {
-        try {
-            $formType = $this->container->get($this->formClass);
-        } catch (\Exception $exception) {
-            if ($this->formClass) {
-                $formType = new $this->formClass();
-            } else {
-                $formType = new GenericFormType($this, $this->container);
-            }
-        }
-
-        $form = $this->createForm($formType);
-        $form->setData($data);
-
-        return $form;
     }
 
     protected function fireEvent($name, $handler)
