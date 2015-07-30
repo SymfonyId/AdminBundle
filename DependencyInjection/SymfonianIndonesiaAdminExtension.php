@@ -74,6 +74,6 @@ class SymfonianIndonesiaAdminExtension extends Extension
 
     public function getAlias()
     {
-        return 'siab_admin';
+        return 'symfonyid_admin';
     }
 }
