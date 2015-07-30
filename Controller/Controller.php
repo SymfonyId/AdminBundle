@@ -1,7 +1,8 @@
 <?php
+
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
@@ -36,8 +37,7 @@ abstract class Controller extends BaseController
 
     protected function showFields()
     {
-        if (! empty($this->showFields)) {
-
+        if (!empty($this->showFields)) {
             return $this->showFields;
         }
 
@@ -46,6 +46,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param array $fields
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
      */
     public function setShowFields(array $fields)
@@ -57,6 +58,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param string $pageTitle
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
      */
     public function setPageTitle($pageTitle)
@@ -68,6 +70,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param string $pageDescription
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
      */
     public function setPageDescription($pageDescription)
@@ -97,6 +100,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param string $formClass
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
      */
     public function setFormClass($formClass)
@@ -108,6 +112,7 @@ abstract class Controller extends BaseController
 
     /**
      * @param string $entityClass
+     *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setEntityClass($entityClass)

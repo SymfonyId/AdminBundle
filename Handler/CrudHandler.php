@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
-use Symfonian\Indonesia\AdminBundle\Form\GenericFormType;
 use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;

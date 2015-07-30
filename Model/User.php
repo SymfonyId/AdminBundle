@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Entity;
+namespace Symfonian\Indonesia\AdminBundle\Model;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -9,22 +9,13 @@ namespace Symfonian\Indonesia\AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
-use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="siab_user")
+ * @ORM\MappedSuperclass
  */
-class User extends BaseUser implements UserInterface
+abstract class User extends BaseUser implements UserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
     /**
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      */
