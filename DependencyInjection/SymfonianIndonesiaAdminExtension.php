@@ -21,6 +21,7 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $container->setParameter('symfonian_id.admin.menu', $config['menu']);
         $container->setParameter('symfonian_id.admin.profile_fields', $config['profile_fields']);
         $container->setParameter('symfonian_id.admin.identifier', $config['identifier']);
+        $container->setParameter('symfonian_id.admin.use_micro_cache', $config['micro_cache']);
         $container->setParameter('symfonian_id.admin.filter', $config['filter']);
         $container->setParameter('symfonian_id.admin.date_time_format', $config['date_time_format']);
         $container->setParameter('symfonian_id.admin.translation_domain', $config['translation_domain']);
