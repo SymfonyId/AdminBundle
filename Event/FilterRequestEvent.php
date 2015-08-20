@@ -10,11 +10,11 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 
-
-class FilterRequestEvent
+class FilterRequestEvent extends Event
 {
     protected $request;
 

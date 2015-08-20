@@ -47,7 +47,7 @@ class CacheListener
             return;
         }
 
-        if ($this->tokenStorage->getToken()->getUser()) {
+        if ($this->tokenStorage->getToken()) {
             return;
         }
 

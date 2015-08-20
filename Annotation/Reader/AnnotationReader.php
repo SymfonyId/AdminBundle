@@ -119,9 +119,17 @@ final class AnnotationReader
 
     private function compileGrid(Grid $annotation, CrudController $controller)
     {
-        $controller->setGridFields($annotation->getFields());
-        $controller->setFilter($annotation->getFilter());
-        $controller->upperCaseFilter($annotation->getNormalizeFilter());
+        if ($annotation->getFields()) {
+            $controller->setGridFields($annotation->getFields());
+        }
+
+        if ($annotation->getFilter()) {
+            $controller->setFilter($annotation->getFilter());
+        }
+
+        if ($annotation->getNormalizeFilter()) {
+            $controller->upperCaseFilter($annotation->getNormalizeFilter());
+        }
     }
 
     private function compilePage(Page $annotation, CrudController $controller)

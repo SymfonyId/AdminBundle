@@ -26,6 +26,10 @@ class Grid
         }
 
         if (isset($data['fields'])) {
+            if (!is_array($data['fields'])) {
+                $data['fields'] = (array) $data['fields'];
+            }
+
             $this->fields = $data['fields'];
         }
 
