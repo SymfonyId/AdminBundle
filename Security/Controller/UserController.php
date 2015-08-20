@@ -9,16 +9,14 @@ namespace Symfonian\Indonesia\AdminBundle\Security\Controller;
 
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Annotation\PageTitle;
-use Symfonian\Indonesia\AdminBundle\Annotation\PageDescription;
-use Symfonian\Indonesia\AdminBundle\Annotation\FilterFields;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 
 /**
  * @Route("/user")
  *
- * @PageTitle("page.user.title")
- * @PageDescription("page.user.description")
- * @FilterFields({"username", "fullName"})
+ * @Page(title="page.user.title", description="page.user.description")
+ * @Grid(filter={"username", "fullName"})
  */
 class UserController extends CrudController
 {
