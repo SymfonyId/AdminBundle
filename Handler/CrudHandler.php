@@ -95,7 +95,7 @@ class CrudHandler
     /**
      * @param $class
      */
-    public function setEntityClass($class)
+    public function setEntity($class)
     {
         $this->repository = $this->manager->getRepository($class);
         $this->class = $this->manager->getClassMetadata($class)->getName();

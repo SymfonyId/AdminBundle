@@ -10,6 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -127,7 +128,7 @@ abstract class CrudController extends Controller
         $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entity);
+        $handler->setEntity($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($this->showTemplate);
         $handler->showDetail($request, $entity, $this->showFields());
@@ -147,9 +148,14 @@ abstract class CrudController extends Controller
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
         $entity = $this->findOr404Error($id);
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entity);
+        $handler->setEntity($this->entity);
 
-        return new JsonResponse(array('status' => $handler->remove($entity)));
+        $returnHandler = $handler->remove($entity);
+        if ($returnHandler instanceof Response) {
+            return $returnHandler;
+        }
+
+        return new JsonResponse(array('status' => $returnHandler));
     }
 
     /**
@@ -169,7 +175,7 @@ abstract class CrudController extends Controller
         $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entity);
+        $handler->setEntity($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
         $handler->viewList($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
@@ -354,7 +360,7 @@ abstract class CrudController extends Controller
         $this->viewParams['autocomplete'] = $this->autocomplete;
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entity);
+        $handler->setEntity($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($this, $request, $data, $form);
