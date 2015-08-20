@@ -199,23 +199,28 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
         $container->setParameter('symfonian_id.admin.list.use_ajax', $config['list']['use_ajax']);
+
         $action = array();
         if ($config['grid_action']['show']) {
             array_push($action, CrudHandler::GRID_ACTION_SHOW);
         }
+
         if ($config['grid_action']['edit']) {
             array_push($action, CrudHandler::GRID_ACTION_EDIT);
         }
+
         if ($config['grid_action']['delete']) {
             array_push($action, CrudHandler::GRID_ACTION_DELETE);
         }
         $container->setParameter('symfonian_id.admin.grid_action', $action);
+
         $number = array(
             'decimal_precision' => $config['number_format']['decimal_precision'],
             'decimal_separator' => $config['number_format']['decimal_separator'],
             'thousand_separator' => $config['number_format']['thousand_separator'],
         );
         $container->setParameter('symfonian_id.admin.number', $number);
+
         $container->setParameter('symfonian_id.admin.upload_dir', array(
             'server_path' => $container->getParameter('kernel.root_dir').'/../web/'.$config['upload_dir'],
             'web_path' => '/'.$config['upload_dir'].'/',

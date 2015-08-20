@@ -51,6 +51,4 @@ untuk keberlangsungan komunitas ini.
 MIT tanpa ada garansi apapun.
 
 ####TODO####
-
 - upload user avatar
-- Optional result cache
