@@ -11,13 +11,15 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
  * @Annotation
  * @Target({"CLASS"})
  */
-class CrudTemplate
+class Crud
 {
     private $add;
 
     private $edit;
 
     private $list;
+
+    private $ajaxTemplate;
 
     private $show;
 
@@ -53,6 +55,16 @@ class CrudTemplate
     public function getList()
     {
         return $this->list;
+    }
+
+    public function setAjaxTemplate($ajaxTemplate)
+    {
+        $this->ajaxTemplate = $ajaxTemplate;
+    }
+
+    public function getAjaxTemplate()
+    {
+        return $this->ajaxTemplate;
     }
 
     public function setShow($show)

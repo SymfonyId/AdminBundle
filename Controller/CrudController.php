@@ -9,13 +9,13 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
-use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\Form\FormInterface;
 
 abstract class CrudController extends Controller
@@ -55,7 +55,7 @@ abstract class CrudController extends Controller
      */
     public function newAction(Request $request)
     {
-        $event = new GetFormResponseEvent();
+        $event = new FilterResponseEvent();
         $event->setController($this);
 
         $this->fireEvent(Event::PRE_FORM_CREATE, $event);
@@ -87,7 +87,7 @@ abstract class CrudController extends Controller
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_EDIT);
 
-        $event = new GetFormResponseEvent();
+        $event = new FilterResponseEvent();
         $event->setController($this);
 
         $this->fireEvent(Event::PRE_FORM_CREATE, $event);
@@ -182,7 +182,7 @@ abstract class CrudController extends Controller
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function normalizeFilter($normalizeFilter = true)
+    public function upperCaseFilter($normalizeFilter = true)
     {
         $this->normalizeFilter = $normalizeFilter;
 
@@ -251,11 +251,11 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
-     * @param bool   $useAjax
+     * @param bool $useAjax
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setAjaxListTemplate($template, $useAjax = true)
+    public function setAjaxTemplate($template, $useAjax = true)
     {
         $this->listAjaxTemplate = $template;
         $this->useAjaxList = $useAjax;
@@ -304,7 +304,7 @@ abstract class CrudController extends Controller
     /**
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function useFileStyle()
+    public function useCustomFileChooser()
     {
         $this->useFileStyle = true;
 

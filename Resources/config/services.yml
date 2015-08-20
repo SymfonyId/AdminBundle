@@ -1,6 +1,6 @@
 services:
     symfonian_id.admin.annotation:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\AnnotationListener
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Reader\AnnotationReader
         arguments:
             - @annotation_reader
         tags:
@@ -23,28 +23,28 @@ services:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
     symfonian_id.admin.controller_default_view_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TemplateCompiler
+        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTamplateRegister
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
     symfonian_id.admin.user_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\UserControllerCompiler
+        class: Symfonian\Indonesia\AdminBundle\Compiler\UserControllerRegister
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.index_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ProfileControllerCompiler
+        class: Symfonian\Indonesia\AdminBundle\Compiler\ProfileControllerRegister
         arguments:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.twig_global_variable_pass:
-        class: Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\TwigVariableCompiler
+        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableRegister
         arguments:
             - @service_container
         tags:
@@ -78,14 +78,24 @@ services:
             - %security.role_hierarchy.roles%
 
     symfonian_id.admin.home_route_loader:
-        class: Symfonian\Indonesia\AdminBundle\Routing\HomeRouteLoader
+        class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
         arguments:
             - @service_container
         tags:
             - { name: routing.loader }
 
     symfonian_id.admin.twig.is_number:
-        class: Symfonian\Indonesia\AdminBundle\Twig\NumberTest
+        class: Symfonian\Indonesia\AdminBundle\Twig\Number\NumberTest
+        tags:
+            - { name: twig.extension }
+
+    symfonian_id.admin.twig.is_valid_interval:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Number\IsValidIntervalFunction
+        tags:
+            - { name: twig.extension }
+
+    symfonian_id.admin.twig.ucwords:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Number\UcWordsFilter
         tags:
             - { name: twig.extension }
 

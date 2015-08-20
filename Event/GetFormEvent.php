@@ -9,7 +9,6 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 
 class GetFormEvent extends Event
 {
@@ -27,7 +26,7 @@ class GetFormEvent extends Event
         return $this->form;
     }
 
-    public function setData(EntityInterface $entity)
+    public function setData($entity)
     {
         $this->formData = $entity;
     }

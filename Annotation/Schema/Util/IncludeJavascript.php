@@ -29,6 +29,9 @@ class IncludeJavascript implements UtilAnnotationInterface
 
     public function setIncludeRoute($route)
     {
+        if (! is_array($route)) {
+            $route = (array) $route;
+        }
         $this->includeRoute = $route;
     }
 

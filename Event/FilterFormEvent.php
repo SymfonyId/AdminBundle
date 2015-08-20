@@ -9,12 +9,17 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormInterface;
 
-class FilterEntityEvent extends GetEntityEvent
+class FilterFormEvent
 {
     protected $request;
 
     protected $response;
+
+    protected $form;
+
+    protected $formData;
 
     /**
      * @param Request $request
@@ -46,5 +51,37 @@ class FilterEntityEvent extends GetEntityEvent
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    public function setForm(FormInterface $form)
+    {
+        $this->form = $form;
+    }
+
+    /**
+     * @return FormInterface
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @param mixed $entity
+     */
+    public function setData($entity)
+    {
+        $this->formData = $entity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->formData;
     }
 }

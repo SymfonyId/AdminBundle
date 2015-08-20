@@ -7,11 +7,12 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Reader;
  * Url: https://github.com/ihsanudin
  */
 
+use InvalidArgumentException;
 use ReflectionObject;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\CrudTemplate;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Entity;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
@@ -45,67 +46,87 @@ final class AnnotationReader
 
         $reflectionObject = new ReflectionObject($controller);
         foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
-            if ($annotation instanceof CrudTemplate) {
-                $this->compileTemplate($annotation);
+            if ($annotation instanceof Crud) {
+                $this->compileTemplate($annotation, $controller);
             }
 
             if ($annotation instanceof Entity) {
-                $this->compileEntity($annotation);
+                $controller->setEntity($annotation->getClass());
             }
 
             if ($annotation instanceof Grid) {
-                $this->compileGrid($annotation);
+                $this->compileGrid($annotation, $controller);
             }
 
             if ($annotation instanceof Page) {
-                $this->compilePage($annotation);
+                $this->compilePage($annotation, $controller);
             }
 
             if ($annotation instanceof UtilAnnotationInterface) {
                 if ($annotation instanceof AutoComplete) {
-                    $this->compileAutoComplete($annotation);
+                    $controller->setAutoComplete($annotation->getRoute(), $annotation->getTargetSelector());
                 }
 
                 if ($annotation instanceof DatePicker) {
-                    //@todo
+                    $controller->useDatePicker();
                 }
 
                 if ($annotation instanceof Editor) {
-                    //@todo
+                    $controller->useEditor();
                 }
 
                 if ($annotation instanceof FileChooser) {
-                    //@todo
+                    $controller->useCustomFileChooser();
                 }
 
                 if ($annotation instanceof IncludeJavascript) {
-                    $this->compileJavascript($annotation);
+                    $controller->includeJs($annotation->getFile(), $annotation->getIncludeRoute());
                 }
             }
         }
     }
 
-    private function compileTemplate(CrudTemplate $annotation)
+    private function compileTemplate(Crud $annotation, CrudController $controller)
     {
+        if ($annotation->getAdd()) {
+            $controller->setNewTemplate($annotation->getAdd());
+        }
+
+        if ($annotation->getEdit()) {
+            $controller->setEditTemplate($annotation->getEdit());
+        }
+
+        if ($annotation->getShow()) {
+            $controller->setShowTemplate($annotation->getShow());
+        }
+
+        if ($annotation->getList()) {
+            $controller->setListTemplate($annotation->getList());
+        }
+
+        if ($annotation->getForm()) {
+            $controller->setForm($annotation->getForm());
+        }
+
+        if (! $annotation->getShowFields()) {
+            throw new InvalidArgumentException('show fields must be set.');
+        }
+
+        if ($annotation->getAjaxTemplate()) {
+            $controller->setAjaxTemplate($annotation->getAjaxTemplate());
+        }
     }
 
-    private function compileEntity(Entity $annotation)
+    private function compileGrid(Grid $annotation, CrudController $controller)
     {
+        $controller->setGridFields($annotation->getFields());
+        $controller->setFilter($annotation->getFilter());
+        $controller->upperCaseFilter($annotation->getNormalizeFilter());
     }
 
-    private function compileGrid(Grid $annotation)
+    private function compilePage(Page $annotation, CrudController $controller)
     {
-    }
-
-    private function compilePage(Page $annotation)
-    {
-    }
-
-    private function compileAutoComplete(AutoComplete $annotation)
-    {
-    }
-
-    private function compileJavascript(IncludeJavascript $annotation)
-    {
+        $controller->setTitle($annotation->getTitle());
+        $controller->setDescription($annotation->getDescription());
     }
 }

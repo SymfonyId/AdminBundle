@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Routing;
+namespace Symfonian\Indonesia\AdminBundle\Route;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>

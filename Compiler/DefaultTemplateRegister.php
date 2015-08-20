@@ -42,8 +42,8 @@ final class DefaultTamplateRegister
         $controller->setShowTemplate($this->container->getParameter('symfonian_id.admin.themes.show_view'));
         $controller->setListTemplate($this->container->getParameter('symfonian_id.admin.themes.list_view'));
         $controller->setFilter($this->container->getParameter('symfonian_id.admin.filter'));
-        $controller->setAjaxListTemplate(
-            $this->container->getParameter('symfonian_id.admin.themes.list_ajax'),
+        $controller->setAjaxTemplate(
+            $this->container->getParameter('symfonian_id.admin.themes.ajax_template'),
             $this->container->getParameter('symfonian_id.admin.list.use_ajax')
         );
     }

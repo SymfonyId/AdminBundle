@@ -7,18 +7,18 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Event\GetFormEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
-use Symfonian\Indonesia\AdminBundle\Event\GetDataEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetFormResponseEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetResponseEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 
 class CrudHandler
 {
@@ -38,10 +38,19 @@ class CrudHandler
 
     const ENTITY_ALIAS = 'e';
 
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
     protected $manager;
 
+    /**
+     * @var \Doctrine\ORM\EntityRepository
+     */
     protected $repository;
 
     protected $class;
@@ -50,33 +59,54 @@ class CrudHandler
 
     protected $viewParams = array();
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->manager = $container->get('doctrine.orm.entity_manager');
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function getResponse()
     {
         return $this->container->get('templating')->renderResponse($this->template, $this->viewParams);
     }
 
+    /**
+     * @param array $viewParams
+     */
     public function setViewParams(array $viewParams)
     {
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
+    /**
+     * @param $template
+     */
     public function setTemplate($template)
     {
         $this->template = $template;
     }
 
+    /**
+     * @param $class
+     */
     public function setEntityClass($class)
     {
         $this->repository = $this->manager->getRepository($class);
         $this->class = $this->manager->getClassMetadata($class)->getName();
     }
 
+    /**
+     * @param Request $request
+     * @param array $gridFields
+     * @param array $filterFields
+     * @param bool|false $normalizeFilter
+     */
     public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false)
     {
         $queryBuilder = $this->repository->createQueryBuilder(self::ENTITY_ALIAS);
@@ -90,18 +120,21 @@ class CrudHandler
             }
         }
 
-        $event = new GetQueryEvent();
+        $event = new FilterQueryEvent();
         $event->setQueryBuilder($queryBuilder);
-        $event->setEntityAlias(self::ENTITY_ALIAS);
-        $event->setEntityClass($this->class);
-
+        $event->setAlias(self::ENTITY_ALIAS);
+        $event->setEntity($this->class);
         $this->fireEvent(Event::FILTER_LIST, $event);
 
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
-        $paginator = $this->container->get('knp_paginator');
 
-        $pagination = $paginator->paginate($queryBuilder, $page, $perPage);
+        $query = $queryBuilder->getQuery();
+        $query->useQueryCache(true);
+        $query->useResultCache(true, 1, serialize($query->getParameters()));
+
+        $paginator = $this->container->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $page, $perPage);
 
         $data = array();
         $identifier = array();
@@ -143,12 +176,15 @@ class CrudHandler
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
+    /**
+     * @param EntityInterface $data
+     * @return bool|\Symfony\Component\HttpFoundation\Response
+     */
     public function remove(EntityInterface $data)
     {
-        $event = new GetEntityResponseEvent();
+        $event = new FilterEntityEvent();
         $event->setEntity($data);
         $event->setEntityMeneger($this->manager);
-
         $this->fireEvent(Event::PRE_DELETE, $event);
 
         if ($event->getResponse()) {
@@ -161,6 +197,11 @@ class CrudHandler
         return true;
     }
 
+    /**
+     * @param Request $request
+     * @param EntityInterface $data
+     * @param array $showFields
+     */
     public function showDetail(Request $request, EntityInterface $data, array $showFields)
     {
         $session = $this->container->get('session');
@@ -193,9 +234,8 @@ class CrudHandler
             }
         }
 
-        $event = new GetDataEvent();
+        $event = new GetFormEvent();
         $event->setData($output);
-
         $this->fireEvent(Event::PRE_SHOW, $event);
 
         $translator = $this->container->get('translator');
@@ -212,16 +252,22 @@ class CrudHandler
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
+    /**
+     * @param CrudController $controller
+     * @param Request $request
+     * @param EntityInterface $data
+     * @param FormInterface|null $form
+     * @return mixed
+     */
     public function createNewOrUpdate(CrudController $controller, Request $request, EntityInterface $data, FormInterface $form = null)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $event = new GetFormResponseEvent();
+        $event = new FilterResponseEvent();
         $event->setController($controller);
         $event->setFormData($data);
         $event->setForm($form);
-
         $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
 
         $response = $event->getResponse();
@@ -236,10 +282,9 @@ class CrudHandler
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            $preFormValidationEvent = new GetResponseEvent();
+            $preFormValidationEvent = new FilterResponseEvent();
             $preFormValidationEvent->setRequest($request);
             $preFormValidationEvent->setForm($form);
-
             $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
 
             $response = $preFormValidationEvent->getResponse();
@@ -252,21 +297,19 @@ class CrudHandler
             } else {
                 $data = $form->getData();
 
-                $preSaveEvent = new GetEntityResponseEvent();
+                $preSaveEvent = new FilterRequestEvent();
                 $preSaveEvent->setRequest($request);
                 $preSaveEvent->setEntity($data);
                 $preSaveEvent->setEntityMeneger($this->manager);
                 $preSaveEvent->setForm($form);
-
-                $postSaveEvent = new GetEntityEvent();
-                $postSaveEvent->setEntityMeneger($this->manager);
-                $postSaveEvent->setEntity($data);
-
                 $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
 
                 $this->manager->persist($data);
                 $this->manager->flush();
 
+                $postSaveEvent = new GetEntityEvent();
+                $postSaveEvent->setEntityMeneger($this->manager);
+                $postSaveEvent->setEntity($data);
                 $this->fireEvent(Event::POST_SAVE, $postSaveEvent);
 
                 $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);

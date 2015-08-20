@@ -10,11 +10,12 @@ namespace Symfonian\Indonesia\AdminBundle\Security\Model;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class User extends BaseUser
+abstract class User extends BaseUser implements EntityInterface
 {
     /**
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)

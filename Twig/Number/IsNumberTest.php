@@ -1,17 +1,21 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Twig;
+namespace Symfonian\Indonesia\AdminBundle\Twig\Number;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
-class NumberTest extends \Twig_Extension
+
+use Twig_Extension;
+use Twig_SimpleTest;
+
+class NumberTest extends Twig_Extension
 {
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('numeric', array($this, 'isNumeric')),
+            new Twig_SimpleTest('numeric', array($this, 'isNumeric')),
         );
     }
 

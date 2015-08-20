@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Router;
 class Builder
 {
     /**
-     * @var Symfony\Component\Routing\RouteCollection
+     * @var \Symfony\Component\Routing\RouteCollection
      */
     protected $routeCollection;
 
     /**
-     * @var Symfony\Component\Translation\TranslatorInterface
+     * @var \Symfony\Component\Translation\TranslatorInterface
      */
     protected $translator;
 
@@ -30,7 +30,7 @@ class Builder
     protected $translationDomain;
 
     /**
-     * @var Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
