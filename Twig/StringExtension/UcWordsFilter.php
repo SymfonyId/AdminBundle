@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Twig\Number;
+namespace Symfonian\Indonesia\AdminBundle\Twig\StringExtension;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>

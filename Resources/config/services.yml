@@ -85,17 +85,17 @@ services:
             - { name: routing.loader }
 
     symfonian_id.admin.twig.is_number:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Number\NumberTest
+        class: Symfonian\Indonesia\AdminBundle\Twig\NumberExtension\NumberTest
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.is_valid_interval:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Number\ValidateIntervalFunction
+        class: Symfonian\Indonesia\AdminBundle\Twig\DateExtension\ValidateIntervalFunction
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.ucwords:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Number\UcWordsFilter
+        class: Symfonian\Indonesia\AdminBundle\Twig\StringExtension\UcWordsFilter
         tags:
             - { name: twig.extension }
 
