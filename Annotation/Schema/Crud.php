@@ -31,6 +31,10 @@ class Crud
 
     public function __construct(array $data)
     {
+        if (isset($data['value'])) {
+            $this->entity = $data['value'];
+        }
+
         if (isset($data['add'])) {
             $this->add = $data['add'];
         }
