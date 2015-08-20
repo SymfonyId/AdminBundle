@@ -12,7 +12,7 @@ use Twig_Extension;
 use Twig_SimpleFunction;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\DateUtil\ValidIntervalChecker;
 
-class IsValidIntervalFunction extends Twig_Extension
+class ValidateIntervalFunction extends Twig_Extension
 {
     public function getTests()
     {

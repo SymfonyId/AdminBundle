@@ -90,7 +90,7 @@ services:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.is_valid_interval:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Number\IsValidIntervalFunction
+        class: Symfonian\Indonesia\AdminBundle\Twig\Number\ValidateIntervalFunction
         tags:
             - { name: twig.extension }
 
