@@ -32,7 +32,7 @@ class Crud
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $this->entity = $data['value'];
+            $this->setEntity($data['value']);
         }
 
         if (isset($data['add'])) {
@@ -60,11 +60,7 @@ class Crud
         }
 
         if (isset($data['entity'])) {
-            if (!is_subclass_of($data['entity'], 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
-                throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $data['entity']));
-            }
-
-            $this->entity = $data['entity'];
+            $this->setEntity($data['entity']);
         }
 
         if (isset($data['showFields'])) {
@@ -102,6 +98,15 @@ class Crud
     public function getForm()
     {
         return $this->form;
+    }
+
+    public function setEntity($entity)
+    {
+        if (!is_subclass_of($entity, 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
+            throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $entity));
+        }
+
+        $this->entity = $entity;
     }
 
     public function getEntity()
