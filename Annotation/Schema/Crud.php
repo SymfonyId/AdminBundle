@@ -60,6 +60,10 @@ class Crud
         }
 
         if (isset($data['entity'])) {
+            if (!is_subclass_of($data['entity'], 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
+                throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $data['entity']));
+            }
+
             $this->entity = $data['entity'];
         }
 
@@ -70,19 +74,9 @@ class Crud
         unset($data);
     }
 
-    public function setAdd($add)
-    {
-        $this->add = $add;
-    }
-
     public function getAdd()
     {
         return $this->add;
-    }
-
-    public function setEdit($edit)
-    {
-        $this->edit = $edit;
     }
 
     public function getEdit()
@@ -90,19 +84,9 @@ class Crud
         return $this->edit;
     }
 
-    public function setList($list)
-    {
-        $this->list = $list;
-    }
-
     public function getList()
     {
         return $this->list;
-    }
-
-    public function setAjaxTemplate($ajaxTemplate)
-    {
-        $this->ajaxTemplate = $ajaxTemplate;
     }
 
     public function getAjaxTemplate()
@@ -110,19 +94,9 @@ class Crud
         return $this->ajaxTemplate;
     }
 
-    public function setShow($show)
-    {
-        $this->show = $show;
-    }
-
     public function getShow()
     {
         return $this->show;
-    }
-
-    public function setForm($form)
-    {
-        $this->form = $form;
     }
 
     public function getForm()
@@ -130,23 +104,9 @@ class Crud
         return $this->form;
     }
 
-    public function setEntity($entity)
-    {
-        if (!is_subclass_of($entity, 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
-            throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $entity));
-        }
-
-        $this->entity = $entity;
-    }
-
     public function getEntity()
     {
         return $this->entity;
-    }
-
-    public function setShowFields($fields)
-    {
-        $this->showFields = $fields;
     }
 
     public function getShowFields()

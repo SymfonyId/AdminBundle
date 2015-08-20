@@ -17,22 +17,28 @@ class IncludeJavascript implements UtilAnnotationInterface
 
     private $includeRoute;
 
-    public function setFile($file)
+    public function __construct(array $data)
     {
-        $this->file = $file;
+        if (isset($data['value'])) {
+            $this->file = $data['value'];
+        }
+
+        if (isset($data['file'])) {
+            $this->file = $data['file'];
+        }
+
+        if (isset($data['includeRoute'])) {
+            if (! is_array($data['includeRoute'])) {
+                $data['includeRoute'] = (array) $data['includeRoute'];
+            }
+
+            $this->includeRoute = $data['includeRoute'];
+        }
     }
 
     public function getFile()
     {
         return $this->file;
-    }
-
-    public function setIncludeRoute($route)
-    {
-        if (! is_array($route)) {
-            $route = (array) $route;
-        }
-        $this->includeRoute = $route;
     }
 
     public function getIncludeRoute()

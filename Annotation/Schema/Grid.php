@@ -21,11 +21,19 @@ class Grid
 
     public function __construct(array $data)
     {
+        if (isset($data['value'])) {
+            $this->fields = $data['value'];
+        }
+
         if (isset($data['fields'])) {
             $this->fields = $data['fields'];
         }
 
         if (isset($data['filter'])) {
+            if (!is_array($data['filter'])) {
+                $data['filter'] = (array) $data['filter'];
+            }
+
             $this->filter = $data['filter'];
         }
 
@@ -36,42 +44,14 @@ class Grid
         unset($data);
     }
 
-    public function setValue($fields)
-    {
-        $this->setFields($fields);
-    }
-
-    public function setFields($fields)
-    {
-        if (!is_array($fields)) {
-            $fields = (array) $fields;
-        }
-
-        $this->fields = $fields;
-    }
-
     public function getFields()
     {
         return $this->fields;
     }
 
-    public function setFilter($filter)
-    {
-        if (!is_array($filter)) {
-            $filter = (array) $filter;
-        }
-
-        $this->filter = $filter;
-    }
-
     public function getFilter()
     {
         return $this->filter;
-    }
-
-    public function setNormalizeFilter($normalizeFilter)
-    {
-        $this->normalizeFilter = $normalizeFilter;
     }
 
     public function getNormalizeFilter()

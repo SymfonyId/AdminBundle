@@ -17,24 +17,24 @@ class AutoComplete implements UtilAnnotationInterface
 
     private $targetSelector;
 
-    public function setValue($route)
+    public function __construct(array $data)
     {
-        $this->setRoute($route);
-    }
+        if (isset($data['value'])) {
+            $this->route = $data['value'];
+        }
 
-    public function setRoute($route)
-    {
-        $this->route = $route;
+        if (isset($data['route'])) {
+            $this->route = $data['route'];
+        }
+
+        if (isset($data['targetSelector'])) {
+            $this->targetSelector = $data['targetSelector'];
+        }
     }
 
     public function getRoute()
     {
         return $this->route;
-    }
-
-    public function setTargetSelector($targetSelector)
-    {
-        $this->targetSelector = $targetSelector;
     }
 
     public function getTargetSelector()
