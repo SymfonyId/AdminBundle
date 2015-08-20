@@ -19,6 +19,23 @@ class Grid
 
     private $normalizeFilter = false;
 
+    public function __construct(array $data)
+    {
+        if (isset($data['fields'])) {
+            $this->fields = $data['fields'];
+        }
+
+        if (isset($data['filter'])) {
+            $this->filter = $data['filter'];
+        }
+
+        if (isset($data['normalizeFilter'])) {
+            $this->normalizeFilter = (bool) $data['normalizeFilter'];
+        }
+
+        unset($data);
+    }
+
     public function setValue($fields)
     {
         $this->setFields($fields);

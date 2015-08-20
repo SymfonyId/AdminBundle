@@ -17,6 +17,19 @@ class Page
 
     private $description;
 
+    public function __construct(array $data)
+    {
+        if (isset($data['title'])) {
+            $this->title = $data['title'];
+        }
+
+        if (isset($data['description'])) {
+            $this->description = $data['description'];
+        }
+
+        unset($data);
+    }
+
     public function setValue($title)
     {
         $this->setTitle($title);
