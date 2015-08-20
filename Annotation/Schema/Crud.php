@@ -29,6 +29,43 @@ class Crud
 
     private $showFields;
 
+    public function __construct(array $data)
+    {
+        if (isset($data['add'])) {
+            $this->add = $data['add'];
+        }
+
+        if (isset($data['edit'])) {
+            $this->edit = $data['edit'];
+        }
+
+        if (isset($data['list'])) {
+            $this->list = $data['list'];
+        }
+
+        if (isset($data['ajaxTemplate'])) {
+            $this->ajaxTemplate = $data['ajaxTemplate'];
+        }
+
+        if (isset($data['show'])) {
+            $this->show = $data['show'];
+        }
+
+        if (isset($data['form'])) {
+            $this->form = $data['form'];
+        }
+
+        if (isset($data['entity'])) {
+            $this->entity = $data['entity'];
+        }
+
+        if (isset($data['showFields'])) {
+            $this->showFields = $data['showFields'];
+        }
+
+        unset($data);
+    }
+
     public function setAdd($add)
     {
         $this->add = $add;
