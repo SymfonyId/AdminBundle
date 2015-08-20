@@ -110,7 +110,7 @@ class ProfileController extends Controller
 
                 $userManager->updateUser($entity);
 
-                $dispatcher->dispatch(Event::POST_SAVE_EVENT, $event);
+                $dispatcher->dispatch(Event::POST_SAVE, $event);
 
                 $this->viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }
