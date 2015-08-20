@@ -25,6 +25,8 @@ class Crud
 
     private $form;
 
+    private $entity;
+
     private $showFields;
 
     public function setAdd($add)
@@ -85,6 +87,20 @@ class Crud
     public function getForm()
     {
         return $this->form;
+    }
+
+    public function setEntity($entity)
+    {
+        if (!is_subclass_of($entity, 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
+            throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $entity));
+        }
+
+        $this->entity = $entity;
+    }
+
+    public function getEntity()
+    {
+        return $this->entity;
     }
 
     public function setShowFields($fields)

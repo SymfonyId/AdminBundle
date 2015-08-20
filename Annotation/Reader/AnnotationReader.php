@@ -50,10 +50,6 @@ final class AnnotationReader
                 $this->compileTemplate($annotation, $controller);
             }
 
-            if ($annotation instanceof Entity) {
-                $controller->setEntity($annotation->getClass());
-            }
-
             if ($annotation instanceof Grid) {
                 $this->compileGrid($annotation, $controller);
             }
@@ -106,6 +102,10 @@ final class AnnotationReader
 
         if ($annotation->getForm()) {
             $controller->setForm($annotation->getForm());
+        }
+
+        if ($annotation->getEntity()) {
+            $controller->setEntity($annotation->getEntity());
         }
 
         if (! $annotation->getShowFields()) {
