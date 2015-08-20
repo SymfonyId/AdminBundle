@@ -95,7 +95,7 @@ class CrudHandler
         $event->setEntityAlias(self::ENTITY_ALIAS);
         $event->setEntityClass($this->class);
 
-        $this->fireEvent(Event::FILTER_LIST_EVENT, $event);
+        $this->fireEvent(Event::FILTER_LIST, $event);
 
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
@@ -149,7 +149,7 @@ class CrudHandler
         $event->setEntity($data);
         $event->setEntityMeneger($this->manager);
 
-        $this->fireEvent(Event::PRE_DELETE_EVENT, $event);
+        $this->fireEvent(Event::PRE_DELETE, $event);
 
         if ($event->getResponse()) {
             return $event->getResponse();
@@ -196,7 +196,7 @@ class CrudHandler
         $event = new GetDataEvent();
         $event->setData($output);
 
-        $this->fireEvent(Event::PRE_SHOW_EVENT, $event);
+        $this->fireEvent(Event::PRE_SHOW, $event);
 
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -222,7 +222,7 @@ class CrudHandler
         $event->setFormData($data);
         $event->setForm($form);
 
-        $this->fireEvent(Event::PRE_FORM_SUBMIT_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -240,7 +240,7 @@ class CrudHandler
             $preFormValidationEvent->setRequest($request);
             $preFormValidationEvent->setForm($form);
 
-            $this->fireEvent(Event::PRE_FORM_VALIDATION_EVENT, $preFormValidationEvent);
+            $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
 
             $response = $preFormValidationEvent->getResponse();
             if ($response) {
@@ -262,12 +262,12 @@ class CrudHandler
                 $postSaveEvent->setEntityMeneger($this->manager);
                 $postSaveEvent->setEntity($data);
 
-                $this->fireEvent(Event::PRE_SAVE_EVENT, $preSaveEvent);
+                $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
 
                 $this->manager->persist($data);
                 $this->manager->flush();
 
-                $this->fireEvent(Event::POST_SAVE_EVENT, $postSaveEvent);
+                $this->fireEvent(Event::POST_SAVE, $postSaveEvent);
 
                 $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }

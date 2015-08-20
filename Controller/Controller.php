@@ -12,20 +12,22 @@ use Symfonian\Indonesia\AdminBundle\Form\GenericFormType;
 
 abstract class Controller extends BaseController
 {
-    protected $pageTitle = 'SymfonianIndonesiaAdminBundle';
+    protected $viewParams = array();
 
-    protected $pageDescription = 'Provide Admin Generator with KISS Principle';
+    protected $title = 'SIAB';
+
+    protected $description = 'Symfonian Indonesia Admin bundle';
 
     protected $showFields = array();
 
-    protected $entityClass;
+    protected $entity;
 
-    protected $formClass;
+    protected $form;
 
-    public function entityProperties()
+    public function getEntityFields()
     {
         $fields = array();
-        $reflection = new \ReflectionClass($this->entityClass);
+        $reflection = new \ReflectionClass($this->entity);
         $reflection->getProperties();
 
         foreach ($reflection->getProperties() as $key => $property) {
@@ -41,13 +43,13 @@ abstract class Controller extends BaseController
             return $this->showFields;
         }
 
-        return $this->entityProperties();
+        return $this->getEntityFields();
     }
 
     /**
      * @param array $fields
      *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
     public function setShowFields(array $fields)
     {
@@ -57,25 +59,25 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @param string $pageTitle
+     * @param string $title
      *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
-    public function setPageTitle($pageTitle)
+    public function setTitle($title)
     {
-        $this->pageTitle = $pageTitle;
+        $this->title = $title;
 
         return $this;
     }
 
     /**
-     * @param string $pageDescription
+     * @param string $description
      *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
-    public function setPageDescription($pageDescription)
+    public function setDescription($description)
     {
-        $this->pageDescription = $pageDescription;
+        $this->description = $description;
 
         return $this;
     }
@@ -83,10 +85,10 @@ abstract class Controller extends BaseController
     protected function getForm($data = null)
     {
         try {
-            $formObject = $this->container->get($this->formClass);
+            $formObject = $this->container->get($this->form);
         } catch (\Exception $ex) {
-            if ($this->formClass) {
-                $formObject = new $this->formClass();
+            if ($this->form) {
+                $formObject = new $this->form();
             } else {
                 $formObject = new GenericFormType($this, $this->container);
             }
@@ -99,25 +101,25 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @param string $formClass
+     * @param string $form
      *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\AbstractController
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
-    public function setFormClass($formClass)
+    public function setForm($form)
     {
-        $this->formClass = $formClass;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-     * @param string $entityClass
+     * @param string $entity
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setEntityClass($entityClass)
+    public function setEntity($entity)
     {
-        $this->entityClass = $entityClass;
+        $this->entity = $entity;
 
         return $this;
     }
@@ -125,8 +127,8 @@ abstract class Controller extends BaseController
     /**
      * @return string
      */
-    public function getEntityClass()
+    public function getEntity()
     {
-        return $this->entityClass;
+        return $this->entity;
     }
 }

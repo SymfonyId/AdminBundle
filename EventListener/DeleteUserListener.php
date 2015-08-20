@@ -7,7 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,7 @@ use FOS\UserBundle\Model\UserInterface;
 final class DeleteUserListener
 {
     /**
-     * @var FOS\UserBundle\Model\UserInterface
+     * @var UserInterface
      */
     private $user;
 
@@ -41,7 +41,7 @@ final class DeleteUserListener
         $this->container = $container;
     }
 
-    public function onDeleteUser(GetEntityResponseEvent $event)
+    public function onDeleteUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
 

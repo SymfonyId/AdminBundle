@@ -9,7 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 
 class GetEntityEvent extends Event
 {
@@ -17,6 +17,9 @@ class GetEntityEvent extends Event
 
     protected $entityManager;
 
+    /**
+     * @param ObjectManager $entityManager
+     */
     public function setEntityMeneger(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -30,6 +33,9 @@ class GetEntityEvent extends Event
         return $this->entityManager;
     }
 
+    /**
+     * @param EntityInterface $entity
+     */
     public function setEntity(EntityInterface $entity)
     {
         $this->entity = $entity;

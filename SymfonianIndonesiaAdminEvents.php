@@ -8,19 +8,19 @@ namespace Symfonian\Indonesia\AdminBundle;
  */
 class SymfonianIndonesiaAdminEvents
 {
-    const PRE_FORM_CREATE_EVENT = 'symfonian_id.admin.pre_form_create_event';//GetFormResponseEvent
+    const PRE_FORM_CREATE = 'symfonian_id.admin.pre_form_create_event';
 
-    const PRE_FORM_SUBMIT_EVENT = 'symfonian_id.admin.pre_form_submit_event';//GetFormResponseEvent
+    const PRE_FORM_SUBMIT = 'symfonian_id.admin.pre_form_submit_event';
 
-    const PRE_FORM_VALIDATION_EVENT = 'symfonian_id.admin.pre_form_validation_event';//GetResponseEvent
+    const PRE_FORM_VALIDATION = 'symfonian_id.admin.pre_form_validation_event';
 
-    const PRE_SAVE_EVENT = 'symfonian_id.admin.pre_save_event';//GetEntityResponseEvent
+    const PRE_SAVE = 'symfonian_id.admin.pre_save_event';
 
-    const POST_SAVE_EVENT = 'symfonian_id.admin.post_save_event';//GetEntityEvent
+    const POST_SAVE = 'symfonian_id.admin.post_save_event';
 
-    const FILTER_LIST_EVENT = 'symfonian_id.admin.filter_list_event';//GetQueryEvent
+    const FILTER_LIST = 'symfonian_id.admin.filter_list_event';
 
-    const PRE_DELETE_EVENT = 'symfonian_id.admin.pre_delete_event';//GetEntityResponseEvent
+    const PRE_DELETE = 'symfonian_id.admin.pre_delete_event';
 
-    const PRE_SHOW_EVENT = 'symfonian_id.admin.pre_show_event';//GetDataEvent
+    const PRE_SHOW = 'symfonian_id.admin.pre_show_event';
 }

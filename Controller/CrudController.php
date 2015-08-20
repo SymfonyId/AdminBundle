@@ -20,8 +20,6 @@ use Symfony\Component\Form\FormInterface;
 
 abstract class CrudController extends Controller
 {
-    protected $viewParams = array();
-
     protected $normalizeFilter = false;
 
     protected $gridFields = array();
@@ -51,13 +49,16 @@ abstract class CrudController extends Controller
     /**
      * @Route("/new/")
      * @Method({"POST", "GET"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
         $event = new GetFormResponseEvent();
         $event->setController($this);
 
-        $this->fireEvent(Event::PRE_FORM_CREATE_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_CREATE, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -66,7 +67,7 @@ abstract class CrudController extends Controller
 
         $entity = $event->getFormData();
         if (!$entity) {
-            $entity = new $this->entityClass();
+            $entity = new $this->entity();
         }
 
         $form = $event->getForm() ?: $this->getForm($entity);
@@ -77,6 +78,10 @@ abstract class CrudController extends Controller
     /**
      * @Route("/{id}/edit/")
      * @Method({"POST", "GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
@@ -85,7 +90,7 @@ abstract class CrudController extends Controller
         $event = new GetFormResponseEvent();
         $event->setController($this);
 
-        $this->fireEvent(Event::PRE_FORM_CREATE_EVENT, $event);
+        $this->fireEvent(Event::PRE_FORM_CREATE, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -105,6 +110,10 @@ abstract class CrudController extends Controller
     /**
      * @Route("/{id}/show/")
      * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, $id)
     {
@@ -114,11 +123,11 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
+        $this->viewParams['page_title'] = $translator->trans($this->title, array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entityClass);
+        $handler->setEntityClass($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($this->showTemplate);
         $handler->showDetail($request, $entity, $this->showFields());
@@ -129,13 +138,16 @@ abstract class CrudController extends Controller
     /**
      * @Route("/{id}/delete/")
      * @Method({"DELETE"})
+     *
+     * @param $id
+     * @return JsonResponse
      */
     public function deleteAction($id)
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
         $entity = $this->findOr404Error($id);
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entityClass);
+        $handler->setEntityClass($this->entity);
 
         return new JsonResponse(array('status' => $handler->remove($entity)));
     }
@@ -143,6 +155,8 @@ abstract class CrudController extends Controller
     /**
      * @Route("/list/")
      * @Method({"GET"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(Request $request)
     {
@@ -151,84 +165,16 @@ abstract class CrudController extends Controller
         $listTemplate = $request->isXmlHttpRequest() ? $this->listAjaxTemplate : $this->listTemplate;
 
         $this->viewParams['use_ajax'] = $this->useAjaxList;
-        $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
+        $this->viewParams['page_title'] = $translator->trans($this->title, array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
 
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entityClass);
+        $handler->setEntityClass($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
         $handler->viewList($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
 
         return $handler->getResponse();
-    }
-
-    protected function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
-    {
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        if (empty($this->autocomplete)) {
-            $this->autocomplete['route'] = 'home';
-            $this->autocomplete['value_storage_selector'] = '.selector';
-        }
-
-        $this->viewParams['page_title'] = $translator->trans($this->pageTitle, array(), $translationDomain);
-        $this->viewParams['action_method'] = $translator->trans('page.'.$action, array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($this->pageDescription, array(), $translationDomain);
-        $this->viewParams['use_date_picker'] = $this->useDatePicker;
-        $this->viewParams['use_file_style'] = $this->useFileStyle;
-        $this->viewParams['use_editor'] = $this->useEditor;
-        $this->viewParams['autocomplete'] = $this->autocomplete;
-
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntityClass($this->entityClass);
-        $handler->setViewParams($this->viewParams);
-        $handler->setTemplate($template);
-        $handler->createNewOrUpdate($this, $request, $data, $form);
-
-        return $handler->getResponse();
-    }
-
-    protected function findOr404Error($id)
-    {
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        $entity = $this->getDoctrine()->getRepository($this->entityClass)->find($id);
-
-        if (!$entity) {
-            throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));
-        }
-
-        return $entity;
-    }
-
-    protected function isAllowedOr404Error($action)
-    {
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        if (!in_array($action, $this->container->getParameter('symfonian_id.admin.grid_action'))) {
-            throw new NotFoundHttpException($translator->trans('message.request_not_found', array(), $translationDomain));
-        }
-
-        return true;
-    }
-
-    protected function gridFields()
-    {
-        if (!empty($this->gridFields)) {
-            return $this->gridFields;
-        }
-
-        return $this->entityProperties();
-    }
-
-    protected function fireEvent($name, $handler)
-    {
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch($name, $handler);
     }
 
     /**
@@ -309,7 +255,7 @@ abstract class CrudController extends Controller
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function setListAjaxTemplate($template, $useAjax = true)
+    public function setAjaxListTemplate($template, $useAjax = true)
     {
         $this->listAjaxTemplate = $template;
         $this->useAjaxList = $useAjax;
@@ -317,7 +263,11 @@ abstract class CrudController extends Controller
         return $this;
     }
 
-    public function setFilterFields(array $fields)
+    /**
+     * @param array $fields
+     * @return $this
+     */
+    public function setFilter(array $fields)
     {
         $this->filterFields = $fields;
 
@@ -326,11 +276,11 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $javascriptTwigPath
-     * @param string $includeRoute
+     * @param array $includeRoute
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
-    public function includeJavascript($javascriptTwigPath, array $includeRoute = null)
+    public function includeJs($javascriptTwigPath, array $includeRoute = null)
     {
         $this->viewParams['include_javascript'] = $javascriptTwigPath;
 
@@ -373,6 +323,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $route
+     * @param string $valueStorageSelector
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
@@ -382,5 +333,73 @@ abstract class CrudController extends Controller
         $this->autocomplete['value_storage_selector'] = $valueStorageSelector;
 
         return $this;
+    }
+
+    protected function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
+    {
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        if (empty($this->autocomplete)) {
+            $this->autocomplete['route'] = 'home';
+            $this->autocomplete['value_storage_selector'] = '.selector';
+        }
+
+        $this->viewParams['page_title'] = $translator->trans($this->title, array(), $translationDomain);
+        $this->viewParams['action_method'] = $translator->trans('page.'.$action, array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
+        $this->viewParams['use_date_picker'] = $this->useDatePicker;
+        $this->viewParams['use_file_style'] = $this->useFileStyle;
+        $this->viewParams['use_editor'] = $this->useEditor;
+        $this->viewParams['autocomplete'] = $this->autocomplete;
+
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntityClass($this->entity);
+        $handler->setViewParams($this->viewParams);
+        $handler->setTemplate($template);
+        $handler->createNewOrUpdate($this, $request, $data, $form);
+
+        return $handler->getResponse();
+    }
+
+    protected function findOr404Error($id)
+    {
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        $entity = $this->getDoctrine()->getRepository($this->entity)->find($id);
+
+        if (!$entity) {
+            throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));
+        }
+
+        return $entity;
+    }
+
+    protected function isAllowedOr404Error($action)
+    {
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        if (!in_array($action, $this->container->getParameter('symfonian_id.admin.grid_action'))) {
+            throw new NotFoundHttpException($translator->trans('message.request_not_found', array(), $translationDomain));
+        }
+
+        return true;
+    }
+
+    protected function gridFields()
+    {
+        if (!empty($this->gridFields)) {
+            return $this->gridFields;
+        }
+
+        return $this->getEntityFields();
+    }
+
+    protected function fireEvent($name, $handler)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+        $dispatcher->dispatch($name, $handler);
     }
 }

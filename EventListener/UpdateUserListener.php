@@ -7,9 +7,9 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfonian\Indonesia\AdminBundle\Model\UserInterface;
+use FOS\UserBundle\Model\User;
 
 final class UpdateUserListener
 {
@@ -20,11 +20,11 @@ final class UpdateUserListener
         $this->container = $container;
     }
 
-    public function onPreSaveUser(GetEntityResponseEvent $event)
+    public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof UserInterface) {
+        if (!$entity instanceof User) {
             return;
         }
 
