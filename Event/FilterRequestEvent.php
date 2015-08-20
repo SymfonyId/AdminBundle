@@ -27,8 +27,7 @@ class FilterRequestEvent extends Event
     protected $entity;
 
     protected $entityManager;
-
-
+    
     /**
      * @param Request $request
      */
