@@ -23,7 +23,7 @@ services:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
     symfonian_id.admin.controller_default_view_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTamplateRegister
+        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateRegister
         arguments:
             - @service_container
         tags:
