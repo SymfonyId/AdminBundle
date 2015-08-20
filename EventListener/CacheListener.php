@@ -9,11 +9,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CacheListener
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
+
+    /**
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
+     */
+    private $tokenStorage;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->tokenStorage = $container->get('security.token_storage');
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -35,6 +44,10 @@ class CacheListener
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (!$this->container->getParameter('symfonian_id.admin.use_micro_cache')) {
+            return;
+        }
+
+        if ($this->tokenStorage->getToken()->getUser()) {
             return;
         }
 
