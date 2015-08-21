@@ -7,9 +7,9 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfonian\Indonesia\AdminBundle\Security\Controller\UserController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class UserControllerRegister
 {

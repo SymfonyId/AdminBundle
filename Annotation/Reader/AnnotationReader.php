@@ -7,21 +7,21 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Reader;
  * Url: https://github.com/ihsanudin
  */
 
+use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use ReflectionObject;
-use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Entity;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\AutoComplete;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\DatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Editor;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\IncludeJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class AnnotationReader
 {

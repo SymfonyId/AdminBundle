@@ -7,10 +7,10 @@ namespace Symfonian\Indonesia\AdminBundle\Security\Controller;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 /**
  * @Route("/user")

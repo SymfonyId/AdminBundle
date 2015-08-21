@@ -7,10 +7,10 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterFormEvent extends Event
 {

@@ -7,8 +7,8 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterEntityEvent extends GetEntityEvent
 {

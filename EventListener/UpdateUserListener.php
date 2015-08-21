@@ -7,9 +7,9 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
+use FOS\UserBundle\Model\User;
 use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use FOS\UserBundle\Model\User;
 
 final class UpdateUserListener
 {

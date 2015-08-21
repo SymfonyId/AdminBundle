@@ -8,9 +8,9 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\DateExtension;
  */
 
 use DateTime;
+use Symfonian\Indonesia\CoreBundle\Toolkit\Util\DateUtil\ValidIntervalChecker;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Symfonian\Indonesia\CoreBundle\Toolkit\Util\DateUtil\ValidIntervalChecker;
 
 class ValidateIntervalFunction extends Twig_Extension
 {
