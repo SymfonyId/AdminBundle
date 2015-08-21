@@ -7,12 +7,12 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
+use FOS\UserBundle\Model\UserInterface;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use FOS\UserBundle\Model\UserInterface;
 
 final class DeleteUserListener
 {

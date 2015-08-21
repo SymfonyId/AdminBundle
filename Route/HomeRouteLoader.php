@@ -9,9 +9,9 @@ namespace Symfonian\Indonesia\AdminBundle\Route;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class HomeRouteLoader implements LoaderInterface
 {

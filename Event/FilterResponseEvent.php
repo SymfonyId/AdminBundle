@@ -7,12 +7,12 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class FilterResponseEvent extends Event
 {

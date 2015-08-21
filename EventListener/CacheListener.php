@@ -3,9 +3,9 @@
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
 
 class CacheListener
 {

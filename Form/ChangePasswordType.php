@@ -7,10 +7,10 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ChangePasswordType extends AbstractType
 {

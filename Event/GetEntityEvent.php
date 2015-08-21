@@ -7,9 +7,9 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\EventDispatcher\Event;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 class GetEntityEvent extends Event
 {

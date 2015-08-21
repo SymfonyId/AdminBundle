@@ -3,12 +3,12 @@
 namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplate;
-use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
+use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Config\FileLocator;
 
 class SymfonianIndonesiaAdminBundle extends Bundle
 {

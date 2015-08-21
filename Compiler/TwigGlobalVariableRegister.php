@@ -7,9 +7,8 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class TwigGlobalVariableRegister
 {

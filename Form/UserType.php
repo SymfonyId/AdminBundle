@@ -7,11 +7,11 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
 
 class UserType extends AbstractType
 {

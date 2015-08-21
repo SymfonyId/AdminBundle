@@ -7,8 +7,8 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\EventDispatcher\Event;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\EventDispatcher\Event;
 
 final class FilterQueryEvent extends Event
 {
