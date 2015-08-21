@@ -1,6 +1,6 @@
 ###Cara Install SIAB (Symfonian Indonesia Admin Bundle)###
 
-1. Tambahkan ke composer.json
+**Tambahkan ke composer.json**
 
 ```lang=json
 "knplabs/knp-paginator-bundle": "2.4.*@dev",
@@ -12,10 +12,10 @@
 "symfonyid/symfony-bundle-plugins": "dev-master"
 ```
 
-2. Update composer
+**Update composer**
 
 ```lang=shell
 composer update --prefer-dist
 ```
 
-3. 
+**Register Bundle**

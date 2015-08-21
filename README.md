@@ -1,6 +1,6 @@
 #Symfonian Indonesia Admin Bundle [SIAB]#
 
-Repo Asli: [IhsanSimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
+Repo Asli: [Ihsan Simple Admin Bundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
 <img src="AdminBundle.png" alt="SymfonianIndonesiaAdminBundle membantu Anda membuat halaman backend dengan cepat dan memukau" title="SymfonianIndonesiaAdminBundle" align="center" />
 
@@ -29,8 +29,7 @@ Dimaintenance oleh: [Muhammad Surya Ihsanuddin](https://github.com/ihsanudin) da
 
 ####DONASI####
 
-[Komunitas Ikromul Aytam](https://www.facebook.com/pages/Komunitas-Ikromul-Aytam-KIA/302682336596867)
-Komunitas Ikromul Aytam adalah sebuah komunitas yang dimotori oleh beberapa developer lokal yang memiliki visi dan misi sama
+[Komunitas Ikromul Aytam](https://www.facebook.com/pages/Komunitas-Ikromul-Aytam-KIA/302682336596867) adalah sebuah komunitas yang dimotori oleh beberapa developer lokal yang memiliki visi dan misi sama
 yaitu untuk membuat anak yatim tersenyum gembira. Komunitas setiap bulannya memberikan sedikit senyuman berupa santunan
 kepada anak yatim diberbagai daerah di Indonesia (sistem bergilir). Bila Anda peduli dengan anak yatim atau merasa terbantu
 dengan program dan atau software yang kami buat. Sudilah kiranya Anda menyisihkan sebagian hasil dari pemanfaatan software ini
