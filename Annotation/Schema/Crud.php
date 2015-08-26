@@ -102,10 +102,6 @@ class Crud
 
     public function setEntity($entity)
     {
-        if (!is_subclass_of($entity, 'Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface')) {
-            throw new \InvalidArgumentException(sprintf('Entity %s must implement Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface', $entity));
-        }
-
         $this->entity = $entity;
     }
 
