@@ -11,7 +11,6 @@ use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use ReflectionObject;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Entity;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\AutoComplete;
