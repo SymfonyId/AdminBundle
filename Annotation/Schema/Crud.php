@@ -64,6 +64,10 @@ class Crud
         }
 
         if (isset($data['showFields'])) {
+            if (!is_array($data['showFields'])) {
+                $data['showFields'] = (array) $data['showFields'];
+            }
+
             $this->showFields = $data['showFields'];
         }
 
