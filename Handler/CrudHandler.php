@@ -184,7 +184,7 @@ class CrudHandler
     {
         $event = new FilterEntityEvent();
         $event->setEntity($data);
-        $event->setEntityMeneger($this->manager);
+        $event->setEntityManager($this->manager);
         $this->fireEvent(Event::PRE_DELETE, $event);
 
         if ($event->getResponse()) {
@@ -300,7 +300,7 @@ class CrudHandler
                 $preSaveEvent = new FilterRequestEvent();
                 $preSaveEvent->setRequest($request);
                 $preSaveEvent->setEntity($data);
-                $preSaveEvent->setEntityMeneger($this->manager);
+                $preSaveEvent->setEntityManager($this->manager);
                 $preSaveEvent->setForm($form);
                 $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
 
@@ -308,7 +308,7 @@ class CrudHandler
                 $this->manager->flush();
 
                 $postSaveEvent = new GetEntityEvent();
-                $postSaveEvent->setEntityMeneger($this->manager);
+                $postSaveEvent->setEntityManager($this->manager);
                 $postSaveEvent->setEntity($data);
                 $this->fireEvent(Event::POST_SAVE, $postSaveEvent);
 

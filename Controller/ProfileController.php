@@ -105,7 +105,7 @@ class ProfileController extends Controller
                 $dispatcher = $this->container->get('event_dispatcher');
 
                 $event = new GetEntityEvent();
-                $event->setEntityMeneger($entityManager);
+                $event->setEntityManager($entityManager);
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);
