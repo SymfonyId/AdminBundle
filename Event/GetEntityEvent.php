@@ -20,7 +20,7 @@ class GetEntityEvent extends Event
     /**
      * @param ObjectManager $entityManager
      */
-    public function setEntityMeneger(ObjectManager $entityManager)
+    public function setEntityManager(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
