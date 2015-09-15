@@ -52,6 +52,7 @@ abstract class CrudController extends Controller
      * @Method({"POST", "GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
@@ -82,6 +83,7 @@ abstract class CrudController extends Controller
      *
      * @param Request $request
      * @param $id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
@@ -114,6 +116,7 @@ abstract class CrudController extends Controller
      *
      * @param Request $request
      * @param $id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, $id)
@@ -141,6 +144,7 @@ abstract class CrudController extends Controller
      * @Method({"DELETE"})
      *
      * @param $id
+     *
      * @return JsonResponse
      */
     public function deleteAction($id)
@@ -161,7 +165,9 @@ abstract class CrudController extends Controller
     /**
      * @Route("/list/")
      * @Method({"GET"})
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(Request $request)
@@ -257,7 +263,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $template
-     * @param bool $useAjax
+     * @param bool   $useAjax
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
@@ -271,6 +277,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param array $fields
+     *
      * @return $this
      */
     public function setFilter(array $fields)
@@ -282,7 +289,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param string $javascriptTwigPath
-     * @param array $includeRoute
+     * @param array  $includeRoute
      *
      * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */

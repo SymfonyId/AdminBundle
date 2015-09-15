@@ -107,7 +107,7 @@ final class AnnotationReader
             $controller->setEntity($annotation->getEntity());
         }
 
-        if (! $annotation->getShowFields()) {
+        if (!$annotation->getShowFields()) {
             throw new InvalidArgumentException('show fields must be set.');
         }
 

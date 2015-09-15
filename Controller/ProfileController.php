@@ -23,6 +23,7 @@ class ProfileController extends Controller
      * @Method({"GET"})
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function profileAction(Request $request)

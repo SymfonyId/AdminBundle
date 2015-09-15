@@ -28,7 +28,7 @@ class IncludeJavascript implements UtilAnnotationInterface
         }
 
         if (isset($data['includeRoute'])) {
-            if (! is_array($data['includeRoute'])) {
+            if (!is_array($data['includeRoute'])) {
                 $data['includeRoute'] = (array) $data['includeRoute'];
             }
 

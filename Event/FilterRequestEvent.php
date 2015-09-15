@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormInterface;
 
 class FilterRequestEvent extends FilterEntityEvent
 {
-
     protected $form;
 
     protected $formData;
