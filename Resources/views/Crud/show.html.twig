@@ -47,7 +47,7 @@
                                         <a href="{{- upload_dir['web_path'] ~ property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
                                     {% else %}
                                         {% if property.value is empty %}
-                                            {{ '' }}
+                                            {{ '&nbsp' | raw }}
                                         {% else %}
                                             {{- property.value | raw -}}
                                         {% endif %}
