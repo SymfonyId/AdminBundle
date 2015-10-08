@@ -107,7 +107,7 @@ abstract class CrudController extends Controller
 
         $form = $event->getForm() ?: $this->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $this->editTemplate, $entity, $form);
+        return $this->handle($request, CrudHandler::ACTION_UPDATE, $this->editTemplate, $entity, $form);
     }
 
     /**
@@ -359,7 +359,7 @@ abstract class CrudController extends Controller
         }
 
         $this->viewParams['page_title'] = $translator->trans($this->title, array(), $translationDomain);
-        $this->viewParams['action_method'] = $translator->trans('page.'.$action, array(), $translationDomain);
+        $this->viewParams['action_method'] = $translator->trans('page.'.strtolower($action), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
         $this->viewParams['use_date_picker'] = $this->useDatePicker;
         $this->viewParams['use_file_style'] = $this->useFileStyle;
