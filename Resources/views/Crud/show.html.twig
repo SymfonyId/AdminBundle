@@ -46,7 +46,11 @@
                                     {% if property.value matches '/\.(?:png|jpg|jpeg|xls|xlsx|pdf|doc|docx|mp3|mp4|3gp|mkv)$/' %}
                                         <a href="{{- upload_dir['web_path'] ~ property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
                                     {% else %}
-                                        {{- property.value | raw -}}
+                                        {% if property.value is empty %}
+                                            {{ '' }}
+                                        {% else %}
+                                            {{- property.value | raw -}}
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {%- endif -%}
