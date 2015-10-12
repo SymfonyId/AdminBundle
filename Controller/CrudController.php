@@ -358,9 +358,9 @@ abstract class CrudController extends Controller
             $this->autocomplete['value_storage_selector'] = '.selector';
         }
 
-        $this->viewParams['page_title'] = $translator->trans($this->title, array(), $translationDomain);
+        $this->viewParams['page_title'] = $translator->trans(strtolower($this->title), array(), $translationDomain);
         $this->viewParams['action_method'] = $translator->trans('page.'.strtolower($action), array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($this->description, array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans(strtolower($this->description), array(), $translationDomain);
         $this->viewParams['use_date_picker'] = $this->useDatePicker;
         $this->viewParams['use_file_style'] = $this->useFileStyle;
         $this->viewParams['use_editor'] = $this->useEditor;
