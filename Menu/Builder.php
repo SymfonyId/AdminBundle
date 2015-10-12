@@ -85,7 +85,7 @@ class Builder
             ),
         ));
 
-        if ($this->routeCollection->get('symfonian_indonesia_admin_security_user_new')) {
+        if ($this->routeCollection->get('symfonian_indonesia_admin_security_user_new') && $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
         }
 
@@ -94,10 +94,6 @@ class Builder
 
     protected function addUserMenu(ItemInterface $menu)
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            return;
-        }
-
         $menu->addChild('User', array(
             'uri' => '#',
             'label' => sprintf('<i class="fa fa-shield"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.user.title', array(), $this->translationDomain)),
