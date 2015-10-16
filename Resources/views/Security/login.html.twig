@@ -1,10 +1,5 @@
 {%- extends 'SymfonianIndonesiaAdminBundle:Security:layout.html.twig' -%}
 
-{%- block page -%}
-    <body class="login-page">
-        <div class="login-box">
-{%- endblock -%}
-
 {%- block content -%}
     {%- if error -%}
         <div class="box box-solid box-danger">
@@ -21,33 +16,32 @@
     {%- endif -%}
     <div class="login-logo">
         <a href="{{- url('fos_user_security_login') -}}"><b>{{- title -}}</b></a>
-        </div>
-        <div class="login-box-body">
-            <p class="login-box-msg"><b>{{- 'message.login_title' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</b></p>
-            <form action="{{- url('fos_user_security_check') -}}" method="post">
-                <input type="hidden" name="_csrf_token" value="{{- csrf_token -}}" />
-                <div class="form-group has-feedback">
-                    <input name="_username" type="text" class="form-control" placeholder="{{- 'message.username' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}"/>
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input name="_password" type="password" class="form-control" placeholder="{{- 'message.password' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}"/>
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                                <input name="_remember_me" type="checkbox"> {{- 'message.remember_me' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
-                            </label>
-                        </div>
-                    </div><!-- /.col -->
-                    <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{- 'action.login' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                    </div><!-- /.col -->
-                </div>
-            </form>
-        </div>
+    </div>
+    <div class="login-box-body">
+        <p class="login-box-msg"><b>{{- 'message.login_title' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</b></p>
+        <form action="{{- url('fos_user_security_check') -}}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{- csrf_token -}}" />
+            <div class="form-group has-feedback">
+                <input name="_username" type="text" class="form-control" placeholder="{{- 'message.username' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}"/>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input name="_password" type="password" class="form-control" placeholder="{{- 'message.password' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}"/>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input name="_remember_me" type="checkbox"> {{- 'message.remember_me' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                        </label>
+                    </div>
+                </div><!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">{{- 'action.login' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                </div><!-- /.col -->
+            </div>
+        </form>
     </div>
 {%- endblock -%}
 

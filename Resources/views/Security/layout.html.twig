@@ -3,15 +3,14 @@
     <head>
         {%- include 'SymfonianIndonesiaAdminBundle:Security:Layout/header.html.twig' with { page_title: block('page_title'), css: block('css') } -%}
     </head>
-        {%- block page -%}{%- endblock-%}
-
-    {%- block content -%}{%- endblock-%}
-
-    {%- include 'SymfonianIndonesiaAdminBundle:Security:Layout/footer.html.twig'
-    with {
-        javascript: block('javascript')
-    }
-    -%}
+    <body class="login-page">
+        <div class="login-box">
+            {%- block content -%}{%- endblock-%}
+            {%- include 'SymfonianIndonesiaAdminBundle:Security:Layout/footer.html.twig'
+            with {
+                javascript: block('javascript')
+            }
+            -%}
         </div>
     </body>
 </html>
