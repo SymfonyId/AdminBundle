@@ -10,6 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterResultEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
@@ -120,11 +121,11 @@ class CrudHandler
             }
         }
 
-        $event = new FilterQueryEvent();
-        $event->setQueryBuilder($queryBuilder);
-        $event->setAlias(self::ENTITY_ALIAS);
-        $event->setEntity($this->class);
-        $this->fireEvent(Event::FILTER_LIST, $event);
+        $filterList = new FilterQueryEvent();
+        $filterList->setQueryBuilder($queryBuilder);
+        $filterList->setAlias(self::ENTITY_ALIAS);
+        $filterList->setEntity($this->class);
+        $this->fireEvent(Event::FILTER_LIST, $filterList);
 
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
@@ -133,12 +134,20 @@ class CrudHandler
         $query->useQueryCache(true);
         $query->useResultCache(true, 1, serialize($query->getParameters()));
 
+        $filterResult = new FilterResultEvent();
+        $filterResult->setQuery($query);
+        $filterResult->setEntity($this->class);
+        $this->fireEvent(Event::FILTER_RESULT, $filterResult);
+
         $paginator = $this->container->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, $perPage);
+        $pagination = $paginator->paginate($filterResult->getResult(), $page, $perPage);
 
         $data = array();
         $identifier = array();
         foreach ($pagination as $key => $record) {
+            /**
+             * @var $record \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface
+             */
             $temp = array();
             $identifier[$key] = $record->getId();
 
