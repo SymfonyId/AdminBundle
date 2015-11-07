@@ -163,6 +163,7 @@ abstract class CrudController extends Controller
     }
 
     /**
+     * @Route("/")
      * @Route("/list/")
      * @Method({"GET"})
      *
