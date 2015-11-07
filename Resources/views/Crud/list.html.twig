@@ -43,28 +43,33 @@
     <script type="text/javascript">
         jQuery(document).ready(function () {
             jQuery(document).on('click', '.add-new', function () {
-                var url = document.URL.replace('list', 'new');
-                window.location = url;
+                window.location = createActionUrl('new');
             });
 
             jQuery(document).on('click', '.show', function () {
-                var url = document.URL.replace('list', jQuery(this).data('record') + '/show');
-
-                window.location = url;
+                window.location = createActionUrl('show');
             });
 
             jQuery(document).on('click', '.edit', function () {
-                var url = document.URL.replace('list', jQuery(this).data('record') + '/edit');
-
-                window.location = url;
+                window.location = createActionUrl(jQuery(this).data('record') + '/edit');
             });
 
             jQuery(document).on('click', '.delete', function () {
-                var url = document.URL.replace('list', jQuery(this).data('record') + '/show?delete');
-
-                window.location = url;
+                window.location = createActionUrl(jQuery(this).data('record') + '/show?delete');
             });
         });
+
+        function createActionUrl(actionUrl) {
+            var url = document.URL;
+            console.log(url.substring(url.length - 5));
+            if ('list/' === url.substring(url.length - 5)) {
+                url = url.replace('list', actionUrl);
+            } else {
+                url = url + actionUrl;
+            }
+
+            return url;
+        }
     </script>
     {%- if use_ajax is defined -%}
         {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_jquery.html.twig' -%}
