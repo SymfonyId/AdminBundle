@@ -47,7 +47,7 @@
             });
 
             jQuery(document).on('click', '.show', function () {
-                window.location = createActionUrl('show');
+                window.location = createActionUrl(jQuery(this).data('record') + '/show');
             });
 
             jQuery(document).on('click', '.edit', function () {
