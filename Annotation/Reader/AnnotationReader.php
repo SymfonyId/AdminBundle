@@ -126,8 +126,12 @@ final class AnnotationReader
             $controller->setFilter($annotation->getFilter());
         }
 
-        if ($annotation->getNormalizeFilter()) {
-            $controller->upperCaseFilter($annotation->getNormalizeFilter());
+        if ($annotation->normalizeFilter()) {
+            $controller->upperCaseFilter($annotation->normalizeFilter());
+        }
+
+        if (false === $annotation->formatNumber()) {
+            $controller->formatNumber($annotation->formatNumber());
         }
     }
 

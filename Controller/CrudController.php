@@ -23,6 +23,8 @@ abstract class CrudController extends Controller
 {
     protected $normalizeFilter = false;
 
+    protected $formatNumber = true;
+
     protected $gridFields = array();
 
     protected $newTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
@@ -185,7 +187,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($this->entity);
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter);
+        $handler->viewList($request, $this->gridFields(), $this->filterFields, $this->normalizeFilter, $this->formatNumber);
 
         return $handler->getResponse();
     }
@@ -198,6 +200,18 @@ abstract class CrudController extends Controller
     public function upperCaseFilter($normalizeFilter = true)
     {
         $this->normalizeFilter = $normalizeFilter;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $formatNumber
+     *
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function formatNumber($formatNumber = true)
+    {
+        $this->formatNumber = $formatNumber;
 
         return $this;
     }

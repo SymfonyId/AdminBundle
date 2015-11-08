@@ -19,6 +19,8 @@ class Grid
 
     private $normalizeFilter = false;
 
+    private $formatNumber = true;
+
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
@@ -45,6 +47,10 @@ class Grid
             $this->normalizeFilter = (bool) $data['normalizeFilter'];
         }
 
+        if (isset($data['formatNumber'])) {
+            $this->formatNumber = (bool) $data['formatNumber'];
+        }
+
         unset($data);
     }
 
@@ -58,8 +64,13 @@ class Grid
         return $this->filter;
     }
 
-    public function getNormalizeFilter()
+    public function normalizeFilter()
     {
         return $this->normalizeFilter;
+    }
+
+    public function formatNumber()
+    {
+        return $this->formatNumber;
     }
 }

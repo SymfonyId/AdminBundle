@@ -107,8 +107,9 @@ class CrudHandler
      * @param array      $gridFields
      * @param array      $filterFields
      * @param bool|false $normalizeFilter
+     * @param bool|true $formatNumber
      */
-    public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false)
+    public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false, $formatNumber = true)
     {
         $queryBuilder = $this->repository->createQueryBuilder(self::ENTITY_ALIAS);
         $queryBuilder->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
@@ -179,6 +180,7 @@ class CrudHandler
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
+        $viewParams['formating_number'] = $formatNumber;
         $viewParams['record'] = $data;
         $viewParams['filter'] = $filter;
 
