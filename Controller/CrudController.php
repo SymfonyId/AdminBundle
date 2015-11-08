@@ -68,12 +68,8 @@ abstract class CrudController extends Controller
         if ($response) {
             return $response;
         }
-
-        $entity = $event->getFormData();
-        if (!$entity) {
-            $entity = new $this->entity();
-        }
-
+        
+        $entity = new $this->entity();
         $form = $event->getForm() ?: $this->getForm($entity);
 
         return $this->handle($request, CrudHandler::ACTION_CREATE, $this->newTemplate, $entity, $form);
@@ -102,11 +98,7 @@ abstract class CrudController extends Controller
             return $response;
         }
 
-        $entity = $event->getFormData();
-        if (!$entity) {
-            $entity = $this->findOr404Error($id);
-        }
-
+        $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $this->getForm($entity);
 
         return $this->handle($request, CrudHandler::ACTION_UPDATE, $this->editTemplate, $entity, $form);
