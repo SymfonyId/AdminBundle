@@ -22,6 +22,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
+    symfonian_id.admin.remove_password_field:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
+        tags:
+            - { name: kernel.event_listener, event: symfonian_id.admin.pre_form_submit_event, method: onPreCreateForm }
+
     symfonian_id.admin.controller_default_view_pass:
         class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateRegister
         arguments:
