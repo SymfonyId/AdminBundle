@@ -186,119 +186,81 @@ abstract class CrudController extends Controller
 
     /**
      * @param bool $normalizeFilter
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function upperCaseFilter($normalizeFilter = true)
     {
         $this->normalizeFilter = $normalizeFilter;
-
-        return $this;
     }
 
     /**
      * @param bool $formatNumber
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function formatNumber($formatNumber = true)
     {
         $this->formatNumber = $formatNumber;
-
-        return $this;
     }
 
     /**
      * @param array $fields
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setGridFields(array $fields)
     {
         $this->gridFields = $fields;
-
-        return $this;
     }
 
     /**
      * @param string $template
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setNewTemplate($template)
     {
         $this->newTemplate = $template;
-
-        return $this;
     }
 
     /**
      * @param string $template
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setEditTemplate($template)
     {
         $this->editTemplate = $template;
-
-        return $this;
     }
 
     /**
      * @param string $template
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setShowTemplate($template)
     {
         $this->showTemplate = $template;
-
-        return $this;
     }
 
     /**
      * @param string $template
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setListTemplate($template)
     {
         $this->listTemplate = $template;
-
-        return $this;
     }
 
     /**
      * @param string $template
      * @param bool   $useAjax
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setAjaxTemplate($template, $useAjax = true)
     {
         $this->listAjaxTemplate = $template;
         $this->useAjaxList = $useAjax;
-
-        return $this;
     }
 
     /**
      * @param array $fields
-     *
-     * @return $this
      */
     public function setFilter(array $fields)
     {
         $this->filterFields = $fields;
-
-        return $this;
     }
 
     /**
      * @param string $javascriptTwigPath
      * @param array  $includeRoute
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function includeJs($javascriptTwigPath, array $includeRoute = null)
     {
@@ -307,8 +269,6 @@ abstract class CrudController extends Controller
         if ($includeRoute) {
             $this->viewParams['include_route'] = $includeRoute;
         }
-
-        return $this;
     }
 
     /**
@@ -317,8 +277,6 @@ abstract class CrudController extends Controller
     public function useDatePicker()
     {
         $this->useDatePicker = true;
-
-        return $this;
     }
 
     /**
@@ -327,8 +285,6 @@ abstract class CrudController extends Controller
     public function useCustomFileChooser()
     {
         $this->useFileStyle = true;
-
-        return $this;
     }
 
     /**
@@ -337,22 +293,16 @@ abstract class CrudController extends Controller
     public function useEditor()
     {
         $this->useEditor = true;
-
-        return $this;
     }
 
     /**
      * @param string $route
      * @param string $valueStorageSelector
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
      */
     public function setAutoComplete($route, $valueStorageSelector)
     {
         $this->autocomplete['route'] = $route;
         $this->autocomplete['value_storage_selector'] = $valueStorageSelector;
-
-        return $this;
     }
 
     protected function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)

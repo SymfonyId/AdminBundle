@@ -14,8 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangePasswordType extends AbstractType
 {
-    const FORM_NAME = 'change_password';
-
     protected $container;
 
     public function __construct(ContainerInterface $container)
@@ -64,12 +62,12 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention' => self::FORM_NAME,
+            'intention' => $this->getName(),
         ));
     }
 
     public function getName()
     {
-        return self::FORM_NAME;
+        return 'change_password';
     }
 }

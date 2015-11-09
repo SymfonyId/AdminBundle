@@ -48,38 +48,26 @@ abstract class Controller extends BaseController
 
     /**
      * @param array $fields
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
     public function setShowFields(array $fields)
     {
         $this->showFields = $fields;
-
-        return $this;
     }
 
     /**
      * @param string $title
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
      * @param string $description
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
     }
 
     protected function getForm($data = null)
@@ -102,14 +90,10 @@ abstract class Controller extends BaseController
 
     /**
      * @param string $form
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\Controller
      */
     public function setForm($form)
     {
         $this->form = $form;
-
-        return $this;
     }
 
     /**
@@ -120,8 +104,6 @@ abstract class Controller extends BaseController
     public function setEntity($entity)
     {
         $this->entity = $entity;
-
-        return $this;
     }
 
     /**

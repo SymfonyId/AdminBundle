@@ -36,8 +36,6 @@ abstract class User extends BaseUser implements EntityInterface
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-
-        return $this;
     }
 
     public function getAvatar()
@@ -48,8 +46,6 @@ abstract class User extends BaseUser implements EntityInterface
     public function setFullName($fullName)
     {
         $this->fullName = $fullName;
-
-        return $this;
     }
 
     public function getFullName()

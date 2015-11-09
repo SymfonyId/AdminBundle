@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    const FORM_NAME = 'user';
-
     protected $container;
 
     protected $roleHierarchy;
@@ -87,7 +85,7 @@ class UserType extends AbstractType
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
             'validation_groups' => array('Registration', 'Default'),
-            'intention' => self::FORM_NAME,
+            'intention' => $this->getName(),
         ));
     }
 
@@ -103,6 +101,6 @@ class UserType extends AbstractType
 
     public function getName()
     {
-        return self::FORM_NAME;
+        return 'user';
     }
 }

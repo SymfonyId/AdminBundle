@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GenericFormType extends AbstractType
 {
-    const FORM_NAME = 'generic';
-
     /**
      * @var Controller
      */
@@ -60,12 +58,12 @@ class GenericFormType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->controller->getEntity(),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention' => self::FORM_NAME,
+            'intention' => $this->getName(),
         ));
     }
 
     public function getName()
     {
-        return self::FORM_NAME;
+        return 'generic';
     }
 }
