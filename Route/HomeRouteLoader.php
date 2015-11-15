@@ -39,7 +39,7 @@ final class HomeRouteLoader implements LoaderInterface
         $defaults = array(
             '_controller' => $this->container->getParameter('symfonian_id.admin.home.controller'),
         );
-        $route = new Route($path, $defaults);
+        $route = new Route($path, $defaults, array(), array('expose' => true));
         $route->setMethods('GET');
 
         $routes->add('home', $route);
