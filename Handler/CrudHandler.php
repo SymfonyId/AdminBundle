@@ -20,6 +20,7 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 
 class CrudHandler
 {
@@ -153,12 +154,12 @@ class CrudHandler
             $identifier[$key] = $record->getId();
 
             foreach ($gridFields as $k => $property) {
-                $method = 'get'.ucfirst($property);
+                $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
 
                 if (method_exists($record, $method)) {
                     array_push($temp, call_user_func_array(array($record, $method), array()));
                 } else {
-                    $method = 'is'.ucfirst($property);
+                    $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
 
                     if (method_exists($record, $method)) {
                         array_push($temp, call_user_func_array(array($record, $method), array()));
