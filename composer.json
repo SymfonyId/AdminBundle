@@ -22,10 +22,10 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-menu-bundle": "~2",
+        "symfonyid/core-bundle": "~1.0",
+        "symfonyid/symfony-bundle-plugins": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "friendsofsymfony/jsrouting-bundle": "dev-master",
-        "symfonyid/core-bundle": "dev-master",
-        "symfonyid/symfony-bundle-plugins": "dev-master"
+        "friendsofsymfony/jsrouting-bundle": "dev-master"
     },
     "autoload": {
         "psr-4": {
