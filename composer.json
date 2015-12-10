@@ -16,16 +16,21 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "symfony/symfony": "~2.7",
-        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
-        "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
-        "knplabs/knp-paginator-bundle": "~2.4",
-        "knplabs/knp-menu-bundle": "~2",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
-        "friendsofsymfony/jsrouting-bundle": "dev-master",
+        "php": ">=5.5.9",
+        "symfony/symfony": "3.0.*",
+        "doctrine/orm": "^2.5",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-cache-bundle": "^1.2",
+        "symfony/swiftmailer-bundle": "^2.3",
+        "symfony/monolog-bundle": "^2.8",
+        "sensio/distribution-bundle": "^5.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "dev-master",
         "symfonyid/core-bundle": "dev-master",
-        "symfonyid/symfony-bundle-plugins": "dev-master"
+        "symfonyid/symfony-bundle-plugins": "dev-master",
+        "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "dev-master"
     },
     "autoload": {
         "psr-4": {
