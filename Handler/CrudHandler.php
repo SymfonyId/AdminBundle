@@ -146,6 +146,7 @@ class CrudHandler
 
         $data = array();
         $identifier = array();
+        $header = array();
         foreach ($pagination as $key => $record) {
             /**
              * @var $record \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface
@@ -154,16 +155,32 @@ class CrudHandler
             $identifier[$key] = $record->getId();
 
             foreach ($gridFields as $k => $property) {
-                $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
+                $field = $property;
+                $numberFormat = array();
+                if (is_array($property)) {
+                    $field = $property['field'];
+                    $numberFormat = $property['format'];
+                }
+                array_push($header, $field);
 
+                $method = CamelCasizer::underScoretToCamelCase('get_'.$field);
+                $result = null;
                 if (method_exists($record, $method)) {
-                    array_push($temp, call_user_func_array(array($record, $method), array()));
+                    $result = call_user_func_array(array($record, $method), array());
                 } else {
-                    $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
+                    $method = CamelCasizer::underScoretToCamelCase('is_'.$field);
 
                     if (method_exists($record, $method)) {
-                        array_push($temp, call_user_func_array(array($record, $method), array()));
+                        $result = call_user_func_array(array($record, $method), array());
                     }
+                }
+
+                if ($result) {
+                    if (!empty($numberFormat)) {
+                        $result = number_format($result, $numberFormat['decimal'], $numberFormat['decimal_point'], $numberFormat['thousand_separator']);
+                    }
+
+                    array_push($temp, $result);
                 }
             }
 
@@ -176,7 +193,7 @@ class CrudHandler
         $viewParams['pagination'] = $pagination;
         $viewParams['start'] = ($page - 1) * $perPage;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['header'] = array_merge($gridFields, array('action'));
+        $viewParams['header'] = array_merge($header, array('action'));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
