@@ -161,7 +161,10 @@ class CrudHandler
                     $field = $property['field'];
                     $numberFormat = $property['format'];
                 }
-                array_push($header, $field);
+
+                if (0 === $key) {
+                    array_push($header, $field);
+                }
 
                 $method = CamelCasizer::underScoretToCamelCase('get_'.$field);
                 $result = null;
