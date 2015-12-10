@@ -1,14 +1,18 @@
 <table class="table table-hover table-bordered">
+    {% set total_columns = 0 %}
     <tr>
         <td><strong>No</strong></td>
         {%- for i, value in header -%}
+            {% set total_columns = total_columns + 1 %}
             <td><strong>{{- value | humanize | upper -}}</strong></td>
         {%- endfor -%}
     </tr>
     {%- for key, value in record -%}
         <tr>
             <td>{{- start + key + 1 -}}</td>
+            {% set record_columns = 0 %}
             {%- for i, v in value -%}
+                {% set record_columns = record_columns + 1 %}
                 <td>
                 {%- if v.timezone is defined -%}
                     {{- v | date(date_time_format) -}}
@@ -29,6 +33,11 @@
                 {%- endif -%}
                 </td>
             {%- endfor -%}
+            {% if record_columns + 3 is not sameas(total_columns) %}
+                {% for 1..(total_columns - record_columns) %}
+                    {{- '<td></td>' -}}
+                {% endfor %}
+            {% endif %}
             <td width="22%">
                 <div class="btn-group" role="group">
                     {%- for i, v in action -%}
