@@ -81,6 +81,8 @@ services:
         arguments:
             - '@service_container'
             - '%security.role_hierarchy.roles%'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
