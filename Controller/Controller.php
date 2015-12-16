@@ -82,7 +82,7 @@ abstract class Controller extends BaseController
             }
         }
 
-        $form = $this->createForm($formObject);
+        $form = $this->createForm(get_class($formObject));
         $form->setData($data);
 
         return $form;

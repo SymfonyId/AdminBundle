@@ -11,6 +11,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GenericFormType extends AbstractType
@@ -45,7 +46,7 @@ class GenericFormType extends AbstractType
             ));
         }
 
-        $builder->add('save', 'submit', array(
+        $builder->add('save', SubmitType::class, array(
             'label' => 'action.submit',
             'attr' => array(
                 'class' => 'btn btn-primary',
