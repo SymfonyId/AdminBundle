@@ -7,7 +7,6 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,24 +16,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GenericFormType extends AbstractType
 {
     /**
-     * @var Controller
-     */
-    protected $controller;
-
-    /**
      * @var ContainerInterface
      */
     protected $container;
 
-    public function __construct(Controller $controller, ContainerInterface $container)
+    protected $entity;
+
+    public function __construct(ContainerInterface $container)
     {
-        $this->controller = $controller;
         $this->container = $container;
+    }
+
+    public function setEntity($entity)
+    {
+        if (is_object($entity)) {
+            $entity = get_class($entity);
+        }
+
+        $this->entity = $entity;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->controller->getEntityFields() as $key => $value) {
+        foreach ($options['fields'] as $key => $value) {
             if ('id' === $value) {
                 continue;
             }
@@ -57,10 +61,12 @@ class GenericFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->controller->getEntity(),
+            'data_class' => $this->entity,
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
             'intention' => $this->getName(),
         ));
+
+        $resolver->setRequired(array('fields'));
     }
 
     public function getName()

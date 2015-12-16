@@ -75,6 +75,15 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
             - '@service_container'
+        tags:
+            - { name: form.type }
+
+    symfonian_id.admin.generic_form:
+        class: Symfonian\Indonesia\AdminBundle\Form\GenericFormType
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.user_form:
         class: Symfonian\Indonesia\AdminBundle\Form\UserType
