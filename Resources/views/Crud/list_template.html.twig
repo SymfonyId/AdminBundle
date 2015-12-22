@@ -23,7 +23,7 @@
                         {% if v is numeric and formating_number %}
                             {{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
                         {% else %}
-                            {{- v -}}
+                            {{- v | raw -}}
                         {% endif %}
                     {%- endif -%}
                 {%- endif -%}
