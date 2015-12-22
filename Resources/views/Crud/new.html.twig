@@ -133,8 +133,12 @@
 
             jQuery(document).on('click', '.add_new', function () {
                 var loc = window.location;
+                var url = loc.pathname.split('/');
+                url.pop();
+                url.pop();
+                url.pop();
 
-                window.location =  loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+                window.location =  loc.protocol + '//' + loc.host + url.join('/') + '/new' + loc.search;
             });
 
             jQuery(document).on('click', '.success-close', function () {

@@ -22,7 +22,7 @@ Untuk cara instalasi dapat dibaca pada dokumentasi [versi Indonesia](Resources/d
 
 ####Skeleton####
 
-Tak mau repot-repot dan ingin langsung jalan? Gunakan [SIABSkeleton](https://github.com/SymfonyId/SIABSkeleton)
+Tak mau repot-repot dan ingin langsung jalan? Gunakan [SIABSkeleton](https://github.com/SymfonyId/Skeleton)
 
 ####Kontributor####
 Dimaintenance oleh: [Muhammad Surya Ihsanuddin](https://github.com/ihsanudin) dan Para [Kontributor](https://github.com/SymfonyId/AdminBundle/graphs/contributors)

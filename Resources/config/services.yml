@@ -75,12 +75,23 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
             - '@service_container'
+        tags:
+            - { name: form.type }
+
+    symfonian_id.admin.generic_form:
+        class: Symfonian\Indonesia\AdminBundle\Form\GenericFormType
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.user_form:
         class: Symfonian\Indonesia\AdminBundle\Form\UserType
         arguments:
             - '@service_container'
             - '%security.role_hierarchy.roles%'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader

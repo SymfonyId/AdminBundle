@@ -60,7 +60,8 @@
         });
 
         function createActionUrl(actionUrl) {
-            var url = document.location.pathname;
+            var url = document.URL;
+            console.log(url.substring(url.length - 5));
             if ('list/' === url.substring(url.length - 5)) {
                 url = url.replace('list', actionUrl);
             } else {

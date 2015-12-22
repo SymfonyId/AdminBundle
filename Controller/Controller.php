@@ -72,17 +72,20 @@ abstract class Controller extends BaseController
 
     protected function getForm($data = null)
     {
+        $options = array();
         try {
             $formObject = $this->container->get($this->form);
         } catch (\Exception $ex) {
             if ($this->form) {
                 $formObject = new $this->form();
             } else {
-                $formObject = new GenericFormType($this, $this->container);
+                $formObject = $this->container->get('symfonian_id.admin.generic_form');
+                $formObject->setEntity($this->getEntity());
+                $options = array('fields' => $this->getEntityFields());
             }
         }
 
-        $form = $this->createForm($formObject);
+        $form = $this->createForm(get_class($formObject), null, $options);
         $form->setData($data);
 
         return $form;
