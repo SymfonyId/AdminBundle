@@ -45,7 +45,7 @@ git clone git@github.com:SymfonyId/Skeleton.git
 Kemudian jalankan perintah berikut dari root project, jalankan composer install
 
 ```lang=shell
-composer install
+composer update --prefer-dist
 ```
 
 Setelah semuanya terinstall jalankan
