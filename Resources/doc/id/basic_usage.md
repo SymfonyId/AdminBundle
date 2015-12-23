@@ -1,6 +1,6 @@
 ###Cara Penggunaan###
 
-1. Buat Entity
+- Buat Entity
 
 ```lang=php
 <?php
@@ -57,7 +57,7 @@ class IdName implements EntityInterface
 }
 ```
 
-2. Buat CRUD Controllernya
+- Buat CRUD Controllernya
 
 ```lang=php
 <?php
@@ -88,7 +88,7 @@ class IdNameController extends CrudController
 }
 ```
 
-3. Daftarkan menunya
+- Daftarkan menunya
 
 ```lang=php
 <?php
@@ -154,7 +154,7 @@ class Builder extends BaseMenu
 }
 ```
 
-4. Buat Confignya
+- Buat Confignya
 
 ```lang=yaml
 assetic:
@@ -214,7 +214,7 @@ fos_user:
 
 Jangan lupa untuk mendaftarkan di `app/config/config.yml`
 
-5. Buat service untuk menunya
+- Buat service untuk menunya
 
 ```lang=yaml
 services:
