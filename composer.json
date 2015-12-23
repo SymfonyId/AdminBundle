@@ -36,6 +36,5 @@
         "psr-4": {
             "Symfonian\\Indonesia\\AdminBundle\\": ""
         }
-    },
-    "preferred-install": "dist"
+    }
 }

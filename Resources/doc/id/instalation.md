@@ -2,20 +2,66 @@
 
 **Tambahkan ke composer.json**
 
+Tambahkan dependencies berikut pada composer.json pada root project Anda
+
 ```lang=json
-"knplabs/knp-paginator-bundle": "2.4.*@dev",
-"knplabs/knp-menu-bundle": "~2",
-"friendsofsymfony/user-bundle": "~2.0@dev",
+"knplabs/knp-paginator-bundle": "dev-master",
+"knplabs/knp-menu-bundle": "dev-master",
+"friendsofsymfony/user-bundle": "dev-master",
 "friendsofsymfony/jsrouting-bundle": "dev-master",
-"symfonyid/admin-bundle": "dev-master",
 "symfonyid/core-bundle": "dev-master",
-"symfonyid/symfony-bundle-plugins": "dev-master"
+"symfonyid/symfony-bundle-plugins": "dev-master",
+"symfonyid/admin-bundle": "dev-master"
 ```
 
 **Update composer**
+
+Jalan command dibawah ini pada terminal/command prompt Anda
 
 ```lang=shell
 composer update --prefer-dist
 ```
 
 **Register Bundle**
+
+Daftarkan bundles pada AppKernel.php agar dapat dikenali
+
+```lang=php
+new FOS\UserBundle\FOSUserBundle(),
+new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+new Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminBundle(),
+```
+
+###Cara cepat###
+
+Anda juga dapat menginstall dengan cara cepat dengan cloning repo SymfonyId Skeleton
+
+```lang=shell
+git clone git@github.com:SymfonyId/Skeleton.git
+```
+
+Kemudian jalankan composer install
+
+```lang=shell
+composer install
+```
+
+Setelah semuanya terinstall, kemudian jalankan perintah berikut dari root project
+
+```lang=shell
+php bin/console siab:skeleton:setup
+```
+
+Kemudian Anda dapat menjalankan web server dengan perintah
+
+```lang=shell
+php bin/console server:run
+```
+
+Buka browser
+
+```lang=shell
+localhost:8000/admin
+```
