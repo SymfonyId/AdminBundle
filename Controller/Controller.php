@@ -7,7 +7,6 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Form\GenericFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 
 abstract class Controller extends BaseController
