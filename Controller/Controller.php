@@ -78,9 +78,14 @@ abstract class Controller extends BaseController
             if ($this->form) {
                 $formObject = new $this->form();
             } else {
-                $formObject = $this->container->get('symfonian_id.admin.generic_form');
+                $formObject = $this->container->get('symfonian_id.core.generic_form');
                 $formObject->setEntity($this->getEntity());
-                $options = array('fields' => $this->getEntityFields());
+                $options = array(
+                    'fields' => $this->getEntityFields(),
+                    'attr' => array(
+                        'class' => 'form-control'
+                    )
+                );
             }
         }
 
