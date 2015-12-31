@@ -48,6 +48,3 @@ untuk keberlangsungan komunitas ini.
 
 ####LISENSI####
 MIT tanpa ada garansi apapun.
-
-####TODO####
-- upload user avatar
