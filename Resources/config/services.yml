@@ -112,11 +112,3 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:
             - '@service_container'
-
-    symfonian_id.admin.cache_listener:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\CacheListener
-        arguments:
-            - '@service_container'
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
