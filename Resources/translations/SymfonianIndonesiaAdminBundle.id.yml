@@ -37,8 +37,8 @@ link:
     profile: 'Profil'
 
 page:
-    new: 'Tambah Baru'
-    edit: 'Perbaharui Informasi'
+    action_create: 'Tambah Baru'
+    action_edit: 'Perbaharui Informasi'
     show: 'Tampil Data'
     list: 'Daftar'
     user:
