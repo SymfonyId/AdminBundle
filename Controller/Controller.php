@@ -83,7 +83,7 @@ abstract class Controller extends BaseController
                 $options = array(
                     'fields' => $this->getEntityFields(),
                     'attr' => array(
-                        'class' => 'form-control'
+                        'style' => 'form-control'
                     )
                 );
             }
