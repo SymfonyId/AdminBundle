@@ -248,7 +248,7 @@ class CrudHandler
 
         $output = array();
         foreach ($showFields as $key => $property) {
-            $method = 'get'.ucfirst($property);
+            $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
 
             if (method_exists($data, $method)) {
                 array_push($output, array(
@@ -256,7 +256,7 @@ class CrudHandler
                     'value' => call_user_func_array(array($data, $method), array()),
                 ));
             } else {
-                $method = 'is'.ucfirst($property);
+                $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
 
                 if (method_exists($data, $method)) {
                     array_push($output, array(
