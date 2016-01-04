@@ -59,7 +59,9 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder
         arguments:
             - '@router'
-            - '@service_container'
+            - '@security.authorization_checker'
+            - '@translator'
+            - '%symfonian_id.admin.translation_domain%'
 
     symfonian_id.admin.main_menu:
         class: Knp\Menu\MenuItem
@@ -74,7 +76,8 @@ services:
     symfonian_id.admin.change_password_form:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.security.user_entity%'
+            - '%symfonian_id.admin.translation_domain%'
         tags:
             - { name: form.type }
 
@@ -89,7 +92,8 @@ services:
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.home.route_path%'
+            - '%symfonian_id.admin.home.controller%'
         tags:
             - { name: routing.loader }
 
