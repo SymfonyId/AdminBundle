@@ -1,41 +1,40 @@
 <table class="table table-hover table-bordered">
     <tr>
-        <td><strong>No</strong></td>
+        <td class="text-center"><strong>No</strong></td>
         {%- for i, value in header -%}
-            <td><strong>{{- value | humanize | upper -}}</strong></td>
+            <td class="text-center"><strong>{{- value | humanize | upper -}}</strong></td>
         {%- endfor -%}
     </tr>
     {%- for key, value in record -%}
         <tr>
             <td>{{- start + key + 1 -}}</td>
             {%- for i, v in value -%}
-                <td>
                 {%- if v.timezone is defined -%}
-                    {{- v | date(date_time_format) -}}
+                    <td>{{- v | date(date_time_format) -}}
                 {%- else -%}
                     {%- if v is iterable -%}
                         {%- set value = '' -%}
                         {%- for i, v in v -%}
-                            {%- set value = value ~ v ~ ', ' -%}
+                            <td>{%- set value = value ~ v ~ ', ' -%}
                         {%- endfor -%}
                         {{- value | trim(', ')-}}
                     {%- else -%}
                         {% if v is numeric and formating_number %}
-                            {{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+                            <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
                         {% else %}
                             {% if v is boolean %}
-                                <label>
-                                    <input {% if v sameas(true) %}{{checked}}{% endif %} data-toggle="toggle" type="checkbox">
-                                </label>
+                                <td class="text-center"><label>
+                                <input {% if v is sameas(true) %}{{ 'checked disabled' }}{% endif %} data-toggle="toggle" type="checkbox">
+                            </label>
                             {% else %}
-                                {{- v | raw -}}
+                                <td>{{- v | raw -}}
                             {% endif %}
                         {% endif %}
                     {%- endif -%}
                 {%- endif -%}
                 </td>
             {%- endfor -%}
-            <td width="22%">
+            <td width="22%" class="text-center">
                 <div class="btn-group" role="group">
                     {%- for i, v in action -%}
                         {%- if v is sameas('GRID_ACTION_SHOW') -%}
