@@ -108,6 +108,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    symfonian_id.admin.twig.is_boolean:
+        class: Symfonian\Indonesia\AdminBundle\Twig\BooleanExtension\BooleanTest
+        tags:
+            - { name: twig.extension }
+
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:

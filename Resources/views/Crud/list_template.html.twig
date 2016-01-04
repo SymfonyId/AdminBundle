@@ -23,7 +23,13 @@
                         {% if v is numeric and formating_number %}
                             {{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
                         {% else %}
-                            {{- v | raw -}}
+                            {% if v is boolean %}
+                                <label>
+                                    <input {% if v sameas(true) %}{{checked}}{% endif %} data-toggle="toggle" type="checkbox">
+                                </label>
+                            {% else %}
+                                {{- v | raw -}}
+                            {% endif %}
                         {% endif %}
                     {%- endif -%}
                 {%- endif -%}
