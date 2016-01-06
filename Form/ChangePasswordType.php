@@ -65,12 +65,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention' => $this->getName(),
+            'intention' => 'change_password',
         ));
-    }
-
-    public function getName()
-    {
-        return 'change_password';
     }
 }
