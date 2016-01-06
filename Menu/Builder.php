@@ -9,9 +9,8 @@ namespace Symfonian\Indonesia\AdminBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class Builder
 {
@@ -35,12 +34,12 @@ class Builder
      */
     protected $authorizationChecker;
 
-    public function __construct(Router $router, AuthorizationChecker $authorizationChecker, TranslatorInterface $translator, $translationDomain)
+    public function __construct(Router $router, ContainerInterface $container)
     {
         $this->routeCollection = $router->getRouteCollection();
-        $this->authorizationChecker = $authorizationChecker;
-        $this->translator = $translator;
-        $this->translationDomain = $translationDomain;
+        $this->translator = $container->get('translator');
+        $this->translationDomain = $container->getParameter('symfonian_id.admin.translation_domain');
+        $this->authorizationChecker = $container->get('security.authorization_checker');
     }
 
     public function mainMenu(FactoryInterface $factory, array $options)

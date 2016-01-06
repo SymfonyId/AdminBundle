@@ -22,13 +22,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
-    symfonian_id.admin.set_timestamp:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
-        arguments:
-            - '@security.token_storage'
-        tags:
-            - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
-
     symfonian_id.admin.remove_password_field:
         class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
         tags:
@@ -66,9 +59,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder
         arguments:
             - '@router'
-            - '@security.authorization_checker'
-            - '@translator'
-            - '%symfonian_id.admin.translation_domain%'
+            - '@service_container'
 
     symfonian_id.admin.main_menu:
         class: Knp\Menu\MenuItem
@@ -83,8 +74,7 @@ services:
     symfonian_id.admin.change_password_form:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
-            - '%symfonian_id.admin.security.user_entity%'
-            - '%symfonian_id.admin.translation_domain%'
+            - '@service_container'
         tags:
             - { name: form.type }
 
@@ -99,8 +89,7 @@ services:
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
         arguments:
-            - '%symfonian_id.admin.home.route_path%'
-            - '%symfonian_id.admin.home.controller%'
+            - '@service_container'
         tags:
             - { name: routing.loader }
 

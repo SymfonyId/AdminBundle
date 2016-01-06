@@ -9,21 +9,22 @@ namespace Symfonian\Indonesia\AdminBundle\Route;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class HomeRouteLoader implements LoaderInterface
 {
-    private $routePath;
-
-    private $controller;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     private $loaded = false;
 
-    public function __construct($routePath, $controller)
+    public function __construct(ContainerInterface $container)
     {
-        $this->routePath = $routePath;
-        $this->controller = $controller;
+        $this->container = $container;
     }
 
     public function load($resource, $type = null)
@@ -34,10 +35,11 @@ final class HomeRouteLoader implements LoaderInterface
 
         $routes = new RouteCollection();
 
+        $path = $this->container->getParameter('symfonian_id.admin.home.route_path');
         $defaults = array(
-            '_controller' => $this->controller,
+            '_controller' => $this->container->getParameter('symfonian_id.admin.home.controller'),
         );
-        $route = new Route($this->routePath, $defaults, array(), array('expose' => true));
+        $route = new Route($path, $defaults, array(), array('expose' => true));
         $route->setMethods('GET');
 
         $routes->add('home', $route);
