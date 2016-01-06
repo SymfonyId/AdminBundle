@@ -91,7 +91,7 @@ class UserType extends AbstractType
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
             'validation_groups' => array('Default'),
-            'intention' => $this->getName(),
+            'intention' => 'user',
         ));
     }
 
@@ -103,10 +103,5 @@ class UserType extends AbstractType
         }
 
         return $roleList;
-    }
-
-    public function getName()
-    {
-        return 'user';
     }
 }

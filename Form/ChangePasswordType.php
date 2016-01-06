@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -16,14 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangePasswordType extends AbstractType
 {
-    protected $userEntity;
+    protected $container;
 
-    protected $translationDomain;
-
-    public function __construct($userEntity, $translationDomain)
+    public function __construct(ContainerInterface $container)
     {
-        $this->userEntity = $userEntity;
-        $this->translationDomain = $translationDomain;
+        $this->container = $container;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -65,14 +63,9 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->userEntity,
-            'translation_domain' => $this->translationDomain,
-            'intention' => $this->getName(),
+            'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
+            'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
+            'intention' => 'change_password',
         ));
-    }
-
-    public function getName()
-    {
-        return 'change_password';
     }
 }

@@ -22,6 +22,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
 
+    symfonian_id.admin.set_timestamp:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
+
     symfonian_id.admin.remove_password_field:
         class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
         tags:
