@@ -15,6 +15,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: symfonian_id.admin.pre_delete_event, method: onDeleteUser }
 
+    symfonian_id.admin.set_timestamp:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
+
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         arguments:
