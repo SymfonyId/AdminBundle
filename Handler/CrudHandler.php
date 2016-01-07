@@ -178,7 +178,7 @@ class CrudHandler
                     }
                 }
 
-                if ($result) {
+                if (null !== $result) {
                     if (!empty($numberFormat)) {
                         $result = number_format($result, $numberFormat['decimal'], $numberFormat['decimal_point'], $numberFormat['thousand_separator']);
                     }
