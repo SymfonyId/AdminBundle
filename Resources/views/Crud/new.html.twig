@@ -112,41 +112,31 @@
         </script>
     {%- endif -%}
     <script type="text/javascript">
+        function createActionUrl(action) {
+            var url = document.URL.split('/');
+            var queryString = document.URL.slice(document.URL.indexOf('?'));
+
+            if ('edit' === url[url.length - 2]) {
+                url.pop();
+                url.pop();
+                url.pop();
+            } else {
+                url.pop();
+                url.pop();
+            }
+
+            url.push(action);
+
+            window.location = url.join('/') + queryString;
+        }
+
         jQuery(document).ready(function () {
             jQuery(document).on('click', '.back-to-list', function () {
-                var url = document.URL.split('/');
-                var queryString = document.URL.slice(document.URL.indexOf('?'));
-
-                if ('edit' === url[url.length - 2]) {
-                    url.pop();
-                    url.pop();
-                    url.pop();
-                } else {
-                    url.pop();
-                    url.pop();
-                }
-
-                url.push('list');
-
-                window.location = url.join('/') + queryString;
+                createActionUrl('list');
             });
 
             jQuery(document).on('click', '.add_new', function () {
-                var url = document.URL.split('/');
-                var queryString = document.URL.slice(document.URL.indexOf('?'));
-
-                if ('edit' === url[url.length - 2]) {
-                    url.pop();
-                    url.pop();
-                    url.pop();
-                } else {
-                    url.pop();
-                    url.pop();
-                }
-
-                url.push('new');
-
-                window.location = url.join('/') + queryString;
+                createActionUrl('new');
             });
 
             jQuery(document).on('click', '.success-close', function () {
