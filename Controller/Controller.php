@@ -80,6 +80,7 @@ abstract class Controller extends BaseController
             } else {
                 $formObject = $this->container->get('symfonian_id.core.generic_form');
                 $formObject->setEntity($this->getEntity());
+                $formObject->setTranslationDomain($this->container->getParameter('symfonian_id.admin.translation_domain'));
                 $options = array(
                     'fields' => $this->getEntityFields(),
                     'attr' => array(
