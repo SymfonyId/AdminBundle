@@ -38,7 +38,7 @@ link:
 
 page:
     action_create: 'Tambah Baru'
-    action_edit: 'Perbaharui Informasi'
+    action_update: 'Perbaharui Informasi'
     show: 'Tampil Data'
     list: 'Daftar'
     user:
