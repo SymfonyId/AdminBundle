@@ -9,10 +9,8 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
@@ -291,7 +289,7 @@ class CrudHandler
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $event = new FilterRequestEvent();
+        $event = new FilterFormEvent();
         $event->setData($data);
         $event->setForm($form);
         $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
@@ -308,8 +306,7 @@ class CrudHandler
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            $preFormValidationEvent = new FilterRequestEvent();
-            $preFormValidationEvent->setRequest($request);
+            $preFormValidationEvent = new FilterFormEvent();
             $preFormValidationEvent->setForm($form);
             $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
 
