@@ -117,12 +117,9 @@
             var queryString = document.URL.slice(document.URL.indexOf('?'));
 
             if ('edit' === url[url.length - 2]) {
-                url.pop();
-                url.pop();
-                url.pop();
+                url.splice(-3,3);
             } else {
-                url.pop();
-                url.pop();
+                url.splice(-2,2);
             }
 
             url.push(action);
