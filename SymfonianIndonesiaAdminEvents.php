@@ -18,9 +18,7 @@ class SymfonianIndonesiaAdminEvents
 
     const POST_SAVE = 'symfonian_id.admin.post_save_event';
 
-    const FILTER_LIST = 'symfonian_id.admin.filter_list_event';
-
-    const FILTER_RESULT = 'symfonian_id.admin.filter_result_event';
+    const FILTER_LIST = 'symfonian_id.admin.filter_query_event';
 
     const PRE_DELETE = 'symfonian_id.admin.pre_delete_event';
 
