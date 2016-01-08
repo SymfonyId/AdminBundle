@@ -16,7 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
  * @Route("/user")
  *
  * @Page(title="page.user.title", description="page.user.description")
- * @Grid({"full_name", "username", "email", "roles"}, filter={"username", "full_name"})
+ * @Grid(filter={"username", "full_name"})
  */
 class UserController extends CrudController
 {
