@@ -208,7 +208,7 @@ class CrudHandler
      */
     public function remove(EntityInterface $data)
     {
-        $event = new GetEntityEvent();
+        $event = new FilterEntityEvent();
         $event->setEntity($data);
         $event->setEntityManager($this->manager);
         $this->fireEvent(Event::PRE_DELETE, $event);
