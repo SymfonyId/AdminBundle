@@ -11,9 +11,8 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetFormEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
@@ -117,7 +116,7 @@ class CrudHandler
 
         if ($filter) {
             foreach ($filterFields as $key => $value) {
-                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
                 $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
             }
         }
@@ -209,7 +208,7 @@ class CrudHandler
      */
     public function remove(EntityInterface $data)
     {
-        $event = new FilterEntityEvent();
+        $event = new GetEntityEvent();
         $event->setEntity($data);
         $event->setEntityManager($this->manager);
         $this->fireEvent(Event::PRE_DELETE, $event);
@@ -261,7 +260,7 @@ class CrudHandler
             }
         }
 
-        $event = new GetFormEvent();
+        $event = new FilterFormEvent();
         $event->setData($output);
         $this->fireEvent(Event::PRE_SHOW, $event);
 
@@ -292,9 +291,8 @@ class CrudHandler
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $event = new FilterResponseEvent();
-        $event->setController($controller);
-        $event->setFormData($data);
+        $event = new FilterRequestEvent();
+        $event->setData($data);
         $event->setForm($form);
         $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
 
@@ -310,7 +308,7 @@ class CrudHandler
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            $preFormValidationEvent = new FilterResponseEvent();
+            $preFormValidationEvent = new FilterRequestEvent();
             $preFormValidationEvent->setRequest($request);
             $preFormValidationEvent->setForm($form);
             $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
@@ -325,17 +323,15 @@ class CrudHandler
             } else {
                 $data = $form->getData();
 
-                $preSaveEvent = new FilterRequestEvent();
-                $preSaveEvent->setRequest($request);
+                $preSaveEvent = new FilterEntityEvent();
                 $preSaveEvent->setEntity($data);
                 $preSaveEvent->setEntityManager($this->manager);
-                $preSaveEvent->setForm($form);
                 $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
 
                 $this->manager->persist($data);
                 $this->manager->flush();
 
-                $postSaveEvent = new GetEntityEvent();
+                $postSaveEvent = new FilterEntityEvent();
                 $postSaveEvent->setEntityManager($this->manager);
                 $postSaveEvent->setEntity($data);
                 $this->fireEvent(Event::POST_SAVE, $postSaveEvent);

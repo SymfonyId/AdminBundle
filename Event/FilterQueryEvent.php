@@ -17,7 +17,7 @@ final class FilterQueryEvent extends Event
      */
     protected $queryBuilder;
 
-    protected $entity;
+    protected $entityClass;
 
     protected $alias;
 
@@ -38,11 +38,11 @@ final class FilterQueryEvent extends Event
     }
 
     /**
-     * @param string $entity
+     * @param string $entityClass
      */
-    public function setEntityClass($entity)
+    public function setEntityClass($entityClass)
     {
-        $this->entity = $entity;
+        $this->entityClass = $entityClass;
     }
 
     /**
@@ -50,7 +50,7 @@ final class FilterQueryEvent extends Event
      */
     public function getEntityClass()
     {
-        return $this->entity;
+        return $this->entityClass;
     }
 
     /**

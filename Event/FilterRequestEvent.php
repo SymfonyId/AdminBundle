@@ -7,43 +7,44 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class FilterRequestEvent extends FilterEntityEvent
+class FilterRequestEvent extends FilterFormEvent
 {
-    protected $form;
+    protected $request;
 
-    protected $formData;
+    protected $response;
 
     /**
-     * @param FormInterface $form
+     * @param Request $request
      */
-    public function setForm(FormInterface $form)
+    public function setRequest(Request $request)
     {
-        $this->form = $form;
+        $this->request = $request;
     }
 
     /**
-     * @return FormInterface
+     * @return Request
      */
-    public function getForm()
+    public function getRequest()
     {
-        return $this->form;
+        return $this->request;
     }
 
     /**
-     * @param mixed $entity
+     * @param Response $response
      */
-    public function setData($entity)
+    public function setResponse(Response $response)
     {
-        $this->formData = $entity;
+        $this->response = $response;
     }
 
     /**
-     * @return mixed
+     * @return Response
      */
-    public function getData()
+    public function getResponse()
     {
-        return $this->formData;
+        return $this->response;
     }
 }

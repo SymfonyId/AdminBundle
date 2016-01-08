@@ -10,7 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormInterface;
 
-class GetFormEvent extends Event
+class FilterFormEvent extends Event
 {
     protected $form;
 
