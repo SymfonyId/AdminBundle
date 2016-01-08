@@ -40,7 +40,7 @@ final class FilterQueryEvent extends Event
     /**
      * @param string $entity
      */
-    public function setEntity($entity)
+    public function setEntityClass($entity)
     {
         $this->entity = $entity;
     }
@@ -48,7 +48,7 @@ final class FilterQueryEvent extends Event
     /**
      * @return string
      */
-    public function getEntity()
+    public function getEntityClass()
     {
         return $this->entity;
     }

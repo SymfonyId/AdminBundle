@@ -125,7 +125,7 @@ class CrudHandler
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
         $filterList->setAlias(self::ENTITY_ALIAS);
-        $filterList->setEntity($this->class);
+        $filterList->setEntityClass($this->class);
         $this->fireEvent(Event::FILTER_LIST, $filterList);
 
         $page = $request->query->get('page', 1);
