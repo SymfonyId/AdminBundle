@@ -15,9 +15,9 @@
                     {%- if v is iterable -%}
                         {%- set value = '' -%}
                         {%- for i, v in v -%}
-                            <td>{%- set value = value ~ v ~ ', ' -%}
+                            {%- set value = value ~ v ~ ', ' -%}
                         {%- endfor -%}
-                        {{- value | trim(', ')-}}
+                        <td>{{- value | trim(', ')-}}
                     {%- else -%}
                         {% if v is numeric and formating_number %}
                             <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
