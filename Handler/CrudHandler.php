@@ -12,7 +12,6 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterResultEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\GetFormEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -126,7 +125,7 @@ class CrudHandler
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
         $filterList->setAlias(self::ENTITY_ALIAS);
-        $filterList->setEntity($this->class);
+        $filterList->setEntityClass($this->class);
         $this->fireEvent(Event::FILTER_LIST, $filterList);
 
         $page = $request->query->get('page', 1);
@@ -136,13 +135,8 @@ class CrudHandler
         $query->useQueryCache(true);
         $query->useResultCache(true, 1, serialize($query->getParameters()));
 
-        $filterResult = new FilterResultEvent();
-        $filterResult->setQuery($query);
-        $filterResult->setEntity($this->class);
-        $this->fireEvent(Event::FILTER_RESULT, $filterResult);
-
         $paginator = $this->container->get('knp_paginator');
-        $pagination = $paginator->paginate($filterResult->getResult(), $page, $perPage);
+        $pagination = $paginator->paginate($query, $page, $perPage);
 
         $data = array();
         $identifier = array();
