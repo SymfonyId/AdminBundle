@@ -7,11 +7,11 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Security\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class UserControllerRegister
+final class ProfileControllerCompiler
 {
     /**
      * @var ContainerInterface
@@ -26,20 +26,16 @@ final class UserControllerRegister
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
-
         if (!is_array($controller)) {
             return;
         }
 
         $controller = $controller[0];
-
-        if (!$controller instanceof UserController) {
+        if (!$controller instanceof ProfileController) {
             return;
         }
 
-        $controller->setForm($this->container->getParameter('symfonian_id.admin.security.user_form'));
-        $controller->setEntity($this->container->getParameter('symfonian_id.admin.security.user_entity'));
-        $controller->setShowFields($this->container->getParameter('symfonian_id.admin.security.show_fields'));
-        $controller->setGridFields($this->container->getParameter('symfonian_id.admin.security.grid_fields'));
+        $controller->setShowFields($this->container->getParameter('symfonian_id.admin.profile_fields'));
+        $controller->setForm($this->container->getParameter('symfonian_id.admin.security.change_password'));
     }
 }

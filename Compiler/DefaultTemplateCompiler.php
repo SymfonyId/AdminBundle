@@ -11,7 +11,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class DefaultTemplateRegister
+final class DefaultTemplateCompiler
 {
     /**
      * @var ContainerInterface

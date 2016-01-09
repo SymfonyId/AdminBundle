@@ -34,29 +34,29 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }
 
-    symfonian_id.admin.controller_default_view_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateRegister
+    symfonian_id.admin.default_template_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
-    symfonian_id.admin.user_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\UserControllerRegister
+    symfonian_id.admin.user_controller_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\UserControllerCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
-    symfonian_id.admin.index_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\ProfileControllerRegister
+    symfonian_id.admin.profile_controller_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\ProfileControllerCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
-    symfonian_id.admin.twig_global_variable_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableRegister
+    symfonian_id.admin.twig_global_variable_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableCompiler
         arguments:
             - '@service_container'
         tags:

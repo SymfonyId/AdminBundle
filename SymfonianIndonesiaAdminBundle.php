@@ -2,7 +2,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
-use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplate;
+use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplateCompiler;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -228,7 +228,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
     public function addCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new OverridePaginationTemplate());
+        $container->addCompilerPass(new OverridePaginationTemplateCompiler());
     }
 
     public function getAlias()

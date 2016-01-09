@@ -10,7 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-final class TwigGlobalVariableRegister
+final class TwigGlobalVariableCompiler
 {
     /**
      * @var ContainerInterface
