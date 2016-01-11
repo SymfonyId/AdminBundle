@@ -5,7 +5,7 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class OverridePaginationTemplateCompilerCompiler implements CompilerPassInterface
+final class OverridePaginationTemplateCompiler implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
