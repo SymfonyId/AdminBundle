@@ -34,7 +34,7 @@
                 </td>
             {%- endfor -%}
             {% if record_columns + 3 is not sameas(total_columns) %}
-                {% for 1..(total_columns - record_columns) %}
+                {% for i in 1..(total_columns - record_columns) %}
                     {{- '<td></td>' -}}
                 {% endfor %}
             {% endif %}
