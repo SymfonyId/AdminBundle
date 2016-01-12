@@ -7,7 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -20,7 +20,7 @@ class SetTimestampListener
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function onPreSaveUser(FilterRequestEvent $event)
+    public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
         if (!$entity instanceof TimestampableInterface) {
