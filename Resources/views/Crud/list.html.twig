@@ -66,6 +66,7 @@
 
         function createActionUrl(actionUrl) {
             var url = document.location.pathname;
+            url = (0 < url.indexOf('?'))? url.split('?')[0]: url;
             if (0 < url.indexOf('list')) {
                 url = url.replace('list', actionUrl);
             } else {
