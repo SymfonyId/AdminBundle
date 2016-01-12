@@ -8,6 +8,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  */
 
 use FOS\UserBundle\Model\User;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +21,7 @@ final class UpdateUserListener
         $this->container = $container;
     }
 
-    public function onPreSaveUser(FilterRequestEvent $event)
+    public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
 
