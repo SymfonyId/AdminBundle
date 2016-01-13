@@ -42,7 +42,7 @@ class CrudHandler
     protected $container;
 
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $manager;
 

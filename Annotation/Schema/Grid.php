@@ -64,12 +64,12 @@ class Grid
         return $this->filter;
     }
 
-    public function normalizeFilter()
+    public function isNormalizeFilter()
     {
         return $this->normalizeFilter;
     }
 
-    public function formatNumber()
+    public function isFormatNumber()
     {
         return $this->formatNumber;
     }

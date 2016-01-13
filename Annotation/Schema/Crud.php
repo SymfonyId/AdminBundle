@@ -32,7 +32,11 @@ class Crud
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $this->setEntity($data['value']);
+            $this->entity = $data['value'];
+        }
+
+        if (isset($data['entity'])) {
+            $this->entity = $data['entity'];
         }
 
         if (isset($data['add'])) {
@@ -57,10 +61,6 @@ class Crud
 
         if (isset($data['form'])) {
             $this->form = $data['form'];
-        }
-
-        if (isset($data['entity'])) {
-            $this->setEntity($data['entity']);
         }
 
         if (isset($data['showFields'])) {
@@ -102,11 +102,6 @@ class Crud
     public function getForm()
     {
         return $this->form;
-    }
-
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
     }
 
     public function getEntity()

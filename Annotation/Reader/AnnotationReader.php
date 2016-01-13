@@ -8,7 +8,6 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Reader;
  */
 
 use Doctrine\Common\Annotations\Reader;
-use InvalidArgumentException;
 use ReflectionObject;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
@@ -126,13 +125,8 @@ final class AnnotationReader
             $controller->setFilter($annotation->getFilter());
         }
 
-        if ($annotation->normalizeFilter()) {
-            $controller->upperCaseFilter($annotation->normalizeFilter());
-        }
-
-        if (false === $annotation->formatNumber()) {
-            $controller->formatNumber($annotation->formatNumber());
-        }
+        $controller->upperCaseFilter($annotation->isNormalizeFilter());
+        $controller->formatNumber($annotation->isFormatNumber());
     }
 
     private function compilePage(Page $annotation, CrudController $controller)
