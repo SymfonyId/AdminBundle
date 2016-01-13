@@ -335,7 +335,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $entity = $this->getDoctrine()->getRepository($this->entity)->find($id);
+        $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($this->entity)->find($id);
 
         if (!$entity) {
             throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));

@@ -23,7 +23,6 @@ class ProfileController extends Controller
      * @Method({"GET"})
      *
      * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function profileAction(Request $request)
@@ -65,6 +64,9 @@ class ProfileController extends Controller
     /**
      * @Route("/change_password/")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function changePasswordAction(Request $request)
     {
@@ -91,6 +93,8 @@ class ProfileController extends Controller
             } elseif ($form->isValid()) {
                 /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
                 $encoderFactory = $this->container->get('security.encoder_factory');
+
+                /** @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
                 $encoder = $encoderFactory->getEncoder($user);
                 $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
 
@@ -103,7 +107,9 @@ class ProfileController extends Controller
                 $userManager = $this->container->get('fos_user.user_manager');
 
                 $entity = $form->getData();
-                $entityManager = $this->getDoctrine()->getManager();
+
+                /** @var \Doctrine\ORM\EntityManager $entityManager */
+                $entityManager = $this->container->get('doctrine.orm.entity_manager');
                 $dispatcher = $this->container->get('event_dispatcher');
 
                 $event = new FilterEntityEvent();

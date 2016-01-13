@@ -23,6 +23,9 @@ abstract class Controller extends BaseController
 
     protected $form;
 
+    /**
+     * @return array
+     */
     public function getEntityFields()
     {
         $fields = array();
@@ -34,15 +37,6 @@ abstract class Controller extends BaseController
         }
 
         return $fields;
-    }
-
-    protected function showFields()
-    {
-        if (!empty($this->showFields)) {
-            return $this->showFields;
-        }
-
-        return $this->getEntityFields();
     }
 
     /**
@@ -67,6 +61,32 @@ abstract class Controller extends BaseController
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param string $form
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+    }
+
+    /**
+     * @param string $entity
+     *
+     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
+     */
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 
     protected function getForm($data = null)
@@ -96,29 +116,12 @@ abstract class Controller extends BaseController
         return $form;
     }
 
-    /**
-     * @param string $form
-     */
-    public function setForm($form)
+    protected function showFields()
     {
-        $this->form = $form;
-    }
+        if (!empty($this->showFields)) {
+            return $this->showFields;
+        }
 
-    /**
-     * @param string $entity
-     *
-     * @return \Symfonian\Indonesia\AdminBundle\Controller\CrudController
-     */
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntity()
-    {
-        return $this->entity;
+        return $this->getEntityFields();
     }
 }
