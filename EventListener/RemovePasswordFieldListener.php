@@ -7,14 +7,14 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Security\Model\User;
 
 class RemovePasswordFieldListener
 {
-    public function onPreCreateForm(FilterResponseEvent $event)
+    public function onPreCreateForm(FilterFormEvent $event)
     {
-        $formData = $event->getFormData();
+        $formData = $event->getData();
         if (!$formData instanceof User) {
             return;
         }

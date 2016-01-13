@@ -113,12 +113,7 @@
                     success: function (response) {
                         if (true === response.status) {
                             var url = document.URL.split('/');
-
-                            url.pop();
-                            url.pop();
-                            url.pop();
-                            url.push('list');
-
+                            url.splice(-3,3).push('list');
                             window.location = url.join('/');
                         } else {
                             jQuery('.response-message').html(response.message);

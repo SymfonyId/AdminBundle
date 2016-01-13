@@ -8,21 +8,19 @@ namespace Symfonian\Indonesia\AdminBundle;
  */
 class SymfonianIndonesiaAdminEvents
 {
-    const PRE_FORM_CREATE = 'symfonian_id.admin.pre_form_create_event';
+    const PRE_FORM_CREATE = 'siab.pre_form_create';
 
-    const PRE_FORM_SUBMIT = 'symfonian_id.admin.pre_form_submit_event';
+    const PRE_FORM_SUBMIT = 'siab.pre_form_submit';
 
-    const PRE_FORM_VALIDATION = 'symfonian_id.admin.pre_form_validation_event';
+    const PRE_FORM_VALIDATION = 'siab.pre_validation';
 
-    const PRE_SAVE = 'symfonian_id.admin.pre_save_event';
+    const PRE_SAVE = 'siab.pre_save';
 
-    const POST_SAVE = 'symfonian_id.admin.post_save_event';
+    const POST_SAVE = 'siab.post_save';
 
-    const FILTER_LIST = 'symfonian_id.admin.filter_list_event';
+    const FILTER_LIST = 'siab.filter_query';
 
-    const FILTER_RESULT = 'symfonian_id.admin.filter_result_event';
+    const PRE_DELETE = 'siab.pre_delete';
 
-    const PRE_DELETE = 'symfonian_id.admin.pre_delete_event';
-
-    const PRE_SHOW = 'symfonian_id.admin.pre_show_event';
+    const PRE_SHOW = 'siab.pre_show';
 }

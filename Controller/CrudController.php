@@ -9,7 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
@@ -59,8 +59,7 @@ abstract class CrudController extends Controller
      */
     public function newAction(Request $request)
     {
-        $event = new FilterResponseEvent();
-        $event->setController($this);
+        $event = new FilterFormEvent();
 
         $this->fireEvent(Event::PRE_FORM_CREATE, $event);
 
@@ -88,8 +87,7 @@ abstract class CrudController extends Controller
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_EDIT);
 
-        $event = new FilterResponseEvent();
-        $event->setController($this);
+        $event = new FilterFormEvent();
 
         $this->fireEvent(Event::PRE_FORM_CREATE, $event);
 

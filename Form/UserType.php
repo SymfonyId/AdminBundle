@@ -10,6 +10,12 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,34 +34,34 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fullName', 'text', array(
+            ->add('fullName', TextType::class, array(
                 'label' => 'form.label.fullname',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('username', 'text', array(
+            ->add('username', TextType::class, array(
                 'label' => 'form.label.username',
                 'attr' => array(
                     'class' => 'form-control username',
                 ),
             ))
-            ->add($builder->create('roles', 'choice', array(
+            ->add($builder->create('roles', ChoiceType::class, array(
                     'label' => 'form.label.role',
                     'choices' => $this->buildRoleList(),
-                    'empty_value' => 'message.select_empty',
+                    'placeholder' => 'message.select_empty',
                     'attr' => array(
                         'class' => 'form-control',
                     ),
             ))->addModelTransformer(new RoleToArrayTransformer()))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'label' => 'form.label.email',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('plainPassword', 'repeated', array(
-                'type' => 'password',
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
                 'invalid_message' => 'message.password_must_match',
                 'options' => array(
                     'attr' => array(
@@ -70,7 +76,7 @@ class UserType extends AbstractType
                     'label' => 'form.label.repeat_password',
                 ),
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'action.submit',
                 'attr' => array(
                     'class' => 'btn btn-primary',
@@ -85,7 +91,7 @@ class UserType extends AbstractType
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
             'validation_groups' => array('Default'),
-            'intention' => $this->getName(),
+            'intention' => 'user',
         ));
     }
 
@@ -97,10 +103,5 @@ class UserType extends AbstractType
         }
 
         return $roleList;
-    }
-
-    public function getName()
-    {
-        return 'user';
     }
 }

@@ -107,8 +107,8 @@ final class AnnotationReader
             $controller->setEntity($annotation->getEntity());
         }
 
-        if (!$annotation->getShowFields()) {
-            throw new InvalidArgumentException('show fields must be set.');
+        if ($annotation->getShowFields()) {
+            $controller->setShowFields($annotation->getShowFields());
         }
 
         if ($annotation->getAjaxTemplate()) {

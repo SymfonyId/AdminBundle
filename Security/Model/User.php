@@ -18,11 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class User extends BaseUser implements EntityInterface
 {
     /**
-     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
-     */
-    protected $avatar;
-
-    /**
      * @ORM\Column(name="full_name", type="string", length=77, nullable=true)
      * @Assert\NotBlank(groups={"Registration"})
      */
@@ -31,16 +26,6 @@ abstract class User extends BaseUser implements EntityInterface
     public function __construct()
     {
         parent::__construct();
-    }
-
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
-    }
-
-    public function getAvatar()
-    {
-        return $this->avatar;
     }
 
     public function setFullName($fullName)

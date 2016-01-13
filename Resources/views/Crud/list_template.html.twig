@@ -1,10 +1,14 @@
 <table class="table table-hover table-bordered">
     {% set total_columns = 0 %}
     <tr>
-        <td><strong>No</strong></td>
+        <td class="text-center"><strong>No</strong></td>
         {%- for i, value in header -%}
+<<<<<<< HEAD
             {% set total_columns = total_columns + 1 %}
             <td><strong>{{- value | humanize | upper -}}</strong></td>
+=======
+            <td class="text-center"><strong>{{- value | humanize | upper -}}</strong></td>
+>>>>>>> f3811323a5258a4644d7278e2ae7852110deb0ee
         {%- endfor -%}
     </tr>
     {%- for key, value in record -%}
@@ -12,33 +16,46 @@
             <td>{{- start + key + 1 -}}</td>
             {% set record_columns = 0 %}
             {%- for i, v in value -%}
+<<<<<<< HEAD
                 {% set record_columns = record_columns + 1 %}
                 <td>
+=======
+>>>>>>> f3811323a5258a4644d7278e2ae7852110deb0ee
                 {%- if v.timezone is defined -%}
-                    {{- v | date(date_time_format) -}}
+                    <td>{{- v | date(date_time_format) -}}
                 {%- else -%}
                     {%- if v is iterable -%}
                         {%- set value = '' -%}
                         {%- for i, v in v -%}
                             {%- set value = value ~ v ~ ', ' -%}
                         {%- endfor -%}
-                        {{- value | trim(', ')-}}
+                        <td>{{- value | trim(', ')-}}
                     {%- else -%}
                         {% if v is numeric and formating_number %}
-                            {{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+                            <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
                         {% else %}
-                            {{- v -}}
+                            {% if v is boolean %}
+                                <td class="text-center"><label>
+                                <input {% if v is sameas(true) %}{{ 'checked disabled' }}{% endif %} data-toggle="toggle" data-onstyle="success" type="checkbox">
+                            </label>
+                            {% else %}
+                                <td>{{- v | raw -}}
+                            {% endif %}
                         {% endif %}
                     {%- endif -%}
                 {%- endif -%}
                 </td>
             {%- endfor -%}
+<<<<<<< HEAD
             {% if record_columns + 3 is not sameas(total_columns) %}
                 {% for i in 1..(total_columns - record_columns) %}
                     {{- '<td></td>' -}}
                 {% endfor %}
             {% endif %}
             <td width="22%">
+=======
+            <td width="22%" class="text-center">
+>>>>>>> f3811323a5258a4644d7278e2ae7852110deb0ee
                 <div class="btn-group" role="group">
                     {%- for i, v in action -%}
                         {%- if v is sameas('GRID_ACTION_SHOW') -%}

@@ -11,7 +11,7 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -89,6 +89,7 @@ class ProfileController extends Controller
             if (!$form->isValid()) {
                 $this->viewParams['errors'] = true;
             } elseif ($form->isValid()) {
+                /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
                 $encoderFactory = $this->container->get('security.encoder_factory');
                 $encoder = $encoderFactory->getEncoder($user);
                 $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
@@ -105,7 +106,7 @@ class ProfileController extends Controller
                 $entityManager = $this->getDoctrine()->getManager();
                 $dispatcher = $this->container->get('event_dispatcher');
 
-                $event = new GetEntityEvent();
+                $event = new FilterEntityEvent();
                 $event->setEntityManager($entityManager);
                 $event->setEntity($entity);
 

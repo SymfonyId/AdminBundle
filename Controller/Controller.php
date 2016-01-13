@@ -7,7 +7,6 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Form\GenericFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 
 abstract class Controller extends BaseController
@@ -72,17 +71,26 @@ abstract class Controller extends BaseController
 
     protected function getForm($data = null)
     {
+        $options = array();
         try {
             $formObject = $this->container->get($this->form);
         } catch (\Exception $ex) {
             if ($this->form) {
                 $formObject = new $this->form();
             } else {
-                $formObject = new GenericFormType($this, $this->container);
+                $formObject = $this->container->get('symfonian_id.core.generic_form');
+                $formObject->setEntity($this->getEntity());
+                $formObject->setTranslationDomain($this->container->getParameter('symfonian_id.admin.translation_domain'));
+                $options = array(
+                    'fields' => $this->getEntityFields(),
+                    'attr' => array(
+                        'style' => 'form-control'
+                    )
+                );
             }
         }
 
-        $form = $this->createForm($formObject);
+        $form = $this->createForm(get_class($formObject), null, $options);
         $form->setData($data);
 
         return $form;

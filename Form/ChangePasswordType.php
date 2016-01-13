@@ -9,6 +9,9 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,16 +27,16 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('current_password', 'password', array(
+            ->add('current_password', PasswordType::class, array(
                 'mapped' => false,
                 'label' => 'form.label.current_password',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('plainPassword', 'repeated', array(
+            ->add('plainPassword', RepeatedType::class, array(
                 'label' => 'form.label.new_password',
-                'type' => 'password',
+                'type' => PasswordType::class,
                 'invalid_message' => 'message.password_must_match',
                 'options' => array(
                     'attr' => array(
@@ -48,7 +51,7 @@ class ChangePasswordType extends AbstractType
                     'label' => 'form.label.repeat_password',
                 ),
             ))
-            ->add('save', 'submit', array(
+            ->add('save', SubmitType::class, array(
                 'label' => 'action.submit',
                 'attr' => array(
                     'class' => 'btn btn-primary',
@@ -62,12 +65,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
             'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
-            'intention' => $this->getName(),
+            'intention' => 'change_password',
         ));
-    }
-
-    public function getName()
-    {
-        return 'change_password';
     }
 }

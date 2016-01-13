@@ -7,29 +7,49 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
-class FilterEntityEvent extends GetEntityEvent
+class FilterEntityEvent extends Event
 {
-    protected $request;
+    protected $entity;
+
+    protected $entityManager;
 
     protected $response;
 
     /**
-     * @param Request $request
+     * @param ObjectManager $entityManager
      */
-    public function setRequest(Request $request)
+    public function setEntityManager(ObjectManager $entityManager)
     {
-        $this->request = $request;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * @return Request
+     * @return ObjectManager
      */
-    public function getRequest()
+    public function getEntityManager()
     {
-        return $this->request;
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityInterface $entity
+     */
+    public function setEntity(EntityInterface $entity)
+    {
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return EntityInterface
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 
     /**

@@ -9,12 +9,8 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterResponseEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterResultEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\GetFormEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
@@ -118,7 +114,7 @@ class CrudHandler
 
         if ($filter) {
             foreach ($filterFields as $key => $value) {
-                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, $value, $key));
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
                 $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
             }
         }
@@ -126,7 +122,7 @@ class CrudHandler
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
         $filterList->setAlias(self::ENTITY_ALIAS);
-        $filterList->setEntity($this->class);
+        $filterList->setEntityClass($this->class);
         $this->fireEvent(Event::FILTER_LIST, $filterList);
 
         $page = $request->query->get('page', 1);
@@ -136,13 +132,8 @@ class CrudHandler
         $query->useQueryCache(true);
         $query->useResultCache(true, 1, serialize($query->getParameters()));
 
-        $filterResult = new FilterResultEvent();
-        $filterResult->setQuery($query);
-        $filterResult->setEntity($this->class);
-        $this->fireEvent(Event::FILTER_RESULT, $filterResult);
-
         $paginator = $this->container->get('knp_paginator');
-        $pagination = $paginator->paginate($filterResult->getResult(), $page, $perPage);
+        $pagination = $paginator->paginate($query, $page, $perPage);
 
         $data = array();
         $identifier = array();
@@ -178,7 +169,7 @@ class CrudHandler
                     }
                 }
 
-                if ($result) {
+                if (null !== $result) {
                     if (!empty($numberFormat)) {
                         $result = number_format($result, $numberFormat['decimal'], $numberFormat['decimal_point'], $numberFormat['thousand_separator']);
                     }
@@ -248,7 +239,7 @@ class CrudHandler
 
         $output = array();
         foreach ($showFields as $key => $property) {
-            $method = 'get'.ucfirst($property);
+            $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
 
             if (method_exists($data, $method)) {
                 array_push($output, array(
@@ -256,7 +247,7 @@ class CrudHandler
                     'value' => call_user_func_array(array($data, $method), array()),
                 ));
             } else {
-                $method = 'is'.ucfirst($property);
+                $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
 
                 if (method_exists($data, $method)) {
                     array_push($output, array(
@@ -267,7 +258,7 @@ class CrudHandler
             }
         }
 
-        $event = new GetFormEvent();
+        $event = new FilterFormEvent();
         $event->setData($output);
         $this->fireEvent(Event::PRE_SHOW, $event);
 
@@ -298,9 +289,8 @@ class CrudHandler
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $event = new FilterResponseEvent();
-        $event->setController($controller);
-        $event->setFormData($data);
+        $event = new FilterFormEvent();
+        $event->setData($data);
         $event->setForm($form);
         $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
 
@@ -316,8 +306,7 @@ class CrudHandler
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            $preFormValidationEvent = new FilterResponseEvent();
-            $preFormValidationEvent->setRequest($request);
+            $preFormValidationEvent = new FilterFormEvent();
             $preFormValidationEvent->setForm($form);
             $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
 
@@ -331,17 +320,15 @@ class CrudHandler
             } else {
                 $data = $form->getData();
 
-                $preSaveEvent = new FilterRequestEvent();
-                $preSaveEvent->setRequest($request);
+                $preSaveEvent = new FilterEntityEvent();
                 $preSaveEvent->setEntity($data);
                 $preSaveEvent->setEntityManager($this->manager);
-                $preSaveEvent->setForm($form);
                 $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
 
                 $this->manager->persist($data);
                 $this->manager->flush();
 
-                $postSaveEvent = new GetEntityEvent();
+                $postSaveEvent = new FilterEntityEvent();
                 $postSaveEvent->setEntityManager($this->manager);
                 $postSaveEvent->setEntity($data);
                 $this->fireEvent(Event::POST_SAVE, $postSaveEvent);

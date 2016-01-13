@@ -13,43 +13,50 @@ services:
             - '@security.token_storage'
             - '@translator'
         tags:
-            - { name: kernel.event_listener, event: symfonian_id.admin.pre_delete_event, method: onDeleteUser }
+            - { name: kernel.event_listener, event: siab.pre_delete, method: onDeleteUser }
+
+    symfonian_id.admin.set_timestamp:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         arguments:
             - '@service_container'
         tags:
-            - { name: kernel.event_listener, event: symfonian_id.admin.pre_save_event, method: onPreSaveUser }
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
     symfonian_id.admin.remove_password_field:
         class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
         tags:
-            - { name: kernel.event_listener, event: symfonian_id.admin.pre_form_submit_event, method: onPreCreateForm }
+            - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }
 
-    symfonian_id.admin.controller_default_view_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateRegister
+    symfonian_id.admin.default_template_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
-    symfonian_id.admin.user_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\UserControllerRegister
+    symfonian_id.admin.user_controller_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\UserControllerCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
-    symfonian_id.admin.index_controller_dependency_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\ProfileControllerRegister
+    symfonian_id.admin.profile_controller_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\ProfileControllerCompiler
         arguments:
             - '@service_container'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
-    symfonian_id.admin.twig_global_variable_pass:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableRegister
+    symfonian_id.admin.twig_global_variable_compiler:
+        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableCompiler
         arguments:
             - '@service_container'
         tags:
@@ -75,12 +82,16 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
             - '@service_container'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.user_form:
         class: Symfonian\Indonesia\AdminBundle\Form\UserType
         arguments:
             - '@service_container'
             - '%security.role_hierarchy.roles%'
+        tags:
+            - { name: form.type }
 
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
@@ -104,15 +115,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    symfonian_id.admin.twig.is_boolean:
+        class: Symfonian\Indonesia\AdminBundle\Twig\BooleanExtension\BooleanTest
+        tags:
+            - { name: twig.extension }
+
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:
             - '@service_container'
-
-    symfonian_id.admin.cache_listener:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\CacheListener
-        arguments:
-            - '@service_container'
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

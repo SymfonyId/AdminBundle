@@ -2,7 +2,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
-use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplate;
+use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplateCompiler;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -37,9 +37,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                 ->end()
                 ->scalarNode('upload_dir')
                     ->defaultValue('uploads')
-                ->end()
-                ->booleanNode('micro_cache')
-                    ->defaultValue(true)
                 ->end()
                 ->arrayNode('home')
                     ->addDefaultsIfNotSet()
@@ -97,10 +94,10 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                                 ->booleanNode('auto_enable')->defaultTrue()->end()
                                 ->arrayNode('show_fields')
                                     ->prototype('scalar')->end()
-                                    ->defaultValue(array('username', 'email', 'roles'))
+                                    ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
                                 ->end()
                                 ->arrayNode('grid_fields')
-                                    ->defaultValue(array('username', 'email', 'roles'))
+                                    ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
                                     ->prototype('scalar')->end()
                                 ->end()
                             ->end()
@@ -176,7 +173,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.menu', $config['menu']);
         $container->setParameter('symfonian_id.admin.profile_fields', $config['profile_fields']);
         $container->setParameter('symfonian_id.admin.identifier', $config['identifier']);
-        $container->setParameter('symfonian_id.admin.use_micro_cache', $config['micro_cache']);
         $container->setParameter('symfonian_id.admin.filter', $config['filter']);
         $container->setParameter('symfonian_id.admin.date_time_format', $config['date_time_format']);
         $container->setParameter('symfonian_id.admin.translation_domain', $config['translation_domain']);
@@ -232,7 +228,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
     public function addCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new OverridePaginationTemplate());
+        $container->addCompilerPass(new OverridePaginationTemplateCompiler());
     }
 
     public function getAlias()
