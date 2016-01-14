@@ -13,13 +13,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class SetTimestampListener
 {
+    /**
+     * @var TokenStorageInterface
+     */
     protected $tokenStorage;
 
+    /**
+     * SetTimestampListener constructor.
+     * @param TokenStorageInterface $tokenStorage
+     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @param FilterEntityEvent $event
+     */
     public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();

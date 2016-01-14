@@ -22,11 +22,19 @@ final class HomeRouteLoader implements LoaderInterface
 
     private $loaded = false;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param string $resource
+     * @param null $type
+     * @return RouteCollection
+     */
     public function load($resource, $type = null)
     {
         if (true === $this->loaded) {
@@ -48,6 +56,11 @@ final class HomeRouteLoader implements LoaderInterface
         return $routes;
     }
 
+    /**
+     * @param string $resource
+     * @param null $type
+     * @return bool
+     */
     public function supports($resource, $type = null)
     {
         return 'siab' === $type;

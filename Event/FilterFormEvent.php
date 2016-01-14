@@ -19,21 +19,33 @@ class FilterFormEvent extends Event
 
     protected $response;
 
+    /**
+     * @param FormInterface $form
+     */
     public function setForm(FormInterface $form)
     {
         $this->form = $form;
     }
 
+    /**
+     * @return FormInterface
+     */
     public function getForm()
     {
         return $this->form;
     }
 
+    /**
+     * @param mixed $entity
+     */
     public function setData($entity)
     {
         $this->formData = $entity;
     }
 
+    /**
+     * @return mixed
+     */
     public function getData()
     {
         return $this->formData;

@@ -14,13 +14,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class UpdateUserListener
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
+    /**
+     * UpdateUserListener constructor.
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param FilterEntityEvent $event
+     */
     public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();

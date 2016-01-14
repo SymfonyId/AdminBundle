@@ -100,9 +100,9 @@ class CrudHandler
     }
 
     /**
-     * @param Request    $request
-     * @param array      $gridFields
-     * @param array      $filterFields
+     * @param Request $request
+     * @param array $gridFields
+     * @param array $filterFields
      * @param bool|false $normalizeFilter
      * @param bool|true $formatNumber
      */
@@ -201,7 +201,6 @@ class CrudHandler
 
     /**
      * @param EntityInterface $data
-     *
      * @return bool|\Symfony\Component\HttpFoundation\Response
      */
     public function remove(EntityInterface $data)
@@ -222,9 +221,9 @@ class CrudHandler
     }
 
     /**
-     * @param Request         $request
+     * @param Request $request
      * @param EntityInterface $data
-     * @param array           $showFields
+     * @param array $showFields
      */
     public function showDetail(Request $request, EntityInterface $data, array $showFields)
     {
@@ -277,11 +276,10 @@ class CrudHandler
     }
 
     /**
-     * @param CrudController     $controller
-     * @param Request            $request
-     * @param EntityInterface    $data
+     * @param CrudController $controller
+     * @param Request $request
+     * @param EntityInterface $data
      * @param FormInterface|null $form
-     *
      * @return mixed
      */
     public function createNewOrUpdate(CrudController $controller, Request $request, EntityInterface $data, FormInterface $form = null)

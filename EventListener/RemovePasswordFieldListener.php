@@ -12,6 +12,9 @@ use Symfonian\Indonesia\AdminBundle\Security\Model\User;
 
 class RemovePasswordFieldListener
 {
+    /**
+     * @param FilterFormEvent $event
+     */
     public function onPreCreateForm(FilterFormEvent $event)
     {
         $formData = $event->getData();

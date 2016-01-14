@@ -31,6 +31,12 @@ final class DeleteUserListener
      */
     private $container;
 
+    /**
+     * DeleteUserListener constructor.
+     * @param ContainerInterface $container
+     * @param TokenStorageInterface $tokenStorage
+     * @param TranslatorInterface $translator
+     */
     public function __construct(ContainerInterface $container, TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
     {
         $token = $tokenStorage->getToken();

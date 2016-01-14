@@ -42,6 +42,11 @@ class Builder
         $this->authorizationChecker = $container->get('security.authorization_checker');
     }
 
+    /**
+     * @param FactoryInterface $factory
+     * @param array $options
+     * @return ItemInterface
+     */
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root', array(
