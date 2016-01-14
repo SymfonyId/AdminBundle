@@ -10,6 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Security\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 /**
@@ -17,6 +18,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
  *
  * @Page(title="page.user.title", description="page.user.description")
  * @Grid(filter={"username", "full_name"})
+ * @FileChooser()
  */
 class UserController extends CrudController
 {

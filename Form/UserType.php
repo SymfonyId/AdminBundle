@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -74,6 +75,13 @@ class UserType extends AbstractType
                 ),
                 'second_options' => array(
                     'label' => 'form.label.repeat_password',
+                ),
+            ))
+            ->add('avatar', FileType::class, array(
+                'label' => 'action.avatar',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
                 ),
             ))
             ->add('save', SubmitType::class, array(
