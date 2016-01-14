@@ -27,6 +27,8 @@ abstract class User extends BaseUser implements EntityInterface
     protected $fullName;
 
     /**
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
+     *
      * @var string
      */
     protected $avatar;
