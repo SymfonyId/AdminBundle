@@ -55,11 +55,9 @@ final class HomeRouteLoader implements LoaderInterface
 
     public function setResolver(LoaderResolverInterface $resolver)
     {
-        //Useless for this case
     }
 
     public function getResolver()
     {
-        //Useless for this case
     }
 }

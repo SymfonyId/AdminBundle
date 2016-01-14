@@ -30,7 +30,8 @@
         "symfonyid/core-bundle": "dev-master",
         "symfonyid/symfony-bundle-plugins": "dev-master",
         "friendsofsymfony/user-bundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "dev-master"
+        "friendsofsymfony/jsrouting-bundle": "dev-master",
+        "vich/uploader-bundle": "dev-master"
     },
     "autoload": {
         "psr-4": {

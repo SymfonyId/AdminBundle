@@ -105,7 +105,6 @@ class ProfileController extends Controller
                 }
 
                 $userManager = $this->container->get('fos_user.user_manager');
-
                 $entity = $form->getData();
 
                 /** @var \Doctrine\ORM\EntityManager $entityManager */
@@ -117,7 +116,6 @@ class ProfileController extends Controller
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);
-
                 $dispatcher->dispatch(Event::POST_SAVE, $event);
 
                 $this->viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);

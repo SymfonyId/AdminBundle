@@ -1,12 +1,10 @@
 <?php
 
-/**
- * This file is part of JKN.
- *
- * (c) Muhamad Surya Iksanudin<surya.kejawen@gmail.com>
- *
- * @author : Muhamad Surya Iksanudin
- **/
+/*
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin
+ */
+
 namespace Symfonian\Indonesia\AdminBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
