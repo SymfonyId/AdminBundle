@@ -129,6 +129,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    symfonian_id.admin.twig.generate_avatar:
+        class: Symfonian\Indonesia\AdminBundle\Twig\DateExtension\GenerateUserAvatarFunction
+        tags:
+            - { name: twig.extension }
+
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:

@@ -18,13 +18,7 @@
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <!-- The user image in the navbar-->
-                    <img src="
-                        {%- if app.user.avatar is not defined or app.user.avatar is null  -%}
-                            {{- asset('bundles/symfonianindonesiaadmin/img/apple-icon-72x72.png') -}}
-                        {%- else -%}
-                            {{- app.user.avatar -}}
-                        {%- endif -%}
-                    " class="user-image" alt="User Image"/>
+                    <img src="{{- generate_avatar(app.user) -}}" class="user-image" alt="User Image"/>
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                     <span class="hidden-xs">
                         {%- if app.user is defined and app.user is not null -%}
@@ -39,13 +33,7 @@
                 <ul class="dropdown-menu">
                     <!-- The user image in the menu -->
                     <li class="user-header">
-                        <img src="
-                            {%- if app.user.avatar is not defined or app.user.avatar is null  -%}
-                                {{- asset('bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png') -}}
-                            {%- else -%}
-                                {{- app.user.avatar -}}
-                            {%- endif -%}
-                        " class="img-circle" alt="User Image" />
+                        <img src="{{- generate_avatar(app.user) -}}" class="img-circle" alt="User Image" />
                         <p>
                             {%- if app.user is defined and app.user is not null -%}
                                 {%- if app.user.fullName is null -%}
