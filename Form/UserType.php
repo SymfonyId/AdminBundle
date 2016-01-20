@@ -8,6 +8,7 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
  */
 
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
+use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\StringToFileTransformer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -48,12 +49,12 @@ class UserType extends AbstractType
                 ),
             ))
             ->add($builder->create('roles', ChoiceType::class, array(
-                    'label' => 'form.label.role',
-                    'choices' => $this->buildRoleList(),
-                    'placeholder' => 'message.select_empty',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
+                'label' => 'form.label.role',
+                'choices' => $this->buildRoleList(),
+                'placeholder' => 'message.select_empty',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))->addModelTransformer(new RoleToArrayTransformer()))
             ->add('email', EmailType::class, array(
                 'label' => 'form.label.email',
@@ -77,13 +78,13 @@ class UserType extends AbstractType
                     'label' => 'form.label.repeat_password',
                 ),
             ))
-            ->add('avatar', FileType::class, array(
+            ->add($builder->create('avatar', FileType::class, array(
                 'label' => 'action.avatar',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-            ))
+            ))->addModelTransformer(new StringToFileTransformer($this->container)))
             ->add('save', SubmitType::class, array(
                 'label' => 'action.submit',
                 'attr' => array(
