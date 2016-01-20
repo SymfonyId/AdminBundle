@@ -32,7 +32,8 @@ final class HomeRouteLoader implements LoaderInterface
 
     /**
      * @param string $resource
-     * @param null $type
+     * @param null   $type
+     *
      * @return RouteCollection
      */
     public function load($resource, $type = null)
@@ -58,7 +59,8 @@ final class HomeRouteLoader implements LoaderInterface
 
     /**
      * @param string $resource
-     * @param null $type
+     * @param null   $type
+     *
      * @return bool
      */
     public function supports($resource, $type = null)

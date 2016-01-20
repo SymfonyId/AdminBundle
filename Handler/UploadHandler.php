@@ -48,7 +48,7 @@ class UploadHandler
             }
 
             if ($file instanceof UploadedFile) {
-                $fileName = sha1(md5(uniqid())).'.'.$file->getClientOriginalExtension();
+                $fileName = sha1(uniqid('SIAB_', true)).'.'.$file->getClientOriginalExtension();
 
                 if (!$file->isExecutable()) {
                     $file->move($this->dirPath, $fileName);

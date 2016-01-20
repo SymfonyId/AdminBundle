@@ -20,6 +20,7 @@ class SetTimestampListener
 
     /**
      * SetTimestampListener constructor.
+     *
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)

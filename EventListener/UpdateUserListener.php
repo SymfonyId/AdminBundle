@@ -9,7 +9,6 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use FOS\UserBundle\Model\User;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterRequestEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class UpdateUserListener
@@ -21,6 +20,7 @@ final class UpdateUserListener
 
     /**
      * UpdateUserListener constructor.
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)

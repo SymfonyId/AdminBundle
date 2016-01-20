@@ -44,7 +44,8 @@ class Builder
 
     /**
      * @param FactoryInterface $factory
-     * @param array $options
+     * @param array            $options
+     *
      * @return ItemInterface
      */
     public function mainMenu(FactoryInterface $factory, array $options)

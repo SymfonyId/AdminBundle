@@ -9,7 +9,6 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 
@@ -141,6 +140,7 @@ class ConfigurationHandler
 
     /**
      * @param EntityInterface | null $formData
+     *
      * @return FormInterface
      */
     public function getForm($formData = null)
@@ -158,14 +158,15 @@ class ConfigurationHandler
                 $options = array(
                     'fields' => $this->getEntityFields(),
                     'attr' => array(
-                        'style' => 'form-control'
-                    )
+                        'style' => 'form-control',
+                    ),
                 );
             }
         }
 
         $form = $this->formFactory->create(get_class($formObject), null, $options);
         $form->setData($formData);
+
         return $form;
     }
 
@@ -178,7 +179,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isNormalizeFilter()
     {
@@ -186,7 +187,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @param boolean $normalizeFilter
+     * @param bool $normalizeFilter
      */
     public function setNormalizeFilter($normalizeFilter)
     {
@@ -194,7 +195,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isFormatNumber()
     {
@@ -202,7 +203,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @param boolean $formatNumber
+     * @param bool $formatNumber
      */
     public function setFormatNumber($formatNumber)
     {
@@ -312,7 +313,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUseAjax()
     {
@@ -320,7 +321,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUseDatePicker()
     {
@@ -328,7 +329,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @param boolean $useDatePicker
+     * @param bool $useDatePicker
      */
     public function setUseDatePicker($useDatePicker)
     {
@@ -336,7 +337,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUseFileStyle()
     {
@@ -344,7 +345,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @param boolean $useFileStyle
+     * @param bool $useFileStyle
      */
     public function setUseFileStyle($useFileStyle)
     {
@@ -352,7 +353,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUseEditor()
     {
@@ -360,7 +361,7 @@ class ConfigurationHandler
     }
 
     /**
-     * @param boolean $useEditor
+     * @param bool $useEditor
      */
     public function setUseEditor($useEditor)
     {

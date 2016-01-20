@@ -32,7 +32,7 @@ services:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
     symfonian_id.admin.upload:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\UploadFileListener
+        class: Symfonian\Indonesia\AdminBundle\EventListener\UploadAvatarListener
         arguments:
             - '@service_container'
         tags:

@@ -33,9 +33,10 @@ final class DeleteUserListener
 
     /**
      * DeleteUserListener constructor.
-     * @param ContainerInterface $container
+     *
+     * @param ContainerInterface    $container
      * @param TokenStorageInterface $tokenStorage
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface   $translator
      */
     public function __construct(ContainerInterface $container, TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
     {
