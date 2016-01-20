@@ -43,6 +43,6 @@ final class ProfileControllerCompiler
         }
 
         $this->configuration->setShowFields($this->container->getParameter('symfonian_id.admin.profile_fields'));
-        $this->configuration->setForm($this->container->getParameter('symfonian_id.admin.security.change_password'));
+        $this->configuration->setFormClass($this->container->getParameter('symfonian_id.admin.security.change_password'));
     }
 }

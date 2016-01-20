@@ -29,11 +29,15 @@ class StringToFileTransformer implements DataTransformerInterface
             return $file;
         }
 
-        return $file->getFilename();
+        return $file;
     }
 
     public function transform($filename)
     {
+        if (!$filename) {
+            return $filename;
+        }
+
         $uploadDir = $this->container->getParameter('symfonian_id.admin.upload_dir');
 
         return new File($uploadDir['server_path'].'/'.$filename);

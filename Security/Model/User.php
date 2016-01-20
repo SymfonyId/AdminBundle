@@ -19,24 +19,24 @@ use Symfony\Component\HttpFoundation\File\File;
 abstract class User extends BaseUser implements EntityInterface
 {
     /**
-     * @ORM\Column(name="full_name", type="string", length=77, nullable=true)
      * @Assert\NotBlank(groups={"Registration"})
+     * @ORM\Column(name="full_name", type="string", length=77, nullable=true)
      *
      * @var string
      */
     protected $fullName;
 
     /**
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     * )
+     *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      *
      * @var string
      */
     protected $avatar;
-
-    /**
-     * @var File
-     */
-    protected $image;
 
     public function __construct()
     {
@@ -73,22 +73,6 @@ abstract class User extends BaseUser implements EntityInterface
     public function getAvatar()
     {
         return $this->avatar;
-    }
-
-    /**
-     * @param File $image
-     */
-    public function setImage(File $image)
-    {
-        $this->image = $image;
-    }
-
-    /**
-     * @return File
-     */
-    public function getImage()
-    {
-        return $this->image;
     }
 
     /**

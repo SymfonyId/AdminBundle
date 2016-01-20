@@ -82,6 +82,7 @@ class UserType extends AbstractType
                 'label' => 'action.avatar',
                 'required' => false,
                 'attr' => array(
+                    'accept' => 'image/*',
                     'class' => 'form-control',
                 ),
             ))->addModelTransformer(new StringToFileTransformer($this->container)))
