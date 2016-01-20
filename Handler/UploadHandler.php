@@ -17,7 +17,7 @@ class UploadHandler
 
     private $fields = array();
 
-    public function setUpdateDir($dirPath)
+    public function setUploadDir($dirPath)
     {
         $this->dirPath = $dirPath;
     }
@@ -48,7 +48,7 @@ class UploadHandler
             }
 
             if ($file instanceof UploadedFile) {
-                $fileName = $file->getClientOriginalName().'.'.$file->getClientOriginalExtension();
+                $fileName = sha1(md5(uniqid())).'.'.$file->getClientOriginalExtension();
 
                 if (!$file->isExecutable()) {
                     $file->move($this->dirPath, $fileName);

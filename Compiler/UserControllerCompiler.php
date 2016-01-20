@@ -44,8 +44,8 @@ final class UserControllerCompiler
             return;
         }
 
-        $this->configuration->setForm($this->container->getParameter('symfonian_id.admin.security.user_form'));
-        $this->configuration->setEntity($this->container->getParameter('symfonian_id.admin.security.user_entity'));
+        $this->configuration->setFormClass($this->container->getParameter('symfonian_id.admin.security.user_form'));
+        $this->configuration->setEntityClass($this->container->getParameter('symfonian_id.admin.security.user_entity'));
         $this->configuration->setShowFields($this->container->getParameter('symfonian_id.admin.security.show_fields'));
         $this->configuration->setGridFields($this->container->getParameter('symfonian_id.admin.security.grid_fields'));
     }

@@ -29,7 +29,8 @@ class UploadFileListener
         $uploadHandler = $this->container->get('symfonian_id.admin.handler.upload');
 
         if ($uploadHandler->isUploadable()) {
-            $uploadHandler->setUpdateDir($this->container->getParameter('symfonian_id.admin.upload_dir'));
+            $uploadDir = $this->container->getParameter('symfonian_id.admin.upload_dir');
+            $uploadHandler->setUploadDir($uploadDir['server_path']);
             $uploadHandler->upload($entity);
         }
     }

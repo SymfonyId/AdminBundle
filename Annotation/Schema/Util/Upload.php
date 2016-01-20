@@ -15,10 +15,14 @@ class Upload implements UtilAnnotationInterface
 {
     private $fields;
 
-    public function __construct()
+    public function __construct(array $data)
     {
         if (isset($data['value'])) {
             $this->fields = (array) $data['value'];
+        }
+
+        if (isset($data['fields'])) {
+            $this->fields = (array) $data['fields'];
         }
     }
 
