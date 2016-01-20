@@ -15,31 +15,49 @@ class UploadHandler
 {
     private $dirPath;
 
-    private $method;
+    private $fields = array();
 
     public function setUpdateDir($dirPath)
     {
         $this->dirPath = $dirPath;
     }
 
-    public function setField($field)
+    public function setFields(array $fields)
     {
-        $this->method = CamelCasizer::underScoretToCamelCase('get_'.$field);
+        $this->fields = $fields;
+    }
+
+    public function isUploadable()
+    {
+        if (empty($this->fields)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function upload(EntityInterface $entity)
     {
         $file = null;
-        if (method_exists($entity, $this->method)) {
-            /** @var UploadedFile $file */
-            $file = call_user_func_array(array($entity, $this->method), array());
-        }
 
-        if ($file instanceof UploadedFile) {
-            $fileName = $file->getClientOriginalName().'.'.$file->getClientOriginalExtension();
+        foreach ($this->fields as $field) {
+            $getter = CamelCasizer::underScoretToCamelCase('get_'.$field);
+            if (method_exists($entity, $getter)) {
+                /** @var UploadedFile $file */
+                $file = call_user_func_array(array($entity, $getter), array());
+            }
 
-            if (!$file->isExecutable()) {
-                $file->move($this->dirPath, $fileName);
+            if ($file instanceof UploadedFile) {
+                $fileName = $file->getClientOriginalName().'.'.$file->getClientOriginalExtension();
+
+                if (!$file->isExecutable()) {
+                    $file->move($this->dirPath, $fileName);
+                }
+
+                $setter = CamelCasizer::underScoretToCamelCase('set_'.$field);
+                if (method_exists($entity, $setter)) {
+                    call_user_func_array(array($entity, $setter), array($fileName));
+                }
             }
         }
     }

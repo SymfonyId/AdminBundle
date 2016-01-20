@@ -17,9 +17,11 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\DatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Editor;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\IncludeJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
+use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class AnnotationReader
@@ -28,10 +30,13 @@ final class AnnotationReader
 
     private $configuration;
 
-    public function __construct(Reader $reader, ConfigurationHandler $configuration)
+    private $uploader;
+
+    public function __construct(Reader $reader, ConfigurationHandler $configuration, UploadHandler $uploadHandler)
     {
         $this->reader = $reader;
         $this->configuration = $configuration;
+        $this->uploader = $uploadHandler;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -80,6 +85,10 @@ final class AnnotationReader
 
                 if ($annotation instanceof IncludeJavascript) {
                     $this->configuration->setJavascript($annotation->getFile(), $annotation->getIncludeRoute());
+                }
+
+                if ($annotation instanceof Upload) {
+                    $this->uploader->setFields($annotation->getFields());
                 }
             }
         }

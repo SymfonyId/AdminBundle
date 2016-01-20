@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfonian\Indonesia\AdminBundle\Security\Controller\UserController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -18,9 +19,15 @@ final class UserControllerCompiler
      */
     private $container;
 
+    /**
+     * @var ConfigurationHandler
+     */
+    private $configuration;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->configuration = $container->get('symfonian_id.admin.handler.configuration');
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -37,9 +44,9 @@ final class UserControllerCompiler
             return;
         }
 
-        $controller->setForm($this->container->getParameter('symfonian_id.admin.security.user_form'));
-        $controller->setEntity($this->container->getParameter('symfonian_id.admin.security.user_entity'));
-        $controller->setShowFields($this->container->getParameter('symfonian_id.admin.security.show_fields'));
-        $controller->setGridFields($this->container->getParameter('symfonian_id.admin.security.grid_fields'));
+        $this->configuration->setForm($this->container->getParameter('symfonian_id.admin.security.user_form'));
+        $this->configuration->setEntity($this->container->getParameter('symfonian_id.admin.security.user_entity'));
+        $this->configuration->setShowFields($this->container->getParameter('symfonian_id.admin.security.show_fields'));
+        $this->configuration->setGridFields($this->container->getParameter('symfonian_id.admin.security.grid_fields'));
     }
 }

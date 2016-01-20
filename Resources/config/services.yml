@@ -4,6 +4,7 @@ services:
         arguments:
             - '@annotation_reader'
             - '@symfonian_id.admin.handler.configuration'
+            - '@symfonian_id.admin.handler.upload'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
 
@@ -25,6 +26,13 @@ services:
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+
+    symfonian_id.admin.upload:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\UploadFileListener
         arguments:
             - '@service_container'
         tags:
@@ -130,3 +138,6 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler
         arguments:
             - '@service_container'
+
+    symfonian_id.admin.handler.upload:
+        class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
