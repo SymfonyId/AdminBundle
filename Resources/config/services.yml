@@ -3,6 +3,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Annotation\Reader\AnnotationReader
         arguments:
             - '@annotation_reader'
+            - '@symfonian_id.admin.handler.configuration'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
 
@@ -122,5 +123,10 @@ services:
 
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
+        arguments:
+            - '@service_container'
+
+    symfonian_id.admin.handler.configuration:
+        class: Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler
         arguments:
             - '@service_container'

@@ -19,15 +19,19 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class AnnotationReader
 {
     private $reader;
 
-    public function __construct(Reader $reader)
+    private $configuration;
+
+    public function __construct(Reader $reader, ConfigurationHandler $configuration)
     {
         $this->reader = $reader;
+        $this->configuration = $configuration;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -43,95 +47,96 @@ final class AnnotationReader
         }
 
         $reflectionObject = new ReflectionObject($controller);
+        unset($controller);
         foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
             if ($annotation instanceof Crud) {
-                $this->compileTemplate($annotation, $controller);
+                $this->compileTemplate($annotation);
             }
 
             if ($annotation instanceof Grid) {
-                $this->compileGrid($annotation, $controller);
+                $this->compileGrid($annotation);
             }
 
             if ($annotation instanceof Page) {
-                $this->compilePage($annotation, $controller);
+                $this->compilePage($annotation);
             }
 
             if ($annotation instanceof UtilAnnotationInterface) {
                 if ($annotation instanceof AutoComplete) {
-                    $controller->setAutoComplete($annotation->getRoute(), $annotation->getTargetSelector());
+                    $this->configuration->setAutoComplete($annotation->getRoute(), $annotation->getTargetSelector());
                 }
 
                 if ($annotation instanceof DatePicker) {
-                    $controller->useDatePicker();
+                    $this->configuration->setUseDatePicker(true);
                 }
 
                 if ($annotation instanceof Editor) {
-                    $controller->useEditor();
+                    $this->configuration->setUseEditor(true);
                 }
 
                 if ($annotation instanceof FileChooser) {
-                    $controller->useCustomFileChooser();
+                    $this->configuration->setUseFileStyle(true);
                 }
 
                 if ($annotation instanceof IncludeJavascript) {
-                    $controller->includeJs($annotation->getFile(), $annotation->getIncludeRoute());
+                    $this->configuration->setJavascript($annotation->getFile(), $annotation->getIncludeRoute());
                 }
             }
         }
     }
 
-    private function compileTemplate(Crud $annotation, CrudController $controller)
+    private function compileTemplate(Crud $annotation)
     {
         if ($annotation->getAdd()) {
-            $controller->setNewTemplate($annotation->getAdd());
+            $this->configuration->setNewTemplate($annotation->getAdd());
         }
 
         if ($annotation->getEdit()) {
-            $controller->setEditTemplate($annotation->getEdit());
+            $this->configuration->setEditTemplate($annotation->getEdit());
         }
 
         if ($annotation->getShow()) {
-            $controller->setShowTemplate($annotation->getShow());
+            $this->configuration->setShowTemplate($annotation->getShow());
         }
 
         if ($annotation->getList()) {
-            $controller->setListTemplate($annotation->getList());
+            $this->configuration->setListTemplate($annotation->getList());
         }
 
         if ($annotation->getForm()) {
-            $controller->setForm($annotation->getForm());
+            $this->configuration->setFormClass($annotation->getForm());
         }
 
         if ($annotation->getEntity()) {
-            $controller->setEntity($annotation->getEntity());
+            $this->configuration->setEntityClass($annotation->getEntity());
         }
 
         if ($annotation->getShowFields()) {
-            $controller->setShowFields($annotation->getShowFields());
+            $this->configuration->setShowFields($annotation->getShowFields());
         }
 
         if ($annotation->getAjaxTemplate()) {
-            $controller->setAjaxTemplate($annotation->getAjaxTemplate());
+            $this->configuration->setAjaxTemplate($annotation->getAjaxTemplate());
         }
     }
 
-    private function compileGrid(Grid $annotation, CrudController $controller)
+    private function compileGrid(Grid $annotation)
     {
         if ($annotation->getFields()) {
-            $controller->setGridFields($annotation->getFields());
+            $this->configuration->setGridFields($annotation->getFields());
         }
 
         if ($annotation->getFilter()) {
-            $controller->setFilter($annotation->getFilter());
+            $this->configuration->setFilter($annotation->getFilter());
         }
 
-        $controller->upperCaseFilter($annotation->isNormalizeFilter());
-        $controller->formatNumber($annotation->isFormatNumber());
+        $this->configuration->setNormalizeFilter($annotation->isNormalizeFilter());
+        $this->configuration->setFormatNumber($annotation->isFormatNumber());
     }
 
-    private function compilePage(Page $annotation, CrudController $controller)
+    private function compilePage(Page $annotation)
     {
-        $controller->setTitle($annotation->getTitle());
-        $controller->setDescription($annotation->getDescription());
+        $this->configuration->setTitle($annotation->getTitle());
+        $this->configuration->setDescription($annotation->getDescription());
     }
 }
