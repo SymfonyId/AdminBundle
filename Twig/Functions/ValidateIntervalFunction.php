@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Twig\DateExtension;
+namespace Symfonian\Indonesia\AdminBundle\Twig\Functions;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>

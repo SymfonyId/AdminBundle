@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Twig\StringExtension;
+namespace Symfonian\Indonesia\AdminBundle\Twig\Filters;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>

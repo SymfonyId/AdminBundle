@@ -110,27 +110,29 @@ services:
             - { name: routing.loader }
 
     symfonian_id.admin.twig.is_number:
-        class: Symfonian\Indonesia\AdminBundle\Twig\NumberExtension\NumberTest
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\NumberTest
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.is_valid_interval:
-        class: Symfonian\Indonesia\AdminBundle\Twig\DateExtension\ValidateIntervalFunction
+        class: Symfonian\Indonesia\AdminBundle\Twig\Functions\ValidateIntervalFunction
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.ucwords:
-        class: Symfonian\Indonesia\AdminBundle\Twig\StringExtension\UcWordsFilter
+        class: Symfonian\Indonesia\AdminBundle\Twig\Filters\UcWordsFilter
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.is_boolean:
-        class: Symfonian\Indonesia\AdminBundle\Twig\BooleanExtension\BooleanTest
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\BooleanTest
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.generate_avatar:
-        class: Symfonian\Indonesia\AdminBundle\Twig\DateExtension\GenerateUserAvatarFunction
+        class: Symfonian\Indonesia\AdminBundle\Twig\Functions\GenerateUserAvatarFunction
+        arguments:
+            - '@service_container'
         tags:
             - { name: twig.extension }
 

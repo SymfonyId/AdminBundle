@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Twig\BooleanExtension;
+namespace Symfonian\Indonesia\AdminBundle\Twig\Comparations;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -10,22 +10,22 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\BooleanExtension;
 use Twig_Extension;
 use Twig_SimpleTest;
 
-class BooleanTest extends Twig_Extension
+class NumberTest extends Twig_Extension
 {
     public function getTests()
     {
         return array(
-            new Twig_SimpleTest('boolean', array($this, 'isBoolean')),
+            new Twig_SimpleTest('numeric', array($this, 'isNumeric')),
         );
     }
 
-    public function isBoolean($boolean)
+    public function isNumeric($number)
     {
-        return is_bool($boolean);
+        return is_numeric($number);
     }
 
     public function getName()
     {
-        return 'is_boolean';
+        return 'is_numeric';
     }
 }
