@@ -138,6 +138,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler
         arguments:
             - '@service_container'
+            - '@form.factory'
 
     symfonian_id.admin.handler.upload:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
