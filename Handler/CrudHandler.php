@@ -138,10 +138,10 @@ class CrudHandler
         $data = array();
         $identifier = array();
         $header = array();
+        /*
+         * @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record
+         */
         foreach ($pagination as $key => $record) {
-            /*
-             * @var $record \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface
-             */
             $temp = array();
             $identifier[$key] = $record->getId();
 
@@ -173,9 +173,11 @@ class CrudHandler
                     if (!empty($numberFormat)) {
                         $result = number_format($result, $numberFormat['decimal'], $numberFormat['decimal_point'], $numberFormat['thousand_separator']);
                     }
-
-                    array_push($temp, $result);
+                } else {
+                    $result = '';
                 }
+
+                array_push($temp, $result);
             }
 
             $data[$key] = $temp;
