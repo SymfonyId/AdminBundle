@@ -9,23 +9,20 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use FOS\UserBundle\Model\User;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class UpdateUserListener
 {
     /**
-     * @var ContainerInterface
+     * @var boolean
      */
-    private $container;
+    private $autoEnable;
 
     /**
-     * UpdateUserListener constructor.
-     *
-     * @param ContainerInterface $container
+     * @param boolean $autoEnable
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct($autoEnable = false)
     {
-        $this->container = $container;
+        $this->autoEnable = $autoEnable;
     }
 
     /**
@@ -43,7 +40,7 @@ final class UpdateUserListener
             return;
         }
 
-        if (!$this->container->getParameter('symfonian_id.admin.security.auto_enable')) {
+        if (!$this->autoEnable) {
             return;
         }
 

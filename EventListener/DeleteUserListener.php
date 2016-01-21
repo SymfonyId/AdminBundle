@@ -9,7 +9,6 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use FOS\UserBundle\Model\UserInterface;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -27,25 +26,23 @@ final class DeleteUserListener
     private $translator;
 
     /**
-     * @var ContainerInterface
+     * @var string
      */
-    private $container;
+    private $translationDomain;
 
     /**
-     * DeleteUserListener constructor.
-     *
-     * @param ContainerInterface    $container
      * @param TokenStorageInterface $tokenStorage
      * @param TranslatorInterface   $translator
+     * @param string $translationDomain
      */
-    public function __construct(ContainerInterface $container, TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
+    public function __construct(TokenStorageInterface $tokenStorage, TranslatorInterface $translator, $translationDomain)
     {
         $token = $tokenStorage->getToken();
         if ($token) {
             $this->user = $token->getUser();
         }
         $this->translator = $translator;
-        $this->container = $container;
+        $this->translationDomain = $translationDomain;
     }
 
     public function onDeleteUser(FilterEntityEvent $event)
@@ -59,7 +56,7 @@ final class DeleteUserListener
         if ($this->user->getUsername() === $entity->getUsername()) {
             $response = new JsonResponse(array(
                 'status' => false,
-                'message' => $this->translator->trans('message.cant_delete_your_self', array(), $this->container->getParameter('symfonian_id.admin.translation_domain')),
+                'message' => $this->translator->trans('message.cant_delete_your_self', array(), $this->translationDomain),
             ));
 
             $event->setResponse($response);

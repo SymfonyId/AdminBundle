@@ -9,7 +9,6 @@ namespace Symfonian\Indonesia\AdminBundle\Form;
 
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\StringToFileTransformer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,14 +22,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    protected $container;
+    protected $userClass;
+
+    protected $translationDomain;
 
     protected $roleHierarchy;
 
-    public function __construct(ContainerInterface $container, array $roleHierarchy)
+    protected $uploadDir;
+
+    public function __construct($userClass, $translationDomain, array $roleHierarchy, $uploadDir)
     {
-        $this->container = $container;
+        $this->userClass = $userClass;
+        $this->translationDomain = $translationDomain;
         $this->roleHierarchy = array_keys($roleHierarchy);
+        $this->uploadDir = $uploadDir;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -85,7 +90,7 @@ class UserType extends AbstractType
                     'accept' => 'image/*',
                     'class' => 'form-control',
                 ),
-            ))->addModelTransformer(new StringToFileTransformer($this->container)))
+            ))->addModelTransformer(new StringToFileTransformer($this->uploadDir)))
             ->add('save', SubmitType::class, array(
                 'label' => 'action.submit',
                 'attr' => array(
@@ -98,8 +103,8 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->container->getParameter('symfonian_id.admin.security.user_entity'),
-            'translation_domain' => $this->container->getParameter('symfonian_id.admin.translation_domain'),
+            'data_class' => $this->userClass,
+            'translation_domain' => $this->translationDomain,
             'validation_groups' => array('Default'),
             'intention' => 'user',
         ));

@@ -7,20 +7,19 @@ namespace Symfonian\Indonesia\AdminBundle\Form\DataTransformer;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class StringToFileTransformer implements DataTransformerInterface
 {
     /**
-     * @var ContainerInterface
+     * @var array
      */
-    private $container;
+    private $uploadDir;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(array $uploadDir)
     {
-        $this->container = $container;
+        $this->uploadDir = $uploadDir;
     }
 
     public function reverseTransform($file)
@@ -38,8 +37,6 @@ class StringToFileTransformer implements DataTransformerInterface
             return $filename;
         }
 
-        $uploadDir = $this->container->getParameter('symfonian_id.admin.upload_dir');
-
-        return new File($uploadDir['server_path'].'/'.$filename);
+        return new File($this->uploadDir['server_path'].'/'.$filename);
     }
 }

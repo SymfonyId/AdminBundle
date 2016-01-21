@@ -11,9 +11,9 @@ services:
     symfonian_id.admin.delete_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
         arguments:
-            - '@service_container'
             - '@security.token_storage'
             - '@translator'
+            - '%symfonian_id.admin.translation_domain%'
         tags:
             - { name: kernel.event_listener, event: siab.pre_delete, method: onDeleteUser }
 
@@ -27,14 +27,15 @@ services:
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.security.auto_enable%'
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
     symfonian_id.admin.upload:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UploadAvatarListener
         arguments:
-            - '@service_container'
+            - '@symfonian_id.admin.handler.upload'
+            - '%symfonian_id.admin.upload_dir%'
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave }
 
@@ -75,7 +76,9 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder
         arguments:
             - '@router'
-            - '@service_container'
+            - '@translator'
+            - '@security.authorization_checker'
+            - '%symfonian_id.admin.translation_domain%'
 
     symfonian_id.admin.main_menu:
         class: Knp\Menu\MenuItem
@@ -90,22 +93,26 @@ services:
     symfonian_id.admin.change_password_form:
         class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.security.user_entity%'
+            - '%symfonian_id.admin.translation_domain%'
         tags:
             - { name: form.type }
 
     symfonian_id.admin.user_form:
         class: Symfonian\Indonesia\AdminBundle\Form\UserType
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.security.user_entity%'
+            - '%symfonian_id.admin.translation_domain%'
             - '%security.role_hierarchy.roles%'
+            - '%symfonian_id.admin.upload_dir%'
         tags:
             - { name: form.type }
 
     symfonian_id.admin.home_route_loader:
         class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.home.route_path%'
+            - '%symfonian_id.admin.home.controller%'
         tags:
             - { name: routing.loader }
 
@@ -127,7 +134,7 @@ services:
     symfonian_id.admin.twig.generate_avatar:
         class: Symfonian\Indonesia\AdminBundle\Twig\Functions\GenerateUserAvatarFunction
         arguments:
-            - '@service_container'
+            - '%symfonian_id.admin.upload_dir%'
         tags:
             - { name: twig.extension }
 

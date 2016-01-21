@@ -5,7 +5,6 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 use Symfonian\Indonesia\AdminBundle\Security\Model\User;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -13,24 +12,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class UploadAvatarListener
 {
-    private $container;
+    private $uploadHandler;
 
-    public function __construct(ContainerInterface $container)
+    private $uploadDir;
+
+    public function __construct(UploadHandler $uploadHandler, $uploadDir)
     {
-        $this->container = $container;
+        $this->uploadHandler = $uploadHandler;
+        $this->uploadDir = $uploadDir;
     }
 
     public function onPreSave(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
 
-        /** @var UploadHandler $uploadHandler */
-        $uploadHandler = $this->container->get('symfonian_id.admin.handler.upload');
-
-        if ($uploadHandler->isUploadable() && $entity instanceof User) {
-            $uploadDir = $this->container->getParameter('symfonian_id.admin.upload_dir');
-            $uploadHandler->setUploadDir($uploadDir['server_path']);
-            $uploadHandler->upload($entity);
+        if ($this->uploadHandler->isUploadable() && $entity instanceof User) {
+            $this->uploadHandler->setUploadDir($this->uploadDir['server_path']);
+            $this->uploadHandler->upload($entity);
         }
     }
 }

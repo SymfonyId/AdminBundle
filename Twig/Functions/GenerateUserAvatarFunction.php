@@ -15,13 +15,16 @@ use Twig_SimpleFunction;
 class GenerateUserAvatarFunction extends Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var string
      */
-    private $container;
+    private $uploadDir;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @param string $uploadDir
+     */
+    public function __construct($uploadDir)
     {
-        $this->container = $container;
+        $this->uploadDir= $uploadDir;
     }
 
     public function getFunctions()
@@ -34,9 +37,7 @@ class GenerateUserAvatarFunction extends Twig_Extension
     public function generateAvatar(User $user)
     {
         if ($user->getAvatar()) {
-            $uploadDir = $this->container->getParameter('symfonian_id.admin.upload_dir');
-
-            return $uploadDir['web_path'].$user->getAvatar();
+            return $this->uploadDir['web_path'].$user->getAvatar();
         } else {
             return 'bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png';
         }
