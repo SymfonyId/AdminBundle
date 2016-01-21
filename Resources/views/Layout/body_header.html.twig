@@ -23,9 +23,9 @@
                     <span class="hidden-xs">
                         {%- if app.user is defined and app.user is not null -%}
                             {%- if app.user.fullName is null -%}
-                                {{- app.user.username | humanize -}}
+                                {{- app.user.username | ucwords -}}
                             {%- else -%}
-                                {{- app.user.fullName | humanize -}}
+                                {{- app.user.fullName | ucwords -}}
                             {%- endif -%}
                         {%- endif -%}
                     </span>
@@ -36,11 +36,7 @@
                         <img src="{{- generate_avatar(app.user) -}}" class="img-circle" alt="User Image" />
                         <p>
                             {%- if app.user is defined and app.user is not null -%}
-                                {%- if app.user.fullName is null -%}
-                                    {{- app.user.username | upper -}}
-                                {%- else -%}
-                                    {{- app.user.fullName | upper -}}
-                                {%- endif -%}
+                                {{- app.user.username | upper -}}
                                 <small>{{- app.user.role | upper -}}</small>
                             {%- endif -%}
                         </p>

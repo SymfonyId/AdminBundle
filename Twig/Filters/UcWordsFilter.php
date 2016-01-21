@@ -12,7 +12,7 @@ use Twig_SimpleFilter;
 
 class UcWordsFilter extends Twig_Extension
 {
-    public function getTests()
+    public function getFilters()
     {
         return array(
             new Twig_SimpleFilter('ucwords', array($this, 'ucWords')),
