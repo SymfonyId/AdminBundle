@@ -8,7 +8,6 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\Functions;
  */
 
 use Symfonian\Indonesia\AdminBundle\Security\Model\User;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
