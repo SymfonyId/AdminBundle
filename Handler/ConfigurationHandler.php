@@ -8,18 +8,30 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
  */
 
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\Form\GenericFormType;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 
-class ConfigurationHandler
+class ConfigurationHandler implements ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
      */
     protected $container;
 
+    /**
+     * @var GenericFormType
+     */
+    protected $formType;
+
+    /**
+     * @var FormFactory
+     */
     protected $formFactory;
+
+    protected $translationDomain;
 
     protected $title = 'SIAB';
 
@@ -61,13 +73,19 @@ class ConfigurationHandler
 
     protected $filterFields = array();
 
-    public function __construct(ContainerInterface $container, FormFactory $formFactory)
+    public function __construct(GenericFormType $formType, FormFactory $formFactory, $translationDomain)
     {
-        $this->container = $container;
+        $this->formType = $formType;
         $this->formFactory = $formFactory;
+        $this->translationDomain = $translationDomain;
 
         $this->autocomplete['route'] = 'home';
         $this->autocomplete['value_storage_selector'] = '.selector';
+    }
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -152,9 +170,9 @@ class ConfigurationHandler
             if ($this->formClass) {
                 $formObject = new $this->formClass();
             } else {
-                $formObject = $this->container->get('symfonian_id.core.generic_form');
+                $formObject = $this->formType;
                 $formObject->setEntity($this->getEntityClass());
-                $formObject->setTranslationDomain($this->container->getParameter('symfonian_id.admin.translation_domain'));
+                $formObject->setTranslationDomain($this->translationDomain);
                 $options = array(
                     'fields' => $this->getEntityFields(),
                     'attr' => array(
