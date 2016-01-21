@@ -148,7 +148,6 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
-            - '@symfonian_id.core.generic_form'
             - '@form.factory'
             - '%symfonian_id.admin.translation_domain%'
 

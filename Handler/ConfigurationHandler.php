@@ -8,7 +8,6 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
  */
 
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\Form\GenericFormType;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -20,11 +19,6 @@ class ConfigurationHandler implements ContainerAwareInterface
      * @var ContainerInterface
      */
     protected $container;
-
-    /**
-     * @var GenericFormType
-     */
-    protected $formType;
 
     /**
      * @var FormFactory
@@ -73,9 +67,8 @@ class ConfigurationHandler implements ContainerAwareInterface
 
     protected $filterFields = array();
 
-    public function __construct(GenericFormType $formType, FormFactory $formFactory, $translationDomain)
+    public function __construct(FormFactory $formFactory, $translationDomain)
     {
-        $this->formType = $formType;
         $this->formFactory = $formFactory;
         $this->translationDomain = $translationDomain;
 
@@ -167,19 +160,7 @@ class ConfigurationHandler implements ContainerAwareInterface
         try {
             $formObject = $this->container->get($this->formClass);
         } catch (\Exception $ex) {
-            if ($this->formClass) {
-                $formObject = new $this->formClass();
-            } else {
-                $formObject = $this->formType;
-                $formObject->setEntity($this->getEntityClass());
-                $formObject->setTranslationDomain($this->translationDomain);
-                $options = array(
-                    'fields' => $this->getEntityFields(),
-                    'attr' => array(
-                        'style' => 'form-control',
-                    ),
-                );
-            }
+            $formObject = new $this->formClass();
         }
 
         $form = $this->formFactory->create(get_class($formObject), null, $options);
