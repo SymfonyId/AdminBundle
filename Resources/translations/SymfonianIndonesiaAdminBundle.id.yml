@@ -70,3 +70,4 @@ form:
         current_password: 'Password Lama'
         new_password: 'Password Baru'
         repeat_password: 'Ulangi Password'
+        avatar: 'Avatar'

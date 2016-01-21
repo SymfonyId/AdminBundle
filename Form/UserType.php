@@ -84,7 +84,7 @@ class UserType extends AbstractType
                 ),
             ))
             ->add($builder->create('avatar', FileType::class, array(
-                'label' => 'action.avatar',
+                'label' => 'form.label.avatar',
                 'required' => false,
                 'attr' => array(
                     'accept' => 'image/*',
