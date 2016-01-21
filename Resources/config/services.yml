@@ -114,18 +114,13 @@ services:
         tags:
             - { name: twig.extension }
 
-    symfonian_id.admin.twig.is_valid_interval:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Functions\ValidateIntervalFunction
+    symfonian_id.admin.twig.is_boolean:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\BooleanTest
         tags:
             - { name: twig.extension }
 
     symfonian_id.admin.twig.ucwords:
         class: Symfonian\Indonesia\AdminBundle\Twig\Filters\UcWordsFilter
-        tags:
-            - { name: twig.extension }
-
-    symfonian_id.admin.twig.is_boolean:
-        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\BooleanTest
         tags:
             - { name: twig.extension }
 
