@@ -76,7 +76,7 @@ services:
     symfonian_id.admin.profile_controller_compiler:
         class: Symfonian\Indonesia\AdminBundle\User\ProfileViewManipulator
         calls:
-            - [setFormClass, ['%symfonian_id.admin.user.change_password%']]
+            - [setFormClass, ['%symfonian_id.admin.user.password_form%']]
             - [setProfileFields, ['%symfonian_id.admin.profile_fields%']]
         arguments:
             - '@symfonian_id.admin.handler.configuration'
