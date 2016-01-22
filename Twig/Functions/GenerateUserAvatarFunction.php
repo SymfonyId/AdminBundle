@@ -23,7 +23,7 @@ class GenerateUserAvatarFunction extends Twig_Extension
      */
     public function __construct($uploadDir)
     {
-        $this->uploadDir= $uploadDir;
+        $this->uploadDir = $uploadDir;
     }
 
     public function getFunctions()

@@ -66,9 +66,11 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
     symfonian_id.admin.twig_global_variable_compiler:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\TwigGlobalVariableCompiler
+        class: Symfonian\Indonesia\AdminBundle\Twig\GlobalVariableRegistrator
+        calls:
+            - [setVariables, {title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%'}]
         arguments:
-            - '@service_container'
+            - '@twig'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
