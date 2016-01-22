@@ -7,7 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\Functions;
  * Url: https://github.com/ihsanudin.
  */
 
-use Symfonian\Indonesia\AdminBundle\Security\Model\User;
+use Symfonian\Indonesia\AdminBundle\User\User;
 use Twig_Extension;
 use Twig_SimpleFunction;
 

@@ -1,10 +1,9 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\EventListener;
+namespace Symfonian\Indonesia\AdminBundle\User;
 
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
-use Symfonian\Indonesia\AdminBundle\User\User;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
