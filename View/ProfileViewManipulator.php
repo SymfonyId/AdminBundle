@@ -1,65 +1,61 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\User;
+namespace Symfonian\Indonesia\AdminBundle\View;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
-use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class UserViewManipulator
+final class ProfileViewManipulator
 {
     /**
      * @var ConfigurationHandler
      */
     private $configuration;
 
+    /**
+     * @var string
+     */
+    private $profileFields;
+
+    /**
+     * @var string
+     */
     private $formClass;
-
-    private $entityClass;
-
-    private $showFields;
-
-    private $gridFields;
 
     public function __construct(ConfigurationHandler $configuration)
     {
         $this->configuration = $configuration;
     }
 
-    public function setForm($formClass, $entityClass)
+    public function setFormClass($formClass)
     {
         $this->formClass = $formClass;
-        $this->entityClass = $entityClass;
     }
 
-    public function setView(array $showFields, array $gridFields)
+    public function setProfileFields($profileFields)
     {
-        $this->showFields = $showFields;
-        $this->gridFields = $gridFields;
+        $this->profileFields = $profileFields;
     }
 
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
-
         if (!is_array($controller)) {
             return;
         }
 
         $controller = $controller[0];
-
-        if (!$controller instanceof UserController) {
+        if (!$controller instanceof ProfileController) {
             return;
         }
 
         $this->configuration->setFormClass($this->formClass);
-        $this->configuration->setEntityClass($this->entityClass);
-        $this->configuration->setShowFields($this->showFields);
-        $this->configuration->setGridFields($this->gridFields);
+        $this->configuration->setShowFields($this->profileFields);
     }
 }

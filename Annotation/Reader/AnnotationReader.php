@@ -19,23 +19,32 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class AnnotationReader
 {
+    /**
+     * @var Reader
+     */
     private $reader;
 
-    private $configuration;
+    /**
+     * @var Configurator
+     */
+    private $configurator;
 
+    /**
+     * @var UploadHandler
+     */
     private $uploader;
 
-    public function __construct(Reader $reader, ConfigurationHandler $configuration, UploadHandler $uploadHandler)
+    public function __construct(Reader $reader, Configurator $configurator, UploadHandler $uploadHandler)
     {
         $this->reader = $reader;
-        $this->configuration = $configuration;
+        $this->configurator = $configurator;
         $this->uploader = $uploadHandler;
     }
 
@@ -67,29 +76,7 @@ final class AnnotationReader
             }
 
             if ($annotation instanceof UtilAnnotationInterface) {
-                if ($annotation instanceof AutoComplete) {
-                    $this->configuration->setAutoComplete($annotation->getRoute(), $annotation->getTargetSelector());
-                }
-
-                if ($annotation instanceof DatePicker) {
-                    $this->configuration->setUseDatePicker(true);
-                }
-
-                if ($annotation instanceof Editor) {
-                    $this->configuration->setUseEditor(true);
-                }
-
-                if ($annotation instanceof FileChooser) {
-                    $this->configuration->setUseFileStyle(true);
-                }
-
-                if ($annotation instanceof IncludeJavascript) {
-                    $this->configuration->setJavascript($annotation->getFile(), $annotation->getIncludeRoute());
-                }
-
-                if ($annotation instanceof Upload) {
-                    $this->uploader->setFields($annotation->getFields());
-                }
+                $this->compileUtil($annotation);
             }
         }
     }
@@ -97,55 +84,82 @@ final class AnnotationReader
     private function compileTemplate(Crud $annotation)
     {
         if ($annotation->getAdd()) {
-            $this->configuration->setNewTemplate($annotation->getAdd());
+            $this->configurator->setNewTemplate($annotation->getAdd());
         }
 
         if ($annotation->getEdit()) {
-            $this->configuration->setEditTemplate($annotation->getEdit());
+            $this->configurator->setEditTemplate($annotation->getEdit());
         }
 
         if ($annotation->getShow()) {
-            $this->configuration->setShowTemplate($annotation->getShow());
+            $this->configurator->setShowTemplate($annotation->getShow());
         }
 
         if ($annotation->getList()) {
-            $this->configuration->setListTemplate($annotation->getList());
+            $this->configurator->setListTemplate($annotation->getList());
         }
 
         if ($annotation->getForm()) {
-            $this->configuration->setFormClass($annotation->getForm());
+            $this->configurator->setFormClass($annotation->getForm());
         }
 
         if ($annotation->getEntity()) {
-            $this->configuration->setEntityClass($annotation->getEntity());
+            $this->configurator->setEntityClass($annotation->getEntity());
         }
 
         if ($annotation->getShowFields()) {
-            $this->configuration->setShowFields($annotation->getShowFields());
+            $this->configurator->setShowFields($annotation->getShowFields());
         }
 
         if ($annotation->getAjaxTemplate()) {
-            $this->configuration->setAjaxTemplate($annotation->getAjaxTemplate());
+            $this->configurator->setAjaxTemplate($annotation->getAjaxTemplate());
         }
     }
 
     private function compileGrid(Grid $annotation)
     {
         if ($annotation->getFields()) {
-            $this->configuration->setGridFields($annotation->getFields());
+            $this->configurator->setGridFields($annotation->getFields());
         }
 
         if ($annotation->getFilter()) {
-            $this->configuration->setFilter($annotation->getFilter());
+            $this->configurator->setFilter($annotation->getFilter());
         }
 
-        $this->configuration->setNormalizeFilter($annotation->isNormalizeFilter());
-        $this->configuration->setFormatNumber($annotation->isFormatNumber());
+        $this->configurator->setNormalizeFilter($annotation->isNormalizeFilter());
+        $this->configurator->setFormatNumber($annotation->isFormatNumber());
     }
 
     private function compilePage(Page $annotation)
     {
-        $this->configuration->setTitle($annotation->getTitle());
-        $this->configuration->setDescription($annotation->getDescription());
+        $this->configurator->setTitle($annotation->getTitle());
+        $this->configurator->setDescription($annotation->getDescription());
+    }
+
+    private function compileUtil(UtilAnnotationInterface $annotation)
+    {
+        if ($annotation instanceof AutoComplete) {
+            $this->configurator->setAutoComplete($annotation->getRoute(), $annotation->getTargetSelector());
+        }
+
+        if ($annotation instanceof DatePicker) {
+            $this->configurator->setUseDatePicker(true);
+        }
+
+        if ($annotation instanceof Editor) {
+            $this->configurator->setUseEditor(true);
+        }
+
+        if ($annotation instanceof FileChooser) {
+            $this->configurator->setUseFileStyle(true);
+        }
+
+        if ($annotation instanceof IncludeJavascript) {
+            $this->configurator->setJavascript($annotation->getFile(), $annotation->getIncludeRoute());
+        }
+
+        if ($annotation instanceof Upload) {
+            $this->uploader->setFields($annotation->getFields());
+        }
     }
 }
