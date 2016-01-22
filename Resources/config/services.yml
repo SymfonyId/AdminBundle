@@ -31,7 +31,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
-    symfonian_id.admin.upload:
+    symfonian_id.admin.upload_avatar:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UploadAvatarListener
         arguments:
             - '@symfonian_id.admin.handler.upload'
@@ -44,10 +44,22 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }
 
-    symfonian_id.admin.default_template_compiler:
-        class: Symfonian\Indonesia\AdminBundle\Compiler\DefaultTemplateCompiler
+    symfonian_id.admin.crud_template_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Template\CrudTemplateRegistrator
+        calls:
+            - [setCrudTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
+            - [setAjax, [{use_ajax: '%symfonian_id.admin.themes.ajax_template%', template: '%symfonian_id.admin.list.use_ajax%'}]]
         arguments:
-            - '@service_container'
+            - '@symfonian_id.admin.handler.configuration'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
+
+    symfonian_id.admin.filter_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Filter\FilterRegistrator
+        calls:
+            - [setFilter, ['%symfonian_id.admin.filter%']]
+        arguments:
+            - '@symfonian_id.admin.handler.configuration'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
@@ -65,10 +77,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
-    symfonian_id.admin.twig_global_variable_compiler:
-        class: Symfonian\Indonesia\AdminBundle\Twig\GlobalVariableRegistrator
+    symfonian_id.admin.variable_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Twig\VariableRegistrator
         calls:
-            - [setVariables, {title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%'}]
+            - [setVariables, [{title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%'}]]
         arguments:
             - '@twig'
         tags:
