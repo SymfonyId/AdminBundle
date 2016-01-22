@@ -4,13 +4,13 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
-use Symfonian\Indonesia\AdminBundle\Security\Model\User;
+use Symfonian\Indonesia\AdminBundle\User\User;
 
 /**
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
-class UploadAvatarListener
+class AvatarUploader
 {
     private $uploadHandler;
 

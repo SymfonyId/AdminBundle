@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Security\Controller;
+namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -12,7 +12,6 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 /**
  * @Route("/user")

@@ -76,7 +76,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                 ->scalarNode('translation_domain')
                     ->defaultValue('SymfonianIndonesiaAdminBundle')
                 ->end()
-                ->arrayNode('security')
+                ->arrayNode('user')
                     ->isRequired()
                     ->cannotBeEmpty()
                     ->children()
@@ -187,12 +187,12 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
         $container->setParameter('symfonian_id.admin.themes.ajax_template', $config['list']['ajax_template']);
         $container->setParameter('symfonian_id.admin.themes.pagination', $config['themes']['pagination']);
-        $container->setParameter('symfonian_id.admin.security.user_form', $config['security']['user']['form_class']);
-        $container->setParameter('symfonian_id.admin.security.auto_enable', $config['security']['user']['auto_enable']);
-        $container->setParameter('symfonian_id.admin.security.user_entity', $config['security']['user']['entity_class']);
-        $container->setParameter('symfonian_id.admin.security.show_fields', $config['security']['user']['show_fields']);
-        $container->setParameter('symfonian_id.admin.security.grid_fields', $config['security']['user']['grid_fields']);
-        $container->setParameter('symfonian_id.admin.security.change_password', $config['security']['change_password']['form_class']);
+        $container->setParameter('symfonian_id.admin.user.user_form', $config['user']['user']['form_class']);
+        $container->setParameter('symfonian_id.admin.user.auto_enable', $config['user']['user']['auto_enable']);
+        $container->setParameter('symfonian_id.admin.user.user_entity', $config['user']['user']['entity_class']);
+        $container->setParameter('symfonian_id.admin.user.show_fields', $config['user']['user']['show_fields']);
+        $container->setParameter('symfonian_id.admin.user.grid_fields', $config['user']['user']['grid_fields']);
+        $container->setParameter('symfonian_id.admin.user.change_password', $config['user']['change_password']['form_class']);
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
         $container->setParameter('symfonian_id.admin.list.use_ajax', $config['list']['use_ajax']);

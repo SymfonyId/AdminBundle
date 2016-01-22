@@ -9,25 +9,38 @@ namespace Symfonian\Indonesia\AdminBundle\Compiler;
 
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class ProfileControllerCompiler
+final class ProfileViewManipulator
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var ConfigurationHandler
      */
     private $configuration;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @var string
+     */
+    private $profileFields;
+
+    /**
+     * @var string
+     */
+    private $formClass;
+
+    public function __construct(ConfigurationHandler $configuration)
     {
-        $this->container = $container;
-        $this->configuration = $container->get('symfonian_id.admin.handler.configuration');
+        $this->configuration = $configuration;
+    }
+
+    public function setFormClass($formClass)
+    {
+        $this->formClass = $formClass;
+    }
+
+    public function setProfileFields($profileFields)
+    {
+        $this->profileFields = $profileFields;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -42,7 +55,7 @@ final class ProfileControllerCompiler
             return;
         }
 
-        $this->configuration->setShowFields($this->container->getParameter('symfonian_id.admin.profile_fields'));
-        $this->configuration->setFormClass($this->container->getParameter('symfonian_id.admin.security.change_password'));
+        $this->configuration->setFormClass($this->formClass);
+        $this->configuration->setShowFields($this->profileFields);
     }
 }

@@ -8,7 +8,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
  */
 
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
-use Symfonian\Indonesia\AdminBundle\Security\Model\User;
+use Symfonian\Indonesia\AdminBundle\User\User;
 
 class RemovePasswordFieldListener
 {

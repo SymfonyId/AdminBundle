@@ -6,10 +6,6 @@ symfonian_indonesia_index:
     resource: '@SymfonianIndonesiaAdminBundle/Controller'
     type: annotation
 
-symfonian_indonesia_security:
-    resource: '@SymfonianIndonesiaAdminBundle/Security'
-    type: annotation
-
 fos_user_security:
     resource: '@FOSUserBundle/Resources/config/routing/security.xml'
 
