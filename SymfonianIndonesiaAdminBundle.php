@@ -80,36 +80,25 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                     ->isRequired()
                     ->cannotBeEmpty()
                     ->children()
-                        ->arrayNode('user')
+                        ->scalarNode('form_class')
                             ->isRequired()
                             ->cannotBeEmpty()
-                            ->children()
-                                ->scalarNode('form_class')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
-                                ->end()
-                                ->scalarNode('entity_class')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
-                                ->end()
-                                ->booleanNode('auto_enable')->defaultTrue()->end()
-                                ->arrayNode('show_fields')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
-                                ->end()
-                                ->arrayNode('grid_fields')
-                                    ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
-                                    ->prototype('scalar')->end()
-                                ->end()
-                            ->end()
                         ->end()
-                        ->arrayNode('change_password')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('form_class')
-                                    ->defaultValue('symfonian_id.admin.change_password_form')
-                                ->end()
-                            ->end()
+                        ->scalarNode('entity_class')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->booleanNode('auto_enable')->defaultTrue()->end()
+                        ->arrayNode('show_fields')
+                            ->prototype('scalar')->end()
+                            ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
+                        ->end()
+                        ->arrayNode('grid_fields')
+                            ->defaultValue(array('full_name', 'username', 'email', 'roles', 'enabled'))
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->scalarNode('password_form')
+                            ->defaultValue('symfonian_id.admin.change_password_form')
                         ->end()
                     ->end()
                 ->end()
@@ -187,11 +176,11 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
         $container->setParameter('symfonian_id.admin.themes.ajax_template', $config['list']['ajax_template']);
         $container->setParameter('symfonian_id.admin.themes.pagination', $config['themes']['pagination']);
-        $container->setParameter('symfonian_id.admin.user.user_form', $config['user']['user']['form_class']);
-        $container->setParameter('symfonian_id.admin.user.auto_enable', $config['user']['user']['auto_enable']);
-        $container->setParameter('symfonian_id.admin.user.user_entity', $config['user']['user']['entity_class']);
-        $container->setParameter('symfonian_id.admin.user.show_fields', $config['user']['user']['show_fields']);
-        $container->setParameter('symfonian_id.admin.user.grid_fields', $config['user']['user']['grid_fields']);
+        $container->setParameter('symfonian_id.admin.user.user_form', $config['user']['form_class']);
+        $container->setParameter('symfonian_id.admin.user.auto_enable', $config['user']['auto_enable']);
+        $container->setParameter('symfonian_id.admin.user.user_entity', $config['user']['entity_class']);
+        $container->setParameter('symfonian_id.admin.user.show_fields', $config['user']['show_fields']);
+        $container->setParameter('symfonian_id.admin.user.grid_fields', $config['user']['grid_fields']);
         $container->setParameter('symfonian_id.admin.user.change_password', $config['user']['change_password']['form_class']);
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
