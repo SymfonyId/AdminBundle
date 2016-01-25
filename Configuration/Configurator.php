@@ -106,7 +106,7 @@ class Configurator implements ContainerAwareInterface
         $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
         if (!empty($crud->getShowFields())) {
-            return $this->getShowFields();
+            return $crud->getShowFields();
         }
 
         return $this->getEntityFields();
@@ -218,10 +218,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function isNormalizeFilter()
     {
-        /** @var Crud $crud */
-        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+        /** @var Grid $grid */
+        $grid = $this->grid?: $this->configurationFactory->getConfiguration('grid');
 
-        return $this->grid->isNormalizeFilter();
+        return $grid->isNormalizeFilter();
     }
 
     /**
@@ -229,10 +229,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function isFormatNumber()
     {
-        /** @var Crud $crud */
-        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+        /** @var Grid $grid */
+        $grid = $this->grid?: $this->configurationFactory->getConfiguration('grid');
 
-        return $this->grid->isFormatNumber();
+        return $grid->isFormatNumber();
     }
 
     /**
@@ -240,11 +240,11 @@ class Configurator implements ContainerAwareInterface
      */
     public function getGridFields()
     {
-        /** @var Crud $crud */
-        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+        /** @var Grid $grid */
+        $grid = $this->grid?: $this->configurationFactory->getConfiguration('grid');
 
-        if (!empty($this->grid->getGridFields())) {
-            return $this->grid->getGridFields();
+        if (!empty($grid->getGridFields())) {
+            return $grid->getGridFields();
         }
 
         return $this->getEntityFields();
@@ -255,10 +255,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getGridFilter()
     {
-        /** @var Crud $crud */
-        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+        /** @var Grid $grid */
+        $grid = $this->grid?: $this->configurationFactory->getConfiguration('grid');
 
-        return $this->grid->getGridFilter();
+        return $grid->getGridFilter();
     }
 
     /**
@@ -351,7 +351,7 @@ class Configurator implements ContainerAwareInterface
     protected function getEntityFields()
     {
         $fields = array();
-        $reflection = new \ReflectionClass($this->entityClass);
+        $reflection = new \ReflectionClass($this->getEntityClass());
         $reflection->getProperties();
 
         foreach ($reflection->getProperties() as $key => $property) {
