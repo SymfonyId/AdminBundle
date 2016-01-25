@@ -65,6 +65,11 @@ class Grid implements ConfigurationInterface
         return $this->gridFilters;
     }
 
+    public function setGridFilters(array $filters)
+    {
+        $this->gridFilters = $filters;
+    }
+
     public function isNormalizeFilter()
     {
         return $this->normalizeFilter;

@@ -7,25 +7,26 @@ namespace Symfonian\Indonesia\AdminBundle\Filter;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class FilterRegistrator
 {
     /**
-     * @var Configurator
+     * @var ConfigurationFactory
      */
-    private $configuration;
+    private $configurationFactory;
 
     /**
      * @var array
      */
     private $filter = array();
 
-    public function __construct(Configurator $configuration)
+    public function __construct(ConfigurationFactory $configurationFactory)
     {
-        $this->configuration = $configuration;
+        $this->configurationFactory = $configurationFactory;
     }
 
     public function setFilter(array $filter)
@@ -47,6 +48,9 @@ final class FilterRegistrator
             return;
         }
 
-        $this->configuration->setFilter($this->filter);
+        $grid = new Grid();
+        $grid->setGridFilters($this->filter);
+
+        $this->configurationFactory->addConfiguration($grid);
     }
 }
