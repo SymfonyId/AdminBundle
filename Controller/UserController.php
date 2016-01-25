@@ -17,7 +17,6 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
  * @Route("/user")
  *
  * @Page(title="page.user.title", description="page.user.description")
- * @Grid(filter={"username", "full_name"})
  * @FileChooser()
  * @Upload("avatar")
  */

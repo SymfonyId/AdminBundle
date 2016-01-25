@@ -28,6 +28,8 @@ final class UserViewManipulator
 
     private $gridFields;
 
+    private $gridFilters;
+
     public function __construct(ConfigurationFactory $configurationFactory)
     {
         $this->configurationFactory = $configurationFactory;
@@ -39,10 +41,11 @@ final class UserViewManipulator
         $this->entityClass = $entityClass;
     }
 
-    public function setView(array $showFields, array $gridFields)
+    public function setView(array $showFields, array $gridFields, array $gridFilters)
     {
         $this->showFields = $showFields;
         $this->gridFields = $gridFields;
+        $this->gridFilters = $gridFilters;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -66,6 +69,7 @@ final class UserViewManipulator
 
         $grid = new Grid();
         $grid->setGridFields($this->gridFields);
+        $grid->setGridFilters($this->gridFilters);
 
         $this->configurationFactory->addConfiguration($crud);
         $this->configurationFactory->addConfiguration($grid);
