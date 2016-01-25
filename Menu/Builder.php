@@ -98,7 +98,7 @@ class Builder
             ),
         ));
 
-        if ($this->routeCollection->get('symfonian_indonesia_admin_user_new') && $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
         }
 
