@@ -136,7 +136,7 @@ class Configurator implements ContainerAwareInterface
 
         $options = array();
         try {
-            $formObject = new $formClass();
+            $formObject = $this->container->get($formClass);
         } catch (\Exception $ex) {
             $formObject = $this->container->get($formClass);
         }
