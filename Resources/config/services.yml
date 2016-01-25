@@ -169,6 +169,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
+            - '@symfonian_id.admin.congiration.factory'
             - '@form.factory'
             - '%symfonian_id.admin.translation_domain%'
 
@@ -176,4 +177,4 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
 
     symfonian_id.admin.congiration.factory:
-        classs: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory
+        class: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory

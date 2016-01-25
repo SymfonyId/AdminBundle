@@ -7,16 +7,17 @@ namespace Symfonian\Indonesia\AdminBundle\Template;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class CrudTemplateRegistrator
 {
     /**
-     * @var Configurator
+     * @var ConfigurationFactory
      */
-    private $configuration;
+    private $configurationFactory;
 
     /**
      * @var array
@@ -28,9 +29,9 @@ final class CrudTemplateRegistrator
      */
     private $ajax = array();
 
-    public function __construct(Configurator $configuration)
+    public function __construct(ConfigurationFactory $configurationFactory)
     {
-        $this->configuration = $configuration;
+        $this->configurationFactory = $configurationFactory;
     }
 
     public function setCrudTemplate(array $crudTemplate)
@@ -57,13 +58,13 @@ final class CrudTemplateRegistrator
             return;
         }
 
-        $this->configuration->setNewTemplate($this->crudTemplate['new']);
-        $this->configuration->setEditTemplate($this->crudTemplate['edit']);
-        $this->configuration->setShowTemplate($this->crudTemplate['show']);
-        $this->configuration->setListTemplate($this->crudTemplate['list']);
-        $this->configuration->setAjaxTemplate(
-            $this->ajax['template'],
-            $this->ajax['use_ajax']
-        );
+        $crud = new Crud();
+        $crud->setAddTemplate($this->crudTemplate['new']);
+        $crud->setEditTemplate($this->crudTemplate['edit']);
+        $crud->setShowTemplate($this->crudTemplate['show']);
+        $crud->setListTemplate($this->crudTemplate['list']);
+        $crud->setAjaxTemplate($this->ajax['template'], $this->ajax['use_ajax']);
+
+        $this->configurationFactory->addConfiguration($crud);
     }
 }

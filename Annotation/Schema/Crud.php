@@ -32,7 +32,7 @@ class Crud implements ConfigurationInterface
 
     protected $useAjax = true;
 
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
             $this->entityClass = $data['value'];
@@ -83,14 +83,39 @@ class Crud implements ConfigurationInterface
         return $this->addTemplate;
     }
 
+    public function setAddTemplate($addTemplate)
+    {
+        $this->addTemplate = $addTemplate;
+    }
+
     public function getEditTemplate()
     {
         return $this->editTemplate;
     }
 
+    public function setEditTemplate($editTemplate)
+    {
+        $this->editTemplate = $editTemplate;
+    }
+
     public function getListTemplate()
     {
         return $this->listTemplate;
+    }
+
+    public function setListTemplate($listTemplate)
+    {
+        $this->listTemplate = $listTemplate;
+    }
+
+    public function getShowTemplate()
+    {
+        return $this->showTemplate;
+    }
+
+    public function setShowTemplate($showTemplate)
+    {
+        $this->showTemplate = $showTemplate;
     }
 
     public function getAjaxTemplate()
@@ -103,9 +128,10 @@ class Crud implements ConfigurationInterface
         return $this->useAjax;
     }
 
-    public function getShowTemplate()
+    public function setAjaxTemplate($ajaxTemplate, $useAjax = true)
     {
-        return $this->showTemplate;
+        $this->ajaxTemplate = $ajaxTemplate;
+        $this->useAjax = $useAjax;
     }
 
     public function getFormClass()

@@ -22,7 +22,7 @@ class Grid implements ConfigurationInterface
 
     private $formatNumber = true;
 
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
             $this->gridFields = $data['value'];

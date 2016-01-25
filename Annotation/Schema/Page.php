@@ -18,7 +18,7 @@ class Page implements ConfigurationInterface
 
     private $description = 'Symfonian Indonesia Admin Bundle';
 
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
             $this->title = $data['value'];
