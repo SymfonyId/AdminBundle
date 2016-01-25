@@ -120,7 +120,7 @@ class Builder
 
         $menu['User']->addChild('Add', array(
             'label' => $this->translator->trans('menu.user.add', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_security_user_new',
+            'route' => 'symfonian_indonesia_admin_user_new',
             'attributes' => array(
                 'class' => 'treeview',
             ),
@@ -128,7 +128,7 @@ class Builder
 
         $menu['User']->addChild('List', array(
             'label' => $this->translator->trans('menu.user.list', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_security_user_list',
+            'route' => 'symfonian_indonesia_admin_user_list',
             'attributes' => array(
                 'class' => 'treeview',
             ),
