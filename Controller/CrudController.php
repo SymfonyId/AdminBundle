@@ -45,7 +45,7 @@ abstract class CrudController extends Controller
         }
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $entityClass = $configuration->getEntityClass();
         $entity = new $entityClass();
@@ -77,7 +77,7 @@ abstract class CrudController extends Controller
         }
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $configuration->getForm($entity);
@@ -97,13 +97,14 @@ abstract class CrudController extends Controller
     public function showAction(Request $request, $id)
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_SHOW);
+        /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
 
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($configuration->getDescription(), array(), $translationDomain);
@@ -129,12 +130,13 @@ abstract class CrudController extends Controller
     public function deleteAction($id)
     {
         $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
+        /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $handler->setEntity($configuration->getEntityClass());
         $returnHandler = $handler->remove($entity);
@@ -162,7 +164,7 @@ abstract class CrudController extends Controller
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $listTemplate = $request->isXmlHttpRequest() ? $configuration->getAjaxTemplate() : $configuration->getListTemplate();
 
@@ -186,7 +188,7 @@ abstract class CrudController extends Controller
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
         $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($configuration->getDescription(), array(), $translationDomain);
@@ -204,13 +206,17 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
+    /**
+     * @param $id
+     * @return null | EntityInterface
+     */
     protected function findOr404Error($id)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
+        $configuration = $this->container->get('symfonian_id.admin.configurator');
         $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($configuration->getEntityClass())->find($id);
 
         if (!$entity) {

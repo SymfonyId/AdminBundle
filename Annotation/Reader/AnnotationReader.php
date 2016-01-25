@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\IncludeJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\UtilAnnotationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
@@ -70,7 +71,9 @@ final class AnnotationReader
         $reflectionObject = new ReflectionObject($controller);
         unset($controller);
         foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
-            $this->configurationFactory->addConfiguration($annotation);
+            if ($annotation instanceof ConfigurationInterface) {
+                $this->configurationFactory->addConfiguration($annotation);
+            }
             if ($annotation instanceof UtilAnnotationInterface) {
                 $this->compileUtil($annotation);
             }

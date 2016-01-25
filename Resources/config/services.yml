@@ -51,7 +51,7 @@ services:
             - [setCrudTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
             - [setAjax, [{use_ajax: '%symfonian_id.admin.themes.ajax_template%', template: '%symfonian_id.admin.list.use_ajax%'}]]
         arguments:
-            - '@symfonian_id.admin.configurator'
+            - '@symfonian_id.admin.congiration.factory'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
@@ -60,7 +60,7 @@ services:
         calls:
             - [setFilter, ['%symfonian_id.admin.filter%']]
         arguments:
-            - '@symfonian_id.admin.configurator'
+            - '@symfonian_id.admin.congiration.factory'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
