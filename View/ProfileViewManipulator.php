@@ -7,16 +7,17 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class ProfileViewManipulator
 {
     /**
-     * @var Configurator
+     * @var ConfigurationFactory
      */
-    private $configuration;
+    private $configurationFactory;
 
     /**
      * @var string
@@ -28,9 +29,9 @@ final class ProfileViewManipulator
      */
     private $formClass;
 
-    public function __construct(Configurator $configuration)
+    public function __construct(ConfigurationFactory $configurationFactory)
     {
-        $this->configuration = $configuration;
+        $this->configurationFactory = $configurationFactory;
     }
 
     public function setFormClass($formClass)
@@ -55,7 +56,10 @@ final class ProfileViewManipulator
             return;
         }
 
-        $this->configuration->setFormClass($this->formClass);
-        $this->configuration->setShowFields($this->profileFields);
+        $crud = new Crud();
+        $crud->setFormClass($this->formClass);
+        $crud->setShowFields($this->profileFields);
+
+        $this->configurationFactory->addConfiguration($crud);
     }
 }

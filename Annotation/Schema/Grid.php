@@ -60,6 +60,11 @@ class Grid implements ConfigurationInterface
         return $this->gridFields;
     }
 
+    public function setGridFields(array $gridFields)
+    {
+        $this->gridFields = $gridFields;
+    }
+
     public function getGridFilter()
     {
         return $this->gridFilters;

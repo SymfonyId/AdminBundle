@@ -7,16 +7,18 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class UserViewManipulator
 {
     /**
-     * @var Configurator
+     * @var ConfigurationFactory
      */
-    private $configuration;
+    private $configurationFactory;
 
     private $formClass;
 
@@ -26,9 +28,9 @@ final class UserViewManipulator
 
     private $gridFields;
 
-    public function __construct(Configurator $configuration)
+    public function __construct(ConfigurationFactory $configurationFactory)
     {
-        $this->configuration = $configuration;
+        $this->configurationFactory = $configurationFactory;
     }
 
     public function setForm($formClass, $entityClass)
@@ -57,9 +59,15 @@ final class UserViewManipulator
             return;
         }
 
-        $this->configuration->setFormClass($this->formClass);
-        $this->configuration->setEntityClass($this->entityClass);
-        $this->configuration->setShowFields($this->showFields);
-        $this->configuration->setGridFields($this->gridFields);
+        $crud = new Crud();
+        $crud->setFormClass($this->formClass);
+        $crud->setEntityClass($this->entityClass);
+        $crud->setShowFields($this->showFields);
+
+        $grid = new Grid();
+        $grid->setGridFields($this->gridFields);
+
+        $this->configurationFactory->addConfiguration($crud);
+        $this->configurationFactory->addConfiguration($grid);
     }
 }

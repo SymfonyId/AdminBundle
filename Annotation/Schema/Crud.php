@@ -139,14 +139,29 @@ class Crud implements ConfigurationInterface
         return $this->formClass;
     }
 
+    public function setFormClass($formClass)
+    {
+        $this->formClass = $formClass;
+    }
+
     public function getEntityClass()
     {
         return $this->entityClass;
     }
 
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = $entityClass;
+    }
+
     public function getShowFields()
     {
         return $this->showFields;
+    }
+
+    public function setShowFields($showFields)
+    {
+        $this->showFields = $showFields;
     }
 
     public function getName()
