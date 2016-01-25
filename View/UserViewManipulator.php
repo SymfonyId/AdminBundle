@@ -7,14 +7,14 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class UserViewManipulator
 {
     /**
-     * @var ConfigurationHandler
+     * @var Configurator
      */
     private $configuration;
 
@@ -26,7 +26,7 @@ final class UserViewManipulator
 
     private $gridFields;
 
-    public function __construct(ConfigurationHandler $configuration)
+    public function __construct(Configurator $configuration)
     {
         $this->configuration = $configuration;
     }

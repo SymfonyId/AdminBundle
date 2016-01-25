@@ -3,6 +3,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Annotation\Reader\AnnotationReader
         arguments:
             - '@annotation_reader'
+            - '@symfonian_id.admin.congiration.factory'
             - '@symfonian_id.admin.configurator'
             - '@symfonian_id.admin.handler.upload'
         tags:
@@ -173,3 +174,6 @@ services:
 
     symfonian_id.admin.handler.upload:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
+
+    symfonian_id.admin.congiration.factory:
+        classs: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory

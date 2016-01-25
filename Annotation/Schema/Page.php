@@ -6,16 +6,17 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 
 /**
  * @Annotation
  * @Target({"CLASS"})
  */
-class Page
+class Page implements ConfigurationInterface
 {
-    private $title;
+    private $title = 'SIAB';
 
-    private $description;
+    private $description = 'Symfonian Indonesia Admin Bundle';
 
     public function __construct(array $data)
     {
@@ -40,5 +41,10 @@ class Page
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getName()
+    {
+        return 'page';
     }
 }

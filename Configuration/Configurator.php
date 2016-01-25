@@ -7,6 +7,9 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
+use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,39 +24,16 @@ class Configurator implements ContainerAwareInterface
     protected $container;
 
     /**
+     * @var ConfigurationFactory
+     */
+    protected $configurationFactory;
+
+    /**
      * @var FormFactory
      */
     protected $formFactory;
 
     protected $translationDomain;
-
-    protected $title = 'SIAB';
-
-    protected $description = 'Symfonian Indonesia Admin Bundle';
-
-    protected $showFields = array();
-
-    protected $entityClass;
-
-    protected $formClass;
-
-    protected $normalizeFilter = false;
-
-    protected $formatNumber = true;
-
-    protected $gridFields = array();
-
-    protected $newTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
-
-    protected $editTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
-
-    protected $showTemplate = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
-
-    protected $listTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
-
-    protected $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
-
-    protected $useAjax = false;
 
     protected $useDatePicker = false;
 
@@ -65,10 +45,24 @@ class Configurator implements ContainerAwareInterface
 
     protected $javascript = array();
 
-    protected $filterFields = array();
+    /**
+     * @var Page
+     */
+    protected $page;
 
-    public function __construct(FormFactory $formFactory, $translationDomain)
+    /**
+     * @var Crud
+     */
+    protected $crud;
+
+    /**
+     * @var Grid
+     */
+    protected $grid;
+
+    public function __construct(ConfigurationFactory $configurationFactory, FormFactory $formFactory, $translationDomain)
     {
+        $this->configurationFactory = $configurationFactory;
         $this->formFactory = $formFactory;
         $this->translationDomain = $translationDomain;
 
@@ -86,15 +80,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getTitle()
     {
-        return $this->title;
-    }
+        /** @var Page $page */
+        $page = $this->page?:$this->configurationFactory->getConfiguration('page');
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+        return $page->getTitle();
     }
 
     /**
@@ -102,15 +91,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getDescription()
     {
-        return $this->description;
-    }
+        /** @var Page $page */
+        $page = $this->page?:$this->configurationFactory->getConfiguration('page');
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+        return $page->getDescription();
     }
 
     /**
@@ -118,19 +102,14 @@ class Configurator implements ContainerAwareInterface
      */
     public function getShowFields()
     {
-        if (!empty($this->showFields)) {
-            return $this->showFields;
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
+
+        if (!empty($crud->getShowFields())) {
+            return $this->getShowFields();
         }
 
         return $this->getEntityFields();
-    }
-
-    /**
-     * @param array $showFields
-     */
-    public function setShowFields($showFields)
-    {
-        $this->showFields = $showFields;
     }
 
     /**
@@ -138,15 +117,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getEntityClass()
     {
-        return $this->entityClass;
-    }
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
-    /**
-     * @param string $entityClass
-     */
-    public function setEntityClass($entityClass)
-    {
-        $this->entityClass = $entityClass;
+        return $crud->getEntityClass();
     }
 
     /**
@@ -156,11 +130,15 @@ class Configurator implements ContainerAwareInterface
      */
     public function getForm($formData = null)
     {
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
+        $formClass = $crud->getFormClass();
+
         $options = array();
         try {
-            $formObject = $this->container->get($this->formClass);
+            $formObject = new $formClass();
         } catch (\Exception $ex) {
-            $formObject = new $this->formClass();
+            $formObject = $this->container->get($formClass);
         }
 
         $form = $this->formFactory->create(get_class($formObject), null, $options);
@@ -170,79 +148,14 @@ class Configurator implements ContainerAwareInterface
     }
 
     /**
-     * @param string $formClass
-     */
-    public function setFormClass($formClass)
-    {
-        $this->formClass = $formClass;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNormalizeFilter()
-    {
-        return $this->normalizeFilter;
-    }
-
-    /**
-     * @param bool $normalizeFilter
-     */
-    public function setNormalizeFilter($normalizeFilter)
-    {
-        $this->normalizeFilter = $normalizeFilter;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFormatNumber()
-    {
-        return $this->formatNumber;
-    }
-
-    /**
-     * @param bool $formatNumber
-     */
-    public function setFormatNumber($formatNumber)
-    {
-        $this->formatNumber = $formatNumber;
-    }
-
-    /**
-     * @return array
-     */
-    public function getGridFields()
-    {
-        if (!empty($this->gridFields)) {
-            return $this->gridFields;
-        }
-
-        return $this->getEntityFields();
-    }
-
-    /**
-     * @param array $gridFields
-     */
-    public function setGridFields($gridFields)
-    {
-        $this->gridFields = $gridFields;
-    }
-
-    /**
      * @return string
      */
-    public function getNewTemplate()
+    public function getAddTemplate()
     {
-        return $this->newTemplate;
-    }
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
-    /**
-     * @param string $newTemplate
-     */
-    public function setNewTemplate($newTemplate)
-    {
-        $this->newTemplate = $newTemplate;
+        return $crud->getAddTemplate();
     }
 
     /**
@@ -250,15 +163,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getEditTemplate()
     {
-        return $this->editTemplate;
-    }
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
-    /**
-     * @param string $editTemplate
-     */
-    public function setEditTemplate($editTemplate)
-    {
-        $this->editTemplate = $editTemplate;
+        return $crud->getEditTemplate();
     }
 
     /**
@@ -266,15 +174,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getShowTemplate()
     {
-        return $this->showTemplate;
-    }
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
-    /**
-     * @param string $showTemplate
-     */
-    public function setShowTemplate($showTemplate)
-    {
-        $this->showTemplate = $showTemplate;
+        return $crud->getShowTemplate();
     }
 
     /**
@@ -282,25 +185,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getListTemplate()
     {
-        return $this->listTemplate;
-    }
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
 
-    /**
-     * @param string $listTemplate
-     */
-    public function setListTemplate($listTemplate)
-    {
-        $this->listTemplate = $listTemplate;
-    }
-
-    /**
-     * @param string $template
-     * @param bool   $useAjax
-     */
-    public function setAjaxTemplate($template, $useAjax = true)
-    {
-        $this->ajaxTemplate = $template;
-        $this->useAjax = $useAjax;
+        return $crud->getListTemplate();
     }
 
     /**
@@ -308,7 +196,10 @@ class Configurator implements ContainerAwareInterface
      */
     public function getAjaxTemplate()
     {
-        return $this->ajaxTemplate;
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
+
+        return $crud->getAjaxTemplate();
     }
 
     /**
@@ -316,7 +207,58 @@ class Configurator implements ContainerAwareInterface
      */
     public function isUseAjax()
     {
-        return $this->useAjax;
+        /** @var Crud $crud */
+        $crud = $this->crud?: $this->configurationFactory->getConfiguration('crud');
+
+        return $crud->isUseAjax();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNormalizeFilter()
+    {
+        /** @var Crud $crud */
+        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+
+        return $this->grid->isNormalizeFilter();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFormatNumber()
+    {
+        /** @var Crud $crud */
+        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+
+        return $this->grid->isFormatNumber();
+    }
+
+    /**
+     * @return array
+     */
+    public function getGridFields()
+    {
+        /** @var Crud $crud */
+        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+
+        if (!empty($this->grid->getGridFields())) {
+            return $this->grid->getGridFields();
+        }
+
+        return $this->getEntityFields();
+    }
+
+    /**
+     * @return array
+     */
+    public function getGridFilter()
+    {
+        /** @var Crud $crud */
+        $this->grid?: $this->configurationFactory->getConfiguration('grid');
+
+        return $this->grid->getGridFilter();
     }
 
     /**
@@ -401,22 +343,6 @@ class Configurator implements ContainerAwareInterface
         if ($includeRoute) {
             $this->javascript['include_route'] = $includeRoute;
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilter()
-    {
-        return $this->filterFields;
-    }
-
-    /**
-     * @param array $fields
-     */
-    public function setFilter($fields)
-    {
-        $this->filterFields = $fields;
     }
 
     /**

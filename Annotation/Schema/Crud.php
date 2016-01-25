@@ -6,61 +6,65 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 
 /**
  * @Annotation
  * @Target({"CLASS"})
  */
-class Crud
+class Crud implements ConfigurationInterface
 {
-    private $add;
+    protected $showFields = array();
 
-    private $edit;
+    protected $entityClass;
 
-    private $list;
+    protected $formClass;
 
-    private $ajaxTemplate;
+    protected $addTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    private $show;
+    protected $editTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    private $form;
+    protected $showTemplate = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
 
-    private $entity;
+    protected $listTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
 
-    private $showFields;
+    protected $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
+
+    protected $useAjax = true;
 
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $this->entity = $data['value'];
+            $this->entityClass = $data['value'];
         }
 
         if (isset($data['entity'])) {
-            $this->entity = $data['entity'];
+            $this->entityClass = $data['entity'];
         }
 
         if (isset($data['add'])) {
-            $this->add = $data['add'];
+            $this->addTemplate = $data['add'];
         }
 
         if (isset($data['edit'])) {
-            $this->edit = $data['edit'];
+            $this->editTemplate = $data['edit'];
         }
 
         if (isset($data['list'])) {
-            $this->list = $data['list'];
+            $this->listTemplate = $data['list'];
         }
 
         if (isset($data['ajaxTemplate'])) {
             $this->ajaxTemplate = $data['ajaxTemplate'];
+            $this->useAjax = true;
         }
 
         if (isset($data['show'])) {
-            $this->show = $data['show'];
+            $this->showTemplate = $data['show'];
         }
 
         if (isset($data['form'])) {
-            $this->form = $data['form'];
+            $this->formClass = $data['form'];
         }
 
         if (isset($data['showFields'])) {
@@ -74,19 +78,19 @@ class Crud
         unset($data);
     }
 
-    public function getAdd()
+    public function getAddTemplate()
     {
-        return $this->add;
+        return $this->addTemplate;
     }
 
-    public function getEdit()
+    public function getEditTemplate()
     {
-        return $this->edit;
+        return $this->editTemplate;
     }
 
-    public function getList()
+    public function getListTemplate()
     {
-        return $this->list;
+        return $this->listTemplate;
     }
 
     public function getAjaxTemplate()
@@ -94,23 +98,33 @@ class Crud
         return $this->ajaxTemplate;
     }
 
-    public function getShow()
+    public function isUseAjax()
     {
-        return $this->show;
+        return $this->useAjax;
     }
 
-    public function getForm()
+    public function getShowTemplate()
     {
-        return $this->form;
+        return $this->showTemplate;
     }
 
-    public function getEntity()
+    public function getFormClass()
     {
-        return $this->entity;
+        return $this->formClass;
+    }
+
+    public function getEntityClass()
+    {
+        return $this->entityClass;
     }
 
     public function getShowFields()
     {
         return $this->showFields;
+    }
+
+    public function getName()
+    {
+        return 'crud';
     }
 }

@@ -9,8 +9,8 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
-use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
@@ -44,14 +44,14 @@ abstract class CrudController extends Controller
             return $response;
         }
 
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $entityClass = $configuration->getEntityClass();
         $entity = new $entityClass();
         $form = $event->getForm() ?: $configuration->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $configuration->getNewTemplate(), $entity, $form);
+        return $this->handle($request, CrudHandler::ACTION_CREATE, $configuration->getAddTemplate(), $entity, $form);
     }
 
     /**
@@ -76,7 +76,7 @@ abstract class CrudController extends Controller
             return $response;
         }
 
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $entity = $this->findOr404Error($id);
@@ -102,7 +102,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
@@ -133,7 +133,7 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $handler->setEntity($configuration->getEntityClass());
@@ -161,7 +161,7 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $listTemplate = $request->isXmlHttpRequest() ? $configuration->getAjaxTemplate() : $configuration->getListTemplate();
@@ -173,7 +173,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($configuration->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $configuration->getGridFields(), $configuration->getFilter(), $configuration->isNormalizeFilter(), $configuration->isFormatNumber());
+        $handler->viewList($request, $configuration->getGridFields(), $configuration->getGridFilter(), $configuration->isNormalizeFilter(), $configuration->isFormatNumber());
 
         return $handler->getResponse();
     }
@@ -185,7 +185,7 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
 
         $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
@@ -209,7 +209,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var ConfigurationHandler $configuration */
+        /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.handler.configuration');
         $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($configuration->getEntityClass())->find($id);
 

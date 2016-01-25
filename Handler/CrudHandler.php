@@ -138,9 +138,7 @@ class CrudHandler
         $data = array();
         $identifier = array();
         $header = array();
-        /*
-         * @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record
-         */
+        /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
         foreach ($pagination as $key => $record) {
             $temp = array();
             $identifier[$key] = $record->getId();

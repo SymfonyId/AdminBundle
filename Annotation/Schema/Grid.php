@@ -6,16 +6,17 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 
 /**
  * @Annotation
  * @Target({"CLASS"})
  */
-class Grid
+class Grid implements ConfigurationInterface
 {
-    private $fields;
+    protected $gridFields = array();
 
-    private $filter;
+    protected $gridFilters = array();
 
     private $normalizeFilter = false;
 
@@ -24,7 +25,7 @@ class Grid
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
-            $this->fields = $data['value'];
+            $this->gridFields = $data['value'];
         }
 
         if (isset($data['fields'])) {
@@ -32,7 +33,7 @@ class Grid
                 $data['fields'] = (array) $data['fields'];
             }
 
-            $this->fields = $data['fields'];
+            $this->gridFields = $data['fields'];
         }
 
         if (isset($data['filter'])) {
@@ -40,7 +41,7 @@ class Grid
                 $data['filter'] = (array) $data['filter'];
             }
 
-            $this->filter = $data['filter'];
+            $this->gridFilters = $data['filter'];
         }
 
         if (isset($data['normalizeFilter'])) {
@@ -54,14 +55,14 @@ class Grid
         unset($data);
     }
 
-    public function getFields()
+    public function getGridFields()
     {
-        return $this->fields;
+        return $this->gridFields;
     }
 
-    public function getFilter()
+    public function getGridFilter()
     {
-        return $this->filter;
+        return $this->gridFilters;
     }
 
     public function isNormalizeFilter()
@@ -72,5 +73,10 @@ class Grid
     public function isFormatNumber()
     {
         return $this->formatNumber;
+    }
+
+    public function getName()
+    {
+        return 'grid';
     }
 }

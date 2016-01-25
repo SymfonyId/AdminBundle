@@ -7,14 +7,14 @@ namespace Symfonian\Indonesia\AdminBundle\Template;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class CrudTemplateRegistrator
 {
     /**
-     * @var ConfigurationHandler
+     * @var Configurator
      */
     private $configuration;
 
@@ -28,7 +28,7 @@ final class CrudTemplateRegistrator
      */
     private $ajax = array();
 
-    public function __construct(ConfigurationHandler $configuration)
+    public function __construct(Configurator $configuration)
     {
         $this->configuration = $configuration;
     }

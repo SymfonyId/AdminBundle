@@ -7,14 +7,14 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
-use Symfonian\Indonesia\AdminBundle\Handler\ConfigurationHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class ProfileViewManipulator
 {
     /**
-     * @var ConfigurationHandler
+     * @var Configurator
      */
     private $configuration;
 
@@ -28,7 +28,7 @@ final class ProfileViewManipulator
      */
     private $formClass;
 
-    public function __construct(ConfigurationHandler $configuration)
+    public function __construct(Configurator $configuration)
     {
         $this->configuration = $configuration;
     }
