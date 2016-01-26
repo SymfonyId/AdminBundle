@@ -8,6 +8,7 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
  */
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,6 +35,16 @@ class ConfigurationFactory implements ContainerAwareInterface
     public function __construct(FormFactory $formFactory)
     {
         $this->formFactory = $formFactory;
+    }
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 
     public function addConfiguration(ConfigurationInterface $configuration)
@@ -72,13 +83,30 @@ class ConfigurationFactory implements ContainerAwareInterface
         return $form;
     }
 
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     */
-    public function setContainer(ContainerInterface $container = null)
+    public function getColumn()
     {
-        $this->container = $container;
+        /** @var Grid $grid */
+        $grid = $this->getConfiguration('grid');
+        if (!empty($grid->getGridFields())) {
+            return $grid->getGridFields();
+        }
+
+        return $this->getEntityFields();
+    }
+    /**
+     * @return array
+     */
+    protected function getEntityFields()
+    {
+        /** @var Crud $crud */
+        $crud = $this->getConfiguration('crud');
+        $fields = array();
+        $reflection = new \ReflectionClass($crud->getEntityClass());
+
+        foreach ($reflection->getProperties() as $key => $property) {
+            $fields[$key] = $property->getName();
+        }
+
+        return $fields;
     }
 }
