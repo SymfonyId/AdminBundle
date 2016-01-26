@@ -14,9 +14,9 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Grid implements ConfigurationInterface
 {
-    protected $gridFields = array();
+    protected $fields = array();
 
-    protected $gridFilters = array();
+    protected $filter = array();
 
     protected $normalizeFilter = false;
 
@@ -25,7 +25,7 @@ class Grid implements ConfigurationInterface
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
-            $this->gridFields = $data['value'];
+            $this->fields = $data['value'];
         }
 
         if (isset($data['fields'])) {
@@ -33,7 +33,7 @@ class Grid implements ConfigurationInterface
                 $data['fields'] = (array) $data['fields'];
             }
 
-            $this->gridFields = $data['fields'];
+            $this->fields = $data['fields'];
         }
 
         if (isset($data['filter'])) {
@@ -41,7 +41,7 @@ class Grid implements ConfigurationInterface
                 $data['filter'] = (array) $data['filter'];
             }
 
-            $this->gridFilters = $data['filter'];
+            $this->filter = $data['filter'];
         }
 
         if (isset($data['normalizeFilter'])) {
@@ -55,24 +55,24 @@ class Grid implements ConfigurationInterface
         unset($data);
     }
 
-    public function getGridFields()
+    public function getFields()
     {
-        return $this->gridFields;
+        return $this->fields;
     }
 
-    public function setGridFields(array $gridFields)
+    public function setFields(array $fields)
     {
-        $this->gridFields = $gridFields;
+        $this->fields = $fields;
     }
 
     public function getGridFilter()
     {
-        return $this->gridFilters;
+        return $this->filter;
     }
 
     public function setGridFilters(array $filters)
     {
-        $this->gridFilters = $filters;
+        $this->filter = $filters;
     }
 
     public function isNormalizeFilter()

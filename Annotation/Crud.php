@@ -16,17 +16,17 @@ class Crud implements ConfigurationInterface
 {
     protected $showFields = array();
 
-    protected $entityClass;
+    protected $entity;
 
-    protected $formClass;
+    protected $form;
 
-    protected $createTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    protected $create = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $editTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    protected $edit = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $showTemplate = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
+    protected $show = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
 
-    protected $listTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
+    protected $list = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
 
     protected $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
 
@@ -35,23 +35,23 @@ class Crud implements ConfigurationInterface
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
-            $this->entityClass = $data['value'];
+            $this->entity = $data['value'];
         }
 
         if (isset($data['entity'])) {
-            $this->entityClass = $data['entity'];
+            $this->entity = $data['entity'];
         }
 
         if (isset($data['create'])) {
-            $this->createTemplate = $data['create'];
+            $this->create = $data['create'];
         }
 
         if (isset($data['edit'])) {
-            $this->editTemplate = $data['edit'];
+            $this->edit = $data['edit'];
         }
 
         if (isset($data['list'])) {
-            $this->listTemplate = $data['list'];
+            $this->list = $data['list'];
         }
 
         if (isset($data['ajaxTemplate'])) {
@@ -60,11 +60,11 @@ class Crud implements ConfigurationInterface
         }
 
         if (isset($data['show'])) {
-            $this->showTemplate = $data['show'];
+            $this->show = $data['show'];
         }
 
         if (isset($data['form'])) {
-            $this->formClass = $data['form'];
+            $this->form = $data['form'];
         }
 
         if (isset($data['showFields'])) {
@@ -80,42 +80,42 @@ class Crud implements ConfigurationInterface
 
     public function getCreateTemplate()
     {
-        return $this->createTemplate;
+        return $this->create;
     }
 
     public function setCreateTemplate($createTemplate)
     {
-        $this->createTemplate = $createTemplate;
+        $this->create = $createTemplate;
     }
 
     public function getEditTemplate()
     {
-        return $this->editTemplate;
+        return $this->edit;
     }
 
     public function setEditTemplate($editTemplate)
     {
-        $this->editTemplate = $editTemplate;
+        $this->edit = $editTemplate;
     }
 
     public function getListTemplate()
     {
-        return $this->listTemplate;
+        return $this->list;
     }
 
     public function setListTemplate($listTemplate)
     {
-        $this->listTemplate = $listTemplate;
+        $this->list = $listTemplate;
     }
 
     public function getShowTemplate()
     {
-        return $this->showTemplate;
+        return $this->show;
     }
 
     public function setShowTemplate($showTemplate)
     {
-        $this->showTemplate = $showTemplate;
+        $this->show = $showTemplate;
     }
 
     public function getAjaxTemplate()
@@ -136,22 +136,22 @@ class Crud implements ConfigurationInterface
 
     public function getFormClass()
     {
-        return $this->formClass;
+        return $this->form;
     }
 
     public function setFormClass($formClass)
     {
-        $this->formClass = $formClass;
+        $this->form = $formClass;
     }
 
     public function getEntityClass()
     {
-        return $this->entityClass;
+        return $this->entity;
     }
 
     public function setEntityClass($entityClass)
     {
-        $this->entityClass = $entityClass;
+        $this->entity = $entityClass;
     }
 
     public function getShowFields()

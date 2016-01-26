@@ -87,8 +87,8 @@ class ConfigurationFactory implements ContainerAwareInterface
     {
         /** @var Grid $grid */
         $grid = $this->getConfiguration('grid');
-        if (!empty($grid->getGridFields())) {
-            return $grid->getGridFields();
+        if (!empty($grid->getFields())) {
+            return $grid->getFields();
         }
 
         return $this->getEntityFields();
