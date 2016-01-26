@@ -14,11 +14,12 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class CrudHandler
+class CrudHandler implements ContainerAwareInterface
 {
     const ACTION_CREATE = 'ACTION_CREATE';
 
@@ -60,7 +61,7 @@ class CrudHandler
     /**
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
         $this->manager = $container->get('doctrine.orm.entity_manager');

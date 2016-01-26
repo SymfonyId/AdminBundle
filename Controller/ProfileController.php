@@ -11,8 +11,9 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,10 +36,12 @@ class ProfileController extends Controller
         $entity = $this->getUser();
         $data = array();
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
 
-        foreach ($configuration->getShowFields() as $key => $property) {
+        foreach ($crud->getShowFields() as $key => $property) {
             $method = 'get'.ucfirst($property);
 
             if (method_exists($entity, $method)) {
@@ -87,8 +90,8 @@ class ProfileController extends Controller
             throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
         }
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
 
         $form = $configuration->getForm($user);
         $form->handleRequest($request);

@@ -10,7 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\EventDispatcher\Event;
 
-final class FilterQueryEvent extends Event
+class FilterQueryEvent extends Event
 {
     /**
      * @var QueryBuilder

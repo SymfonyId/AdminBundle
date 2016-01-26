@@ -9,17 +9,17 @@ namespace Symfonian\Indonesia\AdminBundle\Twig;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-final class VariableRegistrator
+class VariableRegistrator
 {
     /**
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
 
     /**
      * @var array
      */
-    private $variables = array();
+    protected $variables = array();
 
     public function __construct(\Twig_Environment $twig)
     {

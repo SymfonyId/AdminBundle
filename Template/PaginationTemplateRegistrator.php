@@ -5,7 +5,7 @@ namespace Symfonian\Indonesia\AdminBundle\Template;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class PaginationTemplateRegistrator implements CompilerPassInterface
+class PaginationTemplateRegistrator implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

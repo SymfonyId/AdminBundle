@@ -12,13 +12,13 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-final class HomeRouteLoader implements LoaderInterface
+class HomeRouteLoader implements LoaderInterface
 {
-    private $routePath;
+    protected $routePath;
 
-    private $controller;
+    protected $controller;
 
-    private $loaded = false;
+    protected $loaded = false;
 
     public function __construct($routePath, $controller)
     {

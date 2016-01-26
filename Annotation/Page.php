@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
+namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
@@ -14,9 +14,9 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Page implements ConfigurationInterface
 {
-    private $title = 'SIAB';
+    protected $title = 'SIAB';
 
-    private $description = 'Symfonian Indonesia Admin Bundle';
+    protected $description = 'Symfonian Indonesia Admin Bundle';
 
     public function __construct(array $data = array())
     {

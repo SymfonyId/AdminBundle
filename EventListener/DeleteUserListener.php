@@ -13,22 +13,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-final class DeleteUserListener
+class DeleteUserListener
 {
     /**
      * @var UserInterface
      */
-    private $user;
+    protected $user;
 
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    protected $translator;
 
     /**
      * @var string
      */
-    private $translationDomain;
+    protected $translationDomain;
 
     /**
      * @param TokenStorageInterface $tokenStorage

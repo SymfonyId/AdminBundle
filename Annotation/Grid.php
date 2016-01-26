@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
+namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
@@ -18,9 +18,9 @@ class Grid implements ConfigurationInterface
 
     protected $gridFilters = array();
 
-    private $normalizeFilter = false;
+    protected $normalizeFilter = false;
 
-    private $formatNumber = true;
+    protected $formatNumber = true;
 
     public function __construct(array $data = array())
     {

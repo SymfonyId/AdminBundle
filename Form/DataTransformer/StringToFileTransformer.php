@@ -15,7 +15,7 @@ class StringToFileTransformer implements DataTransformerInterface
     /**
      * @var array
      */
-    private $uploadDir;
+    protected $uploadDir;
 
     public function __construct(array $uploadDir)
     {

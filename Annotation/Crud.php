@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Annotation\Schema;
+namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
-/**
+/*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
@@ -20,7 +20,7 @@ class Crud implements ConfigurationInterface
 
     protected $formClass;
 
-    protected $addTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    protected $createTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
     protected $editTemplate = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
@@ -42,8 +42,8 @@ class Crud implements ConfigurationInterface
             $this->entityClass = $data['entity'];
         }
 
-        if (isset($data['add'])) {
-            $this->addTemplate = $data['add'];
+        if (isset($data['create'])) {
+            $this->createTemplate = $data['create'];
         }
 
         if (isset($data['edit'])) {
@@ -78,14 +78,14 @@ class Crud implements ConfigurationInterface
         unset($data);
     }
 
-    public function getAddTemplate()
+    public function getCreateTemplate()
     {
-        return $this->addTemplate;
+        return $this->createTemplate;
     }
 
-    public function setAddTemplate($addTemplate)
+    public function setCreateTemplate($createTemplate)
     {
-        $this->addTemplate = $addTemplate;
+        $this->createTemplate = $createTemplate;
     }
 
     public function getEditTemplate()

@@ -7,28 +7,28 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class UserViewManipulator
+class UserViewManipulator
 {
     /**
      * @var ConfigurationFactory
      */
-    private $configurationFactory;
+    protected $configurationFactory;
 
-    private $formClass;
+    protected $formClass;
 
-    private $entityClass;
+    protected $entityClass;
 
-    private $showFields;
+    protected $showFields;
 
-    private $gridFields;
+    protected $gridFields;
 
-    private $gridFilters;
+    protected $gridFilters;
 
     public function __construct(ConfigurationFactory $configurationFactory)
     {

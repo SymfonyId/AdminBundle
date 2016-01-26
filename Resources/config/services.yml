@@ -1,11 +1,9 @@
 services:
     symfonian_id.admin.annotation:
-        class: Symfonian\Indonesia\AdminBundle\Annotation\Reader\AnnotationReader
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Reader
         arguments:
             - '@annotation_reader'
             - '@symfonian_id.admin.congiration.factory'
-            - '@symfonian_id.admin.configurator'
-            - '@symfonian_id.admin.handler.upload'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
 
@@ -34,7 +32,10 @@ services:
 
     symfonian_id.admin.upload_avatar:
         class: Symfonian\Indonesia\AdminBundle\User\AvatarUploader
+        calls:
+            - [setUploadField, []]
         arguments:
+            - '@symfonian_id.admin.congiration.factory'
             - '@symfonian_id.admin.handler.upload'
             - '%symfonian_id.admin.upload_dir%'
         tags:
@@ -161,17 +162,8 @@ services:
 
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
-        arguments:
-            - '@service_container'
-
-    symfonian_id.admin.configurator:
-        class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
         calls:
             - [setContainer, ['@service_container']]
-        arguments:
-            - '@symfonian_id.admin.congiration.factory'
-            - '@form.factory'
-            - '%symfonian_id.admin.translation_domain%'
 
     symfonian_id.admin.handler.upload:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler

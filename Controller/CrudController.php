@@ -9,7 +9,11 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
+use Symfonian\Indonesia\AdminBundle\Annotation\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -44,14 +48,16 @@ abstract class CrudController extends Controller
             return $response;
         }
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
 
-        $entityClass = $configuration->getEntityClass();
+        $entityClass = $crud->getEntityClass();
         $entity = new $entityClass();
         $form = $event->getForm() ?: $configuration->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $configuration->getAddTemplate(), $entity, $form);
+        return $this->handle($request, CrudHandler::ACTION_CREATE, $crud->getCreateTemplate(), $entity, $form);
     }
 
     /**
@@ -76,13 +82,15 @@ abstract class CrudController extends Controller
             return $response;
         }
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
 
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $configuration->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_UPDATE, $configuration->getEditTemplate(), $entity, $form);
+        return $this->handle($request, CrudHandler::ACTION_UPDATE, $crud->getEditTemplate(), $entity, $form);
     }
 
     /**
@@ -103,18 +111,22 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
+        /** @var Page $page */
+        $page = $configuration->getConfiguration('page');
 
-        $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($configuration->getDescription(), array(), $translationDomain);
+        $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setEntity($configuration->getEntityClass());
+        $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
-        $handler->setTemplate($configuration->getShowTemplate());
-        $handler->showDetail($request, $entity, $configuration->getShowFields());
+        $handler->setTemplate($crud->getShowTemplate());
+        $handler->showDetail($request, $entity, $crud->getShowFields());
 
         return $handler->getResponse();
     }
@@ -135,10 +147,13 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
-        $handler->setEntity($configuration->getEntityClass());
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
+
+        $handler->setEntity($crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
         if ($returnHandler instanceof Response) {
             return $returnHandler;
@@ -163,19 +178,26 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
-        $listTemplate = $request->isXmlHttpRequest() ? $configuration->getAjaxTemplate() : $configuration->getListTemplate();
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
+        /** @var Page $page */
+        $page = $configuration->getConfiguration('page');
+        /** @var Grid $grid */
+        $grid = $configuration->getConfiguration('grid');
 
-        $this->viewParams['use_ajax'] = $configuration->isUseAjax();
-        $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($configuration->getDescription(), array(), $translationDomain);
+        $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
 
-        $handler->setEntity($configuration->getEntityClass());
+        $this->viewParams['use_ajax'] = $crud->isUseAjax();
+        $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
+
+        $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $configuration->getGridFields(), $configuration->getGridFilter(), $configuration->isNormalizeFilter(), $configuration->isFormatNumber());
+        $handler->viewList($request, $grid->getGridFields(), $grid->getGridFilter(), $grid->isNormalizeFilter(), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }
@@ -187,18 +209,25 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
 
-        $this->viewParams['page_title'] = $translator->trans($configuration->getTitle(), array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans($configuration->getDescription(), array(), $translationDomain);
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
+        /** @var Page $page */
+        $page = $configuration->getConfiguration('page');
+        /** @var Util $util */
+        $util = $configuration->getConfiguration('util');
+
+        $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
+        $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
         $this->viewParams['action_method'] = $translator->trans('page.'.strtolower($action), array(), $translationDomain);
-        $this->viewParams['use_date_picker'] = $configuration->isUseDatePicker();
-        $this->viewParams['use_file_style'] = $configuration->isUseFileStyle();
-        $this->viewParams['use_editor'] = $configuration->isUseEditor();
-        $this->viewParams['autocomplete'] = $configuration->getAutocomplete();
+        $this->viewParams['use_date_picker'] = $util->isUseDatePicker();
+        $this->viewParams['use_file_style'] = $util->isUseFileChooser();
+        $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
+        $this->viewParams['autocomplete'] = $util->getAutoComplete();
 
-        $handler->setEntity($configuration->getEntityClass());
+        $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($this, $request, $data, $form);
@@ -215,9 +244,12 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.configurator');
-        $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($configuration->getEntityClass())->find($id);
+        /** @var ConfigurationFactory $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
+
+        $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($crud->getEntityClass())->find($id);
 
         if (!$entity) {
             throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));

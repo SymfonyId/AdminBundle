@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadHandler
 {
-    private $dirPath;
+    protected $dirPath;
 
-    private $fields = array();
+    protected $fields = array();
 
     public function setUploadDir($dirPath)
     {

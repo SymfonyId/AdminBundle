@@ -10,12 +10,12 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 use FOS\UserBundle\Model\User;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 
-final class UpdateUserListener
+class UpdateUserListener
 {
     /**
      * @var boolean
      */
-    private $autoEnable;
+    protected $autoEnable;
 
     /**
      * @param boolean $autoEnable

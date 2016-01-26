@@ -7,27 +7,27 @@ namespace Symfonian\Indonesia\AdminBundle\Template;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-final class CrudTemplateRegistrator
+class CrudTemplateRegistrator
 {
     /**
      * @var ConfigurationFactory
      */
-    private $configurationFactory;
+    protected $configurationFactory;
 
     /**
      * @var array
      */
-    private $crudTemplate = array();
+    protected $crudTemplate = array();
 
     /**
      * @var array
      */
-    private $ajax = array();
+    protected $ajax = array();
 
     public function __construct(ConfigurationFactory $configurationFactory)
     {
@@ -59,7 +59,7 @@ final class CrudTemplateRegistrator
         }
 
         $crud = new Crud();
-        $crud->setAddTemplate($this->crudTemplate['new']);
+        $crud->setCreateTemplate($this->crudTemplate['new']);
         $crud->setEditTemplate($this->crudTemplate['edit']);
         $crud->setShowTemplate($this->crudTemplate['show']);
         $crud->setListTemplate($this->crudTemplate['list']);

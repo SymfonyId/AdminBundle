@@ -16,7 +16,7 @@ class GenerateUserAvatarFunction extends Twig_Extension
     /**
      * @var string
      */
-    private $uploadDir;
+    protected $uploadDir;
 
     /**
      * @param string $uploadDir

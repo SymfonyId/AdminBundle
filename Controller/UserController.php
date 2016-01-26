@@ -8,17 +8,14 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  */
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\FileChooser;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Util\Upload;
+use Symfonian\Indonesia\AdminBundle\Annotation\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 
 /**
  * @Route("/user")
  *
  * @Page(title="page.user.title", description="page.user.description")
- * @FileChooser()
- * @Upload("avatar")
+ * @Util(fileChooser=true, uploadable="avatar")
  */
 class UserController extends CrudController
 {
