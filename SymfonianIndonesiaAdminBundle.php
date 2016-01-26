@@ -2,7 +2,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
-use Symfonian\Indonesia\AdminBundle\Compiler\OverridePaginationTemplateCompiler;
+use Symfonian\Indonesia\AdminBundle\Configuration\UtilConfigurationRegistrator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Template\PaginationTemplateRegistrator;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
@@ -224,6 +224,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     public function addCompilerPass(ContainerBuilder $container)
     {
         $container->addCompilerPass(new PaginationTemplateRegistrator());
+        $container->addCompilerPass(new UtilConfigurationRegistrator());
     }
 
     public function getAlias()

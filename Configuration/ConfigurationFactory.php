@@ -74,7 +74,7 @@ class ConfigurationFactory implements ContainerAwareInterface
         try {
             $formObject = $this->container->get($formClass);
         } catch (\Exception $ex) {
-            $formObject = $this->container->get($formClass);
+            $formObject = new $formClass();
         }
 
         $form = $this->formFactory->create(get_class($formObject));
