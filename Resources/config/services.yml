@@ -170,3 +170,7 @@ services:
 
     symfonian_id.admin.congiration.factory:
         class: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory
+        calls:
+            - [setContainer, ['@service_container']]
+        arguments:
+            - '@form.factory'
