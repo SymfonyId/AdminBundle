@@ -1,0 +1,18 @@
+services:
+    symfonian_id.admin.menu:
+        class: Symfonian\Indonesia\AdminBundle\Menu\Builder
+        arguments:
+            - '@router'
+            - '@translator'
+            - '@security.authorization_checker'
+            - '%symfonian_id.admin.translation_domain%'
+
+    symfonian_id.admin.main_menu:
+        class: Knp\Menu\MenuItem
+        factory_service: symfonian_id.admin.menu
+        factory_method: mainMenu
+        arguments:
+            - '@knp_menu.factory'
+            - []
+        tags:
+            - { name: knp_menu.menu, alias: symfonian_indonesia_admin_main_menu }

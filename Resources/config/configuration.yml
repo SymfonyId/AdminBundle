@@ -1,0 +1,27 @@
+services:
+    symfonian_id.admin.congiration.factory:
+        class: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory
+        calls:
+            - [setContainer, ['@service_container']]
+        arguments:
+            - '@form.factory'
+
+    symfonian_id.admin.annotation.crud:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Crud
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.grid:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Grid
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.page:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Page
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.util:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util
+        tags:
+            - { name: siab.config }

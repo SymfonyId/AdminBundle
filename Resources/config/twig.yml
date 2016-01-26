@@ -1,0 +1,22 @@
+services:
+    symfonian_id.admin.twig.is_number:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\NumberTest
+        tags:
+            - { name: twig.extension }
+
+    symfonian_id.admin.twig.is_boolean:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\BooleanTest
+        tags:
+            - { name: twig.extension }
+
+    symfonian_id.admin.twig.ucwords:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Filters\UcWordsFilter
+        tags:
+            - { name: twig.extension }
+
+    symfonian_id.admin.twig.generate_avatar:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Functions\GenerateUserAvatarFunction
+        arguments:
+            - '%symfonian_id.admin.upload_dir%'
+        tags:
+            - { name: twig.extension }

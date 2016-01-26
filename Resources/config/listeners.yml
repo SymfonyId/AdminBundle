@@ -1,0 +1,97 @@
+services:
+#Symfony Listeners
+    symfonian_id.admin.annotation:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Reader
+        arguments:
+            - '@annotation_reader'
+            - '@symfonian_id.admin.congiration.factory'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
+
+    symfonian_id.admin.crud_template_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Template\CrudTemplateRegistrator
+        calls:
+            - [setCrudTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
+            - [setAjax, [{use_ajax: '%symfonian_id.admin.themes.ajax_template%', template: '%symfonian_id.admin.list.use_ajax%'}]]
+        arguments:
+            - '@symfonian_id.admin.congiration.factory'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
+
+    symfonian_id.admin.filter_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Filter\FilterRegistrator
+        calls:
+            - [setFilter, ['%symfonian_id.admin.filter%']]
+        arguments:
+            - '@symfonian_id.admin.congiration.factory'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
+
+    symfonian_id.admin.user_template_manipulator:
+        class: Symfonian\Indonesia\AdminBundle\View\UserViewManipulator
+        calls:
+            - [setForm, ['%symfonian_id.admin.user.user_form%', '%symfonian_id.admin.user.user_entity%']]
+            - [setView, ['%symfonian_id.admin.user.show_fields%', '%symfonian_id.admin.user.grid_fields%', '%symfonian_id.admin.user.grid_filters%']]
+        arguments:
+            - '@symfonian_id.admin.congiration.factory'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
+
+    symfonian_id.admin.profile_controller_compiler:
+        class: Symfonian\Indonesia\AdminBundle\View\ProfileViewManipulator
+        calls:
+            - [setFormClass, ['%symfonian_id.admin.user.password_form%']]
+            - [setProfileFields, ['%symfonian_id.admin.profile_fields%']]
+        arguments:
+            - '@symfonian_id.admin.congiration.factory'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
+
+    symfonian_id.admin.variable_registrator:
+        class: Symfonian\Indonesia\AdminBundle\Twig\VariableRegistrator
+        calls:
+            - [setVariables, [{title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%'}]]
+        arguments:
+            - '@twig'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+#Symfonian Indonesia Listeners
+    symfonian_id.admin.delete_user:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '%symfonian_id.admin.translation_domain%'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_delete, method: onDeleteUser }
+
+    symfonian_id.admin.set_timestamp:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+
+    symfonian_id.admin.update_user:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
+        arguments:
+            - '%symfonian_id.admin.user.auto_enable%'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+
+    symfonian_id.admin.upload_avatar:
+        class: Symfonian\Indonesia\AdminBundle\User\AvatarUploader
+        calls:
+            - [setUploadField, []]
+        arguments:
+            - '@symfonian_id.admin.congiration.factory'
+            - '@symfonian_id.admin.handler.upload'
+            - '%symfonian_id.admin.upload_dir%'
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave }
+
+    symfonian_id.admin.remove_password_field:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
+        tags:
+            - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }

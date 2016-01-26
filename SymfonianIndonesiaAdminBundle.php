@@ -2,7 +2,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
-use Symfonian\Indonesia\AdminBundle\Configuration\UtilConfigurationRegistrator;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationRegistrator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Template\PaginationTemplateRegistrator;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
@@ -218,13 +218,18 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         ));
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
+        $loader->load('configuration.yml');
+        $loader->load('form.yml');
+        $loader->load('listeners.yml');
+        $loader->load('menu.yml');
         $loader->load('services.yml');
+        $loader->load('twig.yml');
     }
 
     public function addCompilerPass(ContainerBuilder $container)
     {
         $container->addCompilerPass(new PaginationTemplateRegistrator());
-        $container->addCompilerPass(new UtilConfigurationRegistrator());
+        $container->addCompilerPass(new ConfigurationRegistrator());
     }
 
     public function getAlias()
