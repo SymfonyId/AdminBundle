@@ -5,9 +5,10 @@
  * Url: https://github.com/ihsanudin
  */
 
-namespace Sensio\Bundle\GeneratorBundle\Generator;
+namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 

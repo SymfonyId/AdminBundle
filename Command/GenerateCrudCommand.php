@@ -9,21 +9,21 @@ namespace Symfonian\Indonesia\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
-use Sensio\Bundle\GeneratorBundle\Generator\FormGenerator;
+use Symfonian\Indonesia\AdminBundle\Generator\FormGenerator;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class GenerateCrudCommand extends GenerateDoctrineCommand
 {
     protected function configure()
     {
         $this
-            ->setDefinition(array(
-                new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
-                new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
-            ))
+            ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name to initialize (shortcut notation)')
+            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents')
             ->setName('siab:generate:crud')
             ->setAliases(array('siab:generate', 'siab:crud:generate'))
             ->setDescription('Generate CRUD from Entity using Symfonian Indonesia Admin Bundle style')
@@ -51,7 +51,7 @@ EOT
             }
         }
 
-        $entity = Validators::validateEntityName($input->getOption('entity'));
+        $entity = Validators::validateEntityName($input->getArgument('entity'));
         $forceOverwrite = $input->getOption('overwrite');
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
@@ -76,5 +76,23 @@ EOT
         /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
         $fileSystem = $this->getContainer()->get('filesystem');
         return new FormGenerator($fileSystem);
+    }
+
+    protected function getSkeletonDirs(BundleInterface $bundle = null)
+    {
+        $skeletonDirs = array();
+
+        if (isset($bundle) && is_dir($dir = $bundle->getPath().'/Resources/SymfonianIndonesiaAdminBundle/skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/SymfonianIndonesiaAdminBundle/skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
+        $skeletonDirs[] = __DIR__.'/../Resources';
+
+        return $skeletonDirs;
     }
 }
