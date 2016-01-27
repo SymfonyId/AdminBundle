@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Generates a form class based on a Doctrine entity.
