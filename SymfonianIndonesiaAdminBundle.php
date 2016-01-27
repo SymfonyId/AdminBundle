@@ -2,10 +2,12 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
+use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationRegistrator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Template\PaginationTemplateRegistrator;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -230,6 +232,12 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     {
         $container->addCompilerPass(new PaginationTemplateRegistrator());
         $container->addCompilerPass(new ConfigurationRegistrator());
+    }
+
+    public function addCommand(Application $application)
+    {
+        parent::addCommand($application);
+        $application->add(new GenerateCrudCommand());
     }
 
     public function getAlias()

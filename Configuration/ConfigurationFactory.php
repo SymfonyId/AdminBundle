@@ -83,7 +83,7 @@ class ConfigurationFactory implements ContainerAwareInterface
         return $form;
     }
 
-    public function getColumn()
+    public function getColumns()
     {
         /** @var Grid $grid */
         $grid = $this->getConfiguration('grid');
@@ -93,6 +93,30 @@ class ConfigurationFactory implements ContainerAwareInterface
 
         return $this->getEntityFields();
     }
+
+    public function getFilters()
+    {
+        $colums = $this->getColumns();
+        /** @var Grid $grid */
+        $grid = $this->getConfiguration('grid');
+        if (!empty($grid->getGridFilter())) {
+            return $grid->getGridFilter();
+        }
+
+        return $colums[0];
+    }
+
+    public function getShowFields()
+    {
+        /** @var Crud $crud */
+        $crud = $this->getConfiguration('crud');
+        if (!empty($crud->getShowFields())) {
+            return $crud->getShowFields();
+        }
+
+        return $this->getEntityFields();
+    }
+
     /**
      * @return array
      */
@@ -104,7 +128,9 @@ class ConfigurationFactory implements ContainerAwareInterface
         $reflection = new \ReflectionClass($crud->getEntityClass());
 
         foreach ($reflection->getProperties() as $key => $property) {
-            $fields[$key] = $property->getName();
+            if ('id' !== $property) {
+                $fields[$key] = $property->getName();
+            }
         }
 
         return $fields;
