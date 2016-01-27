@@ -32,6 +32,9 @@
         "friendsofsymfony/user-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "dev-master"
     },
+    "require-dev": {
+        "sensio/generator-bundle": "^3.0"
+    },
     "autoload": {
         "psr-4": {
             "Symfonian\\Indonesia\\AdminBundle\\": ""
