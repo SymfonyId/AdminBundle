@@ -7,9 +7,9 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationRegistrator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Template\PaginationTemplateRegistrator;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 

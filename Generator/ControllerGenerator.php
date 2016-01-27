@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Generates a form class based on a Doctrine entity.
@@ -69,9 +70,9 @@ class ControllerGenerator extends Generator
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
-        $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
+        $this->className = $entityClass.'Controller';
+        $dirPath = $bundle->getPath().'/Controller';
+        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entityClass).'Controller.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
             throw new \RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
@@ -84,38 +85,13 @@ class ControllerGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('FormType.php.twig', $this->classPath, array(
+        $this->renderFile('Controller.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
             'entity' => $entity,
-            'entity_class' => $entityClass,
-            'form_class' => $this->className,
+            'entity_class' => strtolower($entityClass),
+            'form_class' => str_replace('Entity', 'Form', $entity),
+            'entity_namespace' => implode('\\', $parts),
             'controller_class' => $this->className,
         ));
-    }
-
-    /**
-     * Returns an array of fields. Fields can be both column fields and
-     * association fields.
-     *
-     * @param ClassMetadataInfo $metadata
-     *
-     * @return array $fields
-     */
-    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
-    {
-        $fields = (array) $metadata->fieldNames;
-
-        // Remove the primary key field if it's not managed manually
-        if (!$metadata->isIdentifierNatural()) {
-            $fields = array_diff($fields, $metadata->identifier);
-        }
-
-        foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
-            }
-        }
-
-        return $fields;
     }
 }

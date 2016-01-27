@@ -9,6 +9,7 @@ namespace Symfonian\Indonesia\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Symfonian\Indonesia\AdminBundle\Generator\ControllerGenerator;
 use Symfonian\Indonesia\AdminBundle\Generator\FormGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 class GenerateCrudCommand extends GenerateDoctrineCommand
 {
@@ -55,17 +57,20 @@ EOT
         $forceOverwrite = $input->getOption('overwrite');
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         try {
-            $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
             $metadata = $this->getEntityMetadata($entityClass);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Entity "%s" does not exist in the "%s" bundle. Create it before and then execute this command again.', $entity, $bundle));
         }
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
-        /** @var FormGenerator $generator */
-        $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $metadata[0], $forceOverwrite);
+        /** @var FormGenerator $formGenerator */
+        $formGenerator = $this->getGenerator($bundle);
+        $formGenerator->generate($bundle, $entity, $metadata[0], $forceOverwrite);
+
+        $controllerGenerator = $this->getControllerGenerator($bundle);
+        $controllerGenerator->generate($bundle, $entityClass, $metadata[0], $forceOverwrite);
     }
 
     /**
@@ -94,5 +99,15 @@ EOT
         $skeletonDirs[] = __DIR__.'/../Resources';
 
         return $skeletonDirs;
+    }
+
+    protected function getControllerGenerator($bundle = null)
+    {
+        /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
+        $fileSystem = $this->getContainer()->get('filesystem');
+        $generator = new ControllerGenerator($fileSystem);
+        $generator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+
+        return $generator;
     }
 }
