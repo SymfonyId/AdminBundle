@@ -88,8 +88,8 @@ class ControllerGenerator extends Generator
             'namespace' => $bundle->getNamespace(),
             'entity' => $entity,
             'entity_class' => strtolower($entityClass),
+            'title' => ucwords($entityClass),
             'form_class' => str_replace('Entity', 'Form', $entity),
-            'entity_namespace' => implode('\\', $parts),
             'controller_class' => $this->className,
         ));
     }
