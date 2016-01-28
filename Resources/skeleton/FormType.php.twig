@@ -35,18 +35,18 @@ class {{ form_class }} extends AbstractType
             {%- if fields_mapping[field] is defined and fields_mapping[field]['type'] in ['date', 'time', 'datetime'] %}
 
             ->add('{{ field }}', '{{ fields_mapping[field]['type'] }}', array(
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                ))
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
 
             {%- else %}
 
             ->add('{{ field }}', null, array(
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
-                ))
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
 
             {%- endif -%}
         {%- endfor %}
