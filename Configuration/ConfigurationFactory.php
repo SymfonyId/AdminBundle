@@ -128,8 +128,8 @@ class ConfigurationFactory implements ContainerAwareInterface
         $reflection = new \ReflectionClass($crud->getEntityClass());
 
         foreach ($reflection->getProperties() as $key => $property) {
-            if ('id' !== $property) {
-                $fields[$key] = $property->getName();
+            if ('id' !== $name = $property->getName()) {
+                $fields[$key] = $name;
             }
         }
 
