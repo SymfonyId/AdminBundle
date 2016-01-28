@@ -113,6 +113,11 @@ class FormGenerator extends Generator
     {
         $fields = (array) $metadata->fieldNames;
 
+        $exclude = array(
+            'createdAt', 'created_at', 'createdBy', 'created_by',
+            'updatedAt', 'updated_at', 'updatedBy', 'updated_by',
+        );
+
         // Remove the primary key field if it's not managed manually
         if (!$metadata->isIdentifierNatural()) {
             $fields = array_diff($fields, $metadata->identifier);
@@ -124,6 +129,6 @@ class FormGenerator extends Generator
             }
         }
 
-        return $fields;
+        return array_diff($fields, $exclude);
     }
 }
