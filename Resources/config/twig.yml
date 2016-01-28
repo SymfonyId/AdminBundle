@@ -17,6 +17,7 @@ services:
     symfonian_id.admin.twig.generate_avatar:
         class: Symfonian\Indonesia\AdminBundle\Twig\Functions\GenerateUserAvatarFunction
         arguments:
+            - '@security.http_utils'
             - '%symfonian_id.admin.upload_dir%'
         tags:
             - { name: twig.extension }

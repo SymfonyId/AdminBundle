@@ -21,10 +21,17 @@ class GenerateUserAvatarFunction extends Twig_Extension
     protected $uploadDir;
 
     /**
+     * @var HttpUtils
+     */
+    protected $httpUtils;
+
+    /**
+     * @param HttpUtils $httpUtils
      * @param string $uploadDir
      */
-    public function __construct($uploadDir)
+    public function __construct(HttpUtils $httpUtils, $uploadDir)
     {
+        $this->httpUtils = $httpUtils;
         $this->uploadDir = $uploadDir;
     }
 
@@ -40,9 +47,7 @@ class GenerateUserAvatarFunction extends Twig_Extension
         if ($user->getAvatar()) {
             return $this->uploadDir['web_path'].$user->getAvatar();
         } else {
-            $http = new HttpUtils();
-
-            return $http->generateUri(new Request(), 'bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png');
+            return $this->httpUtils->generateUri(new Request(), 'bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png');
         }
     }
 
