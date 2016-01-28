@@ -9,6 +9,7 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 
 {% block use_statements %}
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 {% if not configure_options_available %}
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -50,6 +51,12 @@ class {{ form_class }} extends AbstractType
             {%- endif -%}
         {%- endfor %}
 
+            ->add('save', SubmitType::class, array(
+                'label' => 'Submit',
+                'attr' => array(
+                    'class' => 'btn btn-primary',
+                ),
+            ))
         ;
     }
     {% endif %}
