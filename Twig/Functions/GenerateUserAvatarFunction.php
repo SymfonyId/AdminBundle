@@ -8,6 +8,8 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\Functions;
  */
 
 use Symfonian\Indonesia\AdminBundle\User\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\HttpUtils;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -38,7 +40,9 @@ class GenerateUserAvatarFunction extends Twig_Extension
         if ($user->getAvatar()) {
             return $this->uploadDir['web_path'].$user->getAvatar();
         } else {
-            return 'bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png';
+            $http = new HttpUtils();
+
+            return $http->generateUri(new Request(), 'bundles/symfonianindonesiaadmin/img/apple-icon-114x114.png');
         }
     }
 
