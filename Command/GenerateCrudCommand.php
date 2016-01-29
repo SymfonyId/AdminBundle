@@ -79,6 +79,7 @@ EOT
     {
         /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
         $fileSystem = $this->getContainer()->get('filesystem');
+
         return new FormGenerator($fileSystem);
     }
 

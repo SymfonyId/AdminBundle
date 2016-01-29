@@ -133,7 +133,7 @@ class FormGenerator extends Generator
         $hasDateTime = false;
 
         foreach ($this->getFieldsFromMetadata($metadata) as $field) {
-            if (in_array($metadata->fieldMappings[$field]['type'], array('date', 'time', 'datetime'))){
+            if (in_array($metadata->fieldMappings[$field]['type'], array('date', 'time', 'datetime'))) {
                 $hasDateTime = true;
 
                 break;

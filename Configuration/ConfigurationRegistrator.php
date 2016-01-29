@@ -22,7 +22,7 @@ class ConfigurationRegistrator implements CompilerPassInterface
 
         $taggedServices = $container->findTaggedServiceIds('siab.config');
         foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall( 'addConfiguration', array(new Reference($id)));
+            $definition->addMethodCall('addConfiguration', array(new Reference($id)));
         }
     }
 }

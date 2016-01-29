@@ -33,7 +33,7 @@ class DeleteUserListener
     /**
      * @param TokenStorageInterface $tokenStorage
      * @param TranslatorInterface   $translator
-     * @param string $translationDomain
+     * @param string                $translationDomain
      */
     public function __construct(TokenStorageInterface $tokenStorage, TranslatorInterface $translator, $translationDomain)
     {

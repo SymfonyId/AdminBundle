@@ -36,10 +36,10 @@ class Builder
     protected $authorizationChecker;
 
     /**
-     * @param Router $router
-     * @param TranslatorInterface $translator
+     * @param Router               $router
+     * @param TranslatorInterface  $translator
      * @param AuthorizationChecker $authorizationChecker
-     * @param string $translationDomain
+     * @param string               $translationDomain
      */
     public function __construct(Router $router, TranslatorInterface $translator, AuthorizationChecker $authorizationChecker, $translationDomain)
     {
