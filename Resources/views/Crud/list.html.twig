@@ -77,8 +77,8 @@
             return url;
         }
     </script>
+    {% endspaceless %}
     {%- if use_ajax is defined -%}
         {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_jquery.html.twig' -%}
     {%- endif -%}
-    {% endspaceless %}
 {%- endblock -%}
