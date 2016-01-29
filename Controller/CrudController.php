@@ -190,7 +190,6 @@ abstract class CrudController extends Controller
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
 
-        $this->viewParams['use_ajax'] = $crud->isUseAjax();
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
 

@@ -116,15 +116,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                         ->booleanNode('delete')->defaultTrue()->end()
                     ->end()
                 ->end()
-                ->arrayNode('list')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('use_ajax')->defaultTrue()->end()
-                        ->scalarNode('ajax_template')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig')
-                        ->end()
-                    ->end()
-                ->end()
                 ->arrayNode('themes')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -180,7 +171,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.themes.edit_view', $config['themes']['edit_view']);
         $container->setParameter('symfonian_id.admin.themes.show_view', $config['themes']['show_view']);
         $container->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
-        $container->setParameter('symfonian_id.admin.themes.ajax_template', $config['list']['ajax_template']);
         $container->setParameter('symfonian_id.admin.themes.pagination', $config['themes']['pagination']);
         $container->setParameter('symfonian_id.admin.user.user_form', $config['user']['form_class']);
         $container->setParameter('symfonian_id.admin.user.auto_enable', $config['user']['auto_enable']);
@@ -191,7 +181,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.user.password_form', $config['user']['password_form']);
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
-        $container->setParameter('symfonian_id.admin.list.use_ajax', $config['list']['use_ajax']);
 
         $action = array();
         if ($config['grid_action']['show']) {

@@ -77,8 +77,6 @@
             return url;
         }
     </script>
+    {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_jquery.html.twig' -%}
     {% endspaceless %}
-    {%- if use_ajax is defined -%}
-        {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_jquery.html.twig' -%}
-    {%- endif -%}
 {%- endblock -%}

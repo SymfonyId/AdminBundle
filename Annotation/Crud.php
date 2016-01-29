@@ -30,8 +30,6 @@ class Crud implements ConfigurationInterface
 
     protected $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
 
-    protected $useAjax = true;
-
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
@@ -52,11 +50,6 @@ class Crud implements ConfigurationInterface
 
         if (isset($data['list'])) {
             $this->list = $data['list'];
-        }
-
-        if (isset($data['ajaxTemplate'])) {
-            $this->ajaxTemplate = $data['ajaxTemplate'];
-            $this->useAjax = true;
         }
 
         if (isset($data['show'])) {
@@ -121,17 +114,6 @@ class Crud implements ConfigurationInterface
     public function getAjaxTemplate()
     {
         return $this->ajaxTemplate;
-    }
-
-    public function isUseAjax()
-    {
-        return $this->useAjax;
-    }
-
-    public function setAjaxTemplate($ajaxTemplate, $useAjax = true)
-    {
-        $this->ajaxTemplate = $ajaxTemplate;
-        $this->useAjax = $useAjax;
     }
 
     public function getFormClass()
