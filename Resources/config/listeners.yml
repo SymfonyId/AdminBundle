@@ -18,7 +18,7 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
     symfonian_id.admin.filter_registrator:
-        class: Symfonian\Indonesia\AdminBundle\Filter\FilterRegistrator
+        class: Symfonian\Indonesia\AdminBundle\Grid\FilterRegistrator
         calls:
             - [setFilter, ['%symfonian_id.admin.filter%']]
         arguments:

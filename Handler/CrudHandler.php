@@ -259,10 +259,6 @@ class CrudHandler implements ContainerAwareInterface
             }
         }
 
-        $event = new FilterFormEvent();
-        $event->setData($output);
-        $this->fireEvent(Event::PRE_SHOW, $event);
-
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 

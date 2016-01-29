@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,15 +37,15 @@ class FilterFormEvent extends Event
     }
 
     /**
-     * @param mixed $entity
+     * @param EntityInterface $entity
      */
-    public function setData($entity)
+    public function setData(EntityInterface $entity)
     {
         $this->formData = $entity;
     }
 
     /**
-     * @return mixed
+     * @return EntityInterface
      */
     public function getData()
     {

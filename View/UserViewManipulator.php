@@ -69,7 +69,7 @@ class UserViewManipulator
 
         $grid = new Grid();
         $grid->setFields($this->gridFields);
-        $grid->setGridFilters($this->gridFilters);
+        $grid->setFilters($this->gridFilters);
 
         $this->configurationFactory->addConfiguration($crud);
         $this->configurationFactory->addConfiguration($grid);

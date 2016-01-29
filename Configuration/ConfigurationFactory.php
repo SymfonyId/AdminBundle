@@ -99,8 +99,8 @@ class ConfigurationFactory implements ContainerAwareInterface
         $colums = $this->getColumns();
         /** @var Grid $grid */
         $grid = $this->getConfiguration('grid');
-        if (!empty($grid->getGridFilter())) {
-            return $grid->getGridFilter();
+        if (!empty($grid->getFilters())) {
+            return $grid->getFilters();
         }
 
         return $colums[0];

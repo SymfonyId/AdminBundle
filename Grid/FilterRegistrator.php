@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Filter;
+namespace Symfonian\Indonesia\AdminBundle\Grid;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -49,7 +49,7 @@ class FilterRegistrator
         }
 
         $grid = new Grid();
-        $grid->setGridFilters($this->filter);
+        $grid->setFilters($this->filter);
 
         $this->configurationFactory->addConfiguration($grid);
     }

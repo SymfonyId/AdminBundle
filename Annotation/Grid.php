@@ -65,12 +65,12 @@ class Grid implements ConfigurationInterface
         $this->fields = $fields;
     }
 
-    public function getGridFilter()
+    public function getFilters()
     {
         return $this->filter;
     }
 
-    public function setGridFilters(array $filters)
+    public function setFilters(array $filters)
     {
         $this->filter = $filters;
     }

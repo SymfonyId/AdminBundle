@@ -14,6 +14,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
+use Symfonian\Indonesia\AdminBundle\Configuration\GridConfigurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -178,7 +179,6 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-
         /** @var ConfigurationFactory $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
         /** @var Crud $crud */
@@ -189,6 +189,10 @@ abstract class CrudController extends Controller
         $grid = $configuration->getConfiguration('grid');
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
+
+        /** @var GridConfigurator $gridConfigurator */
+        $gridConfigurator = $this->container->get('symfonian_id.admin.congiration.factory');
+        $gridConfigurator->map($crud->getEntityClass());
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
