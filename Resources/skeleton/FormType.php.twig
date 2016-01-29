@@ -11,8 +11,8 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-{% if not configure_options_available %}
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+{% if has_datetime_field %}
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 {% endif %}
 use Symfony\Component\OptionsResolver\OptionsResolver;
 {% endblock use_statements %}
@@ -33,24 +33,20 @@ class {{ form_class }} extends AbstractType
 
         {%- for field in fields -%}
             {%- if fields_mapping[field] is defined and fields_mapping[field]['type'] in ['date', 'time', 'datetime'] %}
-
-            ->add('{{ field }}', '{{ fields_mapping[field]['type'] }}', array(
+            ->add('{{ field }}', DateType::class, array(
+                'widget' => 'single_text',
                 'attr' => array(
-                    'class' => 'form-control',
+                    'class' => 'form-control datepicker',
                 ),
             ))
-
             {%- else %}
-
             ->add('{{ field }}', null, array(
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-
             {%- endif -%}
         {%- endfor %}
-
             ->add('save', SubmitType::class, array(
                 'label' => 'Submit',
                 'attr' => array(
@@ -60,22 +56,6 @@ class {{ form_class }} extends AbstractType
         ;
     }
     {% endif %}
-
-    {%- if not configure_options_available %}
-
-        /**
-        * Sets the default options for this type.
-        *
-        * This method should be removed when upgrading to Symfony 2.7.
-        *
-        * @param OptionsResolverInterface $resolver
-        */
-        public function setDefaultOptions(OptionsResolverInterface $resolver)
-        {
-            $this->configureOptions($resolver);
-        }
-    {% endif %}
-
     /**
     * @param OptionsResolver $resolver
     */
@@ -85,17 +65,5 @@ class {{ form_class }} extends AbstractType
             'data_class' => '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}'
         ));
     }
-
-    {%- if get_name_required %}
-
-        /**
-        * @return string
-        */
-        public function getName()
-        {
-            return '{{ form_type_name }}';
-        }
-    {% endif %}
-
 {% endblock class_body %}
 }

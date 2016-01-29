@@ -89,15 +89,11 @@ class FormGenerator extends Generator
             'fields_mapping' => $metadata->fieldMappings,
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
+            'has_datetime_field' => $this->hasDateTimeField($metadata),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'form_class' => $this->className,
             'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.substr($this->className, 0, -4)),
-
-            // Add 'setDefaultOptions' method with deprecated type hint, if the new 'configureOptions' isn't available.
-            // Required as long as Symfony 2.6 is supported.
-            'configure_options_available' => method_exists('Symfony\Component\Form\AbstractType', 'configureOptions'),
-            'get_name_required' => !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'),
         ));
     }
 
@@ -130,5 +126,20 @@ class FormGenerator extends Generator
         }
 
         return array_diff($fields, $exclude);
+    }
+
+    private function hasDateTimeField(ClassMetadataInfo $metadata)
+    {
+        $hasDateTime = false;
+
+        foreach ($this->getFieldsFromMetadata($metadata) as $field) {
+            if (in_array($metadata->fieldMappings[$field]['type'], array('date', 'time', 'datetime'))){
+                $hasDateTime = true;
+
+                break;
+            }
+        }
+
+        return $hasDateTime;
     }
 }
