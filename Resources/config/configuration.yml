@@ -6,7 +6,7 @@ services:
         arguments:
             - '@form.factory'
 
-    symfonian_id.admin.congiration.factory:
+    symfonian_id.admin.congiration.grid_configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\GridConfigurator
         arguments:
             - '@annotation_reader'

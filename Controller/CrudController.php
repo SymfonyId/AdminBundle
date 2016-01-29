@@ -191,7 +191,7 @@ abstract class CrudController extends Controller
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
 
         /** @var GridConfigurator $gridConfigurator */
-        $gridConfigurator = $this->container->get('symfonian_id.admin.congiration.factory');
+        $gridConfigurator = $this->container->get('symfonian_id.admin.congiration.grid_configurator');
         $gridConfigurator->map($crud->getEntityClass());
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
