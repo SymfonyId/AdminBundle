@@ -18,6 +18,7 @@
 {%- endblock -%}
 
 {%- block content -%}
+    {% spaceless %}
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="box box-success box-solid">
             <div class="box-header">
@@ -86,9 +87,11 @@
             </div>
         </div>
     </div>
+    {% endspaceless %}
 {%- endblock -%}
 
 {%- block javascript -%}
+    {% spaceless %}
     <script type="text/javascript">
         jQuery(document).ready(function () {
             var url = document.URL.slice(document.URL.indexOf('?'));
@@ -127,4 +130,5 @@
             });
         });
     </script>
+    {% endspaceless %}
 {%- endblock -%}

@@ -1,3 +1,4 @@
+{% spaceless %}
 {%- if pageCount > 1 -%}
 <div class="btn-group sfid-pagination">
     {%- if first is defined and current != first -%}
@@ -25,3 +26,4 @@
     {%- endif -%}
 </div>
 {%- endif -%}
+{% endspaceless %}

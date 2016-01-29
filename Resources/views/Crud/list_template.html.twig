@@ -1,3 +1,4 @@
+{% spaceless %}
 <table class="table table-hover table-bordered">
     <tr>
         <td class="text-center"><strong>No</strong></td>
@@ -34,27 +35,8 @@
                 {%- endif -%}
                 </td>
             {%- endfor -%}
-            <td width="22%" class="text-center">
-                <div class="btn-group" role="group">
-                    {%- for i, v in action -%}
-                        {%- if v is sameas('GRID_ACTION_SHOW') -%}
-                            <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-success show">
-                                <span class="btn-label"><i class="fa fa-share"></i></span>{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
-                            </button>
-                        {%- endif -%}
-                        {%- if v is sameas('GRID_ACTION_EDIT') -%}
-                            <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-warning edit">
-                                <span class="btn-label"><i class="fa fa-pencil"></i></span>{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
-                            </button>
-                        {%- endif -%}
-                        {%- if v is sameas('GRID_ACTION_DELETE') -%}
-                            <button data-record="{{- identifier[key] -}}" class="delete btn btn-labeled btn-danger delete">
-                                <span class="btn-label"><i class="fa fa-trash"></i></span>{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
-                            </button>
-                        {%- endif -%}
-                    {%- endfor -%}
-                </div>
-            </td>
+
+            {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' -%}
         </tr>
     {%- endfor -%}
 </table>
@@ -66,3 +48,4 @@
         {{- knp_pagination_render(pagination) -}}
     </div>
 </div>
+{% endspaceless %}
