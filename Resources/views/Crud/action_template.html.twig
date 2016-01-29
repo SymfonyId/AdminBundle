@@ -4,17 +4,17 @@
         {%- for i, v in action -%}
             {%- if v is sameas('GRID_ACTION_SHOW') -%}
                 <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-success show">
-                    <span class="btn-label"><i class="fa fa-share"></i></span>>&nbsp;{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                    <span class="btn-label"><i class="fa fa-share"></i></span>&nbsp;{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>
             {%- endif -%}
             {%- if v is sameas('GRID_ACTION_EDIT') -%}
                 <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-warning edit">
-                    <span class="btn-label"><i class="fa fa-pencil"></i></span>>&nbsp;{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                    <span class="btn-label"><i class="fa fa-pencil"></i></span>&nbsp;{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>
             {%- endif -%}
             {%- if v is sameas('GRID_ACTION_DELETE') -%}
                 <button data-record="{{- identifier[key] -}}" class="delete btn btn-labeled btn-danger delete">
-                    <span class="btn-label"><i class="fa fa-trash"></i></span>>&nbsp;{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                    <span class="btn-label"><i class="fa fa-trash"></i></span>&nbsp;{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>
             {%- endif -%}
         {%- endfor -%}
