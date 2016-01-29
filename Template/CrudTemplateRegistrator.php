@@ -24,11 +24,6 @@ class CrudTemplateRegistrator
      */
     protected $crudTemplate = array();
 
-    /**
-     * @var array
-     */
-    protected $ajax = array();
-
     public function __construct(ConfigurationFactory $configurationFactory)
     {
         $this->configurationFactory = $configurationFactory;
@@ -37,11 +32,6 @@ class CrudTemplateRegistrator
     public function setCrudTemplate(array $crudTemplate)
     {
         $this->crudTemplate = $crudTemplate;
-    }
-
-    public function setAjax(array $ajax)
-    {
-        $this->ajax = $ajax;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -63,7 +53,6 @@ class CrudTemplateRegistrator
         $crud->setEditTemplate($this->crudTemplate['edit']);
         $crud->setShowTemplate($this->crudTemplate['show']);
         $crud->setListTemplate($this->crudTemplate['list']);
-        $crud->setAjaxTemplate($this->ajax['template'], $this->ajax['use_ajax']);
 
         $this->configurationFactory->addConfiguration($crud);
     }
