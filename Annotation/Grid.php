@@ -14,7 +14,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Grid implements ConfigurationInterface
 {
-    protected $fields = array();
+    protected $columns = array();
 
     protected $filter = array();
 
@@ -25,15 +25,15 @@ class Grid implements ConfigurationInterface
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
-            $this->fields = $data['value'];
+            $this->columns = $data['value'];
         }
 
-        if (isset($data['fields'])) {
-            if (!is_array($data['fields'])) {
-                $data['fields'] = (array) $data['fields'];
+        if (isset($data['columns'])) {
+            if (!is_array($data['columns'])) {
+                $data['columns'] = (array) $data['columns'];
             }
 
-            $this->fields = $data['fields'];
+            $this->columns = $data['columns'];
         }
 
         if (isset($data['filter'])) {
@@ -55,14 +55,14 @@ class Grid implements ConfigurationInterface
         unset($data);
     }
 
-    public function getFields()
+    public function getColumns()
     {
-        return $this->fields;
+        return $this->columns;
     }
 
-    public function setFields(array $fields)
+    public function setColumns(array $columns)
     {
-        $this->fields = $fields;
+        $this->columns = $columns;
     }
 
     public function getFilters()

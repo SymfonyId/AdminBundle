@@ -12,6 +12,7 @@ use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -90,10 +91,12 @@ class ProfileController extends Controller
             throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
         }
 
-        /** @var ConfigurationFactory $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Configurator $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration('crud');
 
-        $form = $configuration->getForm($user);
+        $form = $crud->getForm($user);
         $form->handleRequest($request);
 
         $this->viewParams['page_title'] = $translator->trans('page.change_password.title', array(), $translationDomain);

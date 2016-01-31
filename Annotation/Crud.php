@@ -7,28 +7,43 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
  * Url: https://github.com/ihsanudin.
  */
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @Annotation
  * @Target({"CLASS"})
  */
-class Crud implements ConfigurationInterface
+class Crud implements ConfigurationInterface, ContainerAwareInterface
 {
-    protected $showFields = array();
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
 
-    protected $entity;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-    protected $form;
+    private $showFields = array();
 
-    protected $create = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    private $entity;
 
-    protected $edit = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    private $form;
 
-    protected $show = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
+    private $create = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $list = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
+    private $edit = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
 
-    protected $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
+    private $show = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
+
+    private $list = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
+
+    private $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
 
     public function __construct(array $data = array())
     {
@@ -69,6 +84,22 @@ class Crud implements ConfigurationInterface
         }
 
         unset($data);
+    }
+
+    /**
+     * @param ContainerInterface|null $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * @param FormFactory $formFactory
+     */
+    public function setFormFactory(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
     }
 
     public function getCreateTemplate()
@@ -144,6 +175,26 @@ class Crud implements ConfigurationInterface
     public function setShowFields($showFields)
     {
         $this->showFields = $showFields;
+    }
+
+    /**
+     * @param EntityInterface | null $formData
+     *
+     * @return FormInterface
+     */
+    public function getForm($formData = null)
+    {
+        $formClass = $this->getFormClass();
+        try {
+            $formObject = $this->container->get($formClass);
+        } catch (\Exception $ex) {
+            $formObject = new $formClass();
+        }
+
+        $form = $this->formFactory->create(get_class($formObject));
+        $form->setData($formData);
+
+        return $form;
     }
 
     public function getName()

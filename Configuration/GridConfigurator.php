@@ -58,7 +58,7 @@ class GridConfigurator
 
         $grid = new Grid();
         $grid->setFilters($this->filters);
-        $grid->setFields($this->columns);
+        $grid->setColumns($this->columns);
 
         $this->configurationFactory->addConfiguration($grid);
     }

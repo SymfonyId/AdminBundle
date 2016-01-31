@@ -6,6 +6,11 @@ services:
         arguments:
             - '@form.factory'
 
+    symfonian_id.admin.congiration.configurator:
+        class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
+        calls:
+            - [setContainer, ['@service_container']]
+
     symfonian_id.admin.congiration.grid_configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\GridConfigurator
         arguments:
@@ -14,6 +19,9 @@ services:
 
     symfonian_id.admin.annotation.crud:
         class: Symfonian\Indonesia\AdminBundle\Annotation\Crud
+        calls:
+            - [setContainer, ['@service_container']]
+            - [setFormFactory, ['@form.factory']]
         tags:
             - { name: siab.config }
 
