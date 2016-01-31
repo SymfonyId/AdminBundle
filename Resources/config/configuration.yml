@@ -10,9 +10,14 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
         calls:
             - [setContainer, ['@service_container']]
+            - [setFilter, ['%symfonian_id.admin.filter%']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 
     symfonian_id.admin.congiration.grid_configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\GridConfigurator
+        calls:
+            - [setFilter, ['%symfonian_id.admin.filter%']]
         arguments:
             - '@annotation_reader'
             - '@symfonian_id.admin.congiration.factory'

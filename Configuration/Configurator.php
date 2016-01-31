@@ -9,6 +9,8 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Grid\Column;
+use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -117,6 +119,28 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
 
         if (!$controller instanceof CrudController) {
             return;
+        }
+
+        $grid = new Grid();
+        $grid->setFilters($this->filters);
+        $grid->setColumns($this->columns);
+
+        $this->addConfiguration($grid);
+    }
+
+    public function map($entity)
+    {
+        $reflection = new \ReflectionClass($entity);
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Filter) {
+                    $this->filters[] = $reflectionProperty->getName();
+                }
+                if ($annotation instanceof Column) {
+                    $this->columns[] = $reflectionProperty->getName();
+                }
+            }
         }
 
         $grid = new Grid();
