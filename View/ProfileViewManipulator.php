@@ -8,16 +8,16 @@ namespace Symfonian\Indonesia\AdminBundle\View;
  */
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class ProfileViewManipulator
 {
     /**
-     * @var ConfigurationFactory
+     * @var Configurator
      */
-    protected $configurationFactory;
+    protected $configuration;
 
     /**
      * @var string
@@ -29,9 +29,9 @@ class ProfileViewManipulator
      */
     protected $formClass;
 
-    public function __construct(ConfigurationFactory $configurationFactory)
+    public function __construct(Configurator $configurator)
     {
-        $this->configurationFactory = $configurationFactory;
+        $this->configuration = $configurator;
     }
 
     public function setFormClass($formClass)
@@ -56,10 +56,11 @@ class ProfileViewManipulator
             return;
         }
 
-        $crud = new Crud();
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfiguration('crud');
         $crud->setFormClass($this->formClass);
         $crud->setShowFields($this->profileFields);
 
-        $this->configurationFactory->addConfiguration($crud);
+        $this->configuration->addConfiguration($crud);
     }
 }

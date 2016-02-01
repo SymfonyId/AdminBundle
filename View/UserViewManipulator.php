@@ -9,16 +9,16 @@ namespace Symfonian\Indonesia\AdminBundle\View;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class UserViewManipulator
 {
     /**
-     * @var ConfigurationFactory
+     * @var Configurator
      */
-    protected $configurationFactory;
+    protected $configuration;
 
     protected $formClass;
 
@@ -30,9 +30,9 @@ class UserViewManipulator
 
     protected $gridFilters;
 
-    public function __construct(ConfigurationFactory $configurationFactory)
+    public function __construct(Configurator $configurator)
     {
-        $this->configurationFactory = $configurationFactory;
+        $this->configuration = $configurator;
     }
 
     public function setForm($formClass, $entityClass)
@@ -71,7 +71,7 @@ class UserViewManipulator
         $grid->setColumns($this->gridFields);
         $grid->setFilters($this->gridFilters);
 
-        $this->configurationFactory->addConfiguration($crud);
-        $this->configurationFactory->addConfiguration($grid);
+        $this->configuration->addConfiguration($crud);
+        $this->configuration->addConfiguration($grid);
     }
 }
