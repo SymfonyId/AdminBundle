@@ -40,7 +40,7 @@ class ProfileController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         foreach ($crud->getShowFields() as $key => $property) {
             $method = 'get'.CamelCasizer::underScoretToCamelCase($property);
@@ -94,7 +94,7 @@ class ProfileController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         $form = $crud->getForm($user);
         $form->handleRequest($request);

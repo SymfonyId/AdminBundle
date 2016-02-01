@@ -51,7 +51,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         $entityClass = $crud->getEntityClass();
         $entity = new $entityClass();
@@ -85,7 +85,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $crud->getForm($entity);
@@ -114,9 +114,9 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
         /** @var Page $page */
-        $page = $configuration->getConfiguration('page');
+        $page = $configuration->getConfigForClass(Page::class);
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
@@ -151,7 +151,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         $handler->setEntity($crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
@@ -181,12 +181,12 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
         $configuration->parseClass($crud->getEntityClass());
         /** @var Page $page */
-        $page = $configuration->getConfiguration('page');
+        $page = $configuration->getConfigForClass(Page::class);
         /** @var Grid $grid */
-        $grid = $configuration->getConfiguration('grid');
+        $grid = $configuration->getConfigForClass(Grid::class);
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
         $columns = $grid->getColumns() ?: $this->getEntityFields();
@@ -214,11 +214,11 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
         /** @var Page $page */
-        $page = $configuration->getConfiguration('page');
+        $page = $configuration->getConfigForClass(Page::class);
         /** @var Util $util */
-        $util = $configuration->getConfiguration('util');
+        $util = $configuration->getConfigForClass(Util::class);
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
@@ -249,7 +249,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
 
         $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($crud->getEntityClass())->find($id);
 
@@ -294,7 +294,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
-        $crud = $configuration->getConfiguration('crud');
+        $crud = $configuration->getConfigForClass(Crud::class);
         $fields = array();
         $reflection = new \ReflectionClass($crud->getEntityClass());
 

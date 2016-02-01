@@ -132,14 +132,14 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
         if ($configuration instanceof ContainerAwareInterface) {
             $configuration->setContainer($this->container);
         }
-        $this->configurations[$configuration->getName()] = $configuration;
+        $this->configurations[get_class($configuration)] = $configuration;
     }
 
     /**
      * @param $name
      * @return ConfigurationInterface
      */
-    public function getConfiguration($name)
+    public function getConfigForClass($name)
     {
         if (!array_key_exists($name, $this->configurations)) {
             throw new \InvalidArgumentException(sprintf('Configuration with name %s not found.', $name));
@@ -264,7 +264,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     private function getGrid()
     {
         try {
-            $grid = $this->getConfiguration('grid');
+            $grid = $this->getConfigForClass(Grid::class);
         } catch (\InvalidArgumentException $e) {
             $grid = new Grid();
         }
@@ -275,7 +275,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     private function getCrud()
     {
         try {
-            $crud = $this->getConfiguration('crud');
+            $crud = $this->getConfigForClass(Crud::class);
         } catch (\InvalidArgumentException $e) {
             $crud = new Crud();
         }
