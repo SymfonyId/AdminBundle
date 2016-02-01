@@ -284,26 +284,4 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
 
         return clone $crud;
     }
-
-    private function getPage()
-    {
-        try {
-            $page = $this->getConfiguration('page');
-        } catch (\InvalidArgumentException $e) {
-            $page = new Page();
-        }
-
-        return clone $page;
-    }
-
-    private function getUtil()
-    {
-        try {
-            $util = $this->getConfiguration('util');
-        } catch (\InvalidArgumentException $e) {
-            $util = new Util();
-        }
-
-        return clone $util;
-    }
 }
