@@ -6,7 +6,7 @@ services:
             - [setForm, ['%symfonian_id.admin.user.user_form%', '%symfonian_id.admin.user.user_entity%']]
             - [setView, ['%symfonian_id.admin.user.show_fields%', '%symfonian_id.admin.user.grid_fields%', '%symfonian_id.admin.user.grid_filters%']]
         arguments:
-            - '@symfonian_id.admin.congiration.factory'
+            - '@symfonian_id.admin.congiration.configurator'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
@@ -16,7 +16,7 @@ services:
             - [setFormClass, ['%symfonian_id.admin.user.password_form%']]
             - [setProfileFields, ['%symfonian_id.admin.profile_fields%']]
         arguments:
-            - '@symfonian_id.admin.congiration.factory'
+            - '@symfonian_id.admin.congiration.configurator'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
@@ -58,7 +58,7 @@ services:
         calls:
             - [setUploadField, []]
         arguments:
-            - '@symfonian_id.admin.congiration.factory'
+            - '@symfonian_id.admin.congiration.configurator'
             - '@symfonian_id.admin.handler.upload'
             - '%symfonian_id.admin.upload_dir%'
         tags:

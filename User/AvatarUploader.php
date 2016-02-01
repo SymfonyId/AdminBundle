@@ -3,7 +3,7 @@
 namespace Symfonian\Indonesia\AdminBundle\User;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 
@@ -13,15 +13,15 @@ use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
  */
 class AvatarUploader
 {
-    protected $configurationFactory;
+    protected $configuration;
 
     protected $uploadHandler;
 
     protected $uploadDir;
 
-    public function __construct(ConfigurationFactory $configurationFactory, UploadHandler $uploadHandler, $uploadDir)
+    public function __construct(Configurator $configurator, UploadHandler $uploadHandler, $uploadDir)
     {
-        $this->configurationFactory = $configurationFactory;
+        $this->configuration = $configurator;
         $this->uploadHandler = $uploadHandler;
         $this->uploadDir = $uploadDir;
     }
@@ -29,7 +29,7 @@ class AvatarUploader
     public function setUploadField()
     {
         /** @var Util $util */
-        $util = $this->configurationFactory->getConfiguration('util');
+        $util = $this->configuration->getConfiguration('util');
 
         $this->uploadHandler->setFields(array($util->getUploadableField()));
     }
