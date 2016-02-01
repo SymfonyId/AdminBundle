@@ -6,6 +6,7 @@ use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Pagination\PaginationTemplateOverriden;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
@@ -120,31 +121,31 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('dashboard')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Index:index.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_DASHBOARD)
                         ->end()
                         ->scalarNode('profile')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Index:profile.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_PROFILE)
                         ->end()
                         ->scalarNode('change_password')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_CHANGE_PASSWORD)
                         ->end()
                         ->scalarNode('form_theme')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Form:fields.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_FORM)
                         ->end()
                         ->scalarNode('new_view')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Crud:new.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_CREATE)
                         ->end()
                         ->scalarNode('edit_view')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Crud:new.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_EDIT)
                         ->end()
                         ->scalarNode('show_view')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Crud:show.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_SHOW)
                         ->end()
                         ->scalarNode('list_view')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Crud:list.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_LIST)
                         ->end()
                         ->scalarNode('pagination')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Layout:pagination.html.twig')
+                            ->defaultValue(Constants::TEMPLATE_PAGINATION)
                         ->end()
                     ->end()
                 ->end()

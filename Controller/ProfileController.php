@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,7 +134,7 @@ class ProfileController extends Controller
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);
-                $dispatcher->dispatch(Event::POST_SAVE, $event);
+                $dispatcher->dispatch(Constants::POST_SAVE, $event);
 
                 $this->viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }

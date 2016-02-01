@@ -11,7 +11,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -21,22 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CrudHandler implements ContainerAwareInterface
 {
-    const ACTION_CREATE = 'ACTION_CREATE';
-
-    const ACTION_UPDATE = 'ACTION_UPDATE';
-
-    const ACTION_DELETE = 'ACTION_DELETE';
-
-    const ACTION_READ = 'ACTION_READ';
-
-    const GRID_ACTION_SHOW = 'GRID_ACTION_SHOW';
-
-    const GRID_ACTION_EDIT = 'GRID_ACTION_EDIT';
-
-    const GRID_ACTION_DELETE = 'GRID_ACTION_DELETE';
-
-    const ENTITY_ALIAS = 'e';
-
     /**
      * @var ContainerInterface
      */
@@ -109,22 +93,22 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function viewList(Request $request, array $gridFields, array $filterFields, $normalizeFilter = false, $formatNumber = true)
     {
-        $queryBuilder = $this->repository->createQueryBuilder(self::ENTITY_ALIAS);
-        $queryBuilder->addOrderBy(sprintf('%s.%s', self::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
+        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+        $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
         $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
 
         if ($filter) {
             foreach ($filterFields as $key => $value) {
-                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', self::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', Constants::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
                 $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
             }
         }
 
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
-        $filterList->setAlias(self::ENTITY_ALIAS);
+        $filterList->setAlias(Constants::ENTITY_ALIAS);
         $filterList->setEntityClass($this->class);
-        $this->fireEvent(Event::FILTER_LIST, $filterList);
+        $this->fireEvent(Constants::FILTER_LIST, $filterList);
 
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
@@ -210,7 +194,7 @@ class CrudHandler implements ContainerAwareInterface
         $event = new FilterEntityEvent();
         $event->setEntity($data);
         $event->setEntityManager($this->manager);
-        $this->fireEvent(Event::PRE_DELETE, $event);
+        $this->fireEvent(Constants::PRE_DELETE, $event);
 
         if ($event->getResponse()) {
             return $event->getResponse();
@@ -289,7 +273,7 @@ class CrudHandler implements ContainerAwareInterface
         $event = new FilterFormEvent();
         $event->setData($data);
         $event->setForm($form);
-        $this->fireEvent(Event::PRE_FORM_SUBMIT, $event);
+        $this->fireEvent(Constants::PRE_FORM_SUBMIT, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -305,7 +289,7 @@ class CrudHandler implements ContainerAwareInterface
         if ($request->isMethod('POST')) {
             $preFormValidationEvent = new FilterFormEvent();
             $preFormValidationEvent->setForm($form);
-            $this->fireEvent(Event::PRE_FORM_VALIDATION, $preFormValidationEvent);
+            $this->fireEvent(Constants::PRE_FORM_VALIDATION, $preFormValidationEvent);
 
             $response = $preFormValidationEvent->getResponse();
             if ($response) {
@@ -320,7 +304,7 @@ class CrudHandler implements ContainerAwareInterface
                 $preSaveEvent = new FilterEntityEvent();
                 $preSaveEvent->setEntity($data);
                 $preSaveEvent->setEntityManager($this->manager);
-                $this->fireEvent(Event::PRE_SAVE, $preSaveEvent);
+                $this->fireEvent(Constants::PRE_SAVE, $preSaveEvent);
 
                 $this->manager->persist($data);
                 $this->manager->flush();
@@ -328,7 +312,7 @@ class CrudHandler implements ContainerAwareInterface
                 $postSaveEvent = new FilterEntityEvent();
                 $postSaveEvent->setEntityManager($this->manager);
                 $postSaveEvent->setEntity($data);
-                $this->fireEvent(Event::POST_SAVE, $postSaveEvent);
+                $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
 
                 $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }

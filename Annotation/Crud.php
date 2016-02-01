@@ -6,7 +6,9 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
+
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,15 +37,15 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     private $form;
 
-    private $create = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    private $create = Constants::TEMPLATE_CREATE;
 
-    private $edit = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    private $edit = Constants::TEMPLATE_EDIT;
 
-    private $show = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
+    private $show = Constants::TEMPLATE_SHOW;
 
-    private $list = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';
+    private $list = Constants::TEMPLATE_LIST;
 
-    private $ajaxTemplate = 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig';
+    private $ajaxTemplate = Constants::TEMPLATE_AJAX;
 
     public function __construct(array $data = array())
     {

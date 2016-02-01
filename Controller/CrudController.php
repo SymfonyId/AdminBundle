@@ -16,7 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
@@ -41,7 +41,7 @@ abstract class CrudController extends Controller
     {
         $event = new FilterFormEvent();
 
-        $this->fireEvent(Event::PRE_FORM_CREATE, $event);
+        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -57,7 +57,7 @@ abstract class CrudController extends Controller
         $entity = new $entityClass();
         $form = $event->getForm() ?: $crud->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_CREATE, $crud->getCreateTemplate(), $entity, $form);
+        return $this->handle($request, Constants::ACTION_CREATE, $crud->getCreateTemplate(), $entity, $form);
     }
 
     /**
@@ -71,11 +71,11 @@ abstract class CrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_EDIT);
+        $this->isAllowedOr404Error(Constants::GRID_ACTION_EDIT);
 
         $event = new FilterFormEvent();
 
-        $this->fireEvent(Event::PRE_FORM_CREATE, $event);
+        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
 
         $response = $event->getResponse();
         if ($response) {
@@ -90,7 +90,7 @@ abstract class CrudController extends Controller
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $crud->getForm($entity);
 
-        return $this->handle($request, CrudHandler::ACTION_UPDATE, $crud->getEditTemplate(), $entity, $form);
+        return $this->handle($request, Constants::ACTION_UPDATE, $crud->getEditTemplate(), $entity, $form);
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class CrudController extends Controller
      */
     public function showAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_SHOW);
+        $this->isAllowedOr404Error(Constants::GRID_ACTION_SHOW);
         /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
 
@@ -141,7 +141,7 @@ abstract class CrudController extends Controller
      */
     public function deleteAction($id)
     {
-        $this->isAllowedOr404Error(CrudHandler::GRID_ACTION_DELETE);
+        $this->isAllowedOr404Error(Constants::GRID_ACTION_DELETE);
         /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
 
