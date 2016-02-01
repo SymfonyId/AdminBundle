@@ -189,23 +189,29 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      */
     public function parseClass($class)
     {
+        $filters = array();
+        $columns = array();
+
         $reflection = new \ReflectionClass($class);
         foreach ($reflection->getProperties() as $reflectionProperty) {
             $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Filter) {
-                    $this->filters[] = $reflectionProperty->getName();
+                    $filters[] = $reflectionProperty->getName();
                 }
                 if ($annotation instanceof Column) {
-                    $this->columns[] = $reflectionProperty->getName();
+                    $columns[] = $reflectionProperty->getName();
                 }
             }
         }
 
         $grid = $this->getGrid();
-        $grid->setFilters($this->filters);
-        $grid->setColumns($this->columns);
-
+        if (!empty($filters)) {
+            $grid->setFilters($this->filters);
+        }
+        if (!empty($columns)) {
+            $grid->setColumns($this->columns);
+        }
         $this->addConfiguration($grid);
     }
 
