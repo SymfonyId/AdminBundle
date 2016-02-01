@@ -112,19 +112,18 @@
                 var url = document.URL.replace('show', 'delete');
                 jQuery.ajax({
                     url: url,
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (true === response.status) {
-                            var url = document.URL.split('/');
-                            url.splice(-3,3).push('list');
-                            window.location = url.join('/');
-                        } else {
-                            jQuery('.response-message').html(response.message);
-                            jQuery('.delete-action').remove();
-                            jQuery('.delete-modal').modal({
-                                backdrop: 'static'
-                            });
-                        }
+                    type: 'DELETE'
+                }).done(function (response) {
+                    if (true === response.status) {
+                        var url = document.URL.split('/');
+                        url.splice(-3,3).push('list');
+                        window.location = url.join('/');
+                    } else {
+                        jQuery('.response-message').html(response.message);
+                        jQuery('.delete-action').remove();
+                        jQuery('.delete-modal').modal({
+                            backdrop: 'static'
+                        });
                     }
                 });
             });

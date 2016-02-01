@@ -40,7 +40,13 @@
                                 {%- endfor -%}
                                 {{- value | trim(', ') | raw -}}
                             {%- else -%}
-                                {{- property.value | raw -}}
+                                {% if property.value is boolean %}
+                                    <td class="text-center"><label>
+                                        <input {% if property.value is sameas(true) %}{{ 'checked disabled' }}{% endif %} data-toggle="toggle" data-onstyle="success" type="checkbox">
+                                    </label>
+                                {% else %}
+                                    <td>{{- property.value | raw -}}
+                                {% endif %}
                             {%- endif -%}
                         {%- endif -%}
                     </div>
