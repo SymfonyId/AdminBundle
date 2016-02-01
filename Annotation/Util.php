@@ -141,9 +141,4 @@ class Util implements ConfigurationInterface
     {
         return $this->uploadable;
     }
-
-    public function getName()
-    {
-        return 'util';
-    }
 }

@@ -76,9 +76,4 @@ class Grid implements ConfigurationInterface
     {
         return $this->formatNumber;
     }
-
-    public function getName()
-    {
-        return 'grid';
-    }
 }

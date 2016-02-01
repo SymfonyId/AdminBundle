@@ -42,9 +42,4 @@ class Page implements ConfigurationInterface
     {
         return $this->description;
     }
-
-    public function getName()
-    {
-        return 'page';
-    }
 }

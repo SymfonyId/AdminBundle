@@ -192,9 +192,4 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
         return $form;
     }
-
-    public function getName()
-    {
-        return 'crud';
-    }
 }
