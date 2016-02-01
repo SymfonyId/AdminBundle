@@ -20,6 +20,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
+    symfonian_id.admin.configuration_cache_warmer:
+        class: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationCacheWarmer
+        tags:
+            - { name: kernel.cache_warmer, priority: 0 }
+
     symfonian_id.admin.variable_registrator:
         class: Symfonian\Indonesia\AdminBundle\Twig\VariableRegistrator
         calls:
