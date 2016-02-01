@@ -54,7 +54,7 @@ class Grid implements ConfigurationInterface
 
     public function setColumns(array $columns)
     {
-        $this->columns = array_values(array_diff($this->columns, $columns));
+        $this->columns = array_unique($this->columns, $columns);
     }
 
     public function getFilters()
@@ -64,7 +64,7 @@ class Grid implements ConfigurationInterface
 
     public function setFilters(array $filters)
     {
-        $this->filter = array_values(array_diff($this->filter, $filters));
+        $this->filter = array_unique($this->filter, $filters);
     }
 
     public function isNormalizeFilter()
