@@ -15,6 +15,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
+use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -42,7 +43,7 @@ class ProfileController extends Controller
         $crud = $configuration->getConfiguration('crud');
 
         foreach ($crud->getShowFields() as $key => $property) {
-            $method = 'get'.ucfirst($property);
+            $method = 'get'.CamelCasizer::underScoretToCamelCase($property);
 
             if (method_exists($entity, $method)) {
                 array_push($data, array(
@@ -50,7 +51,7 @@ class ProfileController extends Controller
                     'value' => call_user_func_array(array($entity, $method), array()),
                 ));
             } else {
-                $method = 'is'.ucfirst($property);
+                $method = 'is'.CamelCasizer::underScoretToCamelCase($property);
 
                 if (method_exists($entity, $method)) {
                     array_push($data, array(

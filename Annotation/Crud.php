@@ -170,7 +170,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     public function setShowFields($showFields)
     {
-        $this->showFields = array_unique($this->showFields, $showFields);
+        $this->showFields = array_unique(array_merge($this->showFields, $showFields));
     }
 
     /**
