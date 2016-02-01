@@ -22,6 +22,8 @@ class Util implements ConfigurationInterface
 
     protected $fileChooser;
 
+    protected $numeric;
+
     protected $includeJavascript;
 
     protected $includeRoute = array();
@@ -53,6 +55,10 @@ class Util implements ConfigurationInterface
 
         if (isset($data['fileChooser'])) {
             $this->fileChooser = (boolean) $data['fileChooser'];
+        }
+
+        if (isset($data['numeric'])) {
+            $this->numeric = (boolean) $data['numeric'];
         }
 
         if (isset($data['includeJavascript'])) {
@@ -94,6 +100,14 @@ class Util implements ConfigurationInterface
     public function isUseHtmlEditor()
     {
         return $this->htmlEditor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseNumeric()
+    {
+        return $this->numeric;
     }
 
     /**

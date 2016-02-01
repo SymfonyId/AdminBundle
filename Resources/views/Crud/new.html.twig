@@ -157,6 +157,11 @@
                 jQuery('.editor').wysihtml5();
             {%- endif -%}
 
+            {% if use_numeric is sameas(true) %}
+                jQuery('.numeric').numeric();
+                jQuery('.positive').numeric({ negative: false });
+            {% endif %}
+
             {%- if autocomplete is not empty -%}
                 jQuery('.autocomplete').select2({
                     ajax: {
