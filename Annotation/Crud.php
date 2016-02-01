@@ -76,11 +76,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         }
 
         if (isset($data['showFields'])) {
-            if (!is_array($data['showFields'])) {
-                $data['showFields'] = (array) $data['showFields'];
-            }
-
-            $this->showFields = $data['showFields'];
+            $this->setShowFields((array) $data['showFields']);
         }
 
         unset($data);
@@ -174,7 +170,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     public function setShowFields($showFields)
     {
-        $this->showFields = $showFields;
+        $this->showFields = array_diff($this->showFields, $showFields);
     }
 
     /**

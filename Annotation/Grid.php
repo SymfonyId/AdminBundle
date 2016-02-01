@@ -25,23 +25,15 @@ class Grid implements ConfigurationInterface
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
-            $this->columns = $data['value'];
+            $this->setColumns((array) $data['value']);
         }
 
         if (isset($data['columns'])) {
-            if (!is_array($data['columns'])) {
-                $data['columns'] = (array) $data['columns'];
-            }
-
-            $this->columns = $data['columns'];
+            $this->setColumns((array) $data['columns']);
         }
 
         if (isset($data['filter'])) {
-            if (!is_array($data['filter'])) {
-                $data['filter'] = (array) $data['filter'];
-            }
-
-            $this->filter = $data['filter'];
+            $this->setFilters((array) $data['filter']);
         }
 
         if (isset($data['normalizeFilter'])) {
@@ -62,7 +54,7 @@ class Grid implements ConfigurationInterface
 
     public function setColumns(array $columns)
     {
-        $this->columns = $columns;
+        $this->columns = array_diff($this->columns, $columns);
     }
 
     public function getFilters()
@@ -72,7 +64,7 @@ class Grid implements ConfigurationInterface
 
     public function setFilters(array $filters)
     {
-        $this->filter = $filters;
+        $this->filter = array_diff($this->filter, $filters);
     }
 
     public function isNormalizeFilter()

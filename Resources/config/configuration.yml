@@ -11,6 +11,8 @@ services:
         calls:
             - [setContainer, ['@service_container']]
             - [setFilter, ['%symfonian_id.admin.filter%']]
+        arguments:
+            - ['@annotation_reader']
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
 

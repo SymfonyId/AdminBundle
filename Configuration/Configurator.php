@@ -7,6 +7,7 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
  * Url: https://github.com/ihsanudin
  */
 
+use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
@@ -39,6 +40,19 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * @var Reader
+     */
+    private $reader;
+
+    /**
+     * @param Reader $reader
+     */
+    public function __construct(Reader $reader)
+    {
+        $this->reader = $reader;
+    }
 
     /**
      * @param ContainerInterface|null $container
@@ -128,7 +142,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
         $this->addConfiguration($grid);
     }
 
-    public function map($entity)
+    public function parse($entity)
     {
         $reflection = new \ReflectionClass($entity);
         foreach ($reflection->getProperties() as $reflectionProperty) {
