@@ -1,11 +1,11 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Template;
+namespace Symfonian\Indonesia\AdminBundle\Pagination;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PaginationTemplateRegistrator implements CompilerPassInterface
+class PaginationTemplateOverriden implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

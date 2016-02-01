@@ -8,15 +8,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
 
-    symfonian_id.admin.crud_template_registrator:
-        class: Symfonian\Indonesia\AdminBundle\Template\CrudTemplateRegistrator
-        calls:
-            - [setCrudTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
-        arguments:
-            - '@symfonian_id.admin.congiration.factory'
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
-
     symfonian_id.admin.filter_registrator:
         class: Symfonian\Indonesia\AdminBundle\Grid\FilterRegistrator
         calls:
