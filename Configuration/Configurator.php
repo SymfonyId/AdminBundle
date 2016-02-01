@@ -205,10 +205,10 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
 
         $grid = $this->getGrid();
         if (!empty($filters)) {
-            $grid->setFilters($this->filters);
+            $grid->setFilters($filters);
         }
         if (!empty($columns)) {
-            $grid->setColumns($this->columns);
+            $grid->setColumns($columns);
         }
         $this->addConfiguration($grid);
     }

@@ -14,7 +14,6 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
-use Symfonian\Indonesia\AdminBundle\Configuration\GridConfigurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
@@ -25,7 +24,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\VarDumper\VarDumper;
 
 abstract class CrudController extends Controller
 {
@@ -241,6 +239,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param $id
+     * @return EntityInterface
      */
     protected function findOr404Error($id)
     {
