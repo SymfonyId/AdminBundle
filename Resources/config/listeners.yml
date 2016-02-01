@@ -1,22 +1,5 @@
 services:
 #Symfony Listeners
-    symfonian_id.admin.annotation:
-        class: Symfonian\Indonesia\AdminBundle\Annotation\Reader
-        arguments:
-            - '@annotation_reader'
-            - '@symfonian_id.admin.congiration.factory'
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -255 }
-
-    symfonian_id.admin.filter_registrator:
-        class: Symfonian\Indonesia\AdminBundle\Grid\FilterRegistrator
-        calls:
-            - [setFilter, ['%symfonian_id.admin.filter%']]
-        arguments:
-            - '@symfonian_id.admin.congiration.factory'
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
-
     symfonian_id.admin.user_template_manipulator:
         class: Symfonian\Indonesia\AdminBundle\View\UserViewManipulator
         calls:

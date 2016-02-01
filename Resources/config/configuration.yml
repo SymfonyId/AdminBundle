@@ -1,18 +1,12 @@
 services:
-    symfonian_id.admin.congiration.factory:
-        class: Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory
-        calls:
-            - [setContainer, ['@service_container']]
-        arguments:
-            - '@form.factory'
-
     symfonian_id.admin.congiration.configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
         calls:
             - [setContainer, ['@service_container']]
+            - [setFormFactory, ['@form.factory']]
             - [setFilter, ['%symfonian_id.admin.filter%']]
             - [setReader, ['@annotation_reader']]
-            - [setCrudTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
+            - [setTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: configureGrid, priority: 255 }
             - { name: kernel.event_listener, event: kernel.controller, method: configureTemplate, priority: 255 }

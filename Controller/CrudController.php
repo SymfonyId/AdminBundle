@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\VarDumper\VarDumper;
 
 abstract class CrudController extends Controller
 {
@@ -183,7 +184,7 @@ abstract class CrudController extends Controller
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration('crud');
-        $configuration->parse($crud->getEntityClass());
+        $configuration->parseClass($crud->getEntityClass());
         /** @var Page $page */
         $page = $configuration->getConfiguration('page');
         /** @var Grid $grid */
@@ -191,7 +192,7 @@ abstract class CrudController extends Controller
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
         $columns = $grid->getColumns() ?: $this->getEntityFields();
-        $filters = $grid->getFilters() ?: $columns[0];
+        $filters = $grid->getFilters() ?: (array) $columns[0];
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
@@ -299,7 +300,7 @@ abstract class CrudController extends Controller
 
         foreach ($reflection->getProperties() as $key => $property) {
             if ('id' !== $name = $property->getName()) {
-                $fields[$key] = $name;
+                $fields[] = $name;
             }
         }
 

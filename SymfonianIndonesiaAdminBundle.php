@@ -3,7 +3,7 @@
 namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationRegistrator;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Pagination\PaginationTemplateOverriden;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
@@ -220,7 +220,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     public function addCompilerPass(ContainerBuilder $container)
     {
         $container->addCompilerPass(new PaginationTemplateOverriden());
-        $container->addCompilerPass(new ConfigurationRegistrator());
+        $container->addCompilerPass(new Configurator());
     }
 
     public function addCommand(Application $application)

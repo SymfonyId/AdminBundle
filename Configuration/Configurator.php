@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class Configurator implements CompilerPassInterface, ContainerAwareInterface
@@ -50,6 +51,11 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     private $container;
 
     /**
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    /**
      * @var Reader
      */
     private $reader;
@@ -65,6 +71,14 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param FormFactory $formFactory
+     */
+    public function setFormFactory(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -208,6 +222,14 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
         unset($controller);
         foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
+                if ($annotation instanceof ContainerAwareInterface) {
+                    $annotation->setContainer($this->container);
+                }
+
+                if ($annotation instanceof Crud) {
+                    $annotation->setFormFactory($this->formFactory);
+                }
+
                 $this->addConfiguration($annotation);
             }
         }
