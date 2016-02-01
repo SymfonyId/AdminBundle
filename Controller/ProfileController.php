@@ -14,7 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminEvents as Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +36,8 @@ class ProfileController extends Controller
         $entity = $this->getUser();
         $data = array();
 
-        /** @var ConfigurationFactory $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.factory');
+        /** @var Configurator $configuration */
+        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration('crud');
 
