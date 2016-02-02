@@ -12,9 +12,18 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonianIndonesiaAdminBundle extends Bundle
 {
+    protected $kernel;
+
+    public function __construct(KernelInterface $kernel, array $plugins = array())
+    {
+        parent::__construct($plugins);
+        $this->kernel = $kernel;
+    }
+
     public function addConfiguration(ArrayNodeDefinition $rootNode)
     {
         $rootNode

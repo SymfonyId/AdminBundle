@@ -14,7 +14,7 @@ class ConfigurationCacheWarmer extends CacheWarmer
             'c' => 'd',
         );
 
-        $this->writeCacheFile($cacheDir.Constants::CACHE_CONFIG_PATH, sprintf('<?php return %s;', var_export($templates, true)));
+        $this->writeCacheFile($cacheDir.Constants::CACHE_CONTROLLER_PATH, sprintf('<?php return %s;', var_export($templates, true)));
     }
 
     public function isOptional()
