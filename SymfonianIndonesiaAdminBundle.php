@@ -4,7 +4,6 @@ namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
-use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Pagination\PaginationTemplateOverriden;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
@@ -185,15 +184,15 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
         $action = array();
         if ($config['grid_action']['show']) {
-            array_push($action, CrudHandler::GRID_ACTION_SHOW);
+            array_push($action, Constants::GRID_ACTION_SHOW);
         }
 
         if ($config['grid_action']['edit']) {
-            array_push($action, CrudHandler::GRID_ACTION_EDIT);
+            array_push($action, Constants::GRID_ACTION_EDIT);
         }
 
         if ($config['grid_action']['delete']) {
-            array_push($action, CrudHandler::GRID_ACTION_DELETE);
+            array_push($action, Constants::GRID_ACTION_DELETE);
         }
         $container->setParameter('symfonian_id.admin.grid_action', $action);
 

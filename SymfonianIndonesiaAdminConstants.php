@@ -39,7 +39,6 @@ class SymfonianIndonesiaAdminConstants
     const TEMPLATE_FORM = 'SymfonianIndonesiaAdminBundle:Form:fields.html.twig';
     const TEMPLATE_PAGINATION = 'SymfonianIndonesiaAdminBundle:Layout:pagination.html.twig';
 
-    const CACHE_CONFIG_PATH = '/siab/config.php';
-    const CACHE_ANNOTATION_CONTROLLER_PATH = '/siab/controller.php';
-    const CACHE_ANNOTATION_ENTITY_PATH = '/siab/entity.php';
+    const CACHE_CONTROLLER_PATH = '/siab.controller.php';
+    const CACHE_ENTITY_PATH = '/siab.entity.php';
 }
