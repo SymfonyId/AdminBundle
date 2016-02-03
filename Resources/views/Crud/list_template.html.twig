@@ -25,7 +25,7 @@
                         {% else %}
                             {% if v is boolean %}
                                 <td class="text-center"><label>
-                                <input {% if v is sameas(true) %}{{ 'checked' }}{% endif %} disabled data-onstyle="success" type="checkbox">
+                                <input {% if v is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                             </label>
                             {% else %}
                                 <td>{{- v | raw -}}
