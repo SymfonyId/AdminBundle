@@ -1,6 +1,8 @@
 services:
     symfonian_id.admin.congiration.configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
+        arguments:
+            - '@kernel'
         calls:
             - [setContainer, ['@service_container']]
             - [setFormFactory, ['@form.factory']]

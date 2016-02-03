@@ -207,7 +207,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     public function addCompilerPass(ContainerBuilder $container)
     {
         $container->addCompilerPass(new PaginationTemplateOverriden());
-        $container->addCompilerPass(new Configurator());
+        $container->addCompilerPass(new Configurator($this->kernel));
     }
 
     public function addCommand(Application $application)

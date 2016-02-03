@@ -20,24 +20,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class Configurator implements CompilerPassInterface, ContainerAwareInterface
 {
-    /**
-     * @var array
-     */
-    private $configurations;
-
-    /**
-     * @var array
-     */
-    protected $filters = array();
-
-    /**
-     * @var array
-     */
-    private $columns = array();
-
     /**
      * @var array
      */
@@ -62,6 +48,20 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      * @var CrudController
      */
     private $controller;
+
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    private $configurations = array();
+    protected $filters = array();
+    private $columns = array();
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
 
     /**
      * @param ContainerInterface|null $container
@@ -93,14 +93,6 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     public function setFilter(array $filter)
     {
         $this->filters = $filter;
-    }
-
-    /**
-     * @param array $columns
-     */
-    public function setColumns(array $columns)
-    {
-        $this->columns = $columns;
     }
 
     public function setTemplate(array $template)
@@ -161,7 +153,8 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
             return;
         }
 
-        $crud = $this->getCrud();
+        /** @var Crud $crud */
+        $crud = $this->getConfigForClass(Crud::class);
         $crud->setCreateTemplate($this->template['new']);
         $crud->setEditTemplate($this->template['edit']);
         $crud->setShowTemplate($this->template['show']);
@@ -179,41 +172,11 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
             return;
         }
 
-        $grid = $this->getGrid();
+        /** @var Grid $grid */
+        $grid = $this->getConfigForClass(Grid::class);
         $grid->setFilters($this->filters);
         $grid->setColumns($this->columns);
 
-        $this->addConfiguration($grid);
-    }
-
-    /**
-     * @param string $class
-     */
-    public function parseClass($class)
-    {
-        $filters = array();
-        $columns = array();
-
-        $reflection = new \ReflectionClass($class);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
-            $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Filter) {
-                    $filters[] = $reflectionProperty->getName();
-                }
-                if ($annotation instanceof Column) {
-                    $columns[] = $reflectionProperty->getName();
-                }
-            }
-        }
-
-        $grid = $this->getGrid();
-        if (!empty($filters)) {
-            $grid->setFilters($filters);
-        }
-        if (!empty($columns)) {
-            $grid->setColumns($columns);
-        }
         $this->addConfiguration($grid);
     }
 
@@ -243,8 +206,48 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
         }
     }
 
+    /**
+     * @param string $class
+     */
+    public function parseClass($class)
+    {
+        if ('prod' === $this->kernel->getEnvironment()) {
+            return;
+        }
+
+        $filters = array();
+        $columns = array();
+
+        $reflection = new \ReflectionClass($class);
+        foreach ($reflection->getProperties() as $reflectionProperty) {
+            $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Filter) {
+                    $filters[] = $reflectionProperty->getName();
+                }
+                if ($annotation instanceof Column) {
+                    $columns[] = $reflectionProperty->getName();
+                }
+            }
+        }
+
+        /** @var Grid $grid */
+        $grid = $this->getConfigForClass(Grid::class);
+        if (!empty($filters)) {
+            $grid->setFilters($filters);
+        }
+        if (!empty($columns)) {
+            $grid->setColumns($columns);
+        }
+        $this->addConfiguration($grid);
+    }
+
     private function isValidEvent(FilterControllerEvent $event)
     {
+        if ('prod' === $this->kernel->getEnvironment()) {
+            return false;
+        }
+
         $controller = $event->getController();
         if (!is_array($controller)) {
             return false;
@@ -263,29 +266,5 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     private function getController()
     {
         return $this->controller;
-    }
-
-    private function getGrid()
-    {
-        try {
-            $grid = $this->getConfigForClass(Grid::class);
-        } catch (\InvalidArgumentException $e) {
-            $grid = new Grid();
-        }
-
-        return clone $grid;
-    }
-
-    private function getCrud()
-    {
-        try {
-            $crud = $this->getConfigForClass(Crud::class);
-        } catch (\InvalidArgumentException $e) {
-            $crud = new Crud();
-            $crud->setFormFactory($this->formFactory);
-            $crud->setContainer($this->container);
-        }
-
-        return clone $crud;
     }
 }
