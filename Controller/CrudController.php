@@ -74,7 +74,7 @@ abstract class CrudController extends Controller
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
-        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_EDIT);
+        $this->isAllowOr404Error($crud, Constants::ACTION_UPDATE);
 
         $event = new FilterFormEvent();
         $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
@@ -104,7 +104,7 @@ abstract class CrudController extends Controller
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
-        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_SHOW);
+        $this->isAllowOr404Error($crud, Constants::ACTION_READ);
 
         /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
@@ -141,7 +141,7 @@ abstract class CrudController extends Controller
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
-        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_DELETE);
+        $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
 
         /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
@@ -170,13 +170,14 @@ abstract class CrudController extends Controller
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_READ);
+
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         $configuration->parseClass($crud->getEntityClass());
         /** @var Page $page */
         $page = $configuration->getConfigForClass(Page::class);
