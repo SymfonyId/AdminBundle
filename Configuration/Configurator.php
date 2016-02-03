@@ -132,6 +132,10 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
         if ($configuration instanceof ContainerAwareInterface) {
             $configuration->setContainer($this->container);
         }
+        if ($configuration instanceof Crud) {
+            $configuration->setFormFactory($this->formFactory);
+        }
+
         $this->configurations[get_class($configuration)] = $configuration;
     }
 
@@ -278,6 +282,8 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
             $crud = $this->getConfigForClass(Crud::class);
         } catch (\InvalidArgumentException $e) {
             $crud = new Crud();
+            $crud->setFormFactory($this->formFactory);
+            $crud->setContainer($this->container);
         }
 
         return clone $crud;
