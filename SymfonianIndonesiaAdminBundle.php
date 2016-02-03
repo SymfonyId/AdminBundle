@@ -234,6 +234,9 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
     public function addCommand(Application $application)
     {
+        if ('dev' !== strtolower($this->kernel->getEnvironment())) {
+            return;
+        }
         parent::addCommand($application);
         $application->add(new GenerateCrudCommand());
     }
