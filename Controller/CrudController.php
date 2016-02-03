@@ -256,22 +256,6 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @param $action
-     * @return bool
-     */
-    protected function isAllowedOr404Error($action)
-    {
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        if (!in_array($action, $this->container->getParameter('symfonian_id.admin.grid_action'))) {
-            throw new NotFoundHttpException($translator->trans('message.request_not_found', array(), $translationDomain));
-        }
-
-        return true;
-    }
-
-    /**
      * @param $name
      * @param $handler
      */
