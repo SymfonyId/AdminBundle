@@ -12,6 +12,7 @@
                 dataType: 'html'
             }).done (function (response) {
                 jQuery('.sfid-content').html(response);
+                jQuery('.sfid-toggle').bootstrapToggle();
             });
         });
     });

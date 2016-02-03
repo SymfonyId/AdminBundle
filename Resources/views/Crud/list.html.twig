@@ -65,10 +65,6 @@
             jQuery(document).on('click', '.delete', function () {
                 window.location = createActionUrl(jQuery(this).data('record') + '/show?delete');
             });
-
-            jQuery(document).on('change', '.sfid-content', function () {
-                jQuery('.sfid-toggle').bootstrapToggle();
-            });
         });
 
         function createActionUrl(actionUrl) {
