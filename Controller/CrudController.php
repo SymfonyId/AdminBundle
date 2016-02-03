@@ -39,19 +39,18 @@ abstract class CrudController extends Controller
      */
     public function newAction(Request $request)
     {
-        $event = new FilterFormEvent();
-
-        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
-
-        $response = $event->getResponse();
-        if ($response) {
-            return $response;
-        }
-
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
+
+        $event = new FilterFormEvent();
+        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
+        $response = $event->getResponse();
+        if ($response) {
+            return $response;
+        }
 
         $entityClass = $crud->getEntityClass();
         $entity = new $entityClass();
@@ -71,21 +70,18 @@ abstract class CrudController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error(Constants::GRID_ACTION_EDIT);
-
-        $event = new FilterFormEvent();
-
-        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
-
-        $response = $event->getResponse();
-        if ($response) {
-            return $response;
-        }
-
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_EDIT);
+
+        $event = new FilterFormEvent();
+        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
+        $response = $event->getResponse();
+        if ($response) {
+            return $response;
+        }
 
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $crud->getForm($entity);
@@ -104,17 +100,17 @@ abstract class CrudController extends Controller
      */
     public function showAction(Request $request, $id)
     {
-        $this->isAllowedOr404Error(Constants::GRID_ACTION_SHOW);
-        /** @var EntityInterface $entity */
-        $entity = $this->findOr404Error($id);
-
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_SHOW);
+
+        /** @var EntityInterface $entity */
+        $entity = $this->findOr404Error($id);
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
         /** @var Page $page */
         $page = $configuration->getConfigForClass(Page::class);
 
@@ -126,7 +122,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($crud->getShowTemplate());
-        $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields());
+        $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud));
 
         return $handler->getResponse();
     }
@@ -141,17 +137,16 @@ abstract class CrudController extends Controller
      */
     public function deleteAction($id)
     {
-        $this->isAllowedOr404Error(Constants::GRID_ACTION_DELETE);
-        /** @var EntityInterface $entity */
-        $entity = $this->findOr404Error($id);
-
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-
         /** @var Configurator $configuration */
         $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::GRID_ACTION_DELETE);
+
+        /** @var EntityInterface $entity */
+        $entity = $this->findOr404Error($id);
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
         $handler->setEntity($crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
@@ -189,7 +184,7 @@ abstract class CrudController extends Controller
         $grid = $configuration->getConfigForClass(Grid::class);
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
-        $columns = $grid->getColumns() ?: $this->getEntityFields();
+        $columns = $grid->getColumns() ?: $this->getEntityFields($crud);
         $filters = $grid->getFilters() ?: (array) $columns[0];
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
@@ -198,7 +193,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $filters, $grid->isNormalizeFilter(), $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $filters, $crud->getAction(), $grid->isNormalizeFilter(), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }
@@ -287,14 +282,11 @@ abstract class CrudController extends Controller
     }
 
     /**
+     * @param Crud $crud
      * @return array
      */
-    protected function getEntityFields()
+    protected function getEntityFields(Crud $crud)
     {
-        /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
-        /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
         $fields = array();
         $reflection = new \ReflectionClass($crud->getEntityClass());
 
@@ -305,5 +297,37 @@ abstract class CrudController extends Controller
         }
 
         return $fields;
+    }
+
+    /**
+     * @param Crud $crud
+     * @param string $action
+     * @return bool
+     */
+    protected function isAllowOr404Error(Crud $crud, $action)
+    {
+        $granted = false;
+        switch ($action) {
+            case Constants::ACTION_CREATE:
+                $granted = $crud->isAllowCreate();
+                break;
+            case Constants::ACTION_UPDATE:
+                $granted = $crud->isAllowEdit();
+                break;
+            case Constants::ACTION_READ:
+                $granted = $crud->isAllowShow();
+                break;
+            case Constants::ACTION_DELETE:
+                $granted = $crud->isAllowDelete();
+                break;
+        }
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        if (!$granted) {
+            throw new NotFoundHttpException($translator->trans('message.request_not_found', array(), $translationDomain));
+        }
+
+        return $granted;
     }
 }

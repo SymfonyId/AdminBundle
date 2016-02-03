@@ -47,6 +47,14 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     private $ajaxTemplate = Constants::TEMPLATE_AJAX;
 
+    private $allowCreate = true;
+
+    private $allowEdit = true;
+
+    private $allowShow = true;
+
+    private $allowDelete = true;
+
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
@@ -79,6 +87,22 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
         if (isset($data['showFields'])) {
             $this->setShowFields((array) $data['showFields']);
+        }
+
+        if (isset($data['allowCreate'])) {
+            $this->allowCreate = (bool) $data['allowCreate'];
+        }
+
+        if (isset($data['allowEdit'])) {
+            $this->allowEdit = (bool) $data['allowEdit'];
+        }
+
+        if (isset($data['allowShow'])) {
+            $this->allowShow = (bool) $data['allowShow'];
+        }
+
+        if (isset($data['allowDelete'])) {
+            $this->allowDelete = (bool) $data['allowDelete'];
         }
 
         unset($data);
@@ -176,6 +200,38 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function isAllowDelete()
+    {
+        return $this->allowDelete;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowShow()
+    {
+        return $this->allowShow;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowEdit()
+    {
+        return $this->allowEdit;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowCreate()
+    {
+        return $this->allowCreate;
+    }
+
+    /**
      * @param EntityInterface | null $formData
      *
      * @return FormInterface
@@ -193,5 +249,25 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         $form->setData($formData);
 
         return $form;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAction()
+    {
+        $action = array();
+
+        if ($this->isAllowEdit()) {
+            $action[] = Constants::GRID_ACTION_EDIT;
+        }
+        if ($this->isAllowShow()) {
+            $action[] = Constants::GRID_ACTION_SHOW;
+        }
+        if ($this->isAllowDelete()) {
+            $action[] = Constants::GRID_ACTION_DELETE;
+        }
+
+        return $action;
     }
 }

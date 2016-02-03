@@ -117,14 +117,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('grid_action')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('show')->defaultTrue()->end()
-                        ->booleanNode('edit')->defaultTrue()->end()
-                        ->booleanNode('delete')->defaultTrue()->end()
-                    ->end()
-                ->end()
                 ->arrayNode('themes')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -190,20 +182,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.user.password_form', $config['user']['password_form']);
         $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
         $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
-
-        $action = array();
-        if ($config['grid_action']['show']) {
-            array_push($action, Constants::GRID_ACTION_SHOW);
-        }
-
-        if ($config['grid_action']['edit']) {
-            array_push($action, Constants::GRID_ACTION_EDIT);
-        }
-
-        if ($config['grid_action']['delete']) {
-            array_push($action, Constants::GRID_ACTION_DELETE);
-        }
-        $container->setParameter('symfonian_id.admin.grid_action', $action);
 
         $number = array(
             'decimal_precision' => $config['number_format']['decimal_precision'],
