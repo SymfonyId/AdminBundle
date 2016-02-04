@@ -9,9 +9,9 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  *
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 
-class HomeController extends Controller
+class HomeController extends Base
 {
     public function indexAction()
     {

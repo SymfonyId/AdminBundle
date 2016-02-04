@@ -21,11 +21,7 @@ class Controller extends Base
      */
     protected function getConfigurator()
     {
-        if ($this->configurator) {
-            return $this->configurator;
-        }
-
-        $this->configurator = $this->getConfigurator();
+        $this->configurator = $this->container->get('symfonian_id.admin.congiration.configurator');
         if (!$this->isProduction()) {
             return $this->configurator;
         }
