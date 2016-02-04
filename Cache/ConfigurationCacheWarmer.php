@@ -15,6 +15,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -112,9 +113,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             $caches[$class] = $configs;
         }
 
-        var_dump($caches);
-
-        //$this->writeCacheFile($cacheDir.Constants::CACHE_CONTROLLER_PATH, sprintf('<?php return %s;', var_export($this->caches, true)));
+        $this->writeCacheFile($cacheDir.Constants::CACHE_PATH, sprintf('<?php return %s;', var_export($caches, true)));
     }
 
     /**
