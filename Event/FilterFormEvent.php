@@ -14,11 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FilterFormEvent extends Event
 {
-    protected $form;
+    /**
+     * @var FormInterface
+     */
+    private $form;
 
-    protected $formData;
+    /**
+     * @var EntityInterface
+     */
+    private $formData;
 
-    protected $response;
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * @param FormInterface $form

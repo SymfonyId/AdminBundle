@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProfileController extends Controller
 {
-    protected $viewParams = array();
+    private $viewParams = array();
 
     /**
      * @Route("/profile/")

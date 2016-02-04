@@ -17,17 +17,10 @@ class ProfileViewManipulator
     /**
      * @var Configurator
      */
-    protected $configuration;
+    private $configuration;
 
-    /**
-     * @var string
-     */
-    protected $profileFields;
-
-    /**
-     * @var string
-     */
-    protected $formClass;
+    private $profileFields;
+    private $formClass;
 
     public function __construct(Configurator $configurator)
     {

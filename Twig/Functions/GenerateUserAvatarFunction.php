@@ -13,10 +13,7 @@ use Twig_SimpleFunction;
 
 class GenerateUserAvatarFunction extends Twig_Extension
 {
-    /**
-     * @var string
-     */
-    protected $uploadDir;
+    private $uploadDir;
 
     /**
      * @param string $uploadDir

@@ -14,6 +14,8 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
+use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
@@ -45,9 +47,16 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      */
     private $formFactory;
 
+    private $userForm;
+    private $userEntity;
+    private $profileForm;
     private $configurations = array();
     private $template = array();
-    private $filter = array();
+    private $filters = array();
+    private $userShowFields = array();
+    private $userGridFields = array();
+    private $userGridFilters = array();
+    private $profileFields = array();
 
     public function __construct(Configurator $configuration)
     {
@@ -87,11 +96,34 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     }
 
     /**
-     * @param array $filter
+     * @param array $filters
      */
-    public function setFilter(array $filter)
+    public function setFilter(array $filters)
     {
-        $this->filter = $filter;
+        $this->filters = $filters;
+    }
+
+    public function setForm($formClass, $entityClass)
+    {
+        $this->userForm = $formClass;
+        $this->userEntity = $entityClass;
+    }
+
+    public function setView(array $showFields, array $gridFields, array $gridFilters)
+    {
+        $this->userShowFields = $showFields;
+        $this->userGridFields = $gridFields;
+        $this->userGridFilters = $gridFilters;
+    }
+
+    public function setProfileForm($formClass)
+    {
+        $this->profileForm = $formClass;
+    }
+
+    public function setProfileFields($profileFields)
+    {
+        $this->profileFields = $profileFields;
     }
 
     /**
@@ -99,6 +131,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      */
     public function warmUp($cacheDir)
     {
+        $this->setDefaultConfig();
+        $this->compileUserController();
+        $this->compileProfileController();
         $this->compileControllerConfiguration();
         $this->compileEntityConfiguration();
 
@@ -126,6 +161,24 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return true;
     }
 
+    private function setDefaultConfig()
+    {
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud->setCreateTemplate($this->template['new']);
+        $crud->setEditTemplate($this->template['edit']);
+        $crud->setShowTemplate($this->template['show']);
+        $crud->setListTemplate($this->template['list']);
+
+        /** @var Grid $grid */
+        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid->setFilters($this->filters);
+        $grid->setColumns(array());
+
+        $this->configuration->addConfiguration($crud);
+        $this->configuration->addConfiguration($grid);
+    }
+
     private function compileControllerConfiguration()
     {
         foreach ($this->getControllers() as $controller) {
@@ -146,13 +199,44 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             /** @var Configurator $cache */
             foreach ($this->configurations as $key => $cache) {
                 $reflectionClass = new ReflectionClass($entity);
-                $cache = $this->configure($reflectionClass, $cache);
+                $cache = $this->configureGrid($reflectionClass, $cache);
                 $this->configurations[$key] = $cache;
             }
         }
     }
 
-    private function configure(ReflectionClass $entity, Configurator $configuration)
+    private function compileUserController()
+    {
+        $configuration = clone $this->configuration;
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud->setFormClass($this->userForm);
+        $crud->setEntityClass($this->userEntity);
+        $crud->setShowFields($this->userShowFields);
+
+        /** @var Grid $grid */
+        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid->setColumns($this->userGridFields);
+        $grid->setFilters($this->userGridFilters);
+
+        $configuration->addConfiguration($crud);
+        $configuration->addConfiguration($grid);
+        $this->configurations[UserController::class] = $configuration;
+    }
+
+    private function compileProfileController()
+    {
+        $configuration = clone $this->configuration;
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud->setFormClass($this->profileForm);
+        $crud->setShowFields($this->profileFields);
+
+        $configuration->addConfiguration($crud);
+        $this->configurations[ProfileController::class] = $configuration;
+    }
+
+    private function configureGrid(ReflectionClass $entity, Configurator $configuration)
     {
         $config = clone $configuration;
         /** @var Crud $crud */

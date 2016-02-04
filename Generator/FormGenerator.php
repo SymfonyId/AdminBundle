@@ -26,19 +26,10 @@ class FormGenerator extends Generator
      */
     private $filesystem;
 
-    /**
-     * @var string
-     */
     private $className;
-
-    /**
-     * @var string
-     */
     private $classPath;
 
     /**
-     * Constructor.
-     *
      * @param Filesystem $filesystem A Filesystem instance
      */
     public function __construct(Filesystem $filesystem)

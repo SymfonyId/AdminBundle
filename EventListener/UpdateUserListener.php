@@ -12,10 +12,7 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 
 class UpdateUserListener
 {
-    /**
-     * @var bool
-     */
-    protected $autoEnable;
+    private $autoEnable;
 
     /**
      * @param bool $autoEnable

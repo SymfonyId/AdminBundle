@@ -18,17 +18,14 @@ class DeleteUserListener
     /**
      * @var UserInterface
      */
-    protected $user;
+    private $user;
 
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
-    /**
-     * @var string
-     */
-    protected $translationDomain;
+    private $translationDomain;
 
     /**
      * @param TokenStorageInterface $tokenStorage

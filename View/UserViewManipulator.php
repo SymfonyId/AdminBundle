@@ -11,28 +11,32 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class UserViewManipulator
+class UserViewManipulator extends AbstractListener
 {
     /**
      * @var Configurator
      */
-    protected $configuration;
+    private $configuration;
 
-    protected $formClass;
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
 
-    protected $entityClass;
+    private $formClass;
+    private $entityClass;
+    private $showFields = array();
+    private $gridFields = array();
+    private $gridFilters = array();
 
-    protected $showFields;
-
-    protected $gridFields;
-
-    protected $gridFilters;
-
-    public function __construct(Configurator $configurator)
+    public function __construct(Configurator $configurator, KernelInterface $kernel)
     {
         $this->configuration = $configurator;
+        $this->kernel = $kernel;
     }
 
     public function setForm($formClass, $entityClass)
@@ -50,24 +54,22 @@ class UserViewManipulator
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $controller = $event->getController();
-
-        if (!is_array($controller)) {
+        if ('prod' === strtolower($this->kernel->getEnvironment())) {
+            return;
+        }
+        $this->isValidCrudListener($event);
+        if (!$this->getController() instanceof UserController) {
             return;
         }
 
-        $controller = $controller[0];
-
-        if (!$controller instanceof UserController) {
-            return;
-        }
-
-        $crud = new Crud();
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfigForClass(Crud::class);
         $crud->setFormClass($this->formClass);
         $crud->setEntityClass($this->entityClass);
         $crud->setShowFields($this->showFields);
 
-        $grid = new Grid();
+        /** @var Grid $grid */
+        $grid = $this->configuration->getConfigForClass(Grid::class);
         $grid->setColumns($this->gridFields);
         $grid->setFilters($this->gridFilters);
 

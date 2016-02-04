@@ -55,7 +55,7 @@ class Controller extends Base
     {
         /** @var KernelInterface $kernel */
         $kernel = $this->container->get('kernel');
-        if ('prod' === $kernel->getEnvironment()) {
+        if ('prod' === strtolower($kernel->getEnvironment())) {
             return true;
         }
 

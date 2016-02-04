@@ -7,6 +7,9 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 abstract class AbstractListener
 {
+    /**
+     * @var CrudController
+     */
     private $controller;
 
     public function isValidCrudListener(FilterControllerEvent $event)

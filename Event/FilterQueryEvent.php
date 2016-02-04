@@ -15,11 +15,10 @@ class FilterQueryEvent extends Event
     /**
      * @var QueryBuilder
      */
-    protected $queryBuilder;
+    private $queryBuilder;
 
-    protected $entityClass;
-
-    protected $alias;
+    private $entityClass;
+    private $alias;
 
     /**
      * @param QueryBuilder $queryBuilder

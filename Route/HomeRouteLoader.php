@@ -14,11 +14,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class HomeRouteLoader implements LoaderInterface
 {
-    protected $routePath;
-
-    protected $controller;
-
-    protected $loaded = false;
+    private $routePath;
+    private $controller;
+    private $loaded = false;
 
     public function __construct($routePath, $controller)
     {

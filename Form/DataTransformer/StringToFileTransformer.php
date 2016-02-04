@@ -12,10 +12,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class StringToFileTransformer implements DataTransformerInterface
 {
-    /**
-     * @var array
-     */
-    protected $uploadDir;
+    private $uploadDir;
 
     public function __construct(array $uploadDir)
     {

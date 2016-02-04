@@ -10,7 +10,6 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
@@ -52,7 +51,6 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
 
     private $configurations = array();
     protected $filters = array();
-    private $columns = array();
     private $freeze = false;
 
     public function __construct(KernelInterface $kernel)
@@ -185,7 +183,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
         /** @var Grid $grid */
         $grid = $this->getConfigForClass(Grid::class);
         $grid->setFilters($this->filters);
-        $grid->setColumns($this->columns);
+        $grid->setColumns(array());
 
         $this->addConfiguration($grid);
     }
@@ -221,7 +219,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
      */
     public function parseClass($class)
     {
-        if ('prod' === $this->kernel->getEnvironment()) {
+        if ('prod' === strtolower($this->kernel->getEnvironment())) {
             return;
         }
 

@@ -14,12 +14,9 @@ class VariableRegistrator
     /**
      * @var \Twig_Environment
      */
-    protected $twig;
+    private $twig;
 
-    /**
-     * @var array
-     */
-    protected $variables = array();
+    private $variables = array();
 
     public function __construct(\Twig_Environment $twig)
     {

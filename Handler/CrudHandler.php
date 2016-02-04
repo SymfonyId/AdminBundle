@@ -24,23 +24,21 @@ class CrudHandler implements ContainerAwareInterface
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @var \Doctrine\ORM\EntityRepository
      */
-    protected $repository;
+    private $repository;
 
-    protected $class;
-
-    protected $template;
-
-    protected $viewParams = array();
+    private $class;
+    private $template;
+    private $viewParams = array();
 
     /**
      * @param ContainerInterface $container

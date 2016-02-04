@@ -16,15 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChangePasswordType extends AbstractType
 {
-    /**
-     * @var string
-     */
-    protected $userClass;
-
-    /**
-     * @var string
-     */
-    protected $translationDomain;
+    private $userClass;
+    private $translationDomain;
 
     /**
      * @param string $userClass

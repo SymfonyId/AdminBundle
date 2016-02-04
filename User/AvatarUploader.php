@@ -13,11 +13,17 @@ use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
  */
 class AvatarUploader
 {
-    protected $configuration;
+    /**
+     * @var Configurator
+     */
+    private $configuration;
 
-    protected $uploadHandler;
+    /**
+     * @var UploadHandler
+     */
+    private $uploadHandler;
 
-    protected $uploadDir;
+    private $uploadDir;
 
     public function __construct(Configurator $configurator, UploadHandler $uploadHandler, $uploadDir)
     {

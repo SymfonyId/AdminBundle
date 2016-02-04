@@ -14,11 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FilterEntityEvent extends Event
 {
-    protected $entity;
+    /**
+     * @var EntityInterface
+     */
+    private $entity;
 
-    protected $entityManager;
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
 
-    protected $response;
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * @param EntityManager $entityManager

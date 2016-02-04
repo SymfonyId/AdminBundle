@@ -26,14 +26,11 @@ class Builder
     protected $translator;
 
     /**
-     * @var string
-     */
-    protected $translationDomain;
-
-    /**
      * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
+
+    protected $translationDomain;
 
     /**
      * @param Router               $router

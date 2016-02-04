@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonianIndonesiaAdminBundle extends Bundle
 {
-    protected $kernel;
+    private $kernel;
 
     public function __construct(KernelInterface $kernel, array $plugins = array())
     {

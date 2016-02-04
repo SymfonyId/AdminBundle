@@ -22,13 +22,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    protected $userClass;
-
-    protected $translationDomain;
-
-    protected $roleHierarchy;
-
-    protected $uploadDir;
+    private $userClass;
+    private $translationDomain;
+    private $roleHierarchy;
+    private $uploadDir;
 
     public function __construct($userClass, $translationDomain, array $roleHierarchy, $uploadDir)
     {
@@ -110,7 +107,7 @@ class UserType extends AbstractType
         ));
     }
 
-    protected function buildRoleList()
+    private function buildRoleList()
     {
         $roleList = array();
         foreach ($this->roleHierarchy as $key => $value) {
