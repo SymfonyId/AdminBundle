@@ -19,6 +19,9 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @Crud(allowCreate=false, allowEdit=false, allowShow=false, allowDelete=false)
+ */
 class ProfileController extends Controller
 {
     private $viewParams = array();
