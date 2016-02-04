@@ -10,6 +10,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
@@ -42,9 +43,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      */
     private $formFactory;
 
-    private $caches = array();
-    private $controllers = array();
-    private $entities = array();
+    private $configurations = array();
     private $template = array();
     private $filter = array();
 
@@ -101,7 +100,16 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->compileControllerConfiguration();
         $this->compileEntityConfiguration();
 
-        $this->writeCacheFile($cacheDir.Constants::CACHE_CONTROLLER_PATH, sprintf('<?php return %s;', var_export($this->caches, true)));
+        $caches = array();
+        /** @var Configurator $configurator */
+        foreach ($this->configurations as $class => $configurator) {
+            /** @var ConfigurationInterface $configuration */
+            foreach ($configurator->getAllConfigurations() as $configuration) {
+                $this->parseConfiguration($configuration);
+            }
+        }
+
+        //$this->writeCacheFile($cacheDir.Constants::CACHE_CONTROLLER_PATH, sprintf('<?php return %s;', var_export($this->caches, true)));
     }
 
     /**
@@ -116,20 +124,24 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     {
         foreach ($this->getControllers() as $controller) {
             $reflectionClass = new ReflectionClass($controller);
+            if (!$reflectionClass->isSubclassOf(CrudController::class)) {
+                continue;
+            }
+
             $configuration = clone $this->configuration;
-            $this->parseClassAnnotation($reflectionClass, $configuration);
-            $this->caches[$reflectionClass->getName()] = $configuration;
+            $configuration = $this->parseClassAnnotation($reflectionClass, $configuration);
+            $this->configurations[$reflectionClass->getName()] = $configuration;
         }
     }
 
     private function compileEntityConfiguration()
     {
-        foreach ($this->entities as $entity) {
+        foreach ($this->getEntities() as $entity) {
             /** @var Configurator $cache */
-            foreach ($this->caches as $key => $cache) {
+            foreach ($this->configurations as $key => $cache) {
                 $reflectionClass = new ReflectionClass($entity);
                 $cache = $this->configure($reflectionClass, $cache);
-                $this->caches[$key] = $cache;
+                $this->configurations[$key] = $cache;
             }
         }
     }
@@ -222,17 +234,33 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         foreach ($meta as $m) {
             $entities[] = $m->getName();
         }
+
+        return $entities;
     }
 
     private function parseController($controller)
     {
         $temp = explode(':', $controller);
         if (3 === count($temp)) {
-            $controllerClass = get_class($this->container->get($temp[0]));
-        } else {
             $controllerClass = $temp[0];
+        } else {
+            $controllerClass = get_class($this->container->get($temp[0]));
         }
 
         return $controllerClass;
+    }
+
+    private function parseConfiguration(ConfigurationInterface $configuration)
+    {
+        $output = array();
+        $output['crud'] = array();
+        $output['grid'] = array();
+        $output['page'] = array();
+        $output['util'] = array();
+
+        if ($configuration instanceof Crud) {
+            $output['crud']['action'] = $configuration->getAction();
+            $output['crud']['ajax_template'] = $configuration->getAjaxTemplate();
+        }
     }
 }

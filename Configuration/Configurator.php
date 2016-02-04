@@ -145,6 +145,14 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
     }
 
     /**
+     * @return array
+     */
+    public function getAllConfigurations()
+    {
+        return $this->configurations;
+    }
+
+    /**
      * @param FilterControllerEvent $event
      */
     public function configureTemplate(FilterControllerEvent $event)
