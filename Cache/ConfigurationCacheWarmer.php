@@ -346,6 +346,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         /** @var Crud $configuration */
         if ($configuration instanceof Crud) {
+            $output['entity_class'] = $configuration->getEntityClass();
             $output['form_class'] = $configuration->getFormClass();
             $output['show_fields'] = $configuration->getShowFields();
             $output['create_template'] = $configuration->getCreateTemplate();
