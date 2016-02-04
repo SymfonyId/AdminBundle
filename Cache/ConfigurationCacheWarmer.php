@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use ReflectionClass;
+use ReflectionObject;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
@@ -107,7 +108,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             /** @var ConfigurationInterface $configuration */
             $configs = array();
             foreach ($configurator->getAllConfigurations() as $configuration) {
-                $configs[] = $this->parseConfiguration($configuration);
+                $reflection = new ReflectionObject($configuration);
+                $configs[$reflection->getName()] = $this->parseConfiguration($configuration);
             }
 
             $caches[$class] = $configs;
@@ -257,50 +259,45 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private function parseConfiguration(ConfigurationInterface $configuration)
     {
         $output = array();
-        $output['crud'] = array();
-        $output['grid'] = array();
-        $output['page'] = array();
-        $output['util'] = array();
 
         /** @var Crud $configuration */
         if ($configuration instanceof Crud) {
-            $output['crud']['entity_class'] = $configuration->getEntityClass();
-            $output['crud']['form_class'] = $configuration->getFormClass();
-            $output['crud']['show_fields'] = $configuration->getShowFields();
-            $output['crud']['create_template'] = $configuration->getCreateTemplate();
-            $output['crud']['edit_template'] = $configuration->getEditTemplate();
-            $output['crud']['list_template'] = $configuration->getListTemplate();
-            $output['crud']['show_template'] = $configuration->getShowTemplate();
-            $output['crud']['allow_create'] = $configuration->isAllowCreate();
-            $output['crud']['allow_edit'] = $configuration->isAllowEdit();
-            $output['crud']['allow_show'] = $configuration->isAllowShow();
-            $output['crud']['allow_delete'] = $configuration->isAllowDelete();
+            $output['form_class'] = $configuration->getFormClass();
+            $output['show_fields'] = $configuration->getShowFields();
+            $output['create_template'] = $configuration->getCreateTemplate();
+            $output['edit_template'] = $configuration->getEditTemplate();
+            $output['list_template'] = $configuration->getListTemplate();
+            $output['show_template'] = $configuration->getShowTemplate();
+            $output['allow_create'] = $configuration->isAllowCreate();
+            $output['allow_edit'] = $configuration->isAllowEdit();
+            $output['allow_show'] = $configuration->isAllowShow();
+            $output['allow_delete'] = $configuration->isAllowDelete();
         }
 
         /** @var Grid $configuration */
         if ($configuration instanceof Grid) {
-            $output['grid']['columns'] = $configuration->getColumns();
-            $output['grid']['filters'] = $configuration->getFilters();
-            $output['grid']['normalize_filter'] = $configuration->isNormalizeFilter();
-            $output['grid']['format_number'] = $configuration->isFormatNumber();
+            $output['columns'] = $configuration->getColumns();
+            $output['filters'] = $configuration->getFilters();
+            $output['normalize_filter'] = $configuration->isNormalizeFilter();
+            $output['format_number'] = $configuration->isFormatNumber();
         }
 
         /** @var Page $configuration */
         if ($configuration instanceof Page) {
-            $output['page']['title'] = $configuration->getTitle();
-            $output['page']['description'] = $configuration->getDescription();
+            $output['title'] = $configuration->getTitle();
+            $output['description'] = $configuration->getDescription();
         }
 
         /** @var Util $configuration */
         if ($configuration instanceof Util) {
-            $output['util']['auto_complete'] = $configuration->getAutoComplete();
-            $output['util']['include_javascript'] =  $configuration->getIncludeJavascript();
-            $output['util']['include_route'] = $configuration->getIncludeRoute();
-            $output['util']['uploadable_field'] = $configuration->getUploadableField();
-            $output['util']['use_date_picker'] = $configuration->isUseDatePicker();
-            $output['util']['use_file_chooser'] = $configuration->isUseFileChooser();
-            $output['util']['use_html_editor'] = $configuration->isUseHtmlEditor();
-            $output['util']['use_numeric'] = $configuration->isUseNumeric();
+            $output['auto_complete'] = $configuration->getAutoComplete();
+            $output['include_javascript'] =  $configuration->getIncludeJavascript();
+            $output['include_route'] = $configuration->getIncludeRoute();
+            $output['uploadable_field'] = $configuration->getUploadableField();
+            $output['use_date_picker'] = $configuration->isUseDatePicker();
+            $output['use_file_chooser'] = $configuration->isUseFileChooser();
+            $output['use_html_editor'] = $configuration->isUseHtmlEditor();
+            $output['use_numeric'] = $configuration->isUseNumeric();
         }
 
         return $output;
