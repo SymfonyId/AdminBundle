@@ -317,7 +317,7 @@ class CrudHandler implements ContainerAwareInterface
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
-    protected function fireEvent($name, $handler)
+    private function fireEvent($name, $handler)
     {
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($name, $handler);

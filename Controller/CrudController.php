@@ -18,7 +18,6 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class CrudController extends Controller
 {
-    protected $viewParams = array();
+    private $viewParams = array();
 
     /**
      * @Route("/new/")
@@ -40,7 +39,7 @@ abstract class CrudController extends Controller
     public function newAction(Request $request)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
@@ -71,7 +70,7 @@ abstract class CrudController extends Controller
     public function editAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_UPDATE);
@@ -101,7 +100,7 @@ abstract class CrudController extends Controller
     public function showAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
@@ -138,7 +137,7 @@ abstract class CrudController extends Controller
     public function deleteAction($id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
@@ -171,7 +170,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
@@ -199,7 +198,7 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
-    protected function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
+    private function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -208,7 +207,7 @@ abstract class CrudController extends Controller
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         /** @var Page $page */
@@ -237,13 +236,13 @@ abstract class CrudController extends Controller
      * @param $id
      * @return EntityInterface
      */
-    protected function findOr404Error($id)
+    private function findOr404Error($id)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 
@@ -260,7 +259,7 @@ abstract class CrudController extends Controller
      * @param $name
      * @param $handler
      */
-    protected function fireEvent($name, $handler)
+    private function fireEvent($name, $handler)
     {
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($name, $handler);
@@ -270,7 +269,7 @@ abstract class CrudController extends Controller
      * @param Crud $crud
      * @return array
      */
-    protected function getEntityFields(Crud $crud)
+    private function getEntityFields(Crud $crud)
     {
         $fields = array();
         $reflection = new \ReflectionClass($crud->getEntityClass());
@@ -289,7 +288,7 @@ abstract class CrudController extends Controller
      * @param string $action
      * @return bool
      */
-    protected function isAllowOr404Error(Crud $crud, $action)
+    private function isAllowOr404Error(Crud $crud, $action)
     {
         $granted = false;
         switch ($action) {

@@ -53,6 +53,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
     private $configurations = array();
     protected $filters = array();
     private $columns = array();
+    private $freeze = false;
 
     public function __construct(KernelInterface $kernel)
     {
@@ -114,9 +115,14 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
 
     /**
      * @param ConfigurationInterface $configuration
+     * @throws \Exception
      */
     public function addConfiguration(ConfigurationInterface $configuration)
     {
+        if ($this->freeze) {
+            throw new \Exception('Can\'t change any configuration during production');
+        }
+
         if ($configuration instanceof ContainerAwareInterface) {
             $configuration->setContainer($this->container);
         }
@@ -244,5 +250,10 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
             $grid->setColumns($columns);
         }
         $this->addConfiguration($grid);
+    }
+
+    public function freeze()
+    {
+        $this->freeze = true;
     }
 }

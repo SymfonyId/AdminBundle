@@ -16,7 +16,6 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -38,7 +37,7 @@ class ProfileController extends Controller
         $data = array();
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 
@@ -92,7 +91,7 @@ class ProfileController extends Controller
         }
 
         /** @var Configurator $configuration */
-        $configuration = $this->container->get('symfonian_id.admin.congiration.configurator');
+        $configuration = $this->getConfigurator();
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 
