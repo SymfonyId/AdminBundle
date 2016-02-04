@@ -8,18 +8,18 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use ReflectionClass;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
+use Symfonian\Indonesia\AdminBundle\Annotation\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\VarDumper\VarDumper;
 
 class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInterface
 {
@@ -104,10 +104,15 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         /** @var Configurator $configurator */
         foreach ($this->configurations as $class => $configurator) {
             /** @var ConfigurationInterface $configuration */
+            $configs = array();
             foreach ($configurator->getAllConfigurations() as $configuration) {
-                $this->parseConfiguration($configuration);
+                $configs[] = $this->parseConfiguration($configuration);
             }
+
+            $caches[$class] = $configs;
         }
+
+        var_dump($caches);
 
         //$this->writeCacheFile($cacheDir.Constants::CACHE_CONTROLLER_PATH, sprintf('<?php return %s;', var_export($this->caches, true)));
     }
@@ -258,9 +263,47 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $output['page'] = array();
         $output['util'] = array();
 
+        /** @var Crud $configuration */
         if ($configuration instanceof Crud) {
-            $output['crud']['action'] = $configuration->getAction();
-            $output['crud']['ajax_template'] = $configuration->getAjaxTemplate();
+            $output['crud']['entity_class'] = $configuration->getEntityClass();
+            $output['crud']['form_class'] = $configuration->getFormClass();
+            $output['crud']['show_fields'] = $configuration->getShowFields();
+            $output['crud']['create_template'] = $configuration->getCreateTemplate();
+            $output['crud']['edit_template'] = $configuration->getEditTemplate();
+            $output['crud']['list_template'] = $configuration->getListTemplate();
+            $output['crud']['show_template'] = $configuration->getShowTemplate();
+            $output['crud']['allow_create'] = $configuration->isAllowCreate();
+            $output['crud']['allow_edit'] = $configuration->isAllowEdit();
+            $output['crud']['allow_show'] = $configuration->isAllowShow();
+            $output['crud']['allow_delete'] = $configuration->isAllowDelete();
         }
+
+        /** @var Grid $configuration */
+        if ($configuration instanceof Grid) {
+            $output['grid']['columns'] = $configuration->getColumns();
+            $output['grid']['filters'] = $configuration->getFilters();
+            $output['grid']['normalize_filter'] = $configuration->isNormalizeFilter();
+            $output['grid']['format_number'] = $configuration->isFormatNumber();
+        }
+
+        /** @var Page $configuration */
+        if ($configuration instanceof Page) {
+            $output['page']['title'] = $configuration->getTitle();
+            $output['page']['description'] = $configuration->getDescription();
+        }
+
+        /** @var Util $configuration */
+        if ($configuration instanceof Util) {
+            $output['util']['auto_complete'] = $configuration->getAutoComplete();
+            $output['util']['include_javascript'] =  $configuration->getIncludeJavascript();
+            $output['util']['include_route'] = $configuration->getIncludeRoute();
+            $output['util']['uploadable_field'] = $configuration->getUploadableField();
+            $output['util']['use_date_picker'] = $configuration->isUseDatePicker();
+            $output['util']['use_file_chooser'] = $configuration->isUseFileChooser();
+            $output['util']['use_html_editor'] = $configuration->isUseHtmlEditor();
+            $output['util']['use_numeric'] = $configuration->isUseNumeric();
+        }
+
+        return $output;
     }
 }

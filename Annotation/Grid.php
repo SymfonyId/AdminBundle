@@ -16,7 +16,7 @@ class Grid implements ConfigurationInterface
 {
     protected $columns = array();
 
-    protected $filter = array();
+    protected $filters = array();
 
     protected $normalizeFilter = false;
 
@@ -32,8 +32,8 @@ class Grid implements ConfigurationInterface
             $this->setColumns((array) $data['columns']);
         }
 
-        if (isset($data['filter'])) {
-            $this->setFilters((array) $data['filter']);
+        if (isset($data['filters'])) {
+            $this->setFilters((array) $data['filters']);
         }
 
         if (isset($data['normalizeFilter'])) {
@@ -59,12 +59,28 @@ class Grid implements ConfigurationInterface
 
     public function getFilters()
     {
-        return $this->filter;
+        return $this->filters;
     }
 
     public function setFilters(array $filters)
     {
-        $this->filter = $filters;
+        $this->filters = $filters;
+    }
+
+    /**
+     * @param boolean $formatNumber
+     */
+    public function setFormatNumber($formatNumber)
+    {
+        $this->formatNumber = $formatNumber;
+    }
+
+    /**
+     * @param boolean $normalizeFilter
+     */
+    public function setNormalizeFilter($normalizeFilter)
+    {
+        $this->normalizeFilter = $normalizeFilter;
     }
 
     public function isNormalizeFilter()

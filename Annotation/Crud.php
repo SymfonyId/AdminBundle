@@ -200,6 +200,38 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
+     * @param boolean $allowCreate
+     */
+    public function setAllowCreate($allowCreate)
+    {
+        $this->allowCreate = $allowCreate;
+    }
+
+    /**
+     * @param boolean $allowEdit
+     */
+    public function setAllowEdit($allowEdit)
+    {
+        $this->allowEdit = $allowEdit;
+    }
+
+    /**
+     * @param boolean $allowShow
+     */
+    public function setAllowShow($allowShow)
+    {
+        $this->allowShow = $allowShow;
+    }
+
+    /**
+     * @param boolean $allowDelete
+     */
+    public function setAllowDelete($allowDelete)
+    {
+        $this->allowDelete = $allowDelete;
+    }
+
+    /**
      * @return boolean
      */
     public function isAllowDelete()

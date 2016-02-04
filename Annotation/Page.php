@@ -42,4 +42,20 @@ class Page implements ConfigurationInterface
     {
         return $this->description;
     }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
 }

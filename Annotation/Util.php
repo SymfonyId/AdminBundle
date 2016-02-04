@@ -81,14 +81,6 @@ class Util implements ConfigurationInterface
     /**
      * @return bool
      */
-    public function getAutoComplete()
-    {
-        return $this->autoComplete;
-    }
-
-    /**
-     * @return bool
-     */
     public function isUseDatePicker()
     {
         return $this->datePicker;
@@ -119,6 +111,14 @@ class Util implements ConfigurationInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getAutoComplete()
+    {
+        return $this->autoComplete;
+    }
+
+    /**
      * @return string
      */
     public function getIncludeJavascript()
@@ -140,5 +140,69 @@ class Util implements ConfigurationInterface
     public function getUploadableField()
     {
         return $this->uploadable;
+    }
+
+    /**
+     * @param array $autoComplete
+     */
+    public function setAutoComplete(array $autoComplete)
+    {
+        $this->autoComplete = $autoComplete;
+    }
+
+    /**
+     * @param boolean $datePicker
+     */
+    public function setUseDatePicker($datePicker)
+    {
+        $this->datePicker = (bool) $datePicker;
+    }
+
+    /**
+     * @param boolean $htmlEditor
+     */
+    public function setUseHtmlEditor($htmlEditor)
+    {
+        $this->htmlEditor = (bool) $htmlEditor;
+    }
+
+    /**
+     * @param boolean $fileChooser
+     */
+    public function setUseFileChooser($fileChooser)
+    {
+        $this->fileChooser = (bool) $fileChooser;
+    }
+
+    /**
+     * @param boolean $numeric
+     */
+    public function setUseNumeric($numeric)
+    {
+        $this->numeric = (bool) $numeric;
+    }
+
+    /**
+     * @param string $includeJavascript
+     */
+    public function setIncludeJavascript($includeJavascript)
+    {
+        $this->includeJavascript = $includeJavascript;
+    }
+
+    /**
+     * @param array $includeRoute
+     */
+    public function setIncludeRoute(array $includeRoute)
+    {
+        $this->includeRoute = $includeRoute;
+    }
+
+    /**
+     * @param string $uploadable
+     */
+    public function setUploadableField($uploadable)
+    {
+        $this->uploadable = $uploadable;
     }
 }
