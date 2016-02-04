@@ -123,7 +123,6 @@ class CrudHandler implements ContainerAwareInterface
 
         $data = array();
         $identifier = array();
-        $header = array();
         /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
         foreach ($pagination as $key => $record) {
             $temp = array();
@@ -135,10 +134,6 @@ class CrudHandler implements ContainerAwareInterface
                 if (is_array($property)) {
                     $field = $property['field'];
                     $numberFormat = $property['format'];
-                }
-
-                if (0 === $key) {
-                    array_push($header, $field);
                 }
 
                 $method = CamelCasizer::underScoretToCamelCase('get_'.$field);
@@ -173,7 +168,7 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['pagination'] = $pagination;
         $viewParams['start'] = ($page - 1) * $perPage;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['header'] = array_merge($header, array('action'));
+        $viewParams['header'] = array_merge($gridFields, array('action'));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $actionAllowed;
