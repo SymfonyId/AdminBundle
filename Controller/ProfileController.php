@@ -37,7 +37,7 @@ class ProfileController extends Controller
         $data = array();
 
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 
@@ -91,7 +91,7 @@ class ProfileController extends Controller
         }
 
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 
@@ -140,5 +140,9 @@ class ProfileController extends Controller
         }
 
         return $this->render($this->container->getParameter('symfonian_id.admin.themes.change_password'), $this->viewParams);
+    }
+    protected function getClassName()
+    {
+        return __CLASS__;
     }
 }

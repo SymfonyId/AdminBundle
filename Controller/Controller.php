@@ -12,14 +12,16 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\Util\ArrayUtil\ArrayNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class Controller extends Base
+abstract class Controller extends Base
 {
     private $configurator;
+
+    abstract protected function getClassName();
 
     /**
      * @return Configurator
      */
-    protected function getConfigurator()
+    protected function getConfigurator($key)
     {
         $this->configurator = $this->container->get('symfonian_id.admin.congiration.configurator');
         if (!$this->isProduction()) {
@@ -28,7 +30,7 @@ class Controller extends Base
 
         $cacheDir = $this->container->getParameter('kernel.cache_dir');
         $caches = require $cacheDir.Constants::CACHE_PATH;
-        $configurations = $caches[__CLASS__];
+        $configurations = $caches[$key];
         foreach ($configurations as $key => $configuration) {
             $config = null;
             if (Crud::class === $key) {

@@ -39,7 +39,7 @@ abstract class CrudController extends Controller
     public function newAction(Request $request)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
@@ -70,7 +70,7 @@ abstract class CrudController extends Controller
     public function editAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_UPDATE);
@@ -100,7 +100,7 @@ abstract class CrudController extends Controller
     public function showAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
@@ -137,7 +137,7 @@ abstract class CrudController extends Controller
     public function deleteAction($id)
     {
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
@@ -170,7 +170,7 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
@@ -207,7 +207,7 @@ abstract class CrudController extends Controller
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
         /** @var Page $page */
@@ -242,7 +242,7 @@ abstract class CrudController extends Controller
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator();
+        $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfigForClass(Crud::class);
 

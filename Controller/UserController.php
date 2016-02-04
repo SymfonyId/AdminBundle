@@ -19,4 +19,8 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
  */
 class UserController extends CrudController
 {
+    protected function getClassName()
+    {
+        return __CLASS__;
+    }
 }
