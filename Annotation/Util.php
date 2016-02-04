@@ -16,13 +16,13 @@ class Util implements ConfigurationInterface
 {
     protected $autoComplete = array();
 
-    protected $datePicker;
+    protected $datePicker = false;
 
-    protected $htmlEditor;
+    protected $htmlEditor = false;
 
-    protected $fileChooser;
+    protected $fileChooser = false;
 
-    protected $numeric;
+    protected $numeric = false;
 
     protected $includeJavascript;
 
