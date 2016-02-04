@@ -51,6 +51,8 @@ class Controller extends Base
         }
 
         $this->configurator->freeze();
+
+        return $this->configurator;
     }
 
     private function isProduction()
