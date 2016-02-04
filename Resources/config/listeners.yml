@@ -7,6 +7,7 @@ services:
             - [setView, ['%symfonian_id.admin.user.show_fields%', '%symfonian_id.admin.user.grid_fields%', '%symfonian_id.admin.user.grid_filters%']]
         arguments:
             - '@symfonian_id.admin.congiration.configurator'
+            - '@kernel'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
 
