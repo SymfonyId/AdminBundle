@@ -14,8 +14,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class Controller extends Base
 {
-    private $configurator;
-
     abstract protected function getClassName();
 
     /**
@@ -23,34 +21,34 @@ abstract class Controller extends Base
      */
     protected function getConfigurator($key)
     {
-        $this->configurator = $this->container->get('symfonian_id.admin.congiration.configurator');
+        /** @var Configurator $configurator */
+        $configurator = $this->container->get('symfonian_id.admin.congiration.configurator');
         if (!$this->isProduction()) {
-            return $this->configurator;
+            return $configurator;
         }
 
         $cacheDir = $this->container->getParameter('kernel.cache_dir');
         $caches = require $cacheDir.Constants::CACHE_PATH;
         $configurations = $caches[$key];
+        /** @var array $configuration */
         foreach ($configurations as $key => $configuration) {
             $config = null;
             if (Crud::class === $key) {
                 $config = new Crud();
             }
             if (Grid::class === $key) {
-                $config = new Crud();
+                $config = new Grid();
             }
             if (Page::class === $key) {
-                $config = new Crud();
+                $config = new Page();
             }
             if (Util::class === $key) {
-                $config = new Crud();
+                $config = new Util();
             }
-            $this->configurator->addConfiguration(ArrayNormalizer::convertToObject($configuration, $config));
+            $configurator->addConfiguration(ArrayNormalizer::convertToObject($configuration, $config));
         }
 
-        $this->configurator->freeze();
-
-        return $this->configurator;
+        return $configurator;
     }
 
     private function isProduction()
