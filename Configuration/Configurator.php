@@ -11,6 +11,7 @@ use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class Configurator implements CompilerPassInterface, ContainerAwareInterface
+class Configurator extends AbstractListener implements CompilerPassInterface, ContainerAwareInterface
 {
     /**
      * @var array
@@ -43,11 +44,6 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      * @var Reader
      */
     private $reader;
-
-    /**
-     * @var CrudController
-     */
-    private $controller;
 
     /**
      * @var KernelInterface
@@ -157,7 +153,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      */
     public function configureTemplate(FilterControllerEvent $event)
     {
-        if (!$this->isValidEvent($event)) {
+        if (!$this->isValidCrudListener($event)) {
             return;
         }
 
@@ -176,7 +172,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      */
     public function configureGrid(FilterControllerEvent $event)
     {
-        if (!$this->isValidEvent($event)) {
+        if (!$this->isValidCrudListener($event)) {
             return;
         }
 
@@ -193,7 +189,7 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
      */
     public function parseAnnotation(FilterControllerEvent $event)
     {
-        if (!$this->isValidEvent($event)) {
+        if (!$this->isValidCrudListener($event)) {
             return;
         }
 
@@ -248,31 +244,5 @@ class Configurator implements CompilerPassInterface, ContainerAwareInterface
             $grid->setColumns($columns);
         }
         $this->addConfiguration($grid);
-    }
-
-    private function isValidEvent(FilterControllerEvent $event)
-    {
-        if ('prod' === $this->kernel->getEnvironment()) {
-            return false;
-        }
-
-        $controller = $event->getController();
-        if (!is_array($controller)) {
-            return false;
-        }
-
-        $controller = $controller[0];
-        if (!$controller instanceof CrudController) {
-            return false;
-        }
-
-        $this->controller = $controller;
-
-        return true;
-    }
-
-    private function getController()
-    {
-        return $this->controller;
     }
 }
