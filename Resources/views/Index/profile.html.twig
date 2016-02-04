@@ -42,7 +42,7 @@
                             {%- else -%}
                                 {% if property.value is boolean %}
                                     <td class="text-center"><label>
-                                        <input {% if property.value is sameas(true) %}{{ 'checked disabled' }}{% endif %} data-toggle="toggle" data-onstyle="success" type="checkbox">
+                                        <input {% if v is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                                     </label>
                                 {% else %}
                                     <td>{{- property.value | raw -}}
@@ -58,5 +58,16 @@
             </div>
         </div>
     </div>
+    {% endspaceless %}
+{%- endblock -%}
+
+{%- block javascript -%}
+    {% spaceless %}
+        <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('.sfid-toggle').bootstrapToggle();
+            });
+        </script>
     {% endspaceless %}
 {%- endblock -%}
