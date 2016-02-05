@@ -121,7 +121,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($crud->getShowTemplate());
-        $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud));
+        $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud), $crud->isAllowDelete());
 
         return $handler->getResponse();
     }

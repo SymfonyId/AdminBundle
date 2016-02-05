@@ -205,7 +205,7 @@ class CrudHandler implements ContainerAwareInterface
      * @param EntityInterface $data
      * @param array           $showFields
      */
-    public function showDetail(Request $request, EntityInterface $data, array $showFields)
+    public function showDetail(Request $request, EntityInterface $data, array $showFields, $allowDelete = true)
     {
         $session = $this->container->get('session');
 
@@ -244,7 +244,7 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
         $viewParams['action_method'] = $translator->trans('page.show', array(), $translationDomain);
         $viewParams['back'] = $referer;
-        $viewParams['action'] = $this->container->getParameter('symfonian_id.admin.grid_action');
+        $viewParams['action'] = $allowDelete;
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['upload_dir'] = $this->container->getParameter('symfonian_id.admin.upload_dir');
 

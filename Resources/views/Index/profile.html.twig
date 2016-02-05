@@ -1,5 +1,9 @@
 {%- extends 'SymfonianIndonesiaAdminBundle::layout.html.twig' -%}
 
+{% block css %}
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/css/bootstrap-toggle.min.css') -}}" />
+{% endblock %}
+
 {%- block breadcrumb -%}
     <li><a href="#" class="active">{{- page_title | upper -}}</a></li>
 {%- endblock -%}
@@ -41,11 +45,11 @@
                                 {{- value | trim(', ') | raw -}}
                             {%- else -%}
                                 {% if property.value is boolean %}
-                                    <td class="text-center"><label>
-                                        <input {% if v is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                    <label>
+                                        <input {% if property.value is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                                     </label>
                                 {% else %}
-                                    <td>{{- property.value | raw -}}
+                                    {{- property.value | raw -}}
                                 {% endif %}
                             {%- endif -%}
                         {%- endif -%}
