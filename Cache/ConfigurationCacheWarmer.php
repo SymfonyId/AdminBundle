@@ -132,10 +132,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     public function warmUp($cacheDir)
     {
         $this->setDefaultConfig();
-        $this->compileUserController();
-        $this->compileProfileController();
         $this->compileControllerConfiguration();
         $this->compileEntityConfiguration();
+        $this->compileUserController();
+        $this->compileProfileController();
 
         $cacheDir = sprintf('%s/%s', $cacheDir, Constants::CACHE_DIR);
         if (!is_dir($cacheDir)) {
