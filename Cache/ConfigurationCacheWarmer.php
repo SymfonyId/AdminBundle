@@ -154,7 +154,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      */
     public function isOptional()
     {
-        return true;
+        return false;
     }
 
     private function setDefaultConfig()
