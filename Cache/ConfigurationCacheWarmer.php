@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\VarDumper\VarDumper;
 
 class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInterface
 {
@@ -134,7 +135,6 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->setDefaultConfig();
         $this->compileControllerConfiguration();
         $this->compileEntityConfiguration();
-        $this->compileUserController();
         $this->compileProfileController();
 
         $cacheDir = sprintf('%s/%s', $cacheDir, Constants::CACHE_DIR);
@@ -144,16 +144,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         /** @var Configurator $configurator */
         foreach ($this->configurations as $class => $configurator) {
-            /** @var ConfigurationInterface $configuration */
-            $configs = array();
-            foreach ($configurator->getAllConfigurations() as $configuration) {
-                $reflection = new ReflectionObject($configuration);
-                $configs[$reflection->getName()] = $this->parseConfiguration($configuration);
-            }
-
-            $cacheFile = str_replace('\\', '_', $class);
-            $this->writeCacheFile(sprintf('%s/%s.php.cache', $cacheDir, $cacheFile), sprintf('<?php return unserialize(\'%s\');', serialize($configs)));
+            $this->write($configurator, $cacheDir, $class);
         }
+        $this->compileUserController($cacheDir);
     }
 
     /**
@@ -208,8 +201,30 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         }
     }
 
+    private function compileUserController($cacheDir)
+    {
+        $this->setDefaultConfig();
+        $configuration = clone $this->configuration;
+        /** @var Crud $crud */
+        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud->setFormClass($this->userForm);
+        $crud->setEntityClass($this->userEntity);
+        $crud->setShowFields($this->userShowFields);
+
+        /** @var Grid $grid */
+        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid->setColumns($this->userGridFields);
+        $grid->setFilters($this->userGridFilters);
+
+        $configuration->addConfiguration($crud);
+        $configuration->addConfiguration($grid);
+
+        $this->write($configuration, $cacheDir, UserController::class);
+    }
+
     private function compileProfileController()
     {
+        $this->setDefaultConfig();
         $configuration = clone $this->configuration;
         /** @var Crud $crud */
         $crud = $this->configuration->getConfigForClass(Crud::class);
@@ -217,6 +232,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $crud->setShowFields($this->profileFields);
 
         $configuration->addConfiguration($crud);
+
         $this->configurations[ProfileController::class] = $configuration;
     }
 
@@ -370,5 +386,18 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         }
 
         return $output;
+    }
+
+    private function write(Configurator $configurator, $cacheDir, $class)
+    {
+        /** @var ConfigurationInterface $configuration */
+        $configs = array();
+        foreach ($configurator->getAllConfigurations() as $configuration) {
+            $reflection = new ReflectionObject($configuration);
+            $configs[$reflection->getName()] = $this->parseConfiguration($configuration);
+        }
+
+        $cacheFile = str_replace('\\', '_', $class);
+        $this->writeCacheFile(sprintf('%s/%s.php.cache', $cacheDir, $cacheFile), sprintf('<?php return unserialize(\'%s\');', serialize($configs)));
     }
 }
