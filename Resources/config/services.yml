@@ -4,7 +4,7 @@ services:
         arguments:
             - '@controller_name_converter'
             - '@routing.resolver'
-            - '@reader'
+            - '@annotation_reader'
             - '@kernel'
         tags:
             - { name: routing.loader }
