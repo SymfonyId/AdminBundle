@@ -324,7 +324,7 @@ class CrudHandler implements ContainerAwareInterface
 
     public function getErrorMessage()
     {
-
+        return $this->errorMessage;
     }
 
     private function fireEvent($name, $handler)
