@@ -28,8 +28,8 @@ abstract class Controller extends Base
         }
 
         $cacheDir = $this->container->getParameter('kernel.cache_dir');
-        $caches = require $cacheDir.Constants::CACHE_PATH;
-        $configurations = $caches[$key];
+        $cacheFile = str_replace('\\', '_', $key);
+        $configurations = require sprintf('%s/%s/%s.php.cache', $cacheDir, Constants::CACHE_DIR, $cacheFile);
         /** @var array $configuration */
         foreach ($configurations as $key => $configuration) {
             $config = null;

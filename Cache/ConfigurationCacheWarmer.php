@@ -137,7 +137,11 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->compileControllerConfiguration();
         $this->compileEntityConfiguration();
 
-        $caches = array();
+        $cacheDir = sprintf('%s/%s', $cacheDir, Constants::CACHE_DIR);
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir);
+        }
+
         /** @var Configurator $configurator */
         foreach ($this->configurations as $class => $configurator) {
             /** @var ConfigurationInterface $configuration */
@@ -147,10 +151,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
                 $configs[$reflection->getName()] = $this->parseConfiguration($configuration);
             }
 
-            $caches[$class] = $configs;
+            $cacheFile = str_replace('\\', '_', $class);
+            $this->writeCacheFile(sprintf('%s/%s.php.cache', $cacheDir, $cacheFile), sprintf('<?php return %s;', var_export($configs, true)));
         }
-
-        $this->writeCacheFile($cacheDir.Constants::CACHE_PATH, sprintf('<?php return %s;', var_export($caches, true)));
     }
 
     /**

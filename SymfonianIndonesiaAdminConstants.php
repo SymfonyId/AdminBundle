@@ -39,5 +39,5 @@ class SymfonianIndonesiaAdminConstants
     const TEMPLATE_FORM = 'SymfonianIndonesiaAdminBundle:Form:fields.html.twig';
     const TEMPLATE_PAGINATION = 'SymfonianIndonesiaAdminBundle:Layout:pagination.html.twig';
 
-    const CACHE_PATH = '/siab.caches.php';
+    const CACHE_DIR = 'siab';
 }
