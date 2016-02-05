@@ -153,7 +153,7 @@ abstract class CrudController extends Controller
             return $returnHandler;
         }
 
-        return new JsonResponse(array('status' => $returnHandler));
+        return new JsonResponse(array('status' => $returnHandler, 'message' => $handler->getErrorMessage()));
     }
 
     /**

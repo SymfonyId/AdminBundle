@@ -39,6 +39,7 @@ class CrudHandler implements ContainerAwareInterface
     private $class;
     private $template;
     private $viewParams = array();
+    private $errorMessage;
 
     /**
      * @param ContainerInterface $container
@@ -194,8 +195,14 @@ class CrudHandler implements ContainerAwareInterface
             return $event->getResponse();
         }
 
-        $this->manager->remove($data);
-        $this->manager->flush();
+        try {
+            $this->manager->remove($data);
+            $this->manager->flush();
+        } catch (\Exception $ex) {
+            $this->errorMessage = 'Data tidak dapat dihapus karena berelasi atau telah dihapus sebelumnya.';
+
+            return false;
+        }
 
         return true;
     }
@@ -313,6 +320,11 @@ class CrudHandler implements ContainerAwareInterface
         }
 
         $this->viewParams = array_merge($this->viewParams, $viewParams);
+    }
+
+    public function getErrorMessage()
+    {
+
     }
 
     private function fireEvent($name, $handler)
