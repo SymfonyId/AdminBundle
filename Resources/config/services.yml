@@ -1,9 +1,11 @@
 services:
     symfonian_id.admin.home_route_loader:
-        class: Symfonian\Indonesia\AdminBundle\Route\HomeRouteLoader
+        class: Symfonian\Indonesia\AdminBundle\Route\SiabRouteLoader
         arguments:
-            - '%symfonian_id.admin.home.route_path%'
-            - '%symfonian_id.admin.home.controller%'
+            - '@controller_name_converter'
+            - '@routing.resolver'
+            - '@reader'
+            - '@kernel'
         tags:
             - { name: routing.loader }
 
