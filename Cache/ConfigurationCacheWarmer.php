@@ -398,6 +398,6 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         }
 
         $cacheFile = str_replace('\\', '_', $class);
-        $this->writeCacheFile(sprintf('%s/%s.php.cache', $cacheDir, $cacheFile), sprintf('<?php return unserialize(\'%s\');', serialize($configs)));
+        $this->writeCacheFile(sprintf('%s/%s.php.cache', $cacheDir, $cacheFile), sprintf('<?php return %s;', var_export($configs, true)));
     }
 }
