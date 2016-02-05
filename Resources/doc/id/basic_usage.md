@@ -12,8 +12,9 @@ namespace AppBundle\Entity;
  */
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfonian\Indonesia\AdminBundle\Grid\Column;
+use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -29,6 +30,8 @@ class IdName implements EntityInterface
     protected $id;
 
     /**
+     * @Column()
+     * @Filter()
      * @ORM\Column(name="program_name", type="string", length=77)
      */
     protected $name;
@@ -49,11 +52,6 @@ class IdName implements EntityInterface
     {
         return $this->name;
     }
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
 }
 ```
 
@@ -68,23 +66,23 @@ namespace AppBundle\Controller;
  * Url: http://blog.khodam.org
  */
 
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Crud;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Grid;
-use Symfonian\Indonesia\AdminBundle\Annotation\Schema\Page;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Page;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 
 /**
  * @Route("/contoh")
  *
  * @Page("Sekedar Contoh", description="Ini adalah sekedar contoh CRUD menggunakan SIAB")
- * @Crud("AppBundle\Entity\IdName", showFields={"name"})
- * @Grid({"name"}, filter={"name"})
+ * @Crud("AppBundle\Entity\IdName", form="AppBundle\Form\IdNameType", showFields={"name"})
  */
 class IdNameController extends CrudController
 {
+    protected function getClassName()
+    {
+        return __CLASS__;
+    }
 }
 ```
 
@@ -158,7 +156,7 @@ class Builder extends BaseMenu
 
 ```lang=yaml
 assetic:
-    bundles: ['AppBundle', 'SymfonianIndonesiaAdminBundle']
+    bundles: ['OroriStockBundle', 'SymfonianIndonesiaAdminBundle', 'FOSUserBundle']
     node: /usr/bin/nodejs #change to your path
     filters:
         cssrewrite: ~
@@ -184,23 +182,23 @@ knp_menu:
     templating: false
     default_renderer: twig
 
+symfonyid_core:
+    micro_cache:
+        cache_lifetime: 5
+
 symfonyid_admin:
-    app_title: 'SIAB Skeleton'
+    app_title: 'ORORI STOCK SYSTEM'
+    app_short_title: 'OSS'
     per_page: 10
     identifier: 'id'
     date_time_format: 'd-m-Y' #php date time format
-    menu: app_main_menu #lihat service menu pada point 5
-    profile_fields: ['username', 'email', 'roles']
+    menu: app_main_menu
+    profile_fields: ['full_name', 'username', 'email', 'roles', 'enabled']
     filter: ['name']
     translation_domain: 'SymfonianIndonesiaAdminBundle'
-    security:
-        user:
-            form_class: symfonian_id.admin.user_form
-            entity_class: AppBundle\Entity\User
-    grid_action:
-        show: true
-        edit: true
-        delete: true
+    user:
+        form_class: symfonian_id.admin.user_form
+        entity_class: Orori\StockBundle\Entity\User
     themes:
         dashboard: 'SymfonianIndonesiaAdminBundle:Index:index.html.twig'
         form_theme: 'SymfonianIndonesiaAdminBundle:Form:fields.html.twig'
@@ -209,7 +207,7 @@ symfonyid_admin:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: AppBundle\Entity\User
+    user_class: Orori\StockBundle\Entity\User
 ```
 
 Jangan lupa untuk mendaftarkan di `app/config/config.yml`
@@ -222,7 +220,9 @@ services:
         class: AppBundle\Menu\Builder
         arguments:
             - '@router'
-            - '@service_container'
+            - '@translator'
+            - '@security.authorization_checker'
+            - '%symfonian_id.admin.translation_domain%'
 
     app.main_menu:
         class: Knp\Menu\MenuItem
