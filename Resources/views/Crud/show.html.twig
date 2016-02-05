@@ -23,121 +23,124 @@
 
 {%- block content -%}
     {% spaceless %}
-        <div class="col-md-12 col-lg-12 col-sm-12">
-            <div class="box box-success box-solid">
-                <div class="box-header">
-                    <h3 class="box-title">{{- page_title -}}</h3>
-                </div>
-                <div class="box-body">
-                    <div class="col-md-12 col-lg-12 col-sm-12 margin-bottom-7">
-                        {%- for property in data -%}
-                            <div class="col-md-2 col-lg-2 col-sm-2 border-left">
-                                {{- property.name | humanize -}}
-                            </div>
-                            <div class="col-md-10 col-lg-10 col-sm-10">
-                                {%- if property.value.timezone is defined -%}
-                                    {{- property.value | date(date_time_format) -}}
-                                {%- else -%}
-                                    {%- if property.value is iterable -%}
-                                        {%- set value = '' -%}
-                                        {%- for i, v in property.value -%}
-                                            {%- set value = value ~ v ~ ', ' -%}
-                                        {%- endfor -%}
-                                        {{- value | trim(', ') | raw -}}
-                                    {%- else -%}
-                                        {% if property.value is numeric %}
-                                            {{- property.value | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <h3 class="box-title">{{- page_title -}}</h3>
+            </div>
+            <div class="box-body">
+                <div class="col-md-12 col-lg-12 col-sm-12 margin-bottom-7">
+                {%- for property in data -%}
+                    <div class="col-md-2 col-lg-2 col-sm-2 border-left">
+                        {{- property.name | humanize -}}
+                    </div>
+                    <div class="col-md-10 col-lg-10 col-sm-10">
+                        {%- if property.value.timezone is defined -%}
+                            {{- property.value | date(date_time_format) -}}
+                        {%- else -%}
+                            {%- if property.value is iterable -%}
+                                {%- set value = '' -%}
+                                {%- for i, v in property.value -%}
+                                    {%- set value = value ~ v ~ ', ' -%}
+                                {%- endfor -%}
+                                {{- value | trim(', ') | raw -}}
+                            {%- else -%}
+                                {% if property.value is numeric %}
+                                    {{- property.value | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+                                {% else %}
+                                    {% if property.value matches '/\.(?:png|jpg|jpeg|xls|xlsx|pdf|doc|docx|mp3|mp4|3gp|mkv)$/' %}
+                                        <a href="{{- upload_dir['web_path'] ~ property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
+                                    {% else %}
+                                        {% if property.value is empty %}
+                                            {{ '&nbsp' | raw }}
                                         {% else %}
-                                            {% if property.value matches '/\.(?:png|jpg|jpeg|xls|xlsx|pdf|doc|docx|mp3|mp4|3gp|mkv)$/' %}
-                                                <a href="{{- upload_dir['web_path'] ~ property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
+                                            {% if property.value is boolean %}
+                                                <label>
+                                                    <input {% if property.value is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                                </label>
                                             {% else %}
-                                                {% if property.value is empty %}
-                                                    {{ '&nbsp' | raw }}
-                                                {% else %}
-                                                    {% if property.value is boolean %}
-                                                        <label>
-                                                            <input {% if property.value is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
-                                                        </label>
-                                                    {% else %}
-                                                        {{- property.value | raw -}}
-                                                    {% endif %}
-                                                {% endif %}
+                                                {{- property.value | raw -}}
                                             {% endif %}
                                         {% endif %}
-                                    {%- endif -%}
-                                {%- endif -%}
-                            </div>
-                        {%- endfor-%}
-                    </div>
-                    <div>
-                        <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
-                        {%- if action is sameas('GRID_ACTION_DELETE') -%}
-                            <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {%- endif -%}
                         {%- endif -%}
                     </div>
+                {%- endfor-%}
+                </div>
+                <div>
+                    <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                    {%- if action is sameas('GRID_ACTION_DELETE') -%}
+                        <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                    {%- endif -%}
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal modal-warning delete-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                        <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                    </div>
+    <div class="modal modal-warning delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                    <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
                 </div>
             </div>
         </div>
+    </div>
     {% endspaceless %}
 {%- endblock -%}
 
 {%- block javascript -%}
     {% spaceless %}
-        <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                jQuery('.sfid-toggle').bootstrapToggle();
-                if ('delete' === document.URL.substr(document.URL.length - 6)) {
-                    setTimeout(function() {
-                        jQuery('.delete-modal').modal({
-                            backdrop: 'static'
-                        });
-                    }, 10);
-                }
+    <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery('.sfid-toggle').bootstrapToggle();
 
-                jQuery(document).on('click', '.delete', function () {
+            var url = document.URL.slice(document.URL.indexOf('?'));
+
+            if ('delete' === url.substr(1, 6)) {
+                setTimeout(function() {
                     jQuery('.delete-modal').modal({
                         backdrop: 'static'
                     });
-                });
+                }, 10);
+            }
 
-                jQuery(document).on('click', '.delete-action', function () {
-                    var url = document.URL.replace('show', 'delete');
-                    jQuery.ajax({
-                        url: url,
-                        type: 'DELETE'
-                    }).done(function (response) {
-                        if (true === response.status) {
-                            var url = document.URL.split('/');
-                            url.splice(-3,3).push('list');
-                            window.location = url.join('/');
-                        } else {
-                            jQuery('.response-message').html(response.message);
-                            jQuery('.delete-action').remove();
-                            jQuery('.delete-modal').modal({
-                                backdrop: 'static'
-                            });
-                        }
-                    });
+            jQuery(document).on('click', '.delete', function () {
+                jQuery('.delete-modal').modal({
+                    backdrop: 'static'
                 });
             });
-        </script>
+
+            jQuery(document).on('click', '.delete-action', function () {
+                var url = document.URL.replace('show', 'delete');
+                jQuery.ajax({
+                    url: url,
+                    type: 'DELETE'
+                }).done(function (response) {
+                    if (true === response.status) {
+                        var url = document.URL.split('/');
+                        url.splice(-3,3).push('list');
+                        window.location = url.join('/');
+                    } else {
+                        jQuery('.response-message').html(response.message);
+                        jQuery('.delete-action').remove();
+                        jQuery('.delete-modal').modal({
+                            backdrop: 'static'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
     {% endspaceless %}
 {%- endblock -%}
