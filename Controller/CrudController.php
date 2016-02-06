@@ -27,15 +27,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 abstract class CrudController extends Controller
 {
     private $viewParams = array();
-
-    /**
-     * @Route("/new/")
-     * @Method({"POST", "GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
+    
     public function newAction(Request $request)
     {
         /** @var Configurator $configuration */
@@ -58,15 +50,6 @@ abstract class CrudController extends Controller
         return $this->handle($request, Constants::ACTION_CREATE, $crud->getCreateTemplate(), $entity, $form);
     }
 
-    /**
-     * @Route("/{id}/edit/")
-     * @Method({"POST", "GET"})
-     *
-     * @param Request $request
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function editAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
@@ -88,15 +71,6 @@ abstract class CrudController extends Controller
         return $this->handle($request, Constants::ACTION_UPDATE, $crud->getEditTemplate(), $entity, $form);
     }
 
-    /**
-     * @Route("/{id}/show/")
-     * @Method({"GET"})
-     *
-     * @param Request $request
-     * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function showAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
@@ -126,14 +100,6 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
-    /**
-     * @Route("/{id}/delete/")
-     * @Method({"DELETE"})
-     *
-     * @param $id
-     *
-     * @return JsonResponse
-     */
     public function deleteAction($id)
     {
         /** @var Configurator $configuration */
