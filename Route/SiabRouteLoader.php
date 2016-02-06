@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
@@ -80,6 +81,16 @@ class SiabRouteLoader extends DelegatingLoader
         return 'siab' === $type;
     }
 
+    private function getBundleName($resource)
+    {
+        $temp = explode('/', $resource);
+        if (!strpos(strtolower($temp[0]), 'bundle')) {
+            throw new \InvalidArgumentException('Resources is not valid');
+        }
+
+        return str_replace(array('bundle', '@'), array('', ''), $temp[0]);
+    }
+
     private function getControllerDir($resource)
     {
         return $this->kernel->locateResource($resource);
@@ -95,6 +106,7 @@ class SiabRouteLoader extends DelegatingLoader
         foreach ($finder as $file) {
             $controllers[] = $this->getReflectionClass($file);
         }
+        $controllers[] = new \ReflectionClass(UserController::class);
 
         return $controllers;
     }
@@ -126,7 +138,7 @@ class SiabRouteLoader extends DelegatingLoader
         foreach ($controller->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if (strpos(strtolower($method), 'action')) {
                 $prefixName = str_replace('\\', '_', $controller->getName());
-                $collection->addCollection($this->compileRoute($prefixName, $method, $route));
+                $collection->addCollection($this->compileRoute($prefixName, $controller, $method, $route));
             }
         }
     }
@@ -143,7 +155,7 @@ class SiabRouteLoader extends DelegatingLoader
         return null;
     }
 
-    private function compileRoute($prefixName, \ReflectionMethod $method, Route $route = null)
+    private function compileRoute($prefixName, \ReflectionClass $class, \ReflectionMethod $method, Route $route = null)
     {
         $collection = new RouteCollection();
 
@@ -160,22 +172,24 @@ class SiabRouteLoader extends DelegatingLoader
         }
 
         if (empty($routeAnnotations)) {
-            $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, null, null);
+            $this->addRoute($class, $method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, null, null);
         } else {
             foreach ($routeAnnotations as $routeAnnotation) {
-                $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, $routeAnnotation, $methodAnnotaion);
+                $this->addRoute($class, $method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, $routeAnnotation, $methodAnnotaion);
             }
         }
 
         return $collection;
     }
 
-    private function addRoute(\ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $controllerRoute = null, Route $route = null, Method $method = null)
+    private function addRoute(\ReflectionClass $reflectionClass, \ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $controllerRoute = null, Route $route = null, Method $method = null)
     {
+        $controller = $reflectionClass->getName().'::'.$reflectionMethod->getName();
+        $methodName = str_replace('action', '', strtolower($reflectionMethod->getName()));
+
         $loop = true;
         $index = 0;
         while ($loop) {
-            $methodName = str_replace('action', '', strtolower($reflectionMethod->getName()));
             if ('list' === $methodName && 0 === $index) {
                 $loop = true;
                 ++$index;
@@ -197,7 +211,7 @@ class SiabRouteLoader extends DelegatingLoader
 
             $symfonyRoute = new SymfonyRoute(
                 $path,
-                $routeAction->getDefaults(),
+                array_merge($routeAction->getDefaults(), array('_controller' => $controller)),
                 $routeAction->getRequirements(),
                 array_merge($routeAction->getOptions(), array('expose' => true)),
                 $routeAction->getHost(),
