@@ -27,7 +27,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 abstract class CrudController extends Controller
 {
     private $viewParams = array();
-    
+
     public function newAction(Request $request)
     {
         /** @var Configurator $configuration */
@@ -122,15 +122,6 @@ abstract class CrudController extends Controller
         return new JsonResponse(array('status' => $returnHandler, 'message' => $handler->getErrorMessage()));
     }
 
-    /**
-     * @Route("/")
-     * @Route("/list/")
-     * @Method({"GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function listAction(Request $request)
     {
         $translator = $this->container->get('translator');
