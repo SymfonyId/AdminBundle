@@ -90,7 +90,6 @@ class SiabRouteLoader extends DelegatingLoader
         $finder = new Finder();
         $finder->name('*Controller.php')->in($dir);
 
-
         $controllers = array();
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
@@ -122,10 +121,12 @@ class SiabRouteLoader extends DelegatingLoader
 
     private function registerRoute(RouteCollection $collection, \ReflectionClass $controller)
     {
+        $route = $this->parseController($controller) ?: new Route(array('path' => ''));
+
         foreach ($controller->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if (strpos(strtolower($method), 'action')) {
                 $prefixName = str_replace('\\', '_', $controller->getName());
-                $collection->addCollection($this->compileRoute($prefixName, $this->parseController($controller), $controller, $method));
+                $collection->addCollection($this->compileRoute($prefixName, $method, $route));
             }
         }
     }
@@ -139,15 +140,12 @@ class SiabRouteLoader extends DelegatingLoader
             }
         }
 
-        return new Route(array('path' => ''));
+        return null;
     }
 
-    private function compileRoute($prefixName, Route $route, \ReflectionClass $class, \ReflectionMethod $method)
+    private function compileRoute($prefixName, \ReflectionMethod $method, Route $route = null)
     {
         $collection = new RouteCollection();
-        if ($path = $route->getPath()) {
-            $collection->addPrefix($path, $route->getDefaults());
-        }
 
         $annoations = $this->reader->getMethodAnnotations($method);
         $routeAnnotations = array();
@@ -162,42 +160,50 @@ class SiabRouteLoader extends DelegatingLoader
         }
 
         if (empty($routeAnnotations)) {
-            $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), null, null);
+            $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, null, null);
         } else {
             foreach ($routeAnnotations as $routeAnnotation) {
-                $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $routeAnnotation, $methodAnnotaion);
+                $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, $routeAnnotation, $methodAnnotaion);
             }
         }
 
         return $collection;
     }
 
-    private function addRoute(\ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $route = null, Method $method = null)
+    private function addRoute(\ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $controllerRoute = null, Route $route = null, Method $method = null)
     {
         $loop = true;
         $index = 0;
-        While ($loop) {
+        while ($loop) {
             $methodName = str_replace('action', '', strtolower($reflectionMethod->getName()));
             if ('list' === $methodName && 0 === $index) {
                 $loop = true;
-                $index++;
+                ++$index;
             } else {
                 $loop = false;
             }
-            if (!$route || 'list' === $methodName) {
-                $route = $this->generateRoute($methodName, $loop);
-                $method = $this->generateMethod($methodName);
+
+            $routeAction = $this->generateRoute($methodName, $loop);
+            $methodAction = $this->generateMethod($methodName);
+
+            $path = '';
+            if ($controllerRoute) {
+                $path = $controllerRoute->getPath();
             }
+            if ($route) {
+                $path = $path.$route->getPath();
+            }
+            $path = $path.$routeAction->getPath();
 
             $symfonyRoute = new SymfonyRoute(
-                $route->getPath(),
-                $route->getDefaults(),
-                $route->getRequirements(),
-                array_merge($route->getOptions(), array('expose' => true)),
-                $route->getHost(),
-                $route->getSchemes(),
-                $route->getMethods()?: $method->getMethods(),
-                $route->getCondition()
+                $path,
+                $routeAction->getDefaults(),
+                $routeAction->getRequirements(),
+                array_merge($routeAction->getOptions(), array('expose' => true)),
+                $routeAction->getHost(),
+                $routeAction->getSchemes(),
+                $method ? $method->getMethods() : $methodAction->getMethods(),
+                $routeAction->getCondition()
             );
             $routeName = str_replace(array('bundle', 'controller', 'action', '__'), array('', '', '', '_'), $name);
             $collection->add($this->getUniqueRouteName($collection, $routeName), $symfonyRoute);
@@ -222,7 +228,7 @@ class SiabRouteLoader extends DelegatingLoader
     private function generateMethod($methodName)
     {
         switch ($methodName) {
-            case 'new':
+            case 'new' :
             case 'edit':
                 return new Method(array(
                     'methods' => array('GET', 'POST'),
@@ -251,14 +257,13 @@ class SiabRouteLoader extends DelegatingLoader
         switch ($methodName) {
             case 'new':
             case 'list':
-                VarDumper::dump($flag);
                 if (!$flag) {
                     return new Route(array(
-                            'path' => '/'.$methodName.'/')
+                            'path' => '/'.$methodName.'/', )
                     );
                 } else {
                     return new Route(array(
-                            'path' => '/')
+                            'path' => '/', )
                     );
                 }
                 break;
@@ -266,7 +271,7 @@ class SiabRouteLoader extends DelegatingLoader
             case 'show':
             case 'delete':
                 return new Route(array(
-                    'path' => '/{id}/'.$methodName.'/'
+                    'path' => '/{id}/'.$methodName.'/',
                 ));
                 break;
         }
