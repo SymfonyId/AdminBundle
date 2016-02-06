@@ -7,8 +7,6 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  * Url: https://github.com/ihsanudin
  */
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
@@ -150,7 +148,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $filters, $crud->getAction(), $grid->isNormalizeFilter(), $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $filters, $crud->getAction(), $crud->isAllowCreate(), $grid->isNormalizeFilter(), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }
@@ -179,7 +177,6 @@ abstract class CrudController extends Controller
         $this->viewParams['use_file_style'] = $util->isUseFileChooser();
         $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
         $this->viewParams['use_numeric'] = $util->isUseNumeric();
-        $viewParams['action'] = $crud->isAllowCreate();
         $this->viewParams['autocomplete'] = $util->getAutoComplete() ?: array('route' => 'home', 'value_storage_selector' => '.selector');
 
         $handler->setEntity($crud->getEntityClass());

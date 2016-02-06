@@ -42,7 +42,7 @@
 </table>
 <div class="padding-top-7">
     <div class="pull-left">
-        {%- if action is sameas(true) -%}
+        {%- if allow_create is sameas(true) -%}
             <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
         {% endif %}
     </div>

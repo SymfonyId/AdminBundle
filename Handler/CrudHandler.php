@@ -88,10 +88,11 @@ class CrudHandler implements ContainerAwareInterface
      * @param array      $gridFields
      * @param array      $filterFields
      * @param array      $actionAllowed
+     * @param bool|true  $allowCreate
      * @param bool|false $normalizeFilter
      * @param bool|true  $formatNumber
      */
-    public function viewList(Request $request, array $gridFields, array $filterFields, array $actionAllowed, $normalizeFilter = false, $formatNumber = true)
+    public function viewList(Request $request, array $gridFields, array $filterFields, array $actionAllowed, $allowCreate = true, $normalizeFilter = false, $formatNumber = true)
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
         $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
@@ -171,6 +172,7 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $actionAllowed;
+        $viewParams['allow_create'] = $allowCreate;
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['formating_number'] = $formatNumber;
         $viewParams['record'] = $data;
