@@ -24,7 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\VarDumper\VarDumper;
 
 class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInterface
 {

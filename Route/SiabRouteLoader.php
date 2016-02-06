@@ -15,7 +15,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\VarDumper\VarDumper;
 
 class SiabRouteLoader extends DelegatingLoader
 {
