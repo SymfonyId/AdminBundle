@@ -83,16 +83,6 @@ class SiabRouteLoader extends DelegatingLoader
         return 'siab' === $type;
     }
 
-    private function getBundleName($resource)
-    {
-        $temp = explode('/', $resource);
-        if (!strpos(strtolower($temp[0]), 'bundle')) {
-            throw new \InvalidArgumentException('Resources is not valid');
-        }
-
-        return str_replace(array('bundle', '@'), array('', ''), $temp[0]);
-    }
-
     private function getControllerDir($resource)
     {
         return $this->kernel->locateResource($resource);
