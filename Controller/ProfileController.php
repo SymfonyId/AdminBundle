@@ -26,10 +26,6 @@ class ProfileController extends Controller
     /**
      * @Route("/profile/")
      * @Method({"GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function profileAction(Request $request)
     {
@@ -75,10 +71,6 @@ class ProfileController extends Controller
     /**
      * @Route("/change_password/")
      * @Method({"GET", "POST"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function changePasswordAction(Request $request)
     {

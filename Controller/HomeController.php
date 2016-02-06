@@ -9,10 +9,16 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
  *
  */
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 
 class HomeController extends Base
 {
+    /**
+     * @Route("/")
+     * @Method({"GET"})
+     */
     public function indexAction()
     {
         return $this->render($this->container->getParameter('symfonian_id.admin.themes.dashboard'), array(

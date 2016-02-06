@@ -3,6 +3,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Route;
 
 use Doctrine\Common\Annotations\Reader;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
@@ -11,6 +12,7 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -51,22 +53,20 @@ class SiabRouteLoader extends DelegatingLoader
             $resources = (array) $resources;
         }
 
-        $collections = array();
+        $collection = new RouteCollection();
         foreach ($resources as $resource) {
             $controllers = $this->findAllControllerFromDir($this->getControllerDir($resource));
             /** @var \ReflectionClass $controller */
             foreach ($controllers as $controller) {
-                if ($controller->isSubclassOf(CrudController::class)) { //&& !$this->isUseRouteAnnotation($controller)) {
-                    $collections[] = $this->registerRoute($controller);
-                } else {
-                    $collections[] = parent::load($resource, null);
+                if ($controller->isSubclassOf(CrudController::class)) {
+                    $this->registerRoute($collection, $controller);
                 }
             }
         }
 
-        exit();
-
         $this->loaded = true;
+
+        return $collection;
     }
 
     /**
@@ -120,27 +120,157 @@ class SiabRouteLoader extends DelegatingLoader
         return null;
     }
 
-    private function isUseRouteAnnotation(\ReflectionClass $reflectionClass)
+    private function registerRoute(RouteCollection $collection, \ReflectionClass $controller)
     {
-        foreach ($this->reader->getClassAnnotations($reflectionClass) as $annotation) {
-            if ($annotation instanceof Route) {
-                return true;
+        foreach ($controller->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if (strpos(strtolower($method), 'action')) {
+                $prefixName = str_replace('\\', '_', $controller->getName());
+                $collection->addCollection($this->compileRoute($prefixName, $this->parseController($controller), $controller, $method));
             }
         }
-
-        foreach ($reflectionClass->getMethods() as $method) {
-            foreach ($this->reader->getMethodAnnotations($method) as $annotation) {
-                if ($annotation instanceof Route) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
-    private function registerRoute(\ReflectionClass $controller)
+    private function parseController(\ReflectionClass $reflectionClass)
     {
-        VarDumper::dump($controller);
+        $classAnnotations = $this->reader->getClassAnnotations($reflectionClass);
+        foreach ($classAnnotations as $annotation) {
+            if ($annotation instanceof Route) {
+                return $annotation;
+            }
+        }
+
+        return new Route(array('path' => ''));
+    }
+
+    private function compileRoute($prefixName, Route $route, \ReflectionClass $class, \ReflectionMethod $method)
+    {
+        $collection = new RouteCollection();
+        if ($path = $route->getPath()) {
+            $collection->addPrefix($path, $route->getDefaults());
+        }
+
+        $annoations = $this->reader->getMethodAnnotations($method);
+        $routeAnnotations = array();
+        $methodAnnotaion = null;
+        foreach ($annoations as $key => $annoation) {
+            if ($annoation instanceof Route) {
+                $routeAnnotations[] = $annoation;
+            }
+            if ($annoation instanceof Method) {
+                $methodAnnotaion = $annoation;
+            }
+        }
+
+        if (empty($routeAnnotations)) {
+            $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), null, null);
+        } else {
+            foreach ($routeAnnotations as $routeAnnotation) {
+                $this->addRoute($method, $collection, strtolower($prefixName.'_'.$method->getName()), $routeAnnotation, $methodAnnotaion);
+            }
+        }
+
+        return $collection;
+    }
+
+    private function addRoute(\ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $route = null, Method $method = null)
+    {
+        $loop = true;
+        $index = 0;
+        While ($loop) {
+            $methodName = str_replace('action', '', strtolower($reflectionMethod->getName()));
+            if ('list' === $methodName && 0 === $index) {
+                $loop = true;
+                $index++;
+            } else {
+                $loop = false;
+            }
+            if (!$route || 'list' === $methodName) {
+                $route = $this->generateRoute($methodName, $loop);
+                $method = $this->generateMethod($methodName);
+            }
+
+            $symfonyRoute = new SymfonyRoute(
+                $route->getPath(),
+                $route->getDefaults(),
+                $route->getRequirements(),
+                array_merge($route->getOptions(), array('expose' => true)),
+                $route->getHost(),
+                $route->getSchemes(),
+                $route->getMethods()?: $method->getMethods(),
+                $route->getCondition()
+            );
+            $routeName = str_replace(array('bundle', 'controller', 'action', '__'), array('', '', '', '_'), $name);
+            $collection->add($this->getUniqueRouteName($collection, $routeName), $symfonyRoute);
+        }
+    }
+
+    private function getUniqueRouteName(RouteCollection $collection, $name)
+    {
+        $flag = false;
+        $index = 1;
+        while ($flag === false) {
+            if ($collection->get($name)) {
+                $name = $name.'_'.$index++;
+            } else {
+                $flag = true;
+            }
+        }
+
+        return $name;
+    }
+
+    private function generateMethod($methodName)
+    {
+        switch ($methodName) {
+            case 'new':
+            case 'edit':
+                return new Method(array(
+                    'methods' => array('GET', 'POST'),
+                ));
+                break;
+            case 'show':
+            case 'list':
+                return new Method(array(
+                    'methods' => array('GET'),
+                ));
+                break;
+            case 'delete':
+                return new Method(array(
+                    'methods' => array('DELETE'),
+                ));
+                break;
+        }
+
+        return new Method(array(
+            'methods' => array(),
+        ));
+    }
+
+    private function generateRoute($methodName, $flag = false)
+    {
+        switch ($methodName) {
+            case 'new':
+            case 'list':
+                VarDumper::dump($flag);
+                if (!$flag) {
+                    return new Route(array(
+                            'path' => '/'.$methodName.'/')
+                    );
+                } else {
+                    return new Route(array(
+                            'path' => '/')
+                    );
+                }
+                break;
+            case 'edit':
+            case 'show':
+            case 'delete':
+                return new Route(array(
+                    'path' => '/{id}/'.$methodName.'/'
+                ));
+                break;
+        }
+
+        return new Route(array('path' => '/'));
     }
 }
