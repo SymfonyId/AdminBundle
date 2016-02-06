@@ -211,6 +211,7 @@ class CrudHandler implements ContainerAwareInterface
      * @param Request         $request
      * @param EntityInterface $data
      * @param array           $showFields
+     * @param boolean         $allowDelete
      */
     public function showDetail(Request $request, EntityInterface $data, array $showFields, $allowDelete = true)
     {

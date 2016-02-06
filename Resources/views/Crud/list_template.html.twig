@@ -42,7 +42,9 @@
 </table>
 <div class="padding-top-7">
     <div class="pull-left">
-        <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+        {%- if action is sameas(true) -%}
+            <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+        {% endif %}
     </div>
     <div class="pull-right">
         {{- knp_pagination_render(pagination) -}}
