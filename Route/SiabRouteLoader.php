@@ -61,6 +61,8 @@ class SiabRouteLoader extends DelegatingLoader
             foreach ($controllers as $controller) {
                 if ($controller->isSubclassOf(CrudController::class)) {
                     $this->registerRoute($collection, $controller);
+                } else {
+                    $collection->addCollection(parent::load($resource, 'annotation'));
                 }
             }
         }
