@@ -188,15 +188,12 @@ class SiabRouteLoader extends DelegatingLoader
                 $loop = false;
             }
 
-            $routeAction = $this->generateRoute($methodName, $loop);
-            $methodAction = $this->generateMethod($methodName);
+            $routeAction = $route ?: $this->generateRoute($methodName, $loop);
+            $methodAction = $method ?: $this->generateMethod($methodName);
 
             $path = '';
             if ($controllerRoute) {
                 $path = $controllerRoute->getPath();
-            }
-            if ($route) {
-                $path = $path.$route->getPath();
             }
             $path = $path.$routeAction->getPath();
 
