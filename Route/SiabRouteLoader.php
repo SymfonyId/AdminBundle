@@ -207,7 +207,7 @@ class SiabRouteLoader extends DelegatingLoader
                 $method ? $method->getMethods() : $methodAction->getMethods(),
                 $routeAction->getCondition()
             );
-            $routeName = str_replace(array('bundle', 'controller', 'action', '__'), array('', '', '', '_'), $name);
+            $routeName = substr(str_replace(array('bundle', 'controller', '__'), array('', '', '_'), $name), 0, -6);
             $collection->add($this->getUniqueRouteName($collection, $routeName), $symfonyRoute);
         }
     }
