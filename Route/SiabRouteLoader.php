@@ -28,8 +28,6 @@ class SiabRouteLoader extends DelegatingLoader
      */
     private $kernel;
 
-    private $loaded = false;
-
     public function __construct(ControllerNameParser $parser, LoaderResolverInterface $resolver, Reader $reader, KernelInterface $kernel)
     {
         $this->reader = $reader;
@@ -38,35 +36,23 @@ class SiabRouteLoader extends DelegatingLoader
     }
 
     /**
-     * @param string $resources
+     * @param string $resource
      * @param null   $type
      *
      * @return RouteCollection
      */
-    public function load($resources, $type = null)
+    public function load($resource, $type = null)
     {
-        if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "siab" loader twice');
-        }
-
-        if (!is_array($resources)) {
-            $resources = (array) $resources;
-        }
-
         $collection = new RouteCollection();
-        foreach ($resources as $resource) {
-            $controllers = $this->findAllControllerFromDir($this->getControllerDir($resource));
-            /** @var \ReflectionClass $controller */
-            foreach ($controllers as $controller) {
-                if ($controller->isSubclassOf(CrudController::class)) {
-                    $this->registerRoute($collection, $controller);
-                } else {
-                    $collection->addCollection(parent::load($resource, 'annotation'));
-                }
+        $controllers = $this->findAllControllerFromDir($this->getControllerDir($resource));
+        /** @var \ReflectionClass $controller */
+        foreach ($controllers as $controller) {
+            if ($controller->isSubclassOf(CrudController::class)) {
+                $this->registerRoute($collection, $controller);
+            } else {
+                $collection->addCollection(parent::load($resource, 'annotation'));
             }
         }
-
-        $this->loaded = true;
 
         return $collection;
     }
