@@ -146,22 +146,22 @@
                 jQuery('.back-to-list').trigger('click');
             });
 
-            {%- if use_date_picker is sameas(true) -%}
+            {%- if use_date_picker is same as(true) -%}
                 jQuery('.datepicker').datepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true
                 });
             {%- endif -%}
 
-            {%- if use_file_style is sameas(true) -%}
+            {%- if use_file_style is same as(true) -%}
                 jQuery(':file').filestyle({input: false});
             {%- endif -%}
 
-            {%- if use_editor is sameas(true) -%}
+            {%- if use_editor is same as(true) -%}
                 jQuery('.editor').wysihtml5();
             {%- endif -%}
 
-            {% if use_numeric is sameas(true) %}
+            {% if use_numeric is same as(true) %}
                 jQuery('.numeric').numeric();
                 jQuery('.positive').numeric({ negative: false });
             {% endif %}

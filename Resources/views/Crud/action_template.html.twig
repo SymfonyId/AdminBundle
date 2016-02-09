@@ -2,17 +2,17 @@
 <td width="22%" class="text-center">
     <div class="btn-group" role="group">
         {%- for i, v in action -%}
-            {%- if v is sameas('GRID_ACTION_SHOW') -%}
+            {%- if v is same as('GRID_ACTION_SHOW') -%}
                 <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-success show">
                     <span class="btn-label"><i class="fa fa-share"></i></span>&nbsp;{{- 'action.show' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>
             {%- endif -%}
-            {%- if v is sameas('GRID_ACTION_EDIT') -%}
+            {%- if v is same as('GRID_ACTION_EDIT') -%}
                 <button data-record="{{- identifier[key] -}}" class="btn btn-labeled btn-warning edit">
                     <span class="btn-label"><i class="fa fa-pencil"></i></span>&nbsp;{{- 'action.edit' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>
             {%- endif -%}
-            {%- if v is sameas('GRID_ACTION_DELETE') -%}
+            {%- if v is same as('GRID_ACTION_DELETE') -%}
                 <button data-record="{{- identifier[key] -}}" class="delete btn btn-labeled btn-danger delete">
                     <span class="btn-label"><i class="fa fa-trash"></i></span>&nbsp;{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
                 </button>

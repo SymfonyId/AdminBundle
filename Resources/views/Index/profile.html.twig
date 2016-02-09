@@ -46,7 +46,7 @@
                             {%- else -%}
                                 {% if property.value is boolean %}
                                     <label>
-                                        <input {% if property.value is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                        <input {% if property.value is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                                     </label>
                                 {% else %}
                                     {{- property.value | raw -}}

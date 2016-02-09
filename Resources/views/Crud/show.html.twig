@@ -51,12 +51,12 @@
                                             {% if property.value matches '/\.(?:png|jpg|jpeg|xls|xlsx|pdf|doc|docx|mp3|mp4|3gp|mkv)$/' %}
                                                 <a href="{{- upload_dir['web_path'] ~ property.value | raw -}}" title="{{- property.value | raw -}}">{{- property.value | raw -}}</a>
                                             {% else %}
-                                                {% if property.value is sameas('') %}
+                                                {% if property.value is same as('') %}
                                                     {{ '&nbsp' | raw }}
                                                 {% else %}
                                                     {% if property.value is boolean %}
                                                         <label>
-                                                            <input {% if property.value is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                                            <input {% if property.value is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                                                         </label>
                                                     {% else %}
                                                         {{- property.value | raw -}}
@@ -71,7 +71,7 @@
                     </div>
                     <div>
                         <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
-                        {%- if action is sameas(true) -%}
+                        {%- if action is same as(true) -%}
                             <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
                         {%- endif -%}
                     </div>

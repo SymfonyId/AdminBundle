@@ -25,7 +25,7 @@
                         {% else %}
                             {% if v is boolean %}
                                 <td class="text-center"><label>
-                                <input {% if v is sameas(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                <input {% if v is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
                             </label>
                             {% else %}
                                 <td>{{- v | raw -}}
@@ -42,7 +42,7 @@
 </table>
 <div class="padding-top-7">
     <div class="pull-left">
-        {%- if allow_create is sameas(true) -%}
+        {%- if allow_create is same as(true) -%}
             <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
         {% endif %}
     </div>
