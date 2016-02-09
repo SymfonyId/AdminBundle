@@ -2,6 +2,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Cache;
 
+/*
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin
+ */
+
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;

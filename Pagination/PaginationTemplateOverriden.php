@@ -2,6 +2,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Pagination;
 
+/*
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin
+ */
+
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

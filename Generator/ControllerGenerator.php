@@ -1,11 +1,11 @@
 <?php
 
+namespace Symfonian\Indonesia\AdminBundle\Generator;
+
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin
  */
-
-namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;

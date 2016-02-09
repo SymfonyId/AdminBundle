@@ -2,15 +2,16 @@
 
 namespace Symfonian\Indonesia\AdminBundle\User;
 
+/**
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin.
+ */
+
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin.
- */
 class AvatarUploader
 {
     /**

@@ -2,6 +2,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Route;
 
+/*
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin
+ */
+
 use Doctrine\Common\Annotations\Reader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -148,11 +153,12 @@ class SiabRouteLoader extends DelegatingLoader
             }
         }
 
+        $name = $route->getName() ?: strtolower($prefixName.'_'.$method->getName());
         if (empty($routeAnnotations)) {
-            $this->addRoute($class, $method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, null, null);
+            $this->addRoute($class, $method, $collection, $name, $route, null, null);
         } else {
             foreach ($routeAnnotations as $routeAnnotation) {
-                $this->addRoute($class, $method, $collection, strtolower($prefixName.'_'.$method->getName()), $route, $routeAnnotation, $methodAnnotaion);
+                $this->addRoute($class, $method, $collection, $name, $route, $routeAnnotation, $methodAnnotaion);
             }
         }
 
