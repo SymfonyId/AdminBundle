@@ -37,8 +37,11 @@ class UploadHandler
 
     public function upload(EntityInterface $entity)
     {
-        $file = null;
+        if (!is_dir($this->dirPath)) {
+            mkdir($this->dirPath);
+        }
 
+        $file = null;
         foreach ($this->fields as $field) {
             $getter = CamelCasizer::underScoretToCamelCase('get_'.$field);
             if (method_exists($entity, $getter)) {
@@ -50,9 +53,6 @@ class UploadHandler
                 $fileName = sha1(uniqid('SIAB_', true)).'.'.$file->getClientOriginalExtension();
 
                 if (!$file->isExecutable()) {
-                    if (!is_dir($this->dirPath)) {
-                        mkdir($this->dirPath);
-                    }
                     $file->move($this->dirPath, $fileName);
                 }
 
