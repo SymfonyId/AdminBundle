@@ -110,7 +110,7 @@ class SiabRouteLoader extends DelegatingLoader
             return new \ReflectionClass($controller);
         }
 
-        return null;
+        return;
     }
 
     private function registerRoute(RouteCollection $collection, \ReflectionClass $controller)
@@ -134,7 +134,7 @@ class SiabRouteLoader extends DelegatingLoader
             }
         }
 
-        return null;
+        return;
     }
 
     private function compileRoute($prefixName, \ReflectionClass $class, \ReflectionMethod $method, Route $route = null)
@@ -158,6 +158,7 @@ class SiabRouteLoader extends DelegatingLoader
             $this->addRoute($class, $method, $collection, $name, $route, null, null);
         } else {
             foreach ($routeAnnotations as $routeAnnotation) {
+                /* @var Route $routeAnnotation */
                 $this->addRoute($class, $method, $collection, $name, $route, $routeAnnotation, $methodAnnotaion);
             }
         }
@@ -199,7 +200,8 @@ class SiabRouteLoader extends DelegatingLoader
                 $method ? $method->getMethods() : $methodAction->getMethods(),
                 $routeAction->getCondition()
             );
-            $routeName = substr(str_replace(array('bundle', 'controller', '__'), array('', '', '_'), $name), 0, -6);
+
+            $routeName = $route && $route->getName() ? $route->getName() : substr(str_replace(array('bundle', 'controller', '__'), array('', '', '_'), $name), 0, -6);
             $collection->add($this->getUniqueRouteName($collection, $routeName), $symfonyRoute);
         }
     }
