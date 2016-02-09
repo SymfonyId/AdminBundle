@@ -4,7 +4,7 @@ services:
         arguments:
             - '@controller_name_converter'
             - '@routing.resolver'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.extractor.extractor_factory'
             - '@kernel'
         tags:
             - { name: routing.loader }

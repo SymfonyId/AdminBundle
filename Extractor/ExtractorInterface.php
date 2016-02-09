@@ -8,5 +8,5 @@ namespace Symfonian\Indonesia\AdminBundle\Extractor;
  */
 interface ExtractorInterface
 {
-    public function extract(\Reflection $reflectionClass);
+    public function extract(\Reflector $reflectionClass);
 }

@@ -3,8 +3,8 @@
 namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
-use Symfonian\Indonesia\AdminBundle\Pagination\PaginationTemplateOverriden;
+use Symfonian\Indonesia\AdminBundle\Compiler\ConfigurationCompiler;
+use Symfonian\Indonesia\AdminBundle\Compiler\PaginationTemplateCompiler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -207,8 +207,8 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
     public function addCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new PaginationTemplateOverriden());
-        $container->addCompilerPass(new Configurator($this->kernel));
+        $container->addCompilerPass(new PaginationTemplateCompiler());
+        $container->addCompilerPass(new ConfigurationCompiler());
     }
 
     public function addCommand(Application $application)

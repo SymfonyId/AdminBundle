@@ -21,7 +21,7 @@ class ClassExtractor implements ExtractorInterface
         $this->reader = $reader;
     }
 
-    public function extract(\Reflection $reflectionClass)
+    public function extract(\Reflector $reflectionClass)
     {
         if (!$reflectionClass instanceof \ReflectionClass) {
             throw new \InvalidArgumentException(sprintf('extract() need \ReflectionClass method as parameter, got %s', get_class($reflectionClass)));

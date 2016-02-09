@@ -7,11 +7,13 @@ namespace Symfonian\Indonesia\AdminBundle\Route;
  * Url: https://github.com/ihsanudin
  */
 
-use Doctrine\Common\Annotations\Reader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
+use Symfonian\Indonesia\AdminBundle\Extractor\MethodExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
@@ -24,18 +26,18 @@ use Symfony\Component\Routing\RouteCollection;
 class SiabRouteLoader extends DelegatingLoader
 {
     /**
-     * @var Reader
+     * @var ExtractorFactory
      */
-    private $reader;
+    private $extractor;
 
     /**
      * @var KernelInterface
      */
     private $kernel;
 
-    public function __construct(ControllerNameParser $parser, LoaderResolverInterface $resolver, Reader $reader, KernelInterface $kernel)
+    public function __construct(ControllerNameParser $parser, LoaderResolverInterface $resolver, ExtractorFactory $extractor, KernelInterface $kernel)
     {
-        $this->reader = $reader;
+        $this->extractor = $extractor;
         $this->kernel = $kernel;
         parent::__construct($parser, $resolver);
     }
@@ -127,8 +129,9 @@ class SiabRouteLoader extends DelegatingLoader
 
     private function parseController(\ReflectionClass $reflectionClass)
     {
-        $classAnnotations = $this->reader->getClassAnnotations($reflectionClass);
-        foreach ($classAnnotations as $annotation) {
+        /** @var ClassExtractor $classExtractor */
+        $classExtractor = $this->extractor->getExtractor(ClassExtractor::class);
+        foreach ($classExtractor->extract($reflectionClass) as $annotation) {
             if ($annotation instanceof Route) {
                 return $annotation;
             }
@@ -141,10 +144,11 @@ class SiabRouteLoader extends DelegatingLoader
     {
         $collection = new RouteCollection();
 
-        $annoations = $this->reader->getMethodAnnotations($method);
+        /** @var MethodExtractor $methodExtractor */
+        $methodExtractor = $this->extractor->getExtractor(MethodExtractor::class);
         $routeAnnotations = array();
         $methodAnnotaion = null;
-        foreach ($annoations as $key => $annoation) {
+        foreach ($methodExtractor->extract($method) as $key => $annoation) {
             if ($annoation instanceof Route) {
                 $routeAnnotations[] = $annoation;
             }

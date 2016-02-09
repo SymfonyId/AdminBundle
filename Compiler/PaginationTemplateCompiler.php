@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Pagination;
+namespace Symfonian\Indonesia\AdminBundle\Compiler;
 
 /*
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
@@ -10,7 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Pagination;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PaginationTemplateOverriden implements CompilerPassInterface
+class PaginationTemplateCompiler implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

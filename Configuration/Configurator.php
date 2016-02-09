@@ -7,28 +7,22 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
  * Url: https://github.com/ihsanudin
  */
 
-use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
+use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
+use Symfonian\Indonesia\AdminBundle\Extractor\PropertyExtractor;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class Configurator extends AbstractListener implements CompilerPassInterface, ContainerAwareInterface
+class Configurator extends AbstractListener implements ContainerAwareInterface
 {
-    /**
-     * @var array
-     */
-    private $template;
-
     /**
      * @var ContainerInterface
      */
@@ -40,22 +34,24 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
     private $formFactory;
 
     /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
      * @var KernelInterface
      */
     private $kernel;
 
+    /**
+     * @var ExtractorFactory
+     */
+    private $extractor;
+
     private $configurations = array();
+    private $template = array();
     protected $filters = array();
     private $freeze = false;
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, ExtractorFactory $extractor)
     {
         $this->kernel = $kernel;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -75,14 +71,6 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
     }
 
     /**
-     * @param Reader $reader
-     */
-    public function setReader(Reader $reader)
-    {
-        $this->reader = $reader;
-    }
-
-    /**
      * @param array $filter
      */
     public function setFilter(array $filter)
@@ -93,22 +81,6 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
     public function setTemplate(array $template)
     {
         $this->template = $template;
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     */
-    public function process(ContainerBuilder $container)
-    {
-        if (!$container->has('symfonian_id.admin.congiration.configurator')) {
-            return;
-        }
-        $definition = $container->findDefinition('symfonian_id.admin.congiration.configurator');
-
-        $taggedServices = $container->findTaggedServiceIds('siab.config');
-        foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall('addConfiguration', array(new Reference($id)));
-        }
     }
 
     /**
@@ -199,7 +171,10 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
 
         $reflectionObject = new \ReflectionObject($this->getController());
         unset($controller);
-        foreach ($this->reader->getClassAnnotations($reflectionObject) as $annotation) {
+
+        /** @var ClassExtractor $classExtractor */
+        $classExtractor = $this->extractor->getExtractor(ClassExtractor::class);
+        foreach ($classExtractor->extract($reflectionObject) as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
                 if ($annotation instanceof ContainerAwareInterface) {
                     $annotation->setContainer($this->container);
@@ -227,8 +202,10 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
         $columns = array();
 
         $reflection = new \ReflectionClass($class);
+        /** @var PropertyExtractor $propertyExtractor */
+        $propertyExtractor = $this->extractor->getExtractor(PropertyExtractor::class);
         foreach ($reflection->getProperties() as $reflectionProperty) {
-            $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
+            $annotations = $propertyExtractor->extract($reflectionProperty);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Filter) {
                     $filters[] = $reflectionProperty->getName();

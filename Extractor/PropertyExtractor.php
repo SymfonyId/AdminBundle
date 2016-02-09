@@ -21,7 +21,7 @@ class PropertyExtractor implements ExtractorInterface
         $this->reader = $reader;
     }
 
-    public function extract(\Reflection $reflectionProperty)
+    public function extract(\Reflector $reflectionProperty)
     {
         if (!$reflectionProperty instanceof \ReflectionProperty) {
             throw new \InvalidArgumentException(sprintf('extract() need \ReflectionProperty method as parameter, got %s', get_class($reflectionProperty)));

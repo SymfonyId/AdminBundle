@@ -3,11 +3,11 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
         arguments:
             - '@kernel'
+            - '@symfonian_id.admin.extractor.extractor_factory'
         calls:
             - [setContainer, ['@service_container']]
             - [setFormFactory, ['@form.factory']]
             - [setFilter, ['%symfonian_id.admin.filter%']]
-            - [setReader, ['@annotation_reader']]
             - [setTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: configureGrid, priority: 255 }
