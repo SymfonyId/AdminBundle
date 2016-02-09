@@ -203,13 +203,15 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         $this->extractor->extract(new \ReflectionClass(UserController::class));
         foreach ($this->extractor->getClassAnnotations() as $annotation) {
-            if ($annotation instanceof Crud) {
-                $crud = clone $annotation;
+            if ($annotation instanceof ConfigurationInterface) {
+                if ($annotation instanceof Crud) {
+                    $crud = clone $annotation;
+                }
+                if ($annotation instanceof Grid) {
+                    $grid = clone $annotation;
+                }
+                $configuration->addConfiguration($annotation);
             }
-            if ($annotation instanceof Grid) {
-                $grid = clone $annotation;
-            }
-            $configuration->addConfiguration($annotation);
         }
 
         $crud->setFormClass($this->userForm);
