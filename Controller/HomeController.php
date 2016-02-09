@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 class HomeController extends Base
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="home", options={"expose"=true})
      * @Method({"GET"})
      */
     public function indexAction()
