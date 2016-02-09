@@ -4,6 +4,7 @@ namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
 use Symfonian\Indonesia\AdminBundle\Compiler\ConfigurationCompiler;
+use Symfonian\Indonesia\AdminBundle\Compiler\ExtractorCompiler;
 use Symfonian\Indonesia\AdminBundle\Compiler\PaginationTemplateCompiler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\BundlePlugins\PluginBundle as Bundle;
@@ -209,6 +210,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     {
         $container->addCompilerPass(new PaginationTemplateCompiler());
         $container->addCompilerPass(new ConfigurationCompiler());
+        $container->addCompilerPass(new ExtractorCompiler());
     }
 
     public function addCommand(Application $application)
