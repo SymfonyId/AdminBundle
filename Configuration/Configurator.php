@@ -10,9 +10,7 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
-use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
-use Symfonian\Indonesia\AdminBundle\Extractor\PropertyExtractor;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -48,10 +46,11 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     protected $filters = array();
     private $freeze = false;
 
-    public function __construct(KernelInterface $kernel, ExtractorFactory $extractor)
+    public function __construct(KernelInterface $kernel, ExtractorFactory $extractor, FormFactory $formFactory)
     {
         $this->kernel = $kernel;
         $this->extractor = $extractor;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -60,14 +59,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    /**
-     * @param FormFactory $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
     }
 
     /**

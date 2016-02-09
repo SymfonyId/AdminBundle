@@ -7,7 +7,6 @@ namespace Symfonian\Indonesia\AdminBundle\Cache;
  * Url: https://github.com/ihsanudin
  */
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use ReflectionClass;
@@ -21,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
@@ -43,9 +43,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private $configuration;
 
     /**
-     * @var Reader
+     * @var ExtractorFactory
      */
-    private $reader;
+    private $extractor;
 
     /**
      * @var FormFactory
@@ -63,9 +63,11 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private $userGridFilters = array();
     private $profileFields = array();
 
-    public function __construct(Configurator $configuration)
+    public function __construct(Configurator $configuration, ExtractorFactory $extractorFactory, FormFactory $formFactory)
     {
         $this->configuration = $configuration;
+        $this->extractor = $extractorFactory;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -74,22 +76,6 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    /**
-     * @param FormFactory $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @param Reader $reader
-     */
-    public function setReader(Reader $reader)
-    {
-        $this->reader = $reader;
     }
 
     /**
@@ -258,7 +244,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private function parseClassAnnotation(ReflectionClass $reflectionClass, Configurator $configuration)
     {
         $config = clone $configuration;
-        foreach ($this->reader->getClassAnnotations($reflectionClass) as $annotation) {
+        $this->extractor->extract($reflectionClass);
+        foreach ($this->extractor->getClassAnnotations() as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
                 if ($annotation instanceof ContainerAwareInterface) {
                     $annotation->setContainer($this->container);
@@ -281,8 +268,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $columns = array();
         $filters = array();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            $annotations = $this->reader->getPropertyAnnotations($reflectionProperty);
-            foreach ($annotations as $annotation) {
+            $this->extractor->extract($reflectionProperty);
+            foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {
                     $filters[] = $reflectionProperty->getName();
                 }

@@ -25,11 +25,11 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Cache\ConfigurationCacheWarmer
         arguments:
             - '@symfonian_id.admin.congiration.configurator'
+            - '@symfonian_id.admin.extractor.extractor_factory'
+            - '@form.factory'
         calls:
             - [setContainer, ['@service_container']]
-            - [setFormFactory, ['@form.factory']]
             - [setFilter, ['%symfonian_id.admin.filter%']]
-            - [setReader, ['@annotation_reader']]
             - [setTemplate, [{new: '%symfonian_id.admin.themes.new_view%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
             - [setForm, ['%symfonian_id.admin.user.user_form%', '%symfonian_id.admin.user.user_entity%']]
             - [setView, ['%symfonian_id.admin.user.show_fields%', '%symfonian_id.admin.user.grid_fields%', '%symfonian_id.admin.user.grid_filters%']]
