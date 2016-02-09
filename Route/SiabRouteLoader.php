@@ -129,9 +129,8 @@ class SiabRouteLoader extends DelegatingLoader
 
     private function parseController(\ReflectionClass $reflectionClass)
     {
-        /** @var ClassExtractor $classExtractor */
-        $classExtractor = $this->extractor->getExtractor(ClassExtractor::class);
-        foreach ($classExtractor->extract($reflectionClass) as $annotation) {
+        $this->extractor->extract($reflectionClass);
+        foreach ($this->extractor->getClassAnnotations() as $annotation) {
             if ($annotation instanceof Route) {
                 return $annotation;
             }
@@ -144,11 +143,10 @@ class SiabRouteLoader extends DelegatingLoader
     {
         $collection = new RouteCollection();
 
-        /** @var MethodExtractor $methodExtractor */
-        $methodExtractor = $this->extractor->getExtractor(MethodExtractor::class);
+        $this->extractor->extract($method);
         $routeAnnotations = array();
         $methodAnnotaion = null;
-        foreach ($methodExtractor->extract($method) as $key => $annoation) {
+        foreach ($this->extractor->getMethodAnnotations() as $key => $annoation) {
             if ($annoation instanceof Route) {
                 $routeAnnotations[] = $annoation;
             }

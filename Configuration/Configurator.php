@@ -172,9 +172,8 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $reflectionObject = new \ReflectionObject($this->getController());
         unset($controller);
 
-        /** @var ClassExtractor $classExtractor */
-        $classExtractor = $this->extractor->getExtractor(ClassExtractor::class);
-        foreach ($classExtractor->extract($reflectionObject) as $annotation) {
+        $this->extractor->extract($reflectionObject);
+        foreach ($this->extractor->getClassAnnotations() as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
                 if ($annotation instanceof ContainerAwareInterface) {
                     $annotation->setContainer($this->container);
@@ -202,11 +201,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $columns = array();
 
         $reflection = new \ReflectionClass($class);
-        /** @var PropertyExtractor $propertyExtractor */
-        $propertyExtractor = $this->extractor->getExtractor(PropertyExtractor::class);
         foreach ($reflection->getProperties() as $reflectionProperty) {
-            $annotations = $propertyExtractor->extract($reflectionProperty);
-            foreach ($annotations as $annotation) {
+            $this->extractor->extract($reflectionProperty);
+            foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {
                     $filters[] = $reflectionProperty->getName();
                 }
