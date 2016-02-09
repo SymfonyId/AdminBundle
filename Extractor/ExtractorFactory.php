@@ -60,7 +60,7 @@ class ExtractorFactory
         $annotations = array();
 
         /** @var PropertyExtractor $extractor */
-        $extractor = $this-$this->getExtractor(PropertyExtractor::class);
+        $extractor = $this->getExtractor(PropertyExtractor::class);
         if ($this->object instanceof \ReflectionClass) {
             foreach ($this->object->getProperties(\ReflectionProperty::IS_PRIVATE) as $reflectionProperty) {
                 $annotations = array_merge($annotations, $extractor->extract($reflectionProperty));
