@@ -135,10 +135,10 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
      * @param $name
      * @return ConfigurationInterface
      */
-    public function getConfigForClass($name)
+    public function getConfiguration($name)
     {
         if (!array_key_exists($name, $this->configurations)) {
-            throw new \InvalidArgumentException(sprintf('Configuration with name %s not found.', $name));
+            throw new \InvalidArgumentException(sprintf('Configuration for %s not found.', $name));
         }
 
         return $this->configurations[$name];
@@ -162,7 +162,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
         }
 
         /** @var Crud $crud */
-        $crud = $this->getConfigForClass(Crud::class);
+        $crud = $this->getConfiguration(Crud::class);
         $crud->setCreateTemplate($this->template['new']);
         $crud->setEditTemplate($this->template['edit']);
         $crud->setShowTemplate($this->template['show']);
@@ -181,7 +181,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
         }
 
         /** @var Grid $grid */
-        $grid = $this->getConfigForClass(Grid::class);
+        $grid = $this->getConfiguration(Grid::class);
         $grid->setFilters($this->filters);
         $grid->setColumns(array());
 
@@ -240,7 +240,7 @@ class Configurator extends AbstractListener implements CompilerPassInterface, Co
         }
 
         /** @var Grid $grid */
-        $grid = $this->getConfigForClass(Grid::class);
+        $grid = $this->getConfiguration(Grid::class);
         if (!empty($filters)) {
             $grid->setFilters($filters);
         }

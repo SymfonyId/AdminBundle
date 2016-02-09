@@ -63,13 +63,13 @@ class UserViewManipulator extends AbstractListener
         }
 
         /** @var Crud $crud */
-        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setFormClass($this->formClass);
         $crud->setEntityClass($this->entityClass);
         $crud->setShowFields($this->showFields);
 
         /** @var Grid $grid */
-        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid = $this->configuration->getConfiguration(Grid::class);
         $grid->setColumns($this->gridFields);
         $grid->setFilters($this->gridFilters);
 

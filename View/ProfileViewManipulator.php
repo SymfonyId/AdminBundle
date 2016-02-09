@@ -50,7 +50,7 @@ class ProfileViewManipulator
         }
 
         /** @var Crud $crud */
-        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setFormClass($this->formClass);
         $crud->setShowFields($this->profileFields);
 

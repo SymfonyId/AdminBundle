@@ -164,14 +164,14 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private function setDefaultConfig()
     {
         /** @var Crud $crud */
-        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setCreateTemplate($this->template['new']);
         $crud->setEditTemplate($this->template['edit']);
         $crud->setShowTemplate($this->template['show']);
         $crud->setListTemplate($this->template['list']);
 
         /** @var Grid $grid */
-        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid = $this->configuration->getConfiguration(Grid::class);
         $grid->setFilters($this->filters);
         $grid->setColumns(array());
 
@@ -210,13 +210,13 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->setDefaultConfig();
         $configuration = clone $this->configuration;
         /** @var Crud $crud */
-        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setFormClass($this->userForm);
         $crud->setEntityClass($this->userEntity);
         $crud->setShowFields($this->userShowFields);
 
         /** @var Grid $grid */
-        $grid = $this->configuration->getConfigForClass(Grid::class);
+        $grid = $this->configuration->getConfiguration(Grid::class);
         $grid->setColumns($this->userGridFields);
         $grid->setFilters($this->userGridFilters);
 
@@ -231,7 +231,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->setDefaultConfig();
         $configuration = clone $this->configuration;
         /** @var Crud $crud */
-        $crud = $this->configuration->getConfigForClass(Crud::class);
+        $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setFormClass($this->profileForm);
         $crud->setShowFields($this->profileFields);
 
@@ -244,10 +244,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     {
         $config = clone $configuration;
         /** @var Crud $crud */
-        $crud = $config->getConfigForClass(Crud::class);
+        $crud = $config->getConfiguration(Crud::class);
         if ($entity->getName() === $crud->getEntityClass()) {
             /** @var Grid $grid */
-            $grid = $config->getConfigForClass(Grid::class);
+            $grid = $config->getConfiguration(Grid::class);
             $grid = $this->parsePropertyAnnotation($entity, $grid);
             $config->addConfiguration($grid);
         }

@@ -31,7 +31,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
 
         $event = new FilterFormEvent();
@@ -53,7 +53,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_UPDATE);
 
         $event = new FilterFormEvent();
@@ -74,7 +74,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
 
         /** @var EntityInterface $entity */
@@ -83,7 +83,7 @@ abstract class CrudController extends Controller
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var Page $page */
-        $page = $configuration->getConfigForClass(Page::class);
+        $page = $configuration->getConfiguration(Page::class);
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
@@ -103,7 +103,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
 
         /** @var EntityInterface $entity */
@@ -127,16 +127,16 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
         $configuration->parseClass($crud->getEntityClass());
         /** @var Page $page */
-        $page = $configuration->getConfigForClass(Page::class);
+        $page = $configuration->getConfiguration(Page::class);
         /** @var Grid $grid */
-        $grid = $configuration->getConfigForClass(Grid::class);
+        $grid = $configuration->getConfiguration(Grid::class);
 
         $listTemplate = $request->isXmlHttpRequest() ? $crud->getAjaxTemplate() : $crud->getListTemplate();
         $columns = $grid->getColumns() ?: $this->getEntityFields($crud);
@@ -164,11 +164,11 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
         /** @var Page $page */
-        $page = $configuration->getConfigForClass(Page::class);
+        $page = $configuration->getConfiguration(Page::class);
         /** @var Util $util */
-        $util = $configuration->getConfigForClass(Util::class);
+        $util = $configuration->getConfiguration(Util::class);
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
@@ -199,7 +199,7 @@ abstract class CrudController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
 
         $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($crud->getEntityClass())->find($id);
 

@@ -1,0 +1,24 @@
+services:
+    symfonian_id.admin.extractor.extractor_factory:
+        class: Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory
+
+    symfonian_id.admin.extractor.class_extractor:
+        class: Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor
+        arguments:
+            - '@annotation_reader'
+        tags:
+            - { name: siab.extractor }
+
+    symfonian_id.admin.extractor.method_extractor:
+        class: Symfonian\Indonesia\AdminBundle\Extractor\MethodExtractor
+        arguments:
+            - '@annotation_reader'
+        tags:
+            - { name: siab.extractor }
+
+    symfonian_id.admin.extractor.property_extractor:
+        class: Symfonian\Indonesia\AdminBundle\Extractor\PropertyExtractor
+        arguments:
+            - '@annotation_reader'
+        tags:
+            - { name: siab.extractor }

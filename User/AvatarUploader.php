@@ -36,7 +36,7 @@ class AvatarUploader
     public function setUploadField()
     {
         /** @var Util $util */
-        $util = $this->configuration->getConfigForClass(Util::class);
+        $util = $this->configuration->getConfiguration(Util::class);
 
         $this->uploadHandler->setFields(array($util->getUploadableField()));
     }

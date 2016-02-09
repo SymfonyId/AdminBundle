@@ -35,7 +35,7 @@ class ProfileController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
 
         foreach ($crud->getShowFields() as $key => $property) {
             $method = 'get'.CamelCasizer::underScoretToCamelCase($property);
@@ -85,7 +85,7 @@ class ProfileController extends Controller
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
-        $crud = $configuration->getConfigForClass(Crud::class);
+        $crud = $configuration->getConfiguration(Crud::class);
 
         $form = $crud->getForm($user);
         $form->handleRequest($request);
