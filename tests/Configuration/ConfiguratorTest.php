@@ -25,8 +25,11 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        /** @var Kernel $kernel Mock */
         $kernel = $this->getMockBuilder(Kernel::class)->disableOriginalConstructor()->getMock();
+        /** @var ExtractorFactory $extractor Mock */
         $extractor = $this->getMockBuilder(ExtractorFactory::class)->disableOriginalConstructor()->getMock();
+        /** @var FormFactory $formFactory Mock */
         $formFactory = $this->getMockBuilder(FormFactory::class)->disableOriginalConstructor()->getMock();
 
         $this->configurator = new Configurator($kernel, $extractor, $formFactory);
