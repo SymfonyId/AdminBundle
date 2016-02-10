@@ -14,7 +14,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
 {
     public function testAnnotation()
     {
-        $crud = new Page();
-        $this->assertTrue($crud instanceof ConfigurationInterface);
+        $page = new Page();
+        $this->assertTrue($page instanceof ConfigurationInterface);
     }
 }

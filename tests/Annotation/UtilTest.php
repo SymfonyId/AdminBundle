@@ -14,7 +14,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 {
     public function testAnnotation()
     {
-        $crud = new Util();
-        $this->assertTrue($crud instanceof ConfigurationInterface);
+        $util = new Util();
+        $this->assertTrue($util instanceof ConfigurationInterface);
     }
 }

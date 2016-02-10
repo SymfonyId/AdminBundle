@@ -14,7 +14,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
 {
     public function testAnnotation()
     {
-        $crud = new Grid();
-        $this->assertTrue($crud instanceof ConfigurationInterface);
+        $grid = new Grid();
+        $this->assertTrue($grid instanceof ConfigurationInterface);
     }
 }
