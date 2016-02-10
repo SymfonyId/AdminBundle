@@ -37,7 +37,6 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Can't change any configuration during production
      */
     public function testFreezeConfiguration()
     {
@@ -53,6 +52,26 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Grid::class, get_class($this->configurator->getConfiguration(Grid::class)));
         $this->assertEquals(Page::class, get_class($this->configurator->getConfiguration(Page::class)));
         $this->assertEquals(Util::class, get_class($this->configurator->getConfiguration(Util::class)));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testNotFoundConfiguration()
+    {
+        $this->configurator->addConfiguration(new Crud());
+        $this->configurator->getConfiguration(Grid::class);
+    }
+
+    public function testGetAllConfigurations()
+    {
+        $this->defaultConfiguration();
+
+        $configurations = $this->configurator->getAllConfigurations();
+        $this->assertArrayHasKey(Crud::class, $configurations);
+        $this->assertArrayHasKey(Grid::class, $configurations);
+        $this->assertArrayHasKey(Page::class, $configurations);
+        $this->assertArrayHasKey(Util::class, $configurations);
     }
 
     private function defaultConfiguration()
