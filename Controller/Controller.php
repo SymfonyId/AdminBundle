@@ -36,18 +36,18 @@ abstract class Controller extends Base
         $cacheFile = str_replace('\\', '_', $key);
         $configurations = require sprintf('%s/%s/%s.php.cache', $cacheDir, Constants::CACHE_DIR, $cacheFile);
         /** @var array $configuration */
-        foreach ($configurations as $key => $configuration) {
+        foreach ($configurations as $k => $configuration) {
             $config = null;
-            if (Crud::class === $key) {
+            if (Crud::class === $k) {
                 $config = new Crud();
             }
-            if (Grid::class === $key) {
+            if (Grid::class === $k) {
                 $config = new Grid();
             }
-            if (Page::class === $key) {
+            if (Page::class === $k) {
                 $config = new Page();
             }
-            if (Util::class === $key) {
+            if (Util::class === $k) {
                 $config = new Util();
             }
             $configurator->addConfiguration(ArrayNormalizer::convertToObject($configuration, $config));
