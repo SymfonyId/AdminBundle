@@ -1,11 +1,15 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Controller;
-
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+/*
+ * This file is part of the AdminBundle package.
+ *
+ * (c) Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
@@ -22,6 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 abstract class CrudController extends Controller
 {
     private $viewParams = array();
