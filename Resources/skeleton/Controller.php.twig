@@ -24,4 +24,8 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 class {{ controller_class }} extends CrudController
 {% endblock class_definition %}
 {
+    public function getClassName()
+    {
+        return __CLASS__;
+    }
 }
