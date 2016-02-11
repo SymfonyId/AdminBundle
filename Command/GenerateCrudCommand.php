@@ -1,11 +1,15 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Command;
-
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+/*
+ * This file is part of the AdminBundle package.
+ *
+ * (c) Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Symfonian\Indonesia\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -18,6 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class GenerateCrudCommand extends GenerateDoctrineCommand
 {
     protected function configure()

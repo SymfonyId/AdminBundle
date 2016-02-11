@@ -1,11 +1,15 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\Cache;
-
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+/*
+ * This file is part of the AdminBundle package.
+ *
+ * (c) Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Symfonian\Indonesia\AdminBundle\Cache;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -30,6 +34,9 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInterface
 {
     /**
