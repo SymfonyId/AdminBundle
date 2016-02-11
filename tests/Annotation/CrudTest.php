@@ -22,6 +22,6 @@ class CrudTest extends \PHPUnit_Framework_TestCase
     public function testAnnotation()
     {
         $crud = new Crud();
-        $this->assertTrue($crud instanceof ConfigurationInterface);
+        $this->assertInstanceOf(ConfigurationInterface::class, $crud);
     }
 }

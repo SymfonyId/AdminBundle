@@ -22,6 +22,6 @@ class PageTest extends \PHPUnit_Framework_TestCase
     public function testAnnotation()
     {
         $page = new Page();
-        $this->assertTrue($page instanceof ConfigurationInterface);
+        $this->assertInstanceOf(ConfigurationInterface::class, $page);
     }
 }

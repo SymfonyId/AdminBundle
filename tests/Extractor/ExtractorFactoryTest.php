@@ -35,7 +35,7 @@ class ExtractorFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Exception
      */
-    public function testIsFreeze()
+    public function testIsFreezeExtractorFactory()
     {
         $this->extractor->freeze();
         $this->setDefaultExtractor();

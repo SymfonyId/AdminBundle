@@ -22,6 +22,6 @@ class FilterEntityEventTest extends \PHPUnit_Framework_TestCase
     public function testEvent()
     {
         $event = new FilterEntityEvent();
-        $this->assertTrue($event instanceof Event);
+        $this->assertInstanceOf(Event::class, $event);
     }
 }

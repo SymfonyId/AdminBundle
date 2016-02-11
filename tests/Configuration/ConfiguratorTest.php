@@ -45,7 +45,7 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Exception
      */
-    public function testFreezeConfiguration()
+    public function testIsFreezeConfiguration()
     {
         $this->configurator->freeze();
         $this->configurator->addConfiguration(new Crud());
@@ -55,10 +55,10 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->defaultConfiguration();
 
-        $this->assertEquals(Crud::class, get_class($this->configurator->getConfiguration(Crud::class)));
-        $this->assertEquals(Grid::class, get_class($this->configurator->getConfiguration(Grid::class)));
-        $this->assertEquals(Page::class, get_class($this->configurator->getConfiguration(Page::class)));
-        $this->assertEquals(Util::class, get_class($this->configurator->getConfiguration(Util::class)));
+        $this->assertInstanceOf(Crud::class, $this->configurator->getConfiguration(Crud::class));
+        $this->assertInstanceOf(Grid::class, $this->configurator->getConfiguration(Grid::class));
+        $this->assertInstanceOf(Page::class, $this->configurator->getConfiguration(Page::class));
+        $this->assertInstanceOf(Util::class, $this->configurator->getConfiguration(Util::class));
     }
 
     /**

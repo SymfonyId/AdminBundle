@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\Symfonian\Indonesia\AdminBundle\Cache;
+namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
+use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 
 /**
+ *
+ * @Page(title="page.user.title", description="page.user.description")
+ * @Util(fileChooser=true, uploadable="avatar")
+ *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class UtilTest extends \PHPUnit_Framework_TestCase
+class Stub
 {
-    public function testAnnotation()
-    {
-        $util = new Util();
-        $this->assertInstanceOf(ConfigurationInterface::class, $util);
-    }
 }
