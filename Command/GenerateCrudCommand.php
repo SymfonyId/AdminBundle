@@ -75,8 +75,12 @@ EOT
         $formGenerator = $this->getGenerator($bundle);
         $formGenerator->generate($bundle, $entity, $metadata[0], $forceOverwrite);
 
+        $output->writeln(sprintf('<info>Form type for entity %s has been generated</info>', $entityClass));
+
         $controllerGenerator = $this->getControllerGenerator($bundle);
         $controllerGenerator->generate($bundle, $entityClass, $metadata[0], $forceOverwrite);
+
+        $output->writeln(sprintf('<info>Controller for entity %s has been generated</info>', $entityClass));
     }
 
     /**
