@@ -1,11 +1,15 @@
 <?php
 
-namespace Symfonian\Indonesia\AdminBundle\User;
-
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+/*
+ * This file is part of the AdminBundle package.
+ *
+ * (c) Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Symfonian\Indonesia\AdminBundle\User;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -14,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
+ *
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
 abstract class User extends BaseUser implements EntityInterface
 {

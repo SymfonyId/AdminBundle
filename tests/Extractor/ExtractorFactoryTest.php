@@ -1,11 +1,15 @@
 <?php
 
-namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
-
-/**
- * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
- * Url: https://github.com/ihsanudin
+/*
+ * This file is part of the AdminBundle package.
+ *
+ * (c) Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
@@ -13,6 +17,9 @@ use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Extractor\MethodExtractor;
 use Symfonian\Indonesia\AdminBundle\Extractor\PropertyExtractor;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class ExtractorFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
