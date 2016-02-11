@@ -30,7 +30,7 @@ class MethodExtractorTest extends \PHPUnit_Framework_TestCase
         $this->extractor = new MethodExtractor(new AnnotationReader());
     }
 
-    public function testUserControllerAnnotation()
+    public function testAnnotation()
     {
         $annotations = $this->extractor->extract(new \ReflectionMethod(Stub::class, 'stubAction'));
         $this->assertTrue(is_array($annotations));

@@ -32,7 +32,7 @@ class ClassExtractorTest extends \PHPUnit_Framework_TestCase
         $this->extractor = new ClassExtractor(new AnnotationReader());
     }
 
-    public function testUserControllerAnnotation()
+    public function testAnnotation()
     {
         $annotations = $this->extractor->extract(new \ReflectionClass(Stub::class));
         $this->assertTrue(is_array($annotations));
