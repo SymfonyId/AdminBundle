@@ -7,14 +7,14 @@ namespace Tests\Symfonian\Indonesia\AdminBundle\Event;
  * Url: https://github.com/ihsanudin
  */
 
-use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfony\Component\EventDispatcher\Event;
 
-class FilterEntityEventTest extends \PHPUnit_Framework_TestCase
+class FilterQueryEventTest extends \PHPUnit_Framework_TestCase
 {
     public function testEvent()
     {
-        $event = new FilterEntityEvent();
+        $event = new FilterQueryEvent();
         $this->assertTrue($event instanceof Event);
     }
 }

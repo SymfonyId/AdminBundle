@@ -6,9 +6,12 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          syntaxCheck="true">
+    <php>
+        <server name="KERNEL_DIR" value="tests/" />
+    </php>
     <testsuites>
         <testsuite name="unit">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

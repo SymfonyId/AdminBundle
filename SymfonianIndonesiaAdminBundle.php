@@ -2,6 +2,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle;
 
+/**
+ * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
+ * Url: https://github.com/ihsanudin
+ */
+
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
 use Symfonian\Indonesia\AdminBundle\Compiler\ConfigurationCompiler;
 use Symfonian\Indonesia\AdminBundle\Compiler\ExtractorCompiler;

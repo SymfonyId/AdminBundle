@@ -15,6 +15,10 @@ class ExtractorFactory
 
     public function addExtractor(ExtractorInterface $extractor)
     {
+        if ($this->freeze) {
+            throw new \Exception('Can\'t change any extractor during runtime');
+        }
+
         $this->extractors[get_class($extractor)] = $extractor;
     }
 

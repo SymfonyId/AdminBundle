@@ -6,6 +6,7 @@ namespace Symfonian\Indonesia\AdminBundle;
  * Author: Muhammad Surya Ihsanuddin<surya.kejawen@gmail.com>
  * Url: https://github.com/ihsanudin.
  */
+
 class SymfonianIndonesiaAdminConstants
 {
     const PRE_FORM_CREATE = 'siab.pre_form_create';
