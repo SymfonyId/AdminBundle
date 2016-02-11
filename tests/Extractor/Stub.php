@@ -16,8 +16,8 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 
 /**
  *
- * @Page(title="page.user.title", description="page.user.description")
- * @Util(fileChooser=true, uploadable="avatar")
+ * @Page(title="title", description="description")
+ * @Util(fileChooser=true, uploadable="uploadable")
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
