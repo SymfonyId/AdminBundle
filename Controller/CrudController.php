@@ -196,6 +196,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param $id
+     *
      * @return EntityInterface
      */
     private function findOr404Error($id)
@@ -229,6 +230,7 @@ abstract class CrudController extends Controller
 
     /**
      * @param Crud $crud
+     *
      * @return array
      */
     private function getEntityFields(Crud $crud)
@@ -246,8 +248,9 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @param Crud $crud
+     * @param Crud   $crud
      * @param string $action
+     *
      * @return bool
      */
     private function isAllowOr404Error(Crud $crud, $action)

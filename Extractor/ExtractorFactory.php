@@ -16,7 +16,6 @@ namespace Symfonian\Indonesia\AdminBundle\Extractor;
  */
 class ExtractorFactory
 {
-
     /**
      * @var \Reflector
      */

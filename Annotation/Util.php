@@ -158,7 +158,7 @@ class Util implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $datePicker
+     * @param bool $datePicker
      */
     public function setUseDatePicker($datePicker)
     {
@@ -166,7 +166,7 @@ class Util implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $htmlEditor
+     * @param bool $htmlEditor
      */
     public function setUseHtmlEditor($htmlEditor)
     {
@@ -174,7 +174,7 @@ class Util implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $fileChooser
+     * @param bool $fileChooser
      */
     public function setUseFileChooser($fileChooser)
     {
@@ -182,7 +182,7 @@ class Util implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $numeric
+     * @param bool $numeric
      */
     public function setUseNumeric($numeric)
     {

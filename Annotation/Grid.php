@@ -75,7 +75,7 @@ class Grid implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $formatNumber
+     * @param bool $formatNumber
      */
     public function setFormatNumber($formatNumber)
     {
@@ -83,7 +83,7 @@ class Grid implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $normalizeFilter
+     * @param bool $normalizeFilter
      */
     public function setNormalizeFilter($normalizeFilter)
     {

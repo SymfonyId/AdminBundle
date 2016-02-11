@@ -11,11 +11,13 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Grid\Column;
+use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**
- *
  * @Page(title="title", description="description")
  * @Util(fileChooser=true, uploadable="uploadable")
  *
@@ -23,4 +25,16 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
  */
 class Stub
 {
+    /**
+     * @Column()
+     * @Filter()
+     */
+    private $stubProperty;
+
+    /**
+     * @Route("/", name="stub_action")
+     */
+    public function stubAction()
+    {
+    }
 }

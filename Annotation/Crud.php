@@ -206,7 +206,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @param boolean $allowCreate
+     * @param bool $allowCreate
      */
     public function setAllowCreate($allowCreate)
     {
@@ -214,7 +214,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @param boolean $allowEdit
+     * @param bool $allowEdit
      */
     public function setAllowEdit($allowEdit)
     {
@@ -222,7 +222,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @param boolean $allowShow
+     * @param bool $allowShow
      */
     public function setAllowShow($allowShow)
     {
@@ -230,7 +230,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @param boolean $allowDelete
+     * @param bool $allowDelete
      */
     public function setAllowDelete($allowDelete)
     {
@@ -238,7 +238,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowDelete()
     {
@@ -246,7 +246,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowShow()
     {
@@ -254,7 +254,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowEdit()
     {
@@ -262,7 +262,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowCreate()
     {

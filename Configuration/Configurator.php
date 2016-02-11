@@ -83,6 +83,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
     /**
      * @param ConfigurationInterface $configuration
+     *
      * @throws \Exception
      */
     public function addConfiguration(ConfigurationInterface $configuration)
@@ -103,6 +104,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
     /**
      * @param $name
+     *
      * @return ConfigurationInterface
      */
     public function getConfiguration($name)

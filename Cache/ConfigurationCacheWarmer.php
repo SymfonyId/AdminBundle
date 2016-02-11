@@ -388,7 +388,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         /** @var Util $configuration */
         if ($configuration instanceof Util) {
             $output['auto_complete'] = $configuration->getAutoComplete();
-            $output['include_javascript'] =  $configuration->getIncludeJavascript();
+            $output['include_javascript'] = $configuration->getIncludeJavascript();
             $output['include_route'] = $configuration->getIncludeRoute();
             $output['uploadable_field'] = $configuration->getUploadableField();
             $output['use_date_picker'] = $configuration->isUseDatePicker();
@@ -402,7 +402,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     private function write(Configurator $configurator, $cacheDir, $class)
     {
-        /** @var ConfigurationInterface $configuration */
+        /* @var ConfigurationInterface $configuration */
         $configs = array();
         foreach ($configurator->getAllConfigurations() as $configuration) {
             $reflection = new ReflectionObject($configuration);
