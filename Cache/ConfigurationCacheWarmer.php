@@ -176,7 +176,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     {
         foreach ($this->getControllers() as $controller) {
             $reflectionClass = new ReflectionClass($controller);
-            if (!$reflectionClass->isSubclassOf(CrudController::class)) {
+            if (!$reflectionClass->isSubclassOf(CrudController::class) || UserController::class === $reflectionClass->getName()) {
                 continue;
             }
 
