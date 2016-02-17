@@ -128,10 +128,18 @@ class FormGenerator extends Generator
         $hasDateTime = false;
 
         foreach ($this->getFieldsFromMetadata($metadata) as $field) {
-            if (in_array($metadata->fieldMappings[$field]['type'], array('date', 'time', 'datetime'))) {
-                $hasDateTime = true;
+            if (array_key_exists($field, $metadata->fieldMappings)) {
+                if (in_array($metadata->fieldMappings[$field]['type'], array('date', 'time', 'datetime'))) {
+                    $hasDateTime = true;
 
-                break;
+                    break;
+                }
+            } else {
+                if (in_array($metadata->associationMappings[$field]['type'], array('date', 'time', 'datetime'))) {
+                    $hasDateTime = true;
+
+                    break;
+                }
             }
         }
 
