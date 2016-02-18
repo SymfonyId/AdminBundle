@@ -18,6 +18,7 @@ class ApcCacheCleaner
 {
     public static function clearAllCache()
     {
+        apc_clear_cache();
         self::clearUserCache();
         self::clearOpcache();
     }
@@ -25,7 +26,6 @@ class ApcCacheCleaner
     public static function clearUserCache()
     {
         if (function_exists('apc_clear_cache')) {
-            apc_clear_cache();
             apc_clear_cache('user');
 
             return true;
@@ -35,7 +35,6 @@ class ApcCacheCleaner
     public static function clearOpcache()
     {
         if (function_exists('apc_clear_cache')) {
-            apc_clear_cache();
             apc_clear_cache('opcode');
 
             return true;
