@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\User;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,16 +33,19 @@ abstract class User extends BaseUser implements EntityInterface
     protected $fullName;
 
     /**
-     * @Assert\File(
-     *     maxSize = "1024k",
-     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
-     * )
-     *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      *
      * @var string
      */
     protected $avatar;
+
+    /**
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     * )
+     */
+    protected $file;
 
     public function __construct()
     {
@@ -78,6 +82,19 @@ abstract class User extends BaseUser implements EntityInterface
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    public function setFile(UploadedFile $uploadedFile)
+    {
+        $this->file = $uploadedFile;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
     /**

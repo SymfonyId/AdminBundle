@@ -87,7 +87,7 @@ class UserType extends AbstractType
                     'label' => 'form.label.repeat_password',
                 ),
             ))
-            ->add($builder->create('avatar', FileType::class, array(
+            ->add($builder->create('file', FileType::class, array(
                 'label' => 'form.label.avatar',
                 'required' => false,
                 'attr' => array(

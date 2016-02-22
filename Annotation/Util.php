@@ -37,6 +37,8 @@ class Util implements ConfigurationInterface
 
     protected $uploadable;
 
+    protected $targetField;
+
     public function __construct(array $data = array())
     {
         if (isset($data['autoComplete'])) {
@@ -81,6 +83,12 @@ class Util implements ConfigurationInterface
         }
 
         if (isset($data['uploadable'])) {
+            if (isset($data['targetField'])) {
+                $this->targetField = $data['targetField'];
+            } else {
+                $this->targetField = $data['uploadable'];
+            }
+
             $this->uploadable = $data['uploadable'];
         }
     }
@@ -147,6 +155,14 @@ class Util implements ConfigurationInterface
     public function getUploadableField()
     {
         return $this->uploadable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetField()
+    {
+        return $this->targetField;
     }
 
     /**

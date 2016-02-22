@@ -22,15 +22,20 @@ class UploadHandler
 {
     private $dirPath;
     private $fields = array();
+    private $targetFields = array();
 
     public function setUploadDir($dirPath)
     {
         $this->dirPath = $dirPath;
     }
 
-    public function setFields(array $fields)
+    public function setFields(array $fields, array $targetFields)
     {
+        if (count($fields) !== count($targetFields)) {
+            throw new \InvalidArgumentException('Fields dan Target Fields harus sama jumlahnya.');
+        }
         $this->fields = $fields;
+        $this->targetFields = $targetFields;
     }
 
     public function isUploadable()

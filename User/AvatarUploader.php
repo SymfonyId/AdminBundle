@@ -44,8 +44,7 @@ class AvatarUploader
     {
         /** @var Util $util */
         $util = $this->configuration->getConfiguration(Util::class);
-
-        $this->uploadHandler->setFields(array($util->getUploadableField()));
+        $this->uploadHandler->setFields(array($util->getUploadableField()), array($util->getTargetField()));
     }
 
     public function onPreSave(FilterEntityEvent $event)

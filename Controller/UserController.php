@@ -19,7 +19,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util;
  * @Route("/user")
  *
  * @Page(title="page.user.title", description="page.user.description")
- * @Util(fileChooser=true, uploadable="avatar")
+ * @Util(fileChooser=true, uploadable="file", targetField="avatar")
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
