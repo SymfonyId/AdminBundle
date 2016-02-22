@@ -80,9 +80,9 @@ class Builder
 
         $this->addMenu($menu, 'home', 'menu.dashboard');
         $this->addMenu($menu, 'home', 'menu.profile');
-        $menu['Profile']->setChildrenAttribute('class', 'treeview-menu');
-        $this->addMenu($menu['Profile'], 'symfonian_indonesia_admin_profile_profile', 'menu.profile', false);
-        $this->addMenu($menu['Profile'], 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password', false);
+        $menu['menu.profile']->setChildrenAttribute('class', 'treeview-menu');
+        $this->addMenu($menu['menu.profile'], 'symfonian_indonesia_admin_profile_profile', 'menu.profile', false);
+        $this->addMenu($menu['menu.profile'], 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password', false);
 
         if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
