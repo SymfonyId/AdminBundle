@@ -13,6 +13,10 @@ namespace Symfonian\Indonesia\AdminBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -23,9 +27,14 @@ use Symfony\Component\Translation\TranslatorInterface;
 class Builder
 {
     /**
-     * @var \Symfony\Component\Routing\RouteCollection
+     * @var Router
      */
-    protected $routeCollection;
+    protected $router;
+
+    /**
+     * @var ClassExtractor
+     */
+    protected $extractor;
 
     /**
      * @var \Symfony\Component\Translation\TranslatorInterface
@@ -41,16 +50,58 @@ class Builder
 
     /**
      * @param Router               $router
+     * @param ClassExtractor       $extractor
      * @param TranslatorInterface  $translator
      * @param AuthorizationChecker $authorizationChecker
      * @param string               $translationDomain
      */
-    public function __construct(Router $router, TranslatorInterface $translator, AuthorizationChecker $authorizationChecker, $translationDomain)
+    public function __construct(Router $router, ClassExtractor $extractor, TranslatorInterface $translator, AuthorizationChecker $authorizationChecker, $translationDomain)
     {
-        $this->routeCollection = $router->getRouteCollection();
+        $this->router = $router;
+        $this->extractor = $extractor;
         $this->translator = $translator;
         $this->translationDomain = $translationDomain;
         $this->authorizationChecker = $authorizationChecker;
+    }
+
+    private function map(ItemInterface $menu)
+    {
+        $routeCollection = $this->router->getRouteCollection()->all();
+        $matches = array_filter($routeCollection, function (Route $route) {
+            if (preg_match('/\/list\//', $route->getPath())) {
+                return true;
+            }
+
+            return false;
+        });
+
+        $extractor = $this->extractor;
+        $router = $this->router;
+        $menus = array_map(function (Route $route) use ($router, $extractor) {
+            if ($temp = $route->getDefault('_controller')) {
+                $controller = explode('::', $temp);
+
+                $annotations = $extractor->extract(new \ReflectionClass($controller[0]));
+                foreach ($annotations as $annotation) {
+                    if ($annotation instanceof Crud && !$annotation instanceof UserController) {
+                        $entity = new \ReflectionClass($annotation->getEntityClass());
+
+                        return array(
+                            'icon' => $annotation->getMenuIcon(),
+                            'name' => $entity->getShortName(),
+                        );
+                    }
+                }
+            }
+
+            return null;
+        }, $matches);
+
+        foreach ($menus as $key => $value) {
+            if ($value) {
+                $this->addMenu($menu, $key, $value['name'], $value['icon']);
+            }
+        }
     }
 
     /**
@@ -106,33 +157,22 @@ class Builder
             $this->addUserMenu($menu);
         }
 
+        $this->map($menu);
+
         return $menu;
     }
 
     protected function addUserMenu(ItemInterface $menu)
     {
-        $menu->addChild('User', array(
-            'uri' => '#',
-            'label' => sprintf('<i class="fa fa-shield"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $this->translator->trans('menu.user.title', array(), $this->translationDomain)),
+        $this->addMenu($menu, 'symfonian_indonesia_admin_user_list', 'menu.user.title', 'fa-shield');
+    }
+
+    protected function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
+    {
+        $menu->addChild($name, array(
+            'route' => $route,
+            'label' => sprintf('<i class="fa %s"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $icon, $this->translator->trans($name, array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
-            'attributes' => array(
-                'class' => 'treeview',
-            ),
-        ));
-
-        $menu['User']->setChildrenAttribute('class', 'treeview-menu');
-
-        $menu['User']->addChild('Add', array(
-            'label' => $this->translator->trans('menu.user.add', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_user_new',
-            'attributes' => array(
-                'class' => 'treeview',
-            ),
-        ));
-
-        $menu['User']->addChild('List', array(
-            'label' => $this->translator->trans('menu.user.list', array(), $this->translationDomain),
-            'route' => 'symfonian_indonesia_admin_user_list',
             'attributes' => array(
                 'class' => 'treeview',
             ),

@@ -3,14 +3,16 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder
         arguments:
             - '@router'
+            - '@symfonian_id.admin.extractor.class_extractor'
             - '@translator'
             - '@security.authorization_checker'
             - '%symfonian_id.admin.translation_domain%'
 
     symfonian_id.admin.main_menu:
         class: Knp\Menu\MenuItem
-        factory_service: symfonian_id.admin.menu
-        factory_method: mainMenu
+        factory:
+            - '@symfonian_id.admin.menu'
+            - mainMenu
         arguments:
             - '@knp_menu.factory'
             - []

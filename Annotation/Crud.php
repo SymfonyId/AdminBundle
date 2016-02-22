@@ -43,6 +43,8 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     private $form;
 
+    private $menuIcon = 'fa-bars';
+
     private $create = Constants::TEMPLATE_CREATE;
 
     private $edit = Constants::TEMPLATE_EDIT;
@@ -89,6 +91,10 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
         if (isset($data['form'])) {
             $this->form = $data['form'];
+        }
+
+        if (isset($data['menuIcon'])) {
+            $this->menuIcon = $data['menuIcon'];
         }
 
         if (isset($data['showFields'])) {
@@ -307,5 +313,13 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         }
 
         return $action;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMenuIcon()
+    {
+        return $this->menuIcon;
     }
 }
