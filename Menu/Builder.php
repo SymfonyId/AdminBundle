@@ -64,46 +64,6 @@ class Builder
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    private function map(ItemInterface $menu)
-    {
-        $routeCollection = $this->router->getRouteCollection()->all();
-        $matches = array_filter($routeCollection, function (Route $route) {
-            if (preg_match('/\/list\//', $route->getPath())) {
-                return true;
-            }
-
-            return false;
-        });
-
-        $extractor = $this->extractor;
-        $router = $this->router;
-        $menus = array_map(function (Route $route) use ($router, $extractor) {
-            if ($temp = $route->getDefault('_controller')) {
-                $controller = explode('::', $temp);
-
-                $annotations = $extractor->extract(new \ReflectionClass($controller[0]));
-                foreach ($annotations as $annotation) {
-                    if ($annotation instanceof Crud && !$annotation instanceof UserController) {
-                        $entity = new \ReflectionClass($annotation->getEntityClass());
-
-                        return array(
-                            'icon' => $annotation->getMenuIcon(),
-                            'name' => $entity->getShortName(),
-                        );
-                    }
-                }
-            }
-
-            return null;
-        }, $matches);
-
-        foreach ($menus as $key => $value) {
-            if ($value) {
-                $this->addMenu($menu, $key, $value['name'], $value['icon']);
-            }
-        }
-    }
-
     /**
      * @param FactoryInterface $factory
      * @param array            $options
@@ -157,17 +117,17 @@ class Builder
             $this->addUserMenu($menu);
         }
 
-        $this->map($menu);
+        $this->generateMenu($menu);
 
         return $menu;
     }
 
-    protected function addUserMenu(ItemInterface $menu)
+    private function addUserMenu(ItemInterface $menu)
     {
         $this->addMenu($menu, 'symfonian_indonesia_admin_user_list', 'menu.user.title', 'fa-shield');
     }
 
-    protected function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
+    private function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
     {
         $menu->addChild($name, array(
             'route' => $route,
@@ -177,5 +137,45 @@ class Builder
                 'class' => 'treeview',
             ),
         ));
+    }
+
+    private function generateMenu(ItemInterface $menu)
+    {
+        $routeCollection = $this->router->getRouteCollection()->all();
+        $matches = array_filter($routeCollection, function (Route $route) {
+            if (preg_match('/\/list\//', $route->getPath())) {
+                return true;
+            }
+
+            return false;
+        });
+
+        $extractor = $this->extractor;
+        $router = $this->router;
+        $menus = array_map(function (Route $route) use ($router, $extractor) {
+            if ($temp = $route->getDefault('_controller')) {
+                $controller = explode('::', $temp);
+
+                $annotations = $extractor->extract(new \ReflectionClass($controller[0]));
+                foreach ($annotations as $annotation) {
+                    if ($annotation instanceof Crud && !$annotation instanceof UserController) {
+                        $entity = new \ReflectionClass($annotation->getEntityClass());
+
+                        return array(
+                            'icon' => $annotation->getMenuIcon(),
+                            'name' => $entity->getShortName(),
+                        );
+                    }
+                }
+            }
+
+            return null;
+        }, $matches);
+
+        foreach ($menus as $key => $value) {
+            if ($value) {
+                $this->addMenu($menu, $key, $value['name'], $value['icon']);
+            }
+        }
     }
 }
