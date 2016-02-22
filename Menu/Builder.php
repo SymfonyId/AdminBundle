@@ -79,10 +79,8 @@ class Builder
         ));
 
         $this->addMenu($menu, 'home', 'menu.dashboard');
-        $this->addMenu($menu, 'home', 'menu.profile');
-        $menu['menu.profile']->setChildrenAttribute('class', 'treeview-menu');
-        $this->addMenu($menu['menu.profile'], 'symfonian_indonesia_admin_profile_profile', 'menu.profile', false);
-        $this->addMenu($menu['menu.profile'], 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password', false);
+        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_profile', 'menu.profile');
+        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password');
 
         if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
@@ -98,17 +96,11 @@ class Builder
         $this->addMenu($menu, 'symfonian_indonesia_admin_user_list', 'menu.user.title');
     }
 
-    private function addMenu(ItemInterface $menu, $route, $name, $label = true, $icon = 'fa-bars')
+    private function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
     {
-        if ($label) {
-            $html = sprintf('<i class="fa %s"></i> <span>%s</span><i class="fa fa-angle-double-left pull-right"></i></a>', $icon, $this->translator->trans($name, array(), $this->translationDomain));
-        } else {
-            $html = $this->translator->trans($name, array(), $this->translationDomain);
-        }
-
         $menu->addChild($name, array(
             'route' => $route,
-            'label' => $html,
+            'label' => sprintf('<i class="fa %s"></i> <span>%s</span>', $icon, $this->translator->trans($name, array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
                 'class' => 'treeview',
