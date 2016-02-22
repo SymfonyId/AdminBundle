@@ -29,24 +29,24 @@ class Builder
     /**
      * @var Router
      */
-    protected $router;
+    private $router;
 
     /**
      * @var ClassExtractor
      */
-    protected $extractor;
+    private $extractor;
 
     /**
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
     /**
      * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
-    protected $translationDomain;
+    private $translationDomain;
 
     /**
      * @param Router               $router
@@ -72,16 +72,8 @@ class Builder
      */
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $menu = $factory->createItem('root', array(
-            'childrenAttributes' => array(
-                'class' => 'sidebar-menu',
-            ),
-        ));
-
-        $this->addMenu($menu, 'home', 'menu.dashboard');
-        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_profile', 'menu.profile');
-        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password');
-
+        $menu = $this->createRootMenu($factory, $options);
+        $this->addDashboardMenu($menu);
         if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
         }
@@ -91,12 +83,30 @@ class Builder
         return $menu;
     }
 
-    private function addUserMenu(ItemInterface $menu)
+    protected function createRootMenu(FactoryInterface $factory, array $options)
+    {
+        $menu = $factory->createItem('root', array(
+            'childrenAttributes' => array(
+                'class' => 'sidebar-menu',
+            ),
+        ));
+
+        return $menu;
+    }
+
+    protected function addDashboardMenu(ItemInterface $menu)
+    {
+        $this->addMenu($menu, 'home', 'menu.dashboard');
+        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_profile', 'menu.profile');
+        $this->addMenu($menu, 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password');
+    }
+
+    protected function addUserMenu(ItemInterface $menu)
     {
         $this->addMenu($menu, 'symfonian_indonesia_admin_user_list', 'menu.user.title');
     }
 
-    private function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
+    protected function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
     {
         $menu->addChild($name, array(
             'route' => $route,
@@ -108,7 +118,7 @@ class Builder
         ));
     }
 
-    private function generateMenu(ItemInterface $menu)
+    protected function generateMenu(ItemInterface $menu)
     {
         $routeCollection = $this->router->getRouteCollection()->all();
         $matches = array_filter($routeCollection, function (Route $route) {
