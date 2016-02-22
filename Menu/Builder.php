@@ -74,13 +74,18 @@ class Builder
     {
         $menu = $this->createRootMenu($factory, $options);
         $this->addDashboardMenu($menu);
-        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
         }
 
         $this->generateMenu($menu);
 
         return $menu;
+    }
+
+    protected function isGranted($role)
+    {
+        return $this->authorizationChecker->isGranted($role);
     }
 
     protected function createRootMenu(FactoryInterface $factory, array $options)
