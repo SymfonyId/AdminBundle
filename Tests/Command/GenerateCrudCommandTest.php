@@ -32,7 +32,7 @@ class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
         $this->command = $this->getMockBuilder(GenerateCrudCommand::class)->disableOriginalConstructor()->setMethods(array('setContainer', 'getContainer', 'getSkeletonDirs'))->getMock();
         $this->command->expects($this->any())->method('getSkeletonDirs')->willReturn(null);
         $this->command->expects($this->any())->method('getControllerGenerator')->willReturn(null);
-        $this->command->expects($this->any())->method('getContainer')->willReturn($container);
+//        $this->command->expects($this->any())->method('getContainer')->willReturn($container);
         $this->command->expects($this->any())->method('createGenerator')->willReturn(null);
     }
 
