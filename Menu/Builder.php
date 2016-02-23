@@ -140,14 +140,14 @@ class Builder
             if ($temp = $route->getDefault('_controller')) {
                 $controller = explode('::', $temp);
 
-                $annotations = $extractor->extract(new \ReflectionClass($controller[0]));
+                $reflectionController = new \ReflectionClass($controller[0]);
+                $annotations = $extractor->extract($reflectionController);
                 foreach ($annotations as $annotation) {
                     if ($annotation instanceof Crud && !$annotation instanceof UserController) {
-                        $entity = new \ReflectionClass($annotation->getEntityClass());
 
                         return array(
                             'icon' => $annotation->getMenuIcon(),
-                            'name' => $entity->getShortName(),
+                            'name' => str_replace('Controller', '', $reflectionController->getShortName()),
                         );
                     }
                 }
