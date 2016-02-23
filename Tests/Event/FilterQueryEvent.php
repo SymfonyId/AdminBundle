@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FilterQueryEventTest extends \PHPUnit_Framework_TestCase
+class FilterQueryEvent extends \PHPUnit_Framework_TestCase
 {
     public function testEvent()
     {

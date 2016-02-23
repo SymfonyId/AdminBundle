@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FilterFormEventTest extends \PHPUnit_Framework_TestCase
+class FilterFormEvent extends \PHPUnit_Framework_TestCase
 {
     public function testEvent()
     {
