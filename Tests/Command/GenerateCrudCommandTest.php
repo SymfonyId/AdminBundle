@@ -12,7 +12,8 @@
 namespace Tests\Symfonian\Indonesia\AdminBundle\Command;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
-use Symfonian\Indonesia\AdminBundle\Generator\ControllerGenerator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Tests\Symfonian\Indonesia\AdminBundle\TestHelper;
 
 /**
@@ -26,12 +27,19 @@ class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->command = $this->getMockBuilder(GenerateCrudCommand::class)->disableOriginalConstructor()->getMock();
-        $this->command->expects($this->once())->method('getSkeletonDirs')->willReturn($this->returnValue(true));
+        $container = $this->getMockBuilder(ContainerInterface::class)->disableOriginalConstructor()->setMethods(array('set', 'get', 'has', 'initialized', 'setParameter', 'getParameter', 'hasParameter'))->getMock();
+        $container->expects($this->any())->method('get')->with('filesystem')->willReturn($this->getMockBuilder(Filesystem::class)->disableOriginalConstructor()->getMock());
+        $this->command = $this->getMockBuilder(GenerateCrudCommand::class)->disableOriginalConstructor()->setMethods(array('setContainer', 'getContainer', 'getSkeletonDirs'))->getMock();
+        $this->command->expects($this->any())->method('getSkeletonDirs')->willReturn(null);
+        $this->command->expects($this->any())->method('getControllerGenerator')->willReturn(null);
+        $this->command->expects($this->any())->method('getContainer')->willReturn($container);
+        $this->command->expects($this->any())->method('createGenerator')->willReturn(null);
     }
 
-    public function testMustReturnGeneratorObject()
+    public function testProtectedMethodsMustSuccess()
     {
-        $this->assertTrue($this->invokeMethod($this->command, 'getSkeletonDirs'));
+        $this->invokeMethod($this->command, 'getControllerGenerator');
+        $this->invokeMethod($this->command, 'getSkeletonDirs');
+        $this->invokeMethod($this->command, 'createGenerator');
     }
 }
