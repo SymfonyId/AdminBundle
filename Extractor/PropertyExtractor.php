@@ -34,11 +34,6 @@ class PropertyExtractor implements ExtractorInterface
             throw new \InvalidArgumentException(sprintf('extract() need \ReflectionProperty method as parameter, got %s', get_class($reflectionProperty)));
         }
 
-        $metadatas = array();
-        foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $propertyAnnotation) {
-            $metadatas[] = $propertyAnnotation;
-        }
-
-        return $metadatas;
+        return $this->reader->getPropertyAnnotations($reflectionProperty);
     }
 }

@@ -34,11 +34,6 @@ class MethodExtractor implements ExtractorInterface
             throw new \InvalidArgumentException(sprintf('extract() need \ReflectionMethod method as parameter, got %s', get_class($reflectionMethod)));
         }
 
-        $metadatas = array();
-        foreach ($this->reader->getMethodAnnotations($reflectionMethod) as $methodAnnotation) {
-            $metadatas[] = $methodAnnotation;
-        }
-
-        return $metadatas;
+        return $this->reader->getMethodAnnotations($reflectionMethod);
     }
 }

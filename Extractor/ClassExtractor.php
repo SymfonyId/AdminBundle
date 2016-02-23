@@ -34,11 +34,6 @@ class ClassExtractor implements ExtractorInterface
             throw new \InvalidArgumentException(sprintf('extract() need \ReflectionClass method as parameter, got %s', get_class($reflectionClass)));
         }
 
-        $metadatas = array();
-        foreach ($this->reader->getClassAnnotations($reflectionClass) as $classAnnotation) {
-            $metadatas[] = $classAnnotation;
-        }
-
-        return $metadatas;
+        return $this->reader->getClassAnnotations($reflectionClass);
     }
 }
