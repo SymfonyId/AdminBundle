@@ -46,7 +46,7 @@ class ControllerTest extends TestCase
         $this->controller->expects($this->any())->method('isProduction')->willReturn(true);
     }
 
-    public function testProtectedMethodsMustSuccess()
+    public function testGetConfigurator()
     {
         $this->invokeMethod($this->controller, 'getConfigurator', array('key'));
     }
