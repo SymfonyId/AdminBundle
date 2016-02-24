@@ -9,19 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Tests\Symfonian\Indonesia\AdminBundle\Event;
-
-use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfony\Component\EventDispatcher\Event;
+namespace Tests\Symfonian\Indonesia\AdminBundle\Util;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FilterQueryEvent extends \PHPUnit_Framework_TestCase
+class Stub
 {
-    public function testEvent()
+    public function getValue()
     {
-        $event = new self();
-        $this->assertInstanceOf(Event::class, $event);
+        return true;
     }
 }

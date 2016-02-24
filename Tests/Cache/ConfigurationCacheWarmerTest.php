@@ -42,4 +42,9 @@ class ConfigurationCacheWarmerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNotTrue($this->cacheWarmer->isOptional());
     }
+
+    public function tearDown()
+    {
+        unset($this->cacheWarmer);
+    }
 }

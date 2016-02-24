@@ -44,4 +44,9 @@ class MethodExtractorTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    public function tearDown()
+    {
+        unset($this->extractor);
+    }
 }

@@ -12,14 +12,14 @@
 namespace Tests\Symfonian\Indonesia\AdminBundle\Command;
 
 use Symfonian\Indonesia\AdminBundle\Command\GenerateCrudCommand;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Tests\Symfonian\Indonesia\AdminBundle\TestCase;
 use Tests\Symfonian\Indonesia\AdminBundle\TestHelper;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
+class GenerateCrudCommandTest extends TestCase
 {
     use TestHelper;
 
@@ -27,19 +27,7 @@ class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethods(array(
-                'set',
-                'get',
-                'has',
-                'initialized',
-                'setParameter',
-                'getParameter',
-                'hasParameter',
-            ))
-            ->getMock()
-        ;
+        $container = $this->getContainerMock();
         $container
             ->expects($this->any())
             ->method('get')
@@ -70,5 +58,10 @@ class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
         $this->invokeMethod($this->command, 'getSkeletonDirs');
         $this->invokeMethod($this->command, 'createGenerator');
         $this->invokeMethod($this->command, 'configure');
+    }
+
+    public function tearDown()
+    {
+        unset($this->command);
     }
 }

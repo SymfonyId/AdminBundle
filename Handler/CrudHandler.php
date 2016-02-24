@@ -16,6 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
+use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -143,18 +144,7 @@ class CrudHandler implements ContainerAwareInterface
                     $numberFormat = $property['format'];
                 }
 
-                $method = CamelCasizer::underScoretToCamelCase('get_'.$field);
-                $result = null;
-                if (method_exists($record, $method)) {
-                    $result = call_user_func_array(array($record, $method), array());
-                } else {
-                    $method = CamelCasizer::underScoretToCamelCase('is_'.$field);
-
-                    if (method_exists($record, $method)) {
-                        $result = call_user_func_array(array($record, $method), array());
-                    }
-                }
-
+                $result = MethodInvoker::invokeGet($record, $field);
                 if (null !== $result) {
                     if (!empty($numberFormat)) {
                         $result = number_format($result, $numberFormat['decimal'], $numberFormat['decimal_point'], $numberFormat['thousand_separator']);
@@ -235,22 +225,11 @@ class CrudHandler implements ContainerAwareInterface
 
         $output = array();
         foreach ($showFields as $key => $property) {
-            $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
-
-            if (method_exists($data, $method)) {
+            if ($value = MethodInvoker::invokeGet($data, $property)) {
                 array_push($output, array(
                     'name' => $property,
-                    'value' => call_user_func_array(array($data, $method), array()),
+                    'value' => $value,
                 ));
-            } else {
-                $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
-
-                if (method_exists($data, $method)) {
-                    array_push($output, array(
-                        'name' => $property,
-                        'value' => call_user_func_array(array($data, $method), array()),
-                    ));
-                }
             }
         }
 

@@ -21,7 +21,7 @@ class FilterFormEvent extends \PHPUnit_Framework_TestCase
 {
     public function testEvent()
     {
-        $event = new FilterFormEvent();
+        $event = new self();
         $this->assertInstanceOf(Event::class, $event);
     }
 }

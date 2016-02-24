@@ -81,6 +81,11 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(Util::class, $configurations);
     }
 
+    public function tearDown()
+    {
+        unset($this->configurator);
+    }
+
     private function defaultConfiguration()
     {
         $this->configurator->addConfiguration(new Crud());

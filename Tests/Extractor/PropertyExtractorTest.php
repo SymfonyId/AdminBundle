@@ -37,4 +37,9 @@ class PropertyExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsOnlyInstancesOf(ConfigurationInterface::class, $annotations);
         $this->assertEquals(2, count($annotations));
     }
+
+    public function tearDown()
+    {
+        unset($this->extractor);
+    }
 }
