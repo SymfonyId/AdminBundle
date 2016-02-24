@@ -19,18 +19,36 @@ trait TestHelper
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object $object     Instantiated object that we will run method on.
      * @param string $methodName Method name to call
      * @param array  $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    public function invokeMethod($object, $methodName, array $parameters = array())
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new \ReflectionObject($object);
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    /**
+     * Call protected/private property of a class.
+     *
+     * @param object $object   Instantiated object that we will run method on.
+     * @param string $property property name to assign value
+     * @param mixed  $value    Value to pass into property.
+     *
+     * @return mixed Method return.
+     */
+    public function setPropertyValue($object, $property, $value)
+    {
+        $reflection = new \ReflectionObject($object);
+        $property = $reflection->getProperty($property);
+        $property->setAccessible(true);
+
+        $property->setValue($object, $value);
     }
 }

@@ -11,7 +11,9 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Controller;
 
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Kernel;
 use Tests\Symfonian\Indonesia\AdminBundle\TestCase;
 use Tests\Symfonian\Indonesia\AdminBundle\TestHelper;
 
@@ -30,8 +32,8 @@ class ControllerTest extends TestCase
         $container
             ->expects($this->any())
             ->method('get')
-            ->with('symfonian_id.admin.congiration.configurator')
-            ->willReturn(null)
+            ->with('kernel')
+            ->willReturn($this->getMockBuilder(Kernel::class)->disableOriginalConstructor()->getMock())
         ;
         $this->controller = $this->getMockBuilder(Controller::class)
             ->disableOriginalConstructor()
@@ -44,11 +46,20 @@ class ControllerTest extends TestCase
             ->getMock()
         ;
         $this->controller->expects($this->any())->method('isProduction')->willReturn(true);
+        $this->controller->expects($this->any())->method('getConfigurator')->willReturn(
+            $this->getMockBuilder(Configurator::class)->disableOriginalConstructor()->getMock()
+        );
+        $this->setPropertyValue($this->controller, 'container', $container);
     }
 
     public function testGetConfigurator()
     {
-        $this->invokeMethod($this->controller, 'getConfigurator', array('key'));
+        $this->assertInstanceOf(Configurator::class, $this->invokeMethod($this->controller, 'getConfigurator', array('key')));
+    }
+
+    public function testIsProduction()
+    {
+        $this->assertFalse($this->invokeMethod($this->controller, 'isProduction'));
     }
 
     public function tearDown()

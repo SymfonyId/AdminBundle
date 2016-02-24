@@ -52,11 +52,23 @@ class GenerateCrudCommandTest extends TestCase
         $this->command->expects($this->any())->method('getContainer')->willReturn($container);
     }
 
-    public function testProtectedMethodsMustSuccess()
+    public function testGetControllerGenerator()
     {
         $this->invokeMethod($this->command, 'getControllerGenerator');
+    }
+
+    public function testGetSkeletonDirs()
+    {
         $this->invokeMethod($this->command, 'getSkeletonDirs');
+    }
+
+    public function testCreateGenerator()
+    {
         $this->invokeMethod($this->command, 'createGenerator');
+    }
+
+    public function testConfigure()
+    {
         $this->invokeMethod($this->command, 'configure');
     }
 
