@@ -144,7 +144,6 @@ class Builder
                 $annotations = $extractor->extract($reflectionController);
                 foreach ($annotations as $annotation) {
                     if ($annotation instanceof Crud && !$annotation instanceof UserController) {
-
                         return array(
                             'icon' => $annotation->getMenuIcon(),
                             'name' => str_replace('Controller', '', $reflectionController->getShortName()),
@@ -153,7 +152,7 @@ class Builder
                 }
             }
 
-            return null;
+            return;
         }, $matches);
 
         foreach ($menus as $key => $value) {

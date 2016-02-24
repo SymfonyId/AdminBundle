@@ -16,8 +16,9 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 class MethodInvoker
 {
     /**
-     * @param mixed $object Object
+     * @param mixed  $object   Object
      * @param string $property name of property that want to invoke
+     *
      * @return mixed return value of method that invoked
      */
     public static function invokeGet($object, $property)
