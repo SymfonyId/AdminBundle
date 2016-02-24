@@ -11,7 +11,7 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Compiler;
 
-use Symfonian\Indonesia\AdminBundle\Compiler\ConfigurationCompiler;
+use Symfonian\Indonesia\AdminBundle\Compiler\ExtractorCompiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Tests\Symfonian\Indonesia\AdminBundle\TestCase;
@@ -20,7 +20,7 @@ use Tests\Symfonian\Indonesia\AdminBundle\TestHelper;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class ConfigurationCompilerTest extends TestCase
+class ExtractorCompilerTest extends TestCase
 {
     use TestHelper;
 
@@ -36,11 +36,11 @@ class ConfigurationCompilerTest extends TestCase
         $this->container
             ->expects($this->any())
             ->method('has')
-            ->with('symfonian_id.admin.congiration.configurator')
+            ->with('symfonian_id.admin.extractor.extractor_factory')
             ->willReturn(false)
         ;
 
-        $compiler = new ConfigurationCompiler();
+        $compiler = new ExtractorCompiler();
         $compiler->process($this->container);
     }
 
@@ -49,7 +49,7 @@ class ConfigurationCompilerTest extends TestCase
         $this->container
             ->expects($this->any())
             ->method('has')
-            ->with('symfonian_id.admin.congiration.configurator')
+            ->with('symfonian_id.admin.extractor.extractor_factory')
             ->willReturn(true)
         ;
 
@@ -58,17 +58,17 @@ class ConfigurationCompilerTest extends TestCase
         $this->container
             ->expects($this->any())
             ->method('findDefinition')
-            ->with('symfonian_id.admin.congiration.configurator')
+            ->with('symfonian_id.admin.extractor.extractor_factory')
             ->willReturn($definition)
         ;
         $this->container
             ->expects($this->any())
             ->method('findTaggedServiceIds')
-            ->with('siab.config')
+            ->with('siab.extractor')
             ->willReturn(array())
         ;
 
-        $compiler = new ConfigurationCompiler();
+        $compiler = new ExtractorCompiler();
         $compiler->process($this->container);
     }
 

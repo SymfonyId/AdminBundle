@@ -35,8 +35,7 @@
         "friendsofsymfony/jsrouting-bundle": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.0.*",
-        "mockery/mockery": "dev-master"
+        "phpunit/phpunit": "5.*"
     },
     "autoload": {
         "psr-4": {

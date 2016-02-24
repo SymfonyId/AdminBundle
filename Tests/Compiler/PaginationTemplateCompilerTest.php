@@ -11,19 +11,19 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Compiler;
 
-use Symfonian\Indonesia\AdminBundle\Compiler\ConfigurationCompiler;
+use Symfonian\Indonesia\AdminBundle\Compiler\PaginationTemplateCompiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Tests\Symfonian\Indonesia\AdminBundle\TestCase;
 use Tests\Symfonian\Indonesia\AdminBundle\TestHelper;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class ConfigurationCompilerTest extends TestCase
+class PaginationTemplateCompilerTest extends TestCase
 {
     use TestHelper;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject  */
     private $container;
 
     public function setUp()
@@ -35,12 +35,12 @@ class ConfigurationCompilerTest extends TestCase
     {
         $this->container
             ->expects($this->any())
-            ->method('has')
-            ->with('symfonian_id.admin.congiration.configurator')
+            ->method('hasParameter')
+            ->with('knp_paginator.template.pagination')
             ->willReturn(false)
         ;
 
-        $compiler = new ConfigurationCompiler();
+        $compiler = new PaginationTemplateCompiler();
         $compiler->process($this->container);
     }
 
@@ -48,27 +48,23 @@ class ConfigurationCompilerTest extends TestCase
     {
         $this->container
             ->expects($this->any())
-            ->method('has')
-            ->with('symfonian_id.admin.congiration.configurator')
+            ->method('hasParameter')
+            ->with('knp_paginator.template.pagination')
             ->willReturn(true)
         ;
-
-        //Definition
-        $definition = $this->getMockBuilder(Definition::class)->disableOriginalConstructor()->getMock();
         $this->container
             ->expects($this->any())
-            ->method('findDefinition')
-            ->with('symfonian_id.admin.congiration.configurator')
-            ->willReturn($definition)
+            ->method('getParameter')
+            ->with('symfonian_id.admin.themes.pagination')
+            ->willReturn(true)
         ;
         $this->container
             ->expects($this->any())
-            ->method('findTaggedServiceIds')
-            ->with('siab.config')
-            ->willReturn(array())
+            ->method('setParameter')
+            ->with('knp_paginator.template.pagination', $this->container->getParameter('symfonian_id.admin.themes.pagination'))
         ;
 
-        $compiler = new ConfigurationCompiler();
+        $compiler = new PaginationTemplateCompiler();
         $compiler->process($this->container);
     }
 
