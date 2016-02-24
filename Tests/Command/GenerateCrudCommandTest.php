@@ -62,7 +62,6 @@ class GenerateCrudCommandTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
         $this->command->expects($this->any())->method('getContainer')->willReturn($container);
-        $this->command->expects($this->any())->method('execute')->withAnyParameters()->willReturn(null);
     }
 
     public function testProtectedMethodsMustSuccess()
