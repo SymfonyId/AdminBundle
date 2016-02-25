@@ -102,33 +102,10 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function viewList(Request $request, array $gridFields, array $filterFields, array $actionAllowed, $allowCreate = true, $normalizeFilter = false, $formatNumber = true)
     {
-        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
-        $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
-        $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
-
-        if ($filter) {
-            foreach ($filterFields as $key => $value) {
-                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', Constants::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
-                $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
-            }
-        }
-
-        $filterList = new FilterQueryEvent();
-        $filterList->setQueryBuilder($queryBuilder);
-        $filterList->setAlias(Constants::ENTITY_ALIAS);
-        $filterList->setEntityClass($this->class);
-        $this->fireEvent(Constants::FILTER_LIST, $filterList);
-
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
-
-        $query = $queryBuilder->getQuery();
-        $query->useQueryCache(true);
-        $query->useResultCache(true, 1, serialize($query->getParameters()));
-
-        $paginator = $this->container->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, $perPage);
-
+        $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
+        $pagination = $this->paginateResult($filterFields, $page, $perPage, $filter, $normalizeFilter);
         $data = array();
         $identifier = array();
         /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
@@ -314,6 +291,33 @@ class CrudHandler implements ContainerAwareInterface
     public function getErrorMessage()
     {
         return $this->errorMessage;
+    }
+
+    private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $normalizeFilter = false)
+    {
+        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+        $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
+
+        if ($filter) {
+            foreach ($filterFields as $key => $value) {
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', Constants::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
+                $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
+            }
+        }
+
+        $filterList = new FilterQueryEvent();
+        $filterList->setQueryBuilder($queryBuilder);
+        $filterList->setAlias(Constants::ENTITY_ALIAS);
+        $filterList->setEntityClass($this->class);
+        $this->fireEvent(Constants::FILTER_LIST, $filterList);
+
+        $query = $queryBuilder->getQuery();
+        $query->useQueryCache(true);
+        $query->useResultCache(true, 1, serialize($query->getParameters()));
+
+        $paginator = $this->container->get('knp_paginator');
+
+        return $paginator->paginate($query, $page, $perPage);
     }
 
     private function fireEvent($name, $handler)

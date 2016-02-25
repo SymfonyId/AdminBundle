@@ -42,7 +42,8 @@ abstract class Controller extends Base
         $cacheDir = $this->container->getParameter('kernel.cache_dir');
         $cacheFile = str_replace('\\', '_', $key);
         $fullPath = sprintf('%s/%s/%s.php.cache', $cacheDir, Constants::CACHE_DIR, $cacheFile);
-        if (!file_exists($fullPath)) {//It's impossible but we need to prevent and make sure it is not throwing an exception
+        if (!file_exists($fullPath)) {
+            //It's impossible but we need to prevent and make sure it is not throwing an exception
             return $configurator;
         }
 
