@@ -16,6 +16,8 @@ use Knp\Menu\ItemInterface;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
@@ -26,6 +28,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class Builder
 {
+    /**
+     * @var Kernel
+     */
+    private $kernel;
+
     /**
      * @var Router
      */
@@ -49,14 +56,16 @@ class Builder
     private $translationDomain;
 
     /**
+     * @param Kernel               $kernel
      * @param Router               $router
      * @param ClassExtractor       $extractor
      * @param TranslatorInterface  $translator
      * @param AuthorizationChecker $authorizationChecker
      * @param string               $translationDomain
      */
-    public function __construct(Router $router, ClassExtractor $extractor, TranslatorInterface $translator, AuthorizationChecker $authorizationChecker, $translationDomain)
+    public function __construct(Kernel $kernel, Router $router, ClassExtractor $extractor, TranslatorInterface $translator, AuthorizationChecker $authorizationChecker, $translationDomain)
     {
+        $this->kernel = $kernel;
         $this->router = $router;
         $this->extractor = $extractor;
         $this->translator = $translator;
@@ -134,6 +143,12 @@ class Builder
             }
         }
 
+        $cacheFile = sprintf('%s/%s/%s.php.cache', $this->kernel->getCacheDir(), Constants::CACHE_DIR, str_replace('\\', '_', __CLASS__));
+        if (file_exists($cacheFile)) {
+            $this->iterateMenu($menu, require $cacheFile);
+        }
+
+        $items = array();
         /** @var Route $route */
         foreach ($matches as $name => $route) {
             if ($temp = $route->getDefault('_controller')) {
@@ -143,10 +158,35 @@ class Builder
                 $annotations = $this->extractor->extract($reflectionController);
                 foreach ($annotations as $annotation) {
                     if ($annotation instanceof Crud && !$annotation instanceof UserController) {
-                        $this->addMenu($menu, $name, str_replace('Controller', '', $reflectionController->getShortName()), $annotation->getMenuIcon());
+                        $items[$name] = array(
+                            'name' => str_replace('Controller', '', $reflectionController->getShortName()),
+                            'icon' => $annotation->getMenuIcon(),
+                        );
                     }
                 }
             }
         }
+
+        $this->writeCacheFile($cacheFile, sprintf('<?php return %s;', var_export($items, true)));
+        $this->iterateMenu($menu, $items);
+    }
+
+    private function iterateMenu(ItemInterface $menu, array $items)
+    {
+        foreach ($items as $route => $item) {
+            $this->addMenu($menu, $route, $item['name'], $item['icon']);
+        }
+    }
+
+    private function writeCacheFile($file, $content)
+    {
+        $tmpFile = tempnam(dirname($file), basename($file));
+        if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $file)) {
+            @chmod($file, 0666 & ~umask());
+
+            return;
+        }
+
+        throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $file));
     }
 }

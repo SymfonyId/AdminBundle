@@ -2,6 +2,7 @@ services:
     symfonian_id.admin.menu:
         class: Symfonian\Indonesia\AdminBundle\Menu\Builder
         arguments:
+            - '@kernel'
             - '@router'
             - '@symfonian_id.admin.extractor.class_extractor'
             - '@translator'
