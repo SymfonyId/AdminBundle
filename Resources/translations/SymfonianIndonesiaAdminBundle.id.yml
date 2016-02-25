@@ -82,3 +82,9 @@ entity:
         enabled: 'Aktif'
         action: 'Pilihan'
 
+menu:
+    label:
+        user: 'Pengguna'
+        home: 'Dashboard'
+        profile: 'Profil'
+
