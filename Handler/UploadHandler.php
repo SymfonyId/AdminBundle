@@ -34,8 +34,8 @@ class UploadHandler
         if (count($fields) !== count($targetFields)) {
             throw new \InvalidArgumentException('Fields dan Target Fields harus sama jumlahnya.');
         }
-        $this->fields = $fields;
-        $this->targetFields = $targetFields;
+        $this->fields = array_values($fields);
+        $this->targetFields = array_values($targetFields);
     }
 
     public function isUploadable()
@@ -54,7 +54,7 @@ class UploadHandler
         }
 
         $file = null;
-        foreach ($this->fields as $field) {
+        foreach ($this->fields as $key => $field) {
             $getter = CamelCasizer::underScoretToCamelCase('get_'.$field);
             if (method_exists($entity, $getter)) {
                 /** @var UploadedFile $file */
@@ -68,7 +68,7 @@ class UploadHandler
                     $file->move($this->dirPath, $fileName);
                 }
 
-                $setter = CamelCasizer::underScoretToCamelCase('set_'.$field);
+                $setter = CamelCasizer::underScoretToCamelCase('set_'.$this->targetFields[$key]);
                 if (method_exists($entity, $setter)) {
                     call_user_func_array(array($entity, $setter), array($fileName));
                 }
