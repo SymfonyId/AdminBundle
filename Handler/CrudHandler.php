@@ -142,7 +142,9 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['pagination'] = $pagination;
         $viewParams['start'] = ($page - 1) * $perPage;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['header'] = array_merge($gridFields, array('action'));
+        $viewParams['header'] = array_map(function ($value) use ($translator, $translationDomain) {
+            return $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain);
+        }, array_merge($gridFields, array('action')));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $actionAllowed;
