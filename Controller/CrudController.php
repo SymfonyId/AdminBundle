@@ -151,6 +151,7 @@ abstract class CrudController extends Controller
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
+        $this->viewParams['filter_fields'] = implode(', ', $filters);
 
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
