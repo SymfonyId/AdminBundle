@@ -71,3 +71,13 @@ form:
         new_password: 'Password Baru'
         repeat_password: 'Ulangi Password'
         avatar: 'Avatar'
+
+entity:
+    fields:
+        full_name: 'Nama Lengkap'
+        avatar: 'Foto Avatar'
+        username: 'Nama Pengguna'
+        email: 'Alamat Email'
+        roles: 'Hak Akses'
+        enabled: 'Aktif'
+
