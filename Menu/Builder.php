@@ -126,38 +126,26 @@ class Builder
     protected function generateMenu(ItemInterface $menu)
     {
         $routeCollection = $this->router->getRouteCollection()->all();
-        $matches = array_filter($routeCollection, function (Route $route) {
+        $matches = array();
+        /** @var Route $route */
+        foreach ($routeCollection as $name => $route) {
             if (preg_match('/\/list\//', $route->getPath())) {
-                return true;
+                $matches[$name] = $route;
             }
+        }
 
-            return false;
-        });
-
-        $extractor = $this->extractor;
-        $router = $this->router;
-        $menus = array_map(function (Route $route) use ($router, $extractor) {
+        /** @var Route $route */
+        foreach ($matches as $name => $route) {
             if ($temp = $route->getDefault('_controller')) {
                 $controller = explode('::', $temp);
 
                 $reflectionController = new \ReflectionClass($controller[0]);
-                $annotations = $extractor->extract($reflectionController);
+                $annotations = $this->extractor->extract($reflectionController);
                 foreach ($annotations as $annotation) {
                     if ($annotation instanceof Crud && !$annotation instanceof UserController) {
-                        return array(
-                            'icon' => $annotation->getMenuIcon(),
-                            'name' => str_replace('Controller', '', $reflectionController->getShortName()),
-                        );
+                        $this->addMenu($menu, $name, str_replace('Controller', '', $reflectionController->getShortName()), $annotation->getMenuIcon());
                     }
                 }
-            }
-
-            return;
-        }, $matches);
-
-        foreach ($menus as $key => $value) {
-            if ($value) {
-                $this->addMenu($menu, $key, $value['name'], $value['icon']);
             }
         }
     }
