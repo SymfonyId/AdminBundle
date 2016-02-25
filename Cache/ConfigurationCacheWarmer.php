@@ -391,6 +391,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             $output['include_javascript'] = $configuration->getIncludeJavascript();
             $output['include_route'] = $configuration->getIncludeRoute();
             $output['uploadable_field'] = $configuration->getUploadableField();
+            $output['target_field'] = $configuration->getTargetField();
             $output['use_date_picker'] = $configuration->isUseDatePicker();
             $output['use_file_chooser'] = $configuration->isUseFileChooser();
             $output['use_html_editor'] = $configuration->isUseHtmlEditor();
