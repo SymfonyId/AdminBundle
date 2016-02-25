@@ -113,14 +113,13 @@ class ProfileController extends Controller
 
                 /** @var \Doctrine\ORM\EntityManager $entityManager */
                 $entityManager = $this->container->get('doctrine.orm.entity_manager');
-                $dispatcher = $this->container->get('event_dispatcher');
 
                 $event = new FilterEntityEvent();
                 $event->setEntityManager($entityManager);
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);
-                $dispatcher->dispatch(Constants::POST_SAVE, $event);
+                $this->fireEvent(Constants::POST_SAVE, $event);
 
                 $this->viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }

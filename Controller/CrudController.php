@@ -52,7 +52,7 @@ abstract class CrudController extends Controller
         $entity = new $entityClass();
         $form = $event->getForm() ?: $crud->getForm($entity);
 
-        return $this->handle($request, Constants::ACTION_CREATE, $crud->getCreateTemplate(), $entity, $form);
+        return $this->handle($request, $entity, $form, Constants::ACTION_CREATE, $crud->getCreateTemplate());
     }
 
     public function editAction(Request $request, $id)
@@ -73,7 +73,7 @@ abstract class CrudController extends Controller
         $entity = $this->findOr404Error($id);
         $form = $event->getForm() ?: $crud->getForm($entity);
 
-        return $this->handle($request, Constants::ACTION_UPDATE, $crud->getEditTemplate(), $entity, $form);
+        return $this->handle($request, $entity, $form, Constants::ACTION_UPDATE, $crud->getEditTemplate());
     }
 
     public function showAction(Request $request, $id)
@@ -160,7 +160,7 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
-    private function handle(Request $request, $action, $template, EntityInterface $data = null, FormInterface $form = null)
+    private function handle(Request $request, EntityInterface $data, FormInterface $form, $action, $template)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -216,16 +216,6 @@ abstract class CrudController extends Controller
         }
 
         return $entity;
-    }
-
-    /**
-     * @param $name
-     * @param $handler
-     */
-    private function fireEvent($name, $handler)
-    {
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch($name, $handler);
     }
 
     /**

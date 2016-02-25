@@ -232,7 +232,7 @@ class CrudHandler implements ContainerAwareInterface
      *
      * @return mixed
      */
-    public function createNewOrUpdate(CrudController $controller, Request $request, EntityInterface $data, FormInterface $form = null)
+    public function createNewOrUpdate(CrudController $controller, Request $request, EntityInterface $data, FormInterface $form)
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -266,20 +266,7 @@ class CrudHandler implements ContainerAwareInterface
             if (!$form->isValid()) {
                 $viewParams['errors'] = true;
             } else {
-                $data = $form->getData();
-
-                $preSaveEvent = new FilterEntityEvent();
-                $preSaveEvent->setEntity($data);
-                $preSaveEvent->setEntityManager($this->manager);
-                $this->fireEvent(Constants::PRE_SAVE, $preSaveEvent);
-
-                $this->manager->persist($data);
-                $this->manager->flush();
-
-                $postSaveEvent = new FilterEntityEvent();
-                $postSaveEvent->setEntityManager($this->manager);
-                $postSaveEvent->setEntity($data);
-                $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
+                $this->save($form->getData());
 
                 $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
             }
@@ -291,6 +278,22 @@ class CrudHandler implements ContainerAwareInterface
     public function getErrorMessage()
     {
         return $this->errorMessage;
+    }
+
+    private function save(EntityInterface $entity)
+    {
+        $preSaveEvent = new FilterEntityEvent();
+        $preSaveEvent->setEntity($entity);
+        $preSaveEvent->setEntityManager($this->manager);
+        $this->fireEvent(Constants::PRE_SAVE, $preSaveEvent);
+
+        $this->manager->persist($entity);
+        $this->manager->flush();
+
+        $postSaveEvent = new FilterEntityEvent();
+        $postSaveEvent->setEntityManager($this->manager);
+        $postSaveEvent->setEntity($entity);
+        $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
     }
 
     private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $normalizeFilter = false)

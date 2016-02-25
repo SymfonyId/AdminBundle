@@ -69,6 +69,19 @@ abstract class Controller extends Base
         return $configurator;
     }
 
+    /**
+     * @param $name
+     * @param $handler
+     */
+    protected function fireEvent($name, $handler)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+        $dispatcher->dispatch($name, $handler);
+    }
+
+    /**
+     * @return bool
+     */
     private function isProduction()
     {
         /** @var KernelInterface $kernel */
