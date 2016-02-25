@@ -41,11 +41,9 @@ class ControllerTest extends TestCase
                 'setContainer',
                 'getConfigurator',
                 'getClassName',
-                'isProduction',
             ))
             ->getMock()
         ;
-        $this->controller->expects($this->any())->method('isProduction')->willReturn(true);
         $this->controller->expects($this->any())->method('getConfigurator')->willReturn(
             $this->getMockBuilder(Configurator::class)->disableOriginalConstructor()->getMock()
         );
@@ -55,11 +53,6 @@ class ControllerTest extends TestCase
     public function testGetConfigurator()
     {
         $this->assertInstanceOf(Configurator::class, $this->invokeMethod($this->controller, 'getConfigurator', array('key')));
-    }
-
-    public function testIsProduction()
-    {
-        $this->assertFalse($this->invokeMethod($this->controller, 'isProduction'));
     }
 
     public function tearDown()

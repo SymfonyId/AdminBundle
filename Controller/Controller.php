@@ -29,18 +29,37 @@ abstract class Controller extends Base
     abstract protected function getClassName();
 
     /**
+     * @param string $key
+     *
      * @return Configurator
      */
     protected function getConfigurator($key)
     {
+        /** @var KernelInterface $kernel */
+        $kernel = $this->container->get('kernel');
         /** @var Configurator $configurator */
         $configurator = $this->container->get('symfonian_id.admin.congiration.configurator');
-        if (!$this->isProduction()) {
+        if ('prod' !== strtolower($kernel->getEnvironment())) {
             return $configurator;
         }
 
+        return $this->fetchFromCache($configurator, $key);
+    }
+
+    /**
+     * @param $name
+     * @param $handler
+     */
+    protected function fireEvent($name, $handler)
+    {
+        $dispatcher = $this->container->get('event_dispatcher');
+        $dispatcher->dispatch($name, $handler);
+    }
+
+    private function fetchFromCache(Configurator $configurator, $cacheKey)
+    {
         $cacheDir = $this->container->getParameter('kernel.cache_dir');
-        $cacheFile = str_replace('\\', '_', $key);
+        $cacheFile = str_replace('\\', '_', $cacheKey);
         $fullPath = sprintf('%s/%s/%s.php.cache', $cacheDir, Constants::CACHE_DIR, $cacheFile);
         if (!file_exists($fullPath)) {
             //It's impossible but we need to prevent and make sure it is not throwing an exception
@@ -67,29 +86,5 @@ abstract class Controller extends Base
         }
 
         return $configurator;
-    }
-
-    /**
-     * @param $name
-     * @param $handler
-     */
-    protected function fireEvent($name, $handler)
-    {
-        $dispatcher = $this->container->get('event_dispatcher');
-        $dispatcher->dispatch($name, $handler);
-    }
-
-    /**
-     * @return bool
-     */
-    private function isProduction()
-    {
-        /** @var KernelInterface $kernel */
-        $kernel = $this->container->get('kernel');
-        if ('prod' === strtolower($kernel->getEnvironment())) {
-            return true;
-        }
-
-        return false;
     }
 }

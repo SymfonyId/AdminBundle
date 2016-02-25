@@ -48,13 +48,14 @@ class DeleteUserListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->event = $this->getMockBuilder(FilterEntityEvent::class)->disableOriginalConstructor()->getMock();
         $this->event->expects($this->any())->method('getEntity')->willReturn($user);
-        $this->event->expects($this->any())->method('setResponse')->with($this->response)->willReturn(true);
+        $this->event->expects($this->any())->method('setResponse')->with($this->isInstanceOf(JsonResponse::class));
         $this->event->expects($this->any())->method('getResponse')->willReturn($this->response);
     }
 
     public function testCanNotDeleteItSelf()
     {
         $listener = new DeleteUserListener($this->tokenStorage, $this->translation, 'A');
+        $listener->onDeleteUser($this->event);
         $this->assertInstanceOf(get_class($this->response), $this->event->getResponse());
     }
 

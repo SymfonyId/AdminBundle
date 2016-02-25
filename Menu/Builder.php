@@ -144,7 +144,7 @@ class Builder
         }
 
         $cacheFile = sprintf('%s/%s/%s.php.cache', $this->kernel->getCacheDir(), Constants::CACHE_DIR, str_replace('\\', '_', __CLASS__));
-        if (file_exists($cacheFile)) {
+        if (file_exists($cacheFile) && 'prod' === strtolower($this->kernel->getEnvironment())) {
             $this->iterateMenu($menu, require $cacheFile);
         }
 
