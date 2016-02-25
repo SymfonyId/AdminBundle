@@ -80,4 +80,5 @@ entity:
         email: 'Alamat Email'
         roles: 'Hak Akses'
         enabled: 'Aktif'
+        action: 'Pilihan'
 

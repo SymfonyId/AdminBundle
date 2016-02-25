@@ -11,12 +11,12 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\EventListener;
 
+use FOS\UserBundle\Model\UserInterface;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\EventListener\DeleteUserListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
