@@ -55,5 +55,7 @@ class AvatarUploader
             $this->uploadHandler->setUploadDir($this->uploadDir['server_path']);
             $this->uploadHandler->upload($entity);
         }
+
+        $event->setEntity($entity);
     }
 }

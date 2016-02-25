@@ -287,7 +287,7 @@ class CrudHandler implements ContainerAwareInterface
         $preSaveEvent->setEntityManager($this->manager);
         $this->fireEvent(Constants::PRE_SAVE, $preSaveEvent);
 
-        $this->manager->persist($entity);
+        $this->manager->persist($preSaveEvent->getEntity());
         $this->manager->flush();
 
         $postSaveEvent = new FilterEntityEvent();
