@@ -228,4 +228,12 @@ class Util implements ConfigurationInterface
     {
         $this->uploadable = $uploadable;
     }
+
+    /**
+     * @param string $targetField
+     */
+    public function setTargetField($targetField)
+    {
+        $this->targetField = $targetField;
+    }
 }
