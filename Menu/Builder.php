@@ -159,7 +159,7 @@ class Builder
                 foreach ($annotations as $annotation) {
                     if ($annotation instanceof Crud && !$annotation instanceof UserController) {
                         $items[$name] = array(
-                            'name' => $this->translator->trans(sprintf('menu.label.%s', str_replace('Controller', '', $reflectionController->getShortName())), array(), $this->translationDomain),
+                            'name' => $this->translator->trans(sprintf('menu.label.%s', strtolower(str_replace('Controller', '', $reflectionController->getShortName()))), array(), $this->translationDomain),
                             'icon' => $annotation->getMenuIcon(),
                         );
                     }

@@ -57,8 +57,6 @@ menu:
     user:
         title: 'User'
         change_password: 'Ubah Password'
-        add: 'Tambah User'
-        list: 'Daftar User'
 
 form:
     label:
