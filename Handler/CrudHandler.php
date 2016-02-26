@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
+use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
@@ -18,7 +19,6 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -43,6 +43,11 @@ class CrudHandler implements ContainerAwareInterface
      * @var \Doctrine\ORM\EntityRepository
      */
     private $repository;
+
+    /**
+     * @var \Doctrine\ORM\Mapping\ClassMetadata
+     */
+    private $classMetadata;
 
     private $class;
     private $template;
@@ -88,7 +93,8 @@ class CrudHandler implements ContainerAwareInterface
     public function setEntity($class)
     {
         $this->repository = $this->manager->getRepository($class);
-        $this->class = $this->manager->getClassMetadata($class)->getName();
+        $this->classMetadata = $this->manager->getClassMetadata($class);
+        $this->class = $this->classMetadata->getName();
     }
 
     /**
@@ -304,10 +310,7 @@ class CrudHandler implements ContainerAwareInterface
         $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
 
         if ($filter) {
-            foreach ($filterFields as $key => $value) {
-                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', Constants::ENTITY_ALIAS, CamelCasizer::underScoretToCamelCase($value), $key));
-                $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
-            }
+            $this->applyFilter($queryBuilder, $filterFields, $filter);
         }
 
         $filterList = new FilterQueryEvent();
@@ -329,5 +332,32 @@ class CrudHandler implements ContainerAwareInterface
     {
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($name, $handler);
+    }
+
+    private function getFilterMapping(array $filterFields)
+    {
+        $mapping = array();
+        foreach ($filterFields as $field) {
+            $fieldName = $this->classMetadata->getFieldName($field) ?: $this->classMetadata->getFieldForColumn($field);
+            $mapping[] = $this->classMetadata->getFieldMapping($fieldName);
+        }
+
+        return $mapping;
+    }
+
+    private function applyFilter(QueryBuilder $queryBuilder, array $filterFields, $filter)
+    {
+        foreach ($this->getFilterMapping($filterFields) as $key => $value) {
+            if (in_array($value['type'], array('date', 'datetime', 'time'))) {
+                $date = \DateTime::createFromFormat($this->container->getParameter('symfonian_id.admin.date_time_format'), $filter);
+                $queryBuilder->orWhere(sprintf('%s.%s = ?%d', Constants::ENTITY_ALIAS, $value['fieldName'], $key));
+                $queryBuilder->setParameter($key, $date->format($this->container->getParameter('symfonian_id.admin.date_time_format')));
+                $queryBuilder->orWhere(sprintf('%s.%s = ?%d', Constants::ENTITY_ALIAS, $value['fieldName'], $key));
+                $queryBuilder->setParameter($key, $date->format('Y-m-d'));
+            } else {
+                $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', Constants::ENTITY_ALIAS, $value['fieldName'], $key));
+                $queryBuilder->setParameter($key, strtr('%filter%', array('filter' => $filter)));
+            }
+        }
     }
 }

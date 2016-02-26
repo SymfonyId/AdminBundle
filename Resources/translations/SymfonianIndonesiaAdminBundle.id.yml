@@ -1,7 +1,7 @@
 'Bad credentials.': 'Username dan Password tidak sesuai'
 message:
     error: 'Terjadi kesalahan, silahkan perbaiki dan kemudian kirimkan kembali.'
-    search: 'Cari berdasarkan %filters%'
+    search: 'Cari Berdasarkan %filters%'
     info: 'Pesan Informasi'
     login_title: 'Halaman Login'
     error_title: 'Terjadi kesalahan'
