@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -356,7 +355,7 @@ class CrudHandler implements ContainerAwareInterface
                     }
                 ));
                 if ($associationFields) {
-                    $filters[] = array_merge( array(
+                    $filters[] = array_merge(array(
                         'join' => true,
                         'join_field' => $fieldName,
                         'join_alias' => $this->getAlias(),
