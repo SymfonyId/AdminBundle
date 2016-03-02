@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
@@ -113,7 +114,7 @@ class CrudHandler implements ContainerAwareInterface
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
         $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
-        $pagination = $this->paginateResult($filterFields, $page, $perPage, $filter, $normalizeFilter);
+        $pagination = $this->paginateResult($filterFields, $page, $perPage, $filter, $request->query->get('sort_by'), $normalizeFilter);
         $data = array();
         $identifier = array();
         /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
@@ -151,7 +152,11 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['start'] = ($page - 1) * $perPage;
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
         $viewParams['header'] = array_map(function ($value) use ($translator, $translationDomain) {
-            return $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain);
+            return array(
+                'title' => $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain),
+                'field' => $value,
+                'sortable' => $value === 'action'? false : true,
+            );
         }, array_merge($gridFields, array('action')));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
         $viewParams['identifier'] = $identifier;
@@ -306,13 +311,17 @@ class CrudHandler implements ContainerAwareInterface
         $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
     }
 
-    private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $normalizeFilter = false)
+    private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $sortBy = null, $normalizeFilter = false)
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
         $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
 
         if ($filter) {
             $this->applyFilter($queryBuilder, $filterFields, $filter);
+        }
+
+        if ($sortBy) {
+            $queryBuilder->addOrderBy(Constants::ENTITY_ALIAS.'.'.$this->getFieldName($sortBy));
         }
 
         $filterList = new FilterQueryEvent();

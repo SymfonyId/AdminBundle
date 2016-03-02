@@ -9,6 +9,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    symfonian_id.admin.twig.is_sorted:
+        class: Symfonian\Indonesia\AdminBundle\Twig\Comparations\SortedTest
+        arguments:
+            - '@session'
+        tags:
+            - { name: twig.extension }
+
     symfonian_id.admin.twig.ucwords:
         class: Symfonian\Indonesia\AdminBundle\Twig\Filters\UcWordsFilter
         tags:

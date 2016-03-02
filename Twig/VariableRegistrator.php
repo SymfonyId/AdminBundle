@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Twig;
 
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class VariableRegistrator
@@ -38,5 +39,6 @@ class VariableRegistrator
         $this->twig->addGlobal('short_title', $this->variables['short_title']);
         $this->twig->addGlobal('date_time_format', $this->variables['date_format']);
         $this->twig->addGlobal('menu', $this->variables['menu']);
+        $this->twig->addGlobal('entity_alias', SymfonianIndonesiaAdminConstants::ENTITY_ALIAS);
     }
 }

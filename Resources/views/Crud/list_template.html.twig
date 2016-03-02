@@ -1,53 +1,57 @@
 {% spaceless %}
-<table class="table table-hover table-bordered">
-    <tr>
-        <td class="text-center"><strong>No</strong></td>
-        {%- for i, value in header -%}
-            <td class="text-center"><strong>{{- value | upper -}}</strong></td>
-        {%- endfor -%}
-    </tr>
-    {%- for key, value in record -%}
+    <table class="table table-hover table-bordered">
         <tr>
-            <td>{{- start + key + 1 -}}</td>
-            {%- for i, v in value -%}
-                {%- if v.timezone is defined -%}
-                    <td>{{- v | date(date_time_format) -}}
-                {%- else -%}
-                    {%- if v is iterable -%}
-                        {%- set value = '' -%}
-                        {%- for i, v in v -%}
-                            {%- set value = value ~ v ~ ', ' -%}
-                        {%- endfor -%}
-                        <td>{{- value | trim(', ')-}}
-                    {%- else -%}
-                        {% if v is numeric and formating_number %}
-                            <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
-                        {% else %}
-                            {% if v is boolean %}
-                                <td class="text-center"><label>
-                                <input {% if v is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
-                            </label>
-                            {% else %}
-                                <td>{{- v | raw -}}
-                            {% endif %}
-                        {% endif %}
-                    {%- endif -%}
-                {%- endif -%}
-                </td>
+            <th class="text-center"><strong>No</strong></th>
+            {%- for i, value in header -%}
+                {% if value['sortable'] %}
+                    <th class="text-center header-sortable" data-field="{{- value['field'] -}}">{% if value['field'] is sorted %}<i class="fa fa-fw sorted"></i>{% else %}<i class="fa fa-fw sortable"></i>{% endif %}{{- value['title'] | upper -}}</th>
+                {% else %}
+                    <th class="text-center"><strong>{{- value['title'] | upper -}}</strong></th>
+                {% endif %}
             {%- endfor -%}
-
-            {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' -%}
         </tr>
-    {%- endfor -%}
-</table>
-<div class="padding-top-7">
-    <div class="pull-left">
-        {%- if allow_create is same as(true) -%}
-            <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
-        {% endif %}
+        {%- for key, value in record -%}
+            <tr>
+                <td>{{- start + key + 1 -}}</td>
+                {%- for i, v in value -%}
+                    {%- if v.timezone is defined -%}
+                        <td>{{- v | date(date_time_format) -}}
+                    {%- else -%}
+                        {%- if v is iterable -%}
+                            {%- set value = '' -%}
+                            {%- for i, v in v -%}
+                                {%- set value = value ~ v ~ ', ' -%}
+                            {%- endfor -%}
+                            <td>{{- value | trim(', ')-}}
+                        {%- else -%}
+                            {% if v is numeric and formating_number %}
+                                <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+                            {% else %}
+                                {% if v is boolean %}
+                                    <td class="text-center"><label>
+                                    <input {% if v is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                                </label>
+                                {% else %}
+                                    <td>{{- v | raw -}}
+                                {% endif %}
+                            {% endif %}
+                        {%- endif -%}
+                    {%- endif -%}
+                    </td>
+                {%- endfor -%}
+
+                {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' -%}
+            </tr>
+        {%- endfor -%}
+    </table>
+    <div class="padding-top-7">
+        <div class="pull-left">
+            {%- if allow_create is same as(true) -%}
+                <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+            {% endif %}
+        </div>
+        <div class="pull-right">
+            {{- knp_pagination_render(pagination) -}}
+        </div>
     </div>
-    <div class="pull-right">
-        {{- knp_pagination_render(pagination) -}}
-    </div>
-</div>
 {% endspaceless %}

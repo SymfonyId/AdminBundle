@@ -35,6 +35,7 @@ class SymfonianIndonesiaAdminConstants
     const GRID_ACTION_DELETE = 'GRID_ACTION_DELETE';
 
     const ENTITY_ALIAS = 'e';
+    const SESSION_SORTED_NAME = 'siab_sorted';
 
     const TEMPLATE_CREATE = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
     const TEMPLATE_EDIT = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
