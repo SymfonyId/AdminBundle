@@ -66,7 +66,7 @@ class FilterQueryListener extends AbstractQueryListener
             return;
         }
 
-        $this->applyFilter($this->getClassMeatadata($entityClass), $queryBuilder, $filters, $this->filter);
+        $this->applyFilter($this->getClassMeatadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
     }
 
     /**
