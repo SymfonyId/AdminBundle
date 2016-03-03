@@ -158,7 +158,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $filters, $crud->getAction(), $crud->isAllowCreate(), $grid->isNormalizeFilter(), $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }

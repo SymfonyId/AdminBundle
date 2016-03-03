@@ -101,18 +101,15 @@ class CrudHandler implements ContainerAwareInterface
     /**
      * @param Request    $request
      * @param array      $gridFields
-     * @param array      $filterFields
      * @param array      $actionAllowed
      * @param bool|true  $allowCreate
-     * @param bool|false $normalizeFilter
      * @param bool|true  $formatNumber
      */
-    public function viewList(Request $request, array $gridFields, array $filterFields, array $actionAllowed, $allowCreate = true, $normalizeFilter = false, $formatNumber = true)
+    public function viewList(Request $request, array $gridFields, array $actionAllowed, $allowCreate = true, $formatNumber = true)
     {
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
-        $filter = $normalizeFilter ? strtoupper($request->query->get('filter')) : $request->query->get('filter');
-        $pagination = $this->paginateResult($filterFields, $page, $perPage, $filter, $request->query->get('sort_by'), $normalizeFilter);
+        $pagination = $this->paginateResult($page, $perPage);
         $data = array();
         $identifier = array();
         /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
@@ -309,7 +306,7 @@ class CrudHandler implements ContainerAwareInterface
         $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
     }
 
-    private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $sortBy = null, $normalizeFilter = false)
+    private function paginateResult($page, $perPage)
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
 
