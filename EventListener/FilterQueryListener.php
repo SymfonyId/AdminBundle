@@ -136,7 +136,7 @@ class FilterQueryListener extends AbstractQueryListener
         if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
             $date = \DateTime::createFromFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'), $filter);
             if ($date) {
-                $queryBuilder->orWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+                $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
                 $queryBuilder->setParameter($metadata['fieldName'], $date->format('Y-m-d'));
             }
         } else {

@@ -29,6 +29,7 @@
             jQuery('.sortable').addClass('fa-sort');
             jQuery('.sorted').addClass('fa-sort-asc');
             jQuery('.header-sortable').css('cursor', 'pointer');
+            jQuery('.siab-search').val(getQueryString('filter'));
         });
 
         function getUrlVars() {
@@ -52,6 +53,15 @@
             }
 
             return ret.join('&');
+        };
+
+        function getQueryString(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
         };
     </script>
 {% endspaceless %}

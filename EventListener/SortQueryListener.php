@@ -67,12 +67,13 @@ class SortQueryListener extends AbstractQueryListener
         $queryBuilder = $event->getQueryBuilder();
         $entityClass = $event->getEntityClass();
 
+        $session = $this->getContainer()->get('session');
         if (!$this->sort) {
+            $session->set(Constants::SESSION_SORTED_NAME, null);
+
             return;
         }
 
-
-        $session = $this->getContainer()->get('session');
         $session->set(Constants::SESSION_SORTED_NAME, $this->sort);
         $this->applySort($this->getClassMeatadata($entityClass), $queryBuilder, array($this->sort));
     }
