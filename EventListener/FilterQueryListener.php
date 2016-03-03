@@ -10,100 +10,90 @@
  */
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
+
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfiguratorAwareTrait;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FilterQueryListener implements ContainerAwareInterface
+class FilterQueryListener extends AbstractQueryListener
 {
-    use ConfiguratorAwareTrait;
-
     /**
-     * @var ContainerInterface
+     * @var string | null
      */
-    private $container;
-
-    /**
-     * @var EntityManager
-     */
-    private $manager;
-
     private $filter;
-    private static $ALIAS = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j');
-    private static $ALIAS_USED = array(Constants::ENTITY_ALIAS);
 
     public function __construct(EntityManager $entityManager)
     {
-        $this->manager = $entityManager;
+        parent::__construct($entityManager);
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+            return;
+        }
+
         $this->filter = $event->getRequest()->query->get('filter');
     }
 
+    /**
+     * @param FilterQueryEvent $event
+     */
     public function onFilterQuery(FilterQueryEvent $event)
     {
+        if (!$this->getController()) {
+            return;
+        }
+
         $queryBuilder = $event->getQueryBuilder();
         $entityClass = $event->getEntityClass();
         $configurator = $this->getConfigurator($entityClass);
         /** @var Grid $grid */
         $grid = $configurator->getConfiguration(Grid::class);
 
-        if (!$grid->getFilters()) {
+        if (!$filters = $grid->getFilters()) {
             return;
         }
+
+        $this->applyFilter($this->getClassMeatadata($entityClass), $queryBuilder, $filters, $this->filter);
     }
 
     /**
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     * @param ClassMetadata $metadata
+     * @param array $fields
+     * @return array
+     * @throws \Doctrine\ORM\Mapping\MappingException
      */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
-    {
-        return $this->container;
-    }
-
-    private function getMapping(array $fields)
+    protected function getMapping(ClassMetadata $metadata, array $fields)
     {
         $filters = array();
         foreach ($fields as $field) {
-            $fieldName = $this->getFieldName($field);
+            $fieldName = $metadata->getFieldName($field);
             try {
-                $filters[] = $this->getClassMeatadata()->getFieldMapping($fieldName);
+                $filters[] = $metadata->getFieldMapping($fieldName);
             } catch (\Exception $ex) {
-                $mapping = $this->getClassMeatadata()->getAssociationMapping($fieldName);
-                $associationMatadata = $this->manager->getClassMetadata($mapping['targetEntity']);
-                $associationFields = $associationMatadata->getFieldNames();
-                $associationIdentifier = $associationMatadata->getIdentifierFieldNames();
-                $associationFields = array_values(array_filter(
-                    $associationFields,
-                    function ($value) use ($associationIdentifier) {
-                        return !in_array($value, $associationIdentifier);
-                    }
-                ));
-                if ($associationFields) {
+                $mapping = $metadata->getAssociationMapping($fieldName);
+                $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
+                $associationConfigurator = $this->getConfigurator($mapping['targetEntity']);
+                /** @var Grid $associationGrid */
+                $associationGrid = $associationConfigurator->getConfiguration(Grid::class);
+                if ($filter = $associationGrid->getFilters()) {
                     $filters[] = array_merge(array(
                         'join' => true,
                         'join_field' => $fieldName,
                         'join_alias' => $this->getAlias(),
-                    ), $associationMatadata->getFieldMapping($associationFields[0]));
+                    ), $associationMatadata->getFieldMapping($filter[0]));
                 }
             }
         }
@@ -111,23 +101,15 @@ class FilterQueryListener implements ContainerAwareInterface
         return $filters;
     }
 
-    private function getFieldName($field)
+    /**
+     * @param ClassMetadata $metadata
+     * @param QueryBuilder $queryBuilder
+     * @param array $filterFields
+     * @param $filter
+     */
+    private function applyFilter(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filter)
     {
-        return $this->getClassMeatadata()->getFieldName($field);
-    }
-
-    private function getAlias()
-    {
-        $available = array_values(array_diff(self::$ALIAS, self::$ALIAS_USED));
-        $alias = $available[0];
-        self::$ALIAS_USED[] = $alias;
-
-        return $alias;
-    }
-
-    private function applyFilter(QueryBuilder $queryBuilder, array $filterFields, $filter)
-    {
-        foreach ($this->getMapping($filterFields) as $key => $value) {
+        foreach ($this->getMapping($metadata, $filterFields) as $key => $value) {
             if (array_key_exists('join', $value)) {
                 $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
                 $this->buildFilter($queryBuilder, $value, $value['join_alias'], $key, $filter);
@@ -137,10 +119,17 @@ class FilterQueryListener implements ContainerAwareInterface
         }
     }
 
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param $alias
+     * @param $parameter
+     * @param $filter
+     */
     private function buildFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $parameter, $filter)
     {
         if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
-            $date = \DateTime::createFromFormat($this->container->getParameter('symfonian_id.admin.date_time_format'), $filter);
+            $date = \DateTime::createFromFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'), $filter);
             if ($date) {
                 $queryBuilder->orWhere(sprintf('%s.%s = ?%d', $alias, $metadata['fieldName'], $parameter));
                 $queryBuilder->setParameter($parameter, $date->format('Y-m-d'));
@@ -149,10 +138,5 @@ class FilterQueryListener implements ContainerAwareInterface
             $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', $alias, $metadata['fieldName'], $parameter));
             $queryBuilder->setParameter($parameter, strtr('%filter%', array('filter' => $filter)));
         }
-    }
-
-    private function getClassMeatadata($entityClass)
-    {
-        return $this->manager->getClassMetadata($entityClass);
     }
 }

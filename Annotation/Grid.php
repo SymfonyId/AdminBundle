@@ -21,13 +21,11 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Grid implements ConfigurationInterface
 {
-    protected $columns = array();
-
-    protected $filters = array();
-
-    protected $normalizeFilter = false;
-
-    protected $formatNumber = true;
+    private $columns = array();
+    private $filters = array();
+    private $sortable = array();
+    private $normalizeFilter = false;
+    private $formatNumber = true;
 
     public function __construct(array $data = array())
     {
@@ -43,6 +41,10 @@ class Grid implements ConfigurationInterface
             $this->setFilters((array) $data['filters']);
         }
 
+        if (isset($data['sortable'])) {
+            $this->setSortable((array) $data['sortable']);
+        }
+
         if (isset($data['normalizeFilter'])) {
             $this->normalizeFilter = (bool) $data['normalizeFilter'];
         }
@@ -54,24 +56,52 @@ class Grid implements ConfigurationInterface
         unset($data);
     }
 
+    /**
+     * @return array
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
+    /**
+     * @param array $columns
+     */
     public function setColumns(array $columns)
     {
         $this->columns = $columns;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return $this->filters;
     }
 
+    /**
+     * @param array $filters
+     */
     public function setFilters(array $filters)
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSortable()
+    {
+        return $this->sortable;
+    }
+
+    /**
+     * @param array $sortable
+     */
+    public function setSortable($sortable)
+    {
+        $this->sortable = $sortable;
     }
 
     /**
@@ -90,11 +120,17 @@ class Grid implements ConfigurationInterface
         $this->normalizeFilter = $normalizeFilter;
     }
 
+    /**
+     * @return bool
+     */
     public function isNormalizeFilter()
     {
         return $this->normalizeFilter;
     }
 
+    /**
+     * @return bool
+     */
     public function isFormatNumber()
     {
         return $this->formatNumber;

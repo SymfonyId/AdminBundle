@@ -21,9 +21,8 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Page implements ConfigurationInterface
 {
-    protected $title = 'SIAB';
-
-    protected $description = 'Symfonian Indonesia Admin Bundle';
+    private $title = 'SIAB';
+    private $description = 'Symfonian Indonesia Admin Bundle';
 
     public function __construct(array $data = array())
     {

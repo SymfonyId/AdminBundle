@@ -27,6 +27,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\UserController;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
+use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -166,6 +167,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         /** @var Grid $grid */
         $grid = $this->configuration->getConfiguration(Grid::class);
         $grid->setFilters($this->filters);
+        $grid->setSortable($this->filters);
         $grid->setColumns(array());
 
         $this->configuration->addConfiguration($crud);
@@ -227,6 +229,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         $grid->setColumns($this->userGridFields);
         $grid->setFilters($this->userGridFilters);
+        $grid->setSortable($this->userGridFilters);
 
         $configuration->addConfiguration($crud);
         $configuration->addConfiguration($grid);
@@ -288,6 +291,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $config = clone $grid;
         $columns = array();
         $filters = array();
+        $sortable = array();
+
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $this->extractor->extract($reflectionProperty);
             foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
@@ -297,6 +302,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
                 if ($annotation instanceof Column) {
                     $columns[] = $reflectionProperty->getName();
                 }
+                if ($annotation instanceof Sortable) {
+                    $sortable[] = $reflectionProperty->getName();
+                }
             }
         }
 
@@ -305,6 +313,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         }
         if (!empty($columns)) {
             $config->setColumns($columns);
+        }
+        if (!empty($sortable)) {
+            $grid->setSortable($columns);
         }
 
         return $config;

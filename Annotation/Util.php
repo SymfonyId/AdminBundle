@@ -21,23 +21,15 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Util implements ConfigurationInterface
 {
-    protected $autoComplete = array();
-
-    protected $datePicker = false;
-
-    protected $htmlEditor = false;
-
-    protected $fileChooser = false;
-
-    protected $numeric = false;
-
-    protected $includeJavascript;
-
-    protected $includeRoute = array();
-
-    protected $uploadable;
-
-    protected $targetField;
+    private $autoComplete = array();
+    private $datePicker = false;
+    private $htmlEditor = false;
+    private $fileChooser = false;
+    private $numeric = false;
+    private $includeJavascript;
+    private $includeRoute = array();
+    private $uploadable;
+    private $targetField;
 
     public function __construct(array $data = array())
     {

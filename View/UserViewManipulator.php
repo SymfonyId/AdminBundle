@@ -79,6 +79,7 @@ class UserViewManipulator extends AbstractListener
         $grid = $this->configuration->getConfiguration(Grid::class);
         $grid->setColumns($this->gridFields);
         $grid->setFilters($this->gridFilters);
+        $grid->setSortable($this->gridFilters);
 
         $this->configuration->addConfiguration($crud);
         $this->configuration->addConfiguration($grid);

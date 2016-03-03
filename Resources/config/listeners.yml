@@ -86,3 +86,21 @@ services:
         class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
         tags:
             - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }
+
+    symfonian_id.admin.filter_query:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\FilterQueryListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
+
+    symfonian_id.admin.sort_query:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }

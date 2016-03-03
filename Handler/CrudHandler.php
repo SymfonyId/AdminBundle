@@ -313,16 +313,6 @@ class CrudHandler implements ContainerAwareInterface
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
 
-        if ($filter) {
-            $this->applyFilter($queryBuilder, $filterFields, $filter);
-        }
-
-        if ($sortBy && $field = $this->getFieldName($sortBy)) {
-            $this->applySort($queryBuilder, $sortBy);
-        } else {
-            $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
-        }
-
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
         $filterList->setAlias(Constants::ENTITY_ALIAS);
@@ -342,15 +332,5 @@ class CrudHandler implements ContainerAwareInterface
     {
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($name, $handler);
-    }
-
-    private function applySort(QueryBuilder $queryBuilder, $sortBy, $direction = 'asc')
-    {
-        foreach ($this->getMapping(array($sortBy)) as $key => $value) {
-            if (array_key_exists('join', $value)) {
-                $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-            }
-            $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value));
-        }
     }
 }

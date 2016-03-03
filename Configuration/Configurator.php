@@ -17,6 +17,7 @@ use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
+use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -155,6 +156,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         /** @var Grid $grid */
         $grid = $this->getConfiguration(Grid::class);
         $grid->setFilters($this->filters);
+        $grid->setSortable($this->filters);
         $grid->setColumns(array());
 
         $this->addConfiguration($grid);
@@ -199,6 +201,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
         $filters = array();
         $columns = array();
+        $sortable = array();
 
         $reflection = new \ReflectionClass($class);
         foreach ($reflection->getProperties() as $reflectionProperty) {
@@ -210,6 +213,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
                 if ($annotation instanceof Column) {
                     $columns[] = $reflectionProperty->getName();
                 }
+                if ($annotation instanceof Sortable) {
+                    $sortable[] = $reflectionProperty->getName();
+                }
             }
         }
 
@@ -220,6 +226,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         }
         if (!empty($columns)) {
             $grid->setColumns($columns);
+        }
+        if (!empty($sortable)) {
+            $grid->setSortable($columns);
         }
         $this->addConfiguration($grid);
     }

@@ -24,6 +24,10 @@ abstract class AbstractListener
      */
     private $controller;
 
+    /**
+     * @param FilterControllerEvent $event
+     * @return bool
+     */
     public function isValidCrudListener(FilterControllerEvent $event)
     {
         $controller = $event->getController();
@@ -41,6 +45,9 @@ abstract class AbstractListener
         return true;
     }
 
+    /**
+     * @return CrudController
+     */
     public function getController()
     {
         return $this->controller;

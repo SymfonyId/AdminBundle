@@ -38,29 +38,17 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     private $container;
 
     private $showFields = array();
-
     private $entity;
-
     private $form;
-
     private $menuIcon = 'fa-bars';
-
     private $create = Constants::TEMPLATE_CREATE;
-
     private $edit = Constants::TEMPLATE_EDIT;
-
     private $show = Constants::TEMPLATE_SHOW;
-
     private $list = Constants::TEMPLATE_LIST;
-
     private $ajaxTemplate = Constants::TEMPLATE_AJAX;
-
     private $allowCreate = true;
-
     private $allowEdit = true;
-
     private $allowShow = true;
-
     private $allowDelete = true;
 
     public function __construct(array $data = array())
