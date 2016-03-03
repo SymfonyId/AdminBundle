@@ -160,7 +160,6 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['formating_number'] = $formatNumber;
         $viewParams['record'] = $data;
-        $viewParams['filter'] = $filter;
 
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }

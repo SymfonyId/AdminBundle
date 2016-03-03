@@ -89,8 +89,11 @@ services:
 
     symfonian_id.admin.filter_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FilterQueryListener
+        calls:
+            - [setContainer, ['@service_container']]
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@annotation_reader'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
@@ -98,8 +101,11 @@ services:
 
     symfonian_id.admin.sort_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
+        calls:
+            - [setContainer, ['@service_container']]
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@annotation_reader'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

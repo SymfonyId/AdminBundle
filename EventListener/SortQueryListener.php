@@ -11,11 +11,13 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -26,13 +28,19 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class SortQueryListener extends AbstractQueryListener
 {
     /**
+     * @var AnnotationReader
+     */
+    private $reader;
+
+    /**
      * @var string | null
      */
     private $sort;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, AnnotationReader $reader)
     {
         parent::__construct($entityManager);
+        $this->reader = $reader;
     }
 
     /**
@@ -62,7 +70,7 @@ class SortQueryListener extends AbstractQueryListener
         /** @var Grid $grid */
         $grid = $configurator->getConfiguration(Grid::class);
 
-        if (!$grid->getFilters()) {
+        if (!$this->sort) {
             return;
         }
 
@@ -85,10 +93,7 @@ class SortQueryListener extends AbstractQueryListener
             } catch (\Exception $ex) {
                 $mapping = $metadata->getAssociationMapping($fieldName);
                 $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
-                $associationConfigurator = $this->getConfigurator($mapping['targetEntity']);
-                /** @var Grid $associationGrid */
-                $associationGrid = $associationConfigurator->getConfiguration(Grid::class);
-                if ($sort = $associationGrid->getSortable()) {
+                if ($sort = $this->getSortableFromAnnotation($mapping['targetEntity'])) {
                     $sorts[] = array_merge(array(
                         'join' => true,
                         'join_field' => $fieldName,
@@ -114,5 +119,20 @@ class SortQueryListener extends AbstractQueryListener
                 $queryBuilder->addOrderBy(sprintf('%s.%s', $value['join_alias'], $value['join_field']));
             }
         }
+    }
+
+    private function getSortableFromAnnotation($class)
+    {
+        $sortable = array();
+        $reflectionClass = new \ReflectionClass($class);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $annotation) {
+                if ($annotation instanceof Sortable) {
+                    $sortable[] = $reflectionProperty->getName();
+                }
+            }
+        }
+
+        return $sortable;
     }
 }

@@ -11,11 +11,13 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -26,13 +28,19 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class FilterQueryListener extends AbstractQueryListener
 {
     /**
+     * @var AnnotationReader
+     */
+    private $reader;
+
+    /**
      * @var string | null
      */
     private $filter;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, AnnotationReader $reader)
     {
         parent::__construct($entityManager);
+        $this->reader = $reader;
     }
 
     /**
@@ -62,7 +70,8 @@ class FilterQueryListener extends AbstractQueryListener
         /** @var Grid $grid */
         $grid = $configurator->getConfiguration(Grid::class);
 
-        if (!$filters = $grid->getFilters()) {
+        $filters = $grid->getFilters();
+        if (!$filters && !$this->filter) {
             return;
         }
 
@@ -85,10 +94,7 @@ class FilterQueryListener extends AbstractQueryListener
             } catch (\Exception $ex) {
                 $mapping = $metadata->getAssociationMapping($fieldName);
                 $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
-                $associationConfigurator = $this->getConfigurator($mapping['targetEntity']);
-                /** @var Grid $associationGrid */
-                $associationGrid = $associationConfigurator->getConfiguration(Grid::class);
-                if ($filter = $associationGrid->getFilters()) {
+                if ($filter = $this->getFilterFromAnnotation($mapping['targetEntity'])) {
                     $filters[] = array_merge(array(
                         'join' => true,
                         'join_field' => $fieldName,
@@ -138,5 +144,20 @@ class FilterQueryListener extends AbstractQueryListener
             $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', $alias, $metadata['fieldName'], $parameter));
             $queryBuilder->setParameter($parameter, strtr('%filter%', array('filter' => $filter)));
         }
+    }
+
+    private function getFilterFromAnnotation($class)
+    {
+        $filters = array();
+        $reflectionClass = new \ReflectionClass($class);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $annotation) {
+                if ($annotation instanceof Filter) {
+                    $filters[] = $reflectionProperty->getName();
+                }
+            }
+        }
+
+        return $filters;
     }
 }
