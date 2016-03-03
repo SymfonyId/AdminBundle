@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class FilterQueryListener extends AbstractQueryListener
 {
     /**
-     * @var AnnotationReader
+     * @var Reader
      */
     private $reader;
 
@@ -37,7 +37,7 @@ class FilterQueryListener extends AbstractQueryListener
      */
     private $filter;
 
-    public function __construct(EntityManager $entityManager, AnnotationReader $reader)
+    public function __construct(EntityManager $entityManager, Reader $reader)
     {
         parent::__construct($entityManager);
         $this->reader = $reader;
@@ -118,9 +118,9 @@ class FilterQueryListener extends AbstractQueryListener
         foreach ($this->getMapping($metadata, $filterFields) as $key => $value) {
             if (array_key_exists('join', $value)) {
                 $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                $this->buildFilter($queryBuilder, $value, $value['join_alias'], $key, $filter);
+                $this->buildFilter($queryBuilder, $value, $value['join_alias'], $filter);
             } else {
-                $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $key, $filter);
+                $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $filter);
             }
         }
     }
@@ -129,20 +129,19 @@ class FilterQueryListener extends AbstractQueryListener
      * @param QueryBuilder $queryBuilder
      * @param array $metadata
      * @param $alias
-     * @param $parameter
      * @param $filter
      */
-    private function buildFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $parameter, $filter)
+    private function buildFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter)
     {
         if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
             $date = \DateTime::createFromFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'), $filter);
             if ($date) {
-                $queryBuilder->orWhere(sprintf('%s.%s = ?%d', $alias, $metadata['fieldName'], $parameter));
-                $queryBuilder->setParameter($parameter, $date->format('Y-m-d'));
+                $queryBuilder->orWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+                $queryBuilder->setParameter($metadata['fieldName'], $date->format('Y-m-d'));
             }
         } else {
-            $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', $alias, $metadata['fieldName'], $parameter));
-            $queryBuilder->setParameter($parameter, strtr('%filter%', array('filter' => $filter)));
+            $queryBuilder->orWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+            $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
         }
     }
 

@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class SortQueryListener extends AbstractQueryListener
 {
     /**
-     * @var AnnotationReader
+     * @var Reader
      */
     private $reader;
 
@@ -37,7 +37,7 @@ class SortQueryListener extends AbstractQueryListener
      */
     private $sort;
 
-    public function __construct(EntityManager $entityManager, AnnotationReader $reader)
+    public function __construct(EntityManager $entityManager, Reader $reader)
     {
         parent::__construct($entityManager);
         $this->reader = $reader;
@@ -115,8 +115,11 @@ class SortQueryListener extends AbstractQueryListener
     {
         foreach ($this->getMapping($metadata, $fields) as $key => $value) {
             if (array_key_exists('join', $value)) {
+                $queryBuilder->addSelect($value['join_alias']);
                 $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                $queryBuilder->addOrderBy(sprintf('%s.%s', $value['join_alias'], $value['join_field']));
+                $queryBuilder->addOrderBy(sprintf('%s.%s', $value['join_alias'], $value['fieldName']));
+            } else {
+                $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['fieldName']));
             }
         }
     }
