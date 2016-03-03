@@ -40,4 +40,9 @@ abstract class Controller extends Base
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($name, $handler);
     }
+
+    protected function getContainer()
+    {
+        return $this->container;
+    }
 }
