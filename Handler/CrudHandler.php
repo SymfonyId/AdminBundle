@@ -54,8 +54,6 @@ class CrudHandler implements ContainerAwareInterface
     private $template;
     private $viewParams = array();
     private $errorMessage;
-    private static $ALIAS = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j');
-    private static $ALIAS_USED = array(Constants::ENTITY_ALIAS);
 
     /**
      * @param ContainerInterface $container
@@ -314,14 +312,15 @@ class CrudHandler implements ContainerAwareInterface
     private function paginateResult(array $filterFields, $page, $perPage, $filter = null, $sortBy = null, $normalizeFilter = false)
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
-        $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
 
         if ($filter) {
             $this->applyFilter($queryBuilder, $filterFields, $filter);
         }
 
-        if ($sortBy) {
-            $queryBuilder->addOrderBy(Constants::ENTITY_ALIAS.'.'.$this->getFieldName($sortBy));
+        if ($sortBy && $field = $this->getFieldName($sortBy)) {
+            $this->applySort($queryBuilder, $sortBy);
+        } else {
+            $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $this->container->getParameter('symfonian_id.admin.identifier')), 'DESC');
         }
 
         $filterList = new FilterQueryEvent();
@@ -345,74 +344,13 @@ class CrudHandler implements ContainerAwareInterface
         $dispatcher->dispatch($name, $handler);
     }
 
-    private function getFilterMapping(array $filterFields)
+    private function applySort(QueryBuilder $queryBuilder, $sortBy, $direction = 'asc')
     {
-        $filters = array();
-        foreach ($filterFields as $field) {
-            $fieldName = $this->getFieldName($field);
-            try {
-                $filters[] = $this->classMetadata->getFieldMapping($fieldName);
-            } catch (\Exception $ex) {
-                $mapping = $this->classMetadata->getAssociationMapping($fieldName);
-                $associationMatadata = $this->manager->getClassMetadata($mapping['targetEntity']);
-                $associationFields = $associationMatadata->getFieldNames();
-                $associationIdentifier = $associationMatadata->getIdentifierFieldNames();
-                $associationFields = array_values(array_filter(
-                    $associationFields,
-                    function ($value) use ($associationIdentifier) {
-                        return !in_array($value, $associationIdentifier);
-                    }
-                ));
-                if ($associationFields) {
-                    $filters[] = array_merge(array(
-                        'join' => true,
-                        'join_field' => $fieldName,
-                        'join_alias' => $this->getAlias(),
-                    ), $associationMatadata->getFieldMapping($associationFields[0]));
-                }
-            }
-        }
-
-        return $filters;
-    }
-
-    private function getFieldName($field)
-    {
-        return $this->classMetadata->getFieldName($field) ?: $this->classMetadata->getFieldForColumn($field);
-    }
-
-    private function getAlias()
-    {
-        $available = array_values(array_diff(self::$ALIAS, self::$ALIAS_USED));
-        $alias = $available[0];
-        self::$ALIAS_USED[] = $alias;
-
-        return $alias;
-    }
-
-    private function applyFilter(QueryBuilder $queryBuilder, array $filterFields, $filter)
-    {
-        foreach ($this->getFilterMapping($filterFields) as $key => $value) {
+        foreach ($this->getMapping(array($sortBy)) as $key => $value) {
             if (array_key_exists('join', $value)) {
                 $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                $this->buildFilter($queryBuilder, $value, $value['join_alias'], $key, $filter);
-            } else {
-                $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $key, $filter);
             }
-        }
-    }
-
-    private function buildFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $parameter, $filter)
-    {
-        if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
-            $date = \DateTime::createFromFormat($this->container->getParameter('symfonian_id.admin.date_time_format'), $filter);
-            if ($date) {
-                $queryBuilder->orWhere(sprintf('%s.%s = ?%d', $alias, $metadata['fieldName'], $parameter));
-                $queryBuilder->setParameter($parameter, $date->format('Y-m-d'));
-            }
-        } else {
-            $queryBuilder->orWhere(sprintf('%s.%s LIKE ?%d', $alias, $metadata['fieldName'], $parameter));
-            $queryBuilder->setParameter($parameter, strtr('%filter%', array('filter' => $filter)));
+            $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value));
         }
     }
 }
