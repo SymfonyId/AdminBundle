@@ -172,7 +172,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         }
 
         $reflectionObject = new \ReflectionObject($this->getController());
-        unset($controller);
 
         $this->extractor->extract($reflectionObject);
         foreach ($this->extractor->getClassAnnotations() as $annotation) {

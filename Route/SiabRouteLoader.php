@@ -262,12 +262,12 @@ class SiabRouteLoader extends DelegatingLoader
             case 'list':
                 if (!$flag) {
                     return new Route(array(
-                            'path' => '/'.$methodName.'/', )
-                    );
+                        'path' => '/'.$methodName.'/',
+                    ));
                 } else {
                     return new Route(array(
-                            'path' => '/', )
-                    );
+                        'path' => '/',
+                    ));
                 }
                 break;
             case 'edit':
