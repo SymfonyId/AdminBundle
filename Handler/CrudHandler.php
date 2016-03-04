@@ -263,15 +263,6 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
 
         if ($request->isMethod('POST')) {
-            $preFormValidationEvent = new FilterFormEvent();
-            $preFormValidationEvent->setForm($form);
-            $this->fireEvent(Constants::PRE_FORM_VALIDATION, $preFormValidationEvent);
-
-            $response = $preFormValidationEvent->getResponse();
-            if ($response) {
-                return $response;
-            }
-
             if (!$form->isValid()) {
                 $viewParams['errors'] = true;
             } else {
