@@ -55,7 +55,7 @@ class SortQueryListener extends AbstractQueryListener
             return;
         }
 
-        $this->sort = $event->getRequest()->query->get('sort_by');
+        $this->sort = $request->query->get('sort_by');
     }
 
     /**
