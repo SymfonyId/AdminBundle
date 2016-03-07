@@ -48,7 +48,12 @@ class SortQueryListener extends AbstractQueryListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        if (!$request->isMethod('GET')) {
             return;
         }
 
@@ -75,7 +80,7 @@ class SortQueryListener extends AbstractQueryListener
         }
 
         $session->set(Constants::SESSION_SORTED_NAME, $this->sort);
-        $this->applySort($this->getClassMeatadata($entityClass), $queryBuilder, array($this->sort));
+        $this->applySort($this->getClassMetadata($entityClass), $queryBuilder, array($this->sort));
     }
 
     /**
@@ -93,7 +98,7 @@ class SortQueryListener extends AbstractQueryListener
                 $sorts[] = $metadata->getFieldMapping($fieldName);
             } catch (\Exception $ex) {
                 $mapping = $metadata->getAssociationMapping($fieldName);
-                $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
+                $associationMatadata = $this->getClassMetadata($mapping['targetEntity']);
                 if ($sort = $this->getSortableFromAnnotation($mapping['targetEntity'])) {
                     $sorts[] = array_merge(array(
                         'join' => true,

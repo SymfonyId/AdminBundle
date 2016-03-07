@@ -91,7 +91,7 @@ abstract class AbstractQueryListener extends AbstractListener implements Contain
      * @param $entityClass
      * @return ClassMetadata
      */
-    protected function getClassMeatadata($entityClass)
+    protected function getClassMetadata($entityClass)
     {
         return $this->manager->getClassMetadata($entityClass);
     }
