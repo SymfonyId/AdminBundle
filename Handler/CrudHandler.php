@@ -266,6 +266,11 @@ class CrudHandler implements ContainerAwareInterface
             if (!$form->isValid()) {
                 $viewParams['errors'] = true;
             } else {
+                $preSave = new FilterFormEvent();
+                $preSave->setData($data);
+                $preSave->setForm($form);
+                $this->fireEvent(Constants::PRE_SAVE, $preSave);
+
                 $this->save($form->getData());
 
                 $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
