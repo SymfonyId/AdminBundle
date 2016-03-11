@@ -145,7 +145,11 @@ class FilterQueryListener extends AbstractQueryListener
             }
         } else {
             $queryBuilder->orWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
-            $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
+            if ('array' === $metadata['type']) {
+                $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => serialize(array($filter)))));
+            } else {
+                $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
+            }
         }
     }
 
