@@ -59,6 +59,9 @@ class SiabRouteLoader extends DelegatingLoader
         $controllers = $this->findAllControllerFromDir($this->getControllerDir($resource));
         /** @var \ReflectionClass $controller */
         foreach ($controllers as $controller) {
+            if (!$controller) {//bugfix for windows OS
+                continue;
+            }
             if ($controller->isSubclassOf(CrudController::class)) {
                 $this->registerRoute($collection, $controller);
             } else {
