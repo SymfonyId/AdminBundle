@@ -18,7 +18,6 @@ class SymfonianIndonesiaAdminConstants
 {
     const PRE_FORM_CREATE = 'siab.pre_form_create';
     const PRE_FORM_SUBMIT = 'siab.pre_form_submit';
-    const PRE_FORM_VALIDATION = 'siab.pre_validation';
     const PRE_SAVE = 'siab.pre_save';
     const POST_SAVE = 'siab.post_save';
     const FILTER_LIST = 'siab.filter_query';

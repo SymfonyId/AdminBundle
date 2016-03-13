@@ -20,7 +20,6 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -48,7 +47,12 @@ class FilterQueryListener extends AbstractQueryListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        if (!$request->isMethod('GET')) {
             return;
         }
 
@@ -75,7 +79,7 @@ class FilterQueryListener extends AbstractQueryListener
             return;
         }
 
-        $this->applyFilter($this->getClassMeatadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
+        $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
     }
 
     /**
@@ -93,7 +97,7 @@ class FilterQueryListener extends AbstractQueryListener
                 $filters[] = $metadata->getFieldMapping($fieldName);
             } catch (\Exception $ex) {
                 $mapping = $metadata->getAssociationMapping($fieldName);
-                $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
+                $associationMatadata = $this->getClassMetadata($mapping['targetEntity']);
                 if ($filter = $this->getFilterFromAnnotation($mapping['targetEntity'])) {
                     $filters[] = array_merge(array(
                         'join' => true,
@@ -141,7 +145,11 @@ class FilterQueryListener extends AbstractQueryListener
             }
         } else {
             $queryBuilder->orWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
-            $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
+            if ('array' === $metadata['type']) {
+                $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => serialize(array($filter)))));
+            } else {
+                $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
+            }
         }
     }
 

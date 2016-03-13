@@ -15,12 +15,10 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
-use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -48,11 +46,16 @@ class SortQueryListener extends AbstractQueryListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
             return;
         }
 
-        $this->sort = $event->getRequest()->query->get('sort_by');
+        $request = $event->getRequest();
+        if (!$request->isMethod('GET')) {
+            return;
+        }
+
+        $this->sort = $request->query->get('sort_by');
     }
 
     /**
@@ -75,7 +78,7 @@ class SortQueryListener extends AbstractQueryListener
         }
 
         $session->set(Constants::SESSION_SORTED_NAME, $this->sort);
-        $this->applySort($this->getClassMeatadata($entityClass), $queryBuilder, array($this->sort));
+        $this->applySort($this->getClassMetadata($entityClass), $queryBuilder, array($this->sort));
     }
 
     /**
@@ -93,7 +96,7 @@ class SortQueryListener extends AbstractQueryListener
                 $sorts[] = $metadata->getFieldMapping($fieldName);
             } catch (\Exception $ex) {
                 $mapping = $metadata->getAssociationMapping($fieldName);
-                $associationMatadata = $this->getClassMeatadata($mapping['targetEntity']);
+                $associationMatadata = $this->getClassMetadata($mapping['targetEntity']);
                 if ($sort = $this->getSortableFromAnnotation($mapping['targetEntity'])) {
                     $sorts[] = array_merge(array(
                         'join' => true,
