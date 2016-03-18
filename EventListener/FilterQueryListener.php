@@ -86,14 +86,16 @@ class FilterQueryListener extends AbstractQueryListener
             $splitBySpace = array_map(function ($value) {
                 return explode(':', $value);
             }, $splitBySpace);
-            $filters = array();
+            $fieldFilters = array();
             $keywords = array();
             foreach ($splitBySpace as $value) {
-                $filters[] = $value[0];
-                $keywords[] = $grid->isNormalizeFilter() ? strtoupper($value[1]) : $value[1];
+                if (in_array($value[0], $filters)) {
+                    $fieldFilters[] = $value[0];
+                    $keywords[] = $grid->isNormalizeFilter() ? strtoupper($value[1]) : $value[1];
+                }
             }
 
-            $this->applyFilterGithub($this->getClassMetadata($entityClass), $queryBuilder, $filters, $keywords);
+            $this->applyFilterGithub($this->getClassMetadata($entityClass), $queryBuilder, $fieldFilters, $keywords);
         } else {
             $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
         }
