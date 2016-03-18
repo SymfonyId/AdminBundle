@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -154,16 +155,16 @@ class FilterQueryListener extends AbstractQueryListener
      * @param ClassMetadata $metadata
      * @param QueryBuilder  $queryBuilder
      * @param array         $filterFields
-     * @param string        $filter
+     * @param array         $filters
      */
-    private function applyFilterGithub(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filter)
+    private function applyFilterGithub(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, array $filters)
     {
         foreach ($this->getMapping($metadata, $filterFields) as $key => $value) {
             if (array_key_exists('join', $value)) {
                 $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                $this->buildFilterGithub($queryBuilder, $value, $value['join_alias'], $filter);
+                $this->buildFilterGithub($queryBuilder, $value, $value['join_alias'], $filters[$key]);
             } else {
-                $this->buildFilterGithub($queryBuilder, $value, Constants::ENTITY_ALIAS, $filter);
+                $this->buildFilterGithub($queryBuilder, $value, Constants::ENTITY_ALIAS, $filters[$key]);
             }
         }
     }
