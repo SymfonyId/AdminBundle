@@ -154,6 +154,7 @@ abstract class CrudController extends Controller
         $this->viewParams['filter_fields'] = implode(', ', array_map(function ($value) use ($translator, $translationDomain) {
             return $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain);
         }, $filters));
+        $this->viewParams['filter_fields_entity'] = implode(', ', $filters);
 
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);

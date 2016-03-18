@@ -2,6 +2,7 @@
 message:
     error: 'Terjadi kesalahan, silahkan perbaiki dan kemudian kirimkan kembali.'
     search: 'Cari Berdasarkan %filters%'
+    search_advance: 'Pencarian spesifik menggunakan column berikut %filters% dengan format column:keyword'
     info: 'Pesan Informasi'
     login_title: 'Halaman Login'
     error_title: 'Terjadi kesalahan'

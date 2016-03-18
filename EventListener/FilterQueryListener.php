@@ -97,14 +97,16 @@ class FilterQueryListener extends AbstractQueryListener
 
             $this->applyFilterGithub($this->getClassMetadata($entityClass), $queryBuilder, $fieldFilters, $keywords);
         } else {
-            $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
+            $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter() ? strtoupper($this->filter) : $this->filter);
         }
     }
 
     /**
      * @param ClassMetadata $metadata
-     * @param array $fields
+     * @param array         $fields
+     *
      * @return array
+     *
      * @throws \Doctrine\ORM\Mapping\MappingException
      */
     protected function getMapping(ClassMetadata $metadata, array $fields)
@@ -132,8 +134,8 @@ class FilterQueryListener extends AbstractQueryListener
 
     /**
      * @param ClassMetadata $metadata
-     * @param QueryBuilder $queryBuilder
-     * @param array $filterFields
+     * @param QueryBuilder  $queryBuilder
+     * @param array         $filterFields
      * @param $filter
      */
     private function applyFilter(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filter)
@@ -152,27 +154,23 @@ class FilterQueryListener extends AbstractQueryListener
      * @param ClassMetadata $metadata
      * @param QueryBuilder  $queryBuilder
      * @param array         $filterFields
-     * @param array         $filters
+     * @param string        $filter
      */
-    private function applyFilterGithub(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filters)
+    private function applyFilterGithub(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filter)
     {
         foreach ($this->getMapping($metadata, $filterFields) as $key => $value) {
             if (array_key_exists('join', $value)) {
-                if (in_array($value['join_field'], array_keys($filters))) {
-                    $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                    $this->buildFilterGithub($queryBuilder, $value, $value['join_alias'], $filters[$value['join_field']]);
-                }
+                $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
+                $this->buildFilterGithub($queryBuilder, $value, $value['join_alias'], $filter);
             } else {
-                if (in_array($value, array_keys($filters))) {
-                    $this->buildFilterGithub($queryBuilder, $value, Constants::ENTITY_ALIAS, $filters[$value]);
-                }
+                $this->buildFilterGithub($queryBuilder, $value, Constants::ENTITY_ALIAS, $filter);
             }
         }
     }
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param array $metadata
+     * @param array        $metadata
      * @param $alias
      * @param $filter
      */
@@ -196,7 +194,7 @@ class FilterQueryListener extends AbstractQueryListener
 
     /**
      * @param QueryBuilder $queryBuilder
-     * @param array $metadata
+     * @param array        $metadata
      * @param $alias
      * @param $filter
      */
