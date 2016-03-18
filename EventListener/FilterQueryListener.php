@@ -83,7 +83,17 @@ class FilterQueryListener extends AbstractQueryListener
             $splitBySpace = array_filter(explode(' ', $this->filter), function ($value) {
                 return strpos($value, ':') ? true : false;
             });
-            //Prepare github filter style
+            $splitBySpace = array_map(function ($value) {
+                return explode(':', $value);
+            }, $splitBySpace);
+            $filters = array();
+            $keywords = array();
+            foreach ($splitBySpace as $value) {
+                $filters[] = $value[0];
+                $keywords[] = $grid->isNormalizeFilter() ? strtoupper($value[1]) : $value[1];
+            }
+
+            $this->applyFilterGithub($this->getClassMetadata($entityClass), $queryBuilder, $filters, $keywords);
         } else {
             $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
         }
@@ -148,11 +158,11 @@ class FilterQueryListener extends AbstractQueryListener
             if (array_key_exists('join', $value)) {
                 if (in_array($value['join_field'], array_keys($filters))) {
                     $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                    $this->buildFilter($queryBuilder, $value, $value['join_alias'], $filters[$value['join_field']]);
+                    $this->buildFilterGithub($queryBuilder, $value, $value['join_alias'], $filters[$value['join_field']]);
                 }
             } else {
                 if (in_array($value, array_keys($filters))) {
-                    $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $filters[$value]);
+                    $this->buildFilterGithub($queryBuilder, $value, Constants::ENTITY_ALIAS, $filters[$value]);
                 }
             }
         }
@@ -179,6 +189,29 @@ class FilterQueryListener extends AbstractQueryListener
             } else {
                 $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => $filter)));
             }
+        }
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param $alias
+     * @param $filter
+     */
+    private function buildFilterGithub(QueryBuilder $queryBuilder, array $metadata, $alias, $filter)
+    {
+        if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
+            $date = \DateTime::createFromFormat($this->getContainer()->getParameter('sir.date_format'), $filter);
+            if ($date) {
+                $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+                $queryBuilder->setParameter($metadata['fieldName'], $date->format('Y-m-d'));
+            }
+        } elseif ('array' === $metadata['type']) {
+            $queryBuilder->orWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+            $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => serialize(array($filter)))));
+        } else {
+            $queryBuilder->orWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+            $queryBuilder->setParameter($metadata['fieldName'], $filter);
         }
     }
 
