@@ -62,17 +62,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
                 ->scalarNode('upload_dir')
                     ->defaultValue('uploads')
                 ->end()
-                ->arrayNode('home')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('controller')
-                            ->defaultValue('SymfonianIndonesiaAdminBundle:Home:index')
-                        ->end()
-                        ->scalarNode('route_path')
-                            ->defaultValue('/')
-                        ->end()
-                    ->end()
-                ->end()
                 ->arrayNode('profile_fields')
                     ->isRequired()
                     ->cannotBeEmpty()
@@ -192,8 +181,6 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->setParameter('symfonian_id.admin.user.grid_fields', $config['user']['grid_fields']);
         $container->setParameter('symfonian_id.admin.user.grid_filters', $config['user']['filter']);
         $container->setParameter('symfonian_id.admin.user.password_form', $config['user']['password_form']);
-        $container->setParameter('symfonian_id.admin.home.controller', $config['home']['controller']);
-        $container->setParameter('symfonian_id.admin.home.route_path', $config['home']['route_path']);
 
         $number = array(
             'decimal_precision' => $config['number_format']['decimal_precision'],

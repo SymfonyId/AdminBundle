@@ -79,7 +79,14 @@ class FilterQueryListener extends AbstractQueryListener
             return;
         }
 
-        $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
+        if (strpos($this->filter, ':')) {
+            $splitBySpace = array_filter(explode(' ', $this->filter), function ($value) {
+                return strpos($value, ':') ? true : false;
+            });
+            //Prepare github filter style
+        } else {
+            $this->applyFilter($this->getClassMetadata($entityClass), $queryBuilder, $filters, $grid->isNormalizeFilter()? strtoupper($this->filter) : $this->filter);
+        }
     }
 
     /**
@@ -125,6 +132,28 @@ class FilterQueryListener extends AbstractQueryListener
                 $this->buildFilter($queryBuilder, $value, $value['join_alias'], $filter);
             } else {
                 $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $filter);
+            }
+        }
+    }
+
+    /**
+     * @param ClassMetadata $metadata
+     * @param QueryBuilder  $queryBuilder
+     * @param array         $filterFields
+     * @param array         $filters
+     */
+    private function applyFilterGithub(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $filterFields, $filters)
+    {
+        foreach ($this->getMapping($metadata, $filterFields) as $key => $value) {
+            if (array_key_exists('join', $value)) {
+                if (in_array($value['join_field'], array_keys($filters))) {
+                    $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
+                    $this->buildFilter($queryBuilder, $value, $value['join_alias'], $filters[$value['join_field']]);
+                }
+            } else {
+                if (in_array($value, array_keys($filters))) {
+                    $this->buildFilter($queryBuilder, $value, Constants::ENTITY_ALIAS, $filters[$value]);
+                }
             }
         }
     }
