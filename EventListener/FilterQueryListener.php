@@ -208,10 +208,10 @@ class FilterQueryListener extends AbstractQueryListener
                 $queryBuilder->setParameter($metadata['fieldName'], $date->format('Y-m-d'));
             }
         } elseif ('array' === $metadata['type']) {
-            $queryBuilder->orWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+            $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
             $queryBuilder->setParameter($metadata['fieldName'], strtr('%filter%', array('filter' => serialize(array($filter)))));
         } else {
-            $queryBuilder->orWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
+            $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
             $queryBuilder->setParameter($metadata['fieldName'], $filter);
         }
     }
