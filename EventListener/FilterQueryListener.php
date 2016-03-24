@@ -96,10 +96,10 @@ class FilterQueryListener extends AbstractQueryListener
                 }
             }
 
-            $this->fieldFilter->setDateTimeFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'));
+            $this->githubStyleFilter->setDateTimeFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'));
             $this->githubStyleFilter->createFilter($entityClass, $queryBuilder, $fieldFilters, $keywords);
         } else {
-            $this->githubStyleFilter->setDateTimeFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'));
+            $this->fieldFilter->setDateTimeFormat($this->getContainer()->getParameter('symfonian_id.admin.date_time_format'));
             $this->fieldFilter->createFilter($entityClass, $queryBuilder, $filters, array($grid->isNormalizeFilter() ? strtoupper($this->filter) : $this->filter));
         }
     }
