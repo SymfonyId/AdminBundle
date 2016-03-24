@@ -12,7 +12,6 @@
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
@@ -99,11 +98,11 @@ class CrudHandler implements ContainerAwareInterface
     }
 
     /**
-     * @param Request    $request
-     * @param array      $gridFields
-     * @param array      $actionAllowed
-     * @param bool|true  $allowCreate
-     * @param bool|true  $formatNumber
+     * @param Request   $request
+     * @param array     $gridFields
+     * @param array     $actionAllowed
+     * @param bool|true $allowCreate
+     * @param bool|true $formatNumber
      */
     public function viewList(Request $request, array $gridFields, array $actionAllowed, $allowCreate = true, $formatNumber = true)
     {
@@ -150,7 +149,7 @@ class CrudHandler implements ContainerAwareInterface
             return array(
                 'title' => $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain),
                 'field' => $value,
-                'sortable' => $value === 'action'? false : true,
+                'sortable' => $value === 'action' ? false : true,
             );
         }, array_merge($gridFields, array('action')));
         $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);

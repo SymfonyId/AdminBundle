@@ -26,6 +26,7 @@ abstract class AbstractListener
 
     /**
      * @param FilterControllerEvent $event
+     *
      * @return bool
      */
     public function isValidCrudListener(FilterControllerEvent $event)

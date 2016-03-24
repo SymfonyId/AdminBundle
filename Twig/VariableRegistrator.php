@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Twig;
 
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class VariableRegistrator

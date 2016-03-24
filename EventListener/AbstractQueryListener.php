@@ -11,10 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfiguratorAwareTrait;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -30,26 +27,6 @@ abstract class AbstractQueryListener extends AbstractListener implements Contain
      * @var ContainerInterface
      */
     private $container;
-
-    /**
-     * @var EntityManager
-     */
-    private $manager;
-
-    private static $ALIAS = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j');
-    private static $ALIAS_USED = array(Constants::ENTITY_ALIAS);
-
-    /**
-     * @param ClassMetadata $metadata
-     * @param array $fields
-     * @return array
-     */
-    abstract protected function getMapping(ClassMetadata $metadata, array $fields);
-
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->manager = $entityManager;
-    }
 
     /**
      * @param FilterControllerEvent $event
@@ -73,26 +50,5 @@ abstract class AbstractQueryListener extends AbstractListener implements Contain
     protected function getContainer()
     {
         return $this->container;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getAlias()
-    {
-        $available = array_values(array_diff(self::$ALIAS, self::$ALIAS_USED));
-        $alias = $available[0];
-        self::$ALIAS_USED[] = $alias;
-
-        return $alias;
-    }
-
-    /**
-     * @param $entityClass
-     * @return ClassMetadata
-     */
-    protected function getClassMetadata($entityClass)
-    {
-        return $this->manager->getClassMetadata($entityClass);
     }
 }

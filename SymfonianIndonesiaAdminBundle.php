@@ -197,6 +197,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
         $loader->load('configurations.yml');
         $loader->load('extractors.yml');
+        $loader->load('filters.yml');
         $loader->load('form.yml');
         $loader->load('listeners.yml');
         $loader->load('menu.yml');

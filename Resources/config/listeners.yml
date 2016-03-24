@@ -92,8 +92,8 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.filter.fields'
+            - '@symfonian_id.admin.filter.github_style'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
@@ -104,8 +104,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.filter.sort'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

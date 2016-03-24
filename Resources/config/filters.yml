@@ -1,0 +1,18 @@
+services:
+    symfonian_id.admin.filter.fields:
+        class: Symfonian\Indonesia\AdminBundle\Filter\FieldFilter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@annotation_reader'
+
+    symfonian_id.admin.filter.github_style:
+        class: Symfonian\Indonesia\AdminBundle\Filter\GithubStyleFilter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@annotation_reader'
+
+    symfonian_id.admin.filter.sort:
+        class: Symfonian\Indonesia\AdminBundle\Filter\SortFilter
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@annotation_reader'

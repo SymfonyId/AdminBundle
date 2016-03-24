@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: ihsan
  * Date: 3/3/16
- * Time: 6:40 AM
+ * Time: 6:40 AM.
  */
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
-
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;

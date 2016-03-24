@@ -11,12 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
+use Symfonian\Indonesia\AdminBundle\Filter\SortFilter;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -26,19 +22,18 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class SortQueryListener extends AbstractQueryListener
 {
     /**
-     * @var Reader
+     * @var SortFilter
      */
-    private $reader;
+    private $sortFilter;
 
     /**
      * @var string | null
      */
     private $sort;
 
-    public function __construct(EntityManager $entityManager, Reader $reader)
+    public function __construct(SortFilter $sortFilter)
     {
-        parent::__construct($entityManager);
-        $this->reader = $reader;
+        $this->sortFilter = $sortFilter;
     }
 
     /**
@@ -55,7 +50,7 @@ class SortQueryListener extends AbstractQueryListener
             return;
         }
 
-        $this->sort = $request->query->get('sort_by');
+        $this->sort = trim($request->query->get('sort_by'));
     }
 
     /**
@@ -78,68 +73,6 @@ class SortQueryListener extends AbstractQueryListener
         }
 
         $session->set(Constants::SESSION_SORTED_NAME, $this->sort);
-        $this->applySort($this->getClassMetadata($entityClass), $queryBuilder, array($this->sort));
-    }
-
-    /**
-     * @param ClassMetadata $metadata
-     * @param array $fields
-     * @return array
-     * @throws \Doctrine\ORM\Mapping\MappingException
-     */
-    protected function getMapping(ClassMetadata $metadata, array $fields)
-    {
-        $sorts = array();
-        foreach ($fields as $field) {
-            $fieldName = $metadata->getFieldName($field);
-            try {
-                $sorts[] = $metadata->getFieldMapping($fieldName);
-            } catch (\Exception $ex) {
-                $mapping = $metadata->getAssociationMapping($fieldName);
-                $associationMatadata = $this->getClassMetadata($mapping['targetEntity']);
-                if ($sort = $this->getSortableFromAnnotation($mapping['targetEntity'])) {
-                    $sorts[] = array_merge(array(
-                        'join' => true,
-                        'join_field' => $fieldName,
-                        'join_alias' => $this->getAlias(),
-                    ), $associationMatadata->getFieldMapping($sort[0]));
-                }
-            }
-        }
-
-        return $sorts;
-    }
-
-    /**
-     * @param ClassMetadata $metadata
-     * @param QueryBuilder $queryBuilder
-     * @param array $fields
-     */
-    private function applySort(ClassMetadata $metadata, QueryBuilder $queryBuilder, array $fields)
-    {
-        foreach ($this->getMapping($metadata, $fields) as $key => $value) {
-            if (array_key_exists('join', $value)) {
-                $queryBuilder->addSelect($value['join_alias']);
-                $queryBuilder->leftJoin(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['join_field']), $value['join_alias'], 'WITH');
-                $queryBuilder->addOrderBy(sprintf('%s.%s', $value['join_alias'], $value['fieldName']));
-            } else {
-                $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $value['fieldName']));
-            }
-        }
-    }
-
-    private function getSortableFromAnnotation($class)
-    {
-        $sortable = array();
-        $reflectionClass = new \ReflectionClass($class);
-        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $annotation) {
-                if ($annotation instanceof Sortable) {
-                    $sortable[] = $reflectionProperty->getName();
-                }
-            }
-        }
-
-        return $sortable;
+        $this->sortFilter->createFilter($entityClass, $queryBuilder, array($this->sort));
     }
 }
