@@ -26,8 +26,6 @@ class HomeController extends Base
      */
     public function indexAction()
     {
-        return $this->render($this->container->getParameter('symfonian_id.admin.themes.dashboard'), array(
-            'menu' => $this->container->getParameter('symfonian_id.admin.menu'),
-        ));
+        return $this->render($this->container->getParameter('symfonian_id.admin.themes.dashboard'));
     }
 }
