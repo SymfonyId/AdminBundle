@@ -271,10 +271,11 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     public function getForm($formData = null)
     {
         $formClass = $this->getFormClass();
-        try {
-            $formObject = $this->container->get($formClass);
-        } catch (\Exception $ex) {
+
+        if (class_exists($formClass)) {
             $formObject = new $formClass();
+        } else {
+            $formObject = $this->container->get($formClass);
         }
 
         $form = $this->formFactory->create(get_class($formObject));
