@@ -23,6 +23,7 @@ class Util implements ConfigurationInterface
 {
     private $autoComplete = array();
     private $datePicker = false;
+    private $dateFormat = 'yyyy-mm-dd';
     private $htmlEditor = false;
     private $fileChooser = false;
     private $numeric = false;
@@ -47,7 +48,10 @@ class Util implements ConfigurationInterface
         }
 
         if (isset($data['datePicker'])) {
-            $this->datePicker = (boolean) $data['datePicker'];
+            $this->datePicker = true;
+            if (isset($data['data_format'])) {
+                $this->dateFormat = $data['date_format'];
+            }
         }
 
         if (isset($data['htmlEditor'])) {
@@ -90,7 +94,15 @@ class Util implements ConfigurationInterface
      */
     public function isUseDatePicker()
     {
-        return $this->datePicker;
+        return $this->datePicker ? true : false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
     }
 
     /**

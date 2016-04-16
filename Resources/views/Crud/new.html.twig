@@ -19,6 +19,10 @@
     {{- use_date_picker -}}
 {%- endblock -%}
 
+{%- block date_picker_format -%}
+    {{- date_picker_format -}}
+{%- endblock -%}
+
 {%- block file_style -%}
     {{- use_file_style -}}
 {%- endblock -%}
@@ -148,7 +152,7 @@
 
             {%- if use_date_picker is same as(true) -%}
                 jQuery('.datepicker').datepicker({
-                    format: 'yyyy-mm-dd',
+                    format: '{{- date_picker_format -}}',
                     autoclose: true
                 });
             {%- endif -%}

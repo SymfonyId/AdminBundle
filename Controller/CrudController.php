@@ -185,6 +185,7 @@ abstract class CrudController extends Controller
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
         $this->viewParams['action_method'] = $translator->trans('page.'.strtolower($action), array(), $translationDomain);
         $this->viewParams['use_date_picker'] = $util->isUseDatePicker();
+        $this->viewParams['date_picker_format'] = $util->getDateFormat();
         $this->viewParams['use_file_style'] = $util->isUseFileChooser();
         $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
         $this->viewParams['use_numeric'] = $util->isUseNumeric();
