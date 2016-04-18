@@ -82,11 +82,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave }
 
-    symfonian_id.admin.remove_password_field:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener
-        tags:
-            - { name: kernel.event_listener, event: siab.pre_form_submit, method: onPreCreateForm }
-
     symfonian_id.admin.filter_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FilterQueryListener
         calls:

@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Form;
 
+use Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -70,6 +71,8 @@ class ChangePasswordType extends AbstractType
                 ),
             ))
         ;
+
+        $builder->addEventSubscriber(new RemovePasswordFieldListener());
     }
 
     public function configureOptions(OptionsResolver $resolver)
