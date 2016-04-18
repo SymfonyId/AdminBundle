@@ -40,7 +40,7 @@
 {%- endblock -%}
 
 {%- block ac_config -%}
-    {{- ac_config -}}
+    {% if ac_config is defined %}{{- ac_config -}}{% endif %}
 {%- endblock -%}
 
 {%- block menu -%}
