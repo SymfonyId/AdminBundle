@@ -16,7 +16,6 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
-use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
@@ -41,16 +40,9 @@ abstract class CrudController extends Controller
         $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
 
-        $event = new FilterFormEvent();
-        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
-        $response = $event->getResponse();
-        if ($response) {
-            return $response;
-        }
-
         $entityClass = $crud->getEntityClass();
         $entity = new $entityClass();
-        $form = $event->getForm() ?: $crud->getForm($entity);
+        $form = $crud->getForm($entity);
 
         return $this->handle($request, $entity, $form, Constants::ACTION_CREATE, $crud->getCreateTemplate());
     }
@@ -63,15 +55,8 @@ abstract class CrudController extends Controller
         $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_UPDATE);
 
-        $event = new FilterFormEvent();
-        $this->fireEvent(Constants::PRE_FORM_CREATE, $event);
-        $response = $event->getResponse();
-        if ($response) {
-            return $response;
-        }
-
         $entity = $this->findOr404Error($id);
-        $form = $event->getForm() ?: $crud->getForm($entity);
+        $form = $crud->getForm($entity);
 
         return $this->handle($request, $entity, $form, Constants::ACTION_UPDATE, $crud->getEditTemplate());
     }

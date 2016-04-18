@@ -14,7 +14,6 @@ namespace Symfonian\Indonesia\AdminBundle\Handler;
 use Doctrine\ORM\Query;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
-use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
@@ -244,16 +243,6 @@ class CrudHandler implements ContainerAwareInterface
     {
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
-
-        $event = new FilterFormEvent();
-        $event->setData($data);
-        $event->setForm($form);
-        $this->fireEvent(Constants::PRE_FORM_SUBMIT, $event);
-
-        $response = $event->getResponse();
-        if ($response) {
-            return $response;
-        }
 
         $form->handleRequest($request);
 

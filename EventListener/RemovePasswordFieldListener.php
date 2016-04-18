@@ -11,18 +11,28 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Symfonian\Indonesia\AdminBundle\Event\FilterFormEvent;
 use Symfonian\Indonesia\AdminBundle\User\User;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class RemovePasswordFieldListener
+class RemovePasswordFieldListener implements EventSubscriberInterface
 {
     /**
-     * @param FilterFormEvent $event
+     * @return array
      */
-    public function onPreCreateForm(FilterFormEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::POST_SET_DATA => 'onPostSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function onPostSetData(FormEvent $event)
     {
         $formData = $event->getData();
         if (!$formData instanceof User) {
