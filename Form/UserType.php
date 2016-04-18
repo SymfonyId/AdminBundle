@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Form;
 
+use Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\StringToFileTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -102,6 +103,8 @@ class UserType extends AbstractType
                 ),
             ))
         ;
+
+        $builder->addEventSubscriber(new RemovePasswordFieldListener());
     }
 
     public function configureOptions(OptionsResolver $resolver)
