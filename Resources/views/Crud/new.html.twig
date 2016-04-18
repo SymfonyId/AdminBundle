@@ -155,9 +155,9 @@
             });
 
             {%- if use_date_picker is same as(true) -%}
-                jQuery('.datepicker').datepicker({
+                jQuery('.datepicker').datetimepicker({
                     format: '{{- date_picker_format -}}',
-                    autoclose: true
+                    locale: '{{- locale -}}'
                 });
             {%- endif -%}
 

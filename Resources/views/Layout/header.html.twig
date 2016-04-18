@@ -36,7 +36,7 @@
 {%- endstylesheets -%}
 
 {%- if use_date_picker is not empty -%}
-    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') -}}" />
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') -}}" />
 {%- endif -%}
 
 {%- if use_editor is not empty -%}
@@ -44,7 +44,8 @@
 {%- endif -%}
 
 {%- if use_autocomplete is not empty -%}
-    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/select2/css/select2.min.css') -}}" />
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/select2/select2.css') -}}" />
+    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/select2/select2-bootstrap.css') -}}" />
 {%- endif -%}
 
 {%- if css is not empty -%}
