@@ -31,26 +31,24 @@ class Util implements ConfigurationInterface
     private $includeRoute = array();
     private $uploadable;
     private $targetField;
+    private $route;
+    private $targetSelector;
 
     public function __construct(array $data = array())
     {
         if (isset($data['autoComplete'])) {
-            if (!is_array($data['autoComplete'])) {
-                throw new \InvalidArgumentException('autoComplete harus berupa array');
-            }
-
-            if (!(array_key_exists('route', $data['autoComplete']) && array_key_exists('targetSelector', $data['autoComplete']))) {
+            if (!(array_key_exists('route', $data) && array_key_exists('targetSelector', $data))) {
                 throw new \InvalidArgumentException('route dan targetSelector harus diset');
             }
 
-            $this->autoComplete['route'] = $data['autoComplete']['route'];
-            $this->autoComplete['value_storage_selector'] = $data['autoComplete']['targetSelector'];
+            $this->route = $data['route'];
+            $this->targetSelector = $data['targetSelector'];
         }
 
         if (isset($data['datePicker'])) {
             $this->datePicker = true;
-            if (isset($data['data_format'])) {
-                $this->dateFormat = $data['date_format'];
+            if (isset($data['dateFormat'])) {
+                $this->dateFormat = $data['dateFormat'];
             }
         }
 
