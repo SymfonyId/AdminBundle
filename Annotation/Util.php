@@ -41,6 +41,7 @@ class Util implements ConfigurationInterface
                 throw new \InvalidArgumentException('route dan targetSelector harus diset');
             }
 
+            $this->autoComplete = true;
             $this->route = $data['route'];
             $this->targetSelector = $data['targetSelector'];
         }
@@ -130,9 +131,17 @@ class Util implements ConfigurationInterface
     /**
      * @return bool
      */
-    public function getAutoComplete()
+    public function isAutoComplete()
     {
         return $this->autoComplete;
+    }
+
+    public function getAutoComplete()
+    {
+        return array(
+            'route' => $this->route,
+            'selector_storage' => $this->targetSelector,
+        );
     }
 
     /**

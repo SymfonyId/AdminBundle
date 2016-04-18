@@ -36,7 +36,11 @@
 {%- endblock -%}
 
 {%- block autocomplete -%}
-    {{- autocomplete['route'] -}}
+    {{- autocomplete -}}
+{%- endblock -%}
+
+{%- block ac_config -%}
+    {{- ac_config -}}
 {%- endblock -%}
 
 {%- block menu -%}
@@ -170,10 +174,10 @@
                 jQuery('.positive').numeric({ negative: false });
             {% endif %}
 
-            {%- if autocomplete is not empty -%}
+            {%- if autocomplete -%}
                 jQuery('.autocomplete').select2({
                     ajax: {
-                        url: Routing.generate('{{- autocomplete['route'] -}}'),
+                        url: Routing.generate('{{- ac_config['route'] -}}'),
                         dataType: 'json',
                         delay: 250,
                         data: function (params) {
@@ -190,7 +194,7 @@
                     }
                 });
                 jQuery(document).on('select2:select', '.autocomplete', function (e) {
-                    jQuery('{{- autocomplete['value_storage_selector']-}}').val(e.params.data.id);
+                    jQuery('{{- ac_config['selector_storage']-}}').val(e.params.data.id);
                 });
             {%- endif -%}
         });

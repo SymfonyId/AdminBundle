@@ -174,7 +174,11 @@ abstract class CrudController extends Controller
         $this->viewParams['use_file_style'] = $util->isUseFileChooser();
         $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
         $this->viewParams['use_numeric'] = $util->isUseNumeric();
-        $this->viewParams['autocomplete'] = $util->getAutoComplete() ?: array('route' => 'home', 'value_storage_selector' => '.selector');
+        $this->viewParams['autocomplete'] = false;
+        if ($util->isAutoComplete()) {
+            $this->viewParams['autocomplete'] = true;
+            $this->viewParams['ac_config'] = $util->getAutoComplete();
+        }
 
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
