@@ -60,17 +60,61 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      */
     private $formFactory;
 
+    /**
+     * @var string
+     */
     private $userForm;
+
+    /**
+     * @var string
+     */
     private $userEntity;
+
+    /**
+     * @var string
+     */
     private $profileForm;
+
+    /**
+     * @var array
+     */
     private $configurations = array();
+
+    /**
+     * @var array
+     */
     private $template = array();
+
+    /**
+     * @var array
+     */
     private $filters = array();
+
+    /**
+     * @var array
+     */
     private $userShowFields = array();
+
+    /**
+     * @var array
+     */
     private $userGridFields = array();
+
+    /**
+     * @var array
+     */
     private $userGridFilters = array();
+
+    /**
+     * @var array
+     */
     private $profileFields = array();
 
+    /**
+     * @param Configurator $configuration
+     * @param ExtractorFactory $extractorFactory
+     * @param FormFactory $formFactory
+     */
     public function __construct(Configurator $configuration, ExtractorFactory $extractorFactory, FormFactory $formFactory)
     {
         $this->configuration = $configuration;
@@ -102,12 +146,21 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->filters = $filters;
     }
 
+    /**
+     * @param string $formClass
+     * @param string $entityClass
+     */
     public function setForm($formClass, $entityClass)
     {
         $this->userForm = $formClass;
         $this->userEntity = $entityClass;
     }
 
+    /**
+     * @param array $showFields
+     * @param array $gridFields
+     * @param array $gridFilters
+     */
     public function setView(array $showFields, array $gridFields, array $gridFilters)
     {
         $this->userShowFields = $showFields;
@@ -115,11 +168,17 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->userGridFilters = $gridFilters;
     }
 
+    /**
+     * @param string $formClass
+     */
     public function setProfileForm($formClass)
     {
         $this->profileForm = $formClass;
     }
 
+    /**
+     * @param string $profileFields
+     */
     public function setProfileFields($profileFields)
     {
         $this->profileFields = $profileFields;
@@ -155,6 +214,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return false;
     }
 
+    /**
+     * @throws \Exception
+     */
     private function setDefaultConfig()
     {
         /** @var Crud $crud */
@@ -200,6 +262,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         }
     }
 
+    /**
+     * @param string $cacheDir
+     * @throws \Exception
+     */
     private function compileUserController($cacheDir)
     {
         $this->setDefaultConfig();
@@ -250,6 +316,12 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->configurations[ProfileController::class] = $configuration;
     }
 
+    /**
+     * @param ReflectionClass $entity
+     * @param Configurator $configuration
+     * @return Configurator
+     * @throws \Exception
+     */
     private function configureGrid(ReflectionClass $entity, Configurator $configuration)
     {
         $config = clone $configuration;
@@ -265,6 +337,12 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $config;
     }
 
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param Configurator $configuration
+     * @return Configurator
+     * @throws \Exception
+     */
     private function parseClassAnnotation(ReflectionClass $reflectionClass, Configurator $configuration)
     {
         $config = clone $configuration;
@@ -286,6 +364,11 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $config;
     }
 
+    /**
+     * @param ReflectionClass $reflectionClass
+     * @param Grid $grid
+     * @return Grid
+     */
     private function parsePropertyAnnotation(ReflectionClass $reflectionClass, Grid $grid)
     {
         $config = clone $grid;
@@ -321,6 +404,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $config;
     }
 
+    /**
+     * @return array
+     */
     private function getControllers()
     {
         $controllers = array();
@@ -337,6 +423,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $controllers;
     }
 
+    /**
+     * @return array
+     */
     private function getEntities()
     {
         $entities = array();
@@ -351,6 +440,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $entities;
     }
 
+    /**
+     * @param string $controller
+     * @return string
+     */
     private function parseController($controller)
     {
         $temp = explode(':', $controller);
@@ -363,6 +456,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $controllerClass;
     }
 
+    /**
+     * @param ConfigurationInterface $configuration
+     * @return array
+     */
     private function parseConfiguration(ConfigurationInterface $configuration)
     {
         $output = array();
@@ -413,6 +510,11 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         return $output;
     }
 
+    /**
+     * @param Configurator $configurator
+     * @param string $cacheDir
+     * @param string $class
+     */
     private function write(Configurator $configurator, $cacheDir, $class)
     {
         /* @var ConfigurationInterface $configuration */
