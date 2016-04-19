@@ -133,7 +133,7 @@ class Util implements ConfigurationInterface
     /**
      * @return bool
      */
-    public function isUsAutoComplete()
+    public function isUseAutoComplete()
     {
         return $this->autoComplete;
     }

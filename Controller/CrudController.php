@@ -175,7 +175,7 @@ abstract class CrudController extends Controller
         $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
         $this->viewParams['use_numeric'] = $util->isUseNumeric();
         $this->viewParams['autocomplete'] = false;
-        if ($util->isUsAutoComplete()) {
+        if ($util->isUseAutoComplete()) {
             $this->viewParams['autocomplete'] = true;
             $this->viewParams['ac_config'] = $util->getAutoComplete();
         }
