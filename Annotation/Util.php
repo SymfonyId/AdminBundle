@@ -92,14 +92,14 @@ class Util implements ConfigurationInterface
     public function __construct(array $data = array())
     {
         if (isset($data['autoComplete'])) {
-            if (!(array_key_exists('route', $data) && array_key_exists('targetSelector', $data) && array_key_exists('routeCallback', $data))) {
-                throw new \InvalidArgumentException('route, routeCallback dan targetSelector harus diset');
-            }
+           if (!(array_key_exists('route', $data['autoComplete']) && array_key_exists('targetSelector', $data['autoComplete']) && array_key_exists('routeCallback', $data['autoComplete']))) {
+             throw new \InvalidArgumentException('route, routeCallback dan targetSelector harus diset');
+           }
 
-            $this->autoComplete = true;
-            $this->route = $data['route'];
-            $this->targetSelector = $data['targetSelector'];
-            $this->routeCallback = $data['routeCallback'];
+           $this->autoComplete = true;
+           $this->route = $data['autoComplete']['route'];
+           $this->targetSelector = $data['autoComplete']['targetSelector'];
+           $this->routeCallback = $data['autoComplete']['routeCallback'];
         }
 
         if (isset($data['datePicker'])) {

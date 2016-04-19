@@ -188,11 +188,15 @@
                         cache: true
                     },
                     initSelection : function (element, callback) {
-                        jQuery.ajax(Routing.generate('{{- ac_config['route_callback'] -}}', {id:  jQuery(element).val()}), {
-                            dataType: 'json'
-                        }).done(function(data) {
-                            callback(data);
-                        });
+                         var id = jQuery(element).val();
+                         if (!id) {
+                             return;
+                         }
+                         jQuery.ajax(Routing.generate('{{- ac_config['route_callback'] -}}', {id:  id}), {
+                             dataType: 'json'
+                         }).done(function(data) {
+                             callback(data);
+                         });
                     }
                 });
                 jQuery(document).on('select2:select', '.autocomplete', function (e) {
