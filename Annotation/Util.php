@@ -22,7 +22,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 class Util implements ConfigurationInterface
 {
     /**
-     * @var array|bool
+     * @var bool
      */
     private $autoComplete = false;
 
@@ -47,7 +47,7 @@ class Util implements ConfigurationInterface
     private $numeric = false;
 
     /**
-     * @var array|mixed
+     * @var array
      */
     private $includeRoute = array();
 
