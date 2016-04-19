@@ -398,6 +398,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         /** @var Util $configuration */
         if ($configuration instanceof Util) {
+            $output['use_auto_complete'] = $configuration->isUsAutoComplete();
             $output['auto_complete'] = $configuration->getAutoComplete();
             $output['include_javascript'] = $configuration->getIncludeJavascript();
             $output['include_route'] = $configuration->getIncludeRoute();

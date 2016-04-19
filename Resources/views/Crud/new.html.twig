@@ -39,10 +39,6 @@
     {{- autocomplete -}}
 {%- endblock -%}
 
-{%- block ac_config -%}
-    {% if ac_config is defined %}{{- ac_config -}}{% endif %}
-{%- endblock -%}
-
 {%- block menu -%}
     {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
 {%- endblock -%}
@@ -176,21 +172,27 @@
 
             {%- if autocomplete -%}
                 jQuery('.autocomplete').select2({
+                    minimumInputLength: 3,
                     ajax: {
                         url: Routing.generate('{{- ac_config['route'] -}}'),
                         dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
+                        quietMillis: 250,
+                        data: function (term, page) {
                             return {
-                                query: params.term
+                                q: term
                             };
                         },
-                        processResults: function (data, page) {
-                            return {
-                                results: data
-                            };
+                        results: function (data, page) {
+                            return { results: data.items };
                         },
                         cache: true
+                    },
+                    initSelection : function (element, callback) {
+                        jQuery.ajax(Routing.generate('{{- ac_config['route_callback'] -}}', {id:  jQuery(element).val()}), {
+                            dataType: 'json'
+                        }).done(function(data) {
+                            callback(data);
+                        });
                     }
                 });
                 jQuery(document).on('select2:select', '.autocomplete', function (e) {

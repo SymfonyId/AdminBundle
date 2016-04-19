@@ -32,18 +32,20 @@ class Util implements ConfigurationInterface
     private $uploadable;
     private $targetField;
     private $route;
+    private $routeCallback;
     private $targetSelector;
 
     public function __construct(array $data = array())
     {
         if (isset($data['autoComplete'])) {
-            if (!(array_key_exists('route', $data) && array_key_exists('targetSelector', $data))) {
-                throw new \InvalidArgumentException('route dan targetSelector harus diset');
+            if (!(array_key_exists('route', $data) && array_key_exists('targetSelector', $data) && array_key_exists('routeCallback', $data))) {
+                throw new \InvalidArgumentException('route, routeCallback dan targetSelector harus diset');
             }
 
             $this->autoComplete = true;
             $this->route = $data['route'];
             $this->targetSelector = $data['targetSelector'];
+            $this->routeCallback = $data['routeCallback'];
         }
 
         if (isset($data['datePicker'])) {
@@ -131,7 +133,7 @@ class Util implements ConfigurationInterface
     /**
      * @return bool
      */
-    public function isAutoComplete()
+    public function isUsAutoComplete()
     {
         return $this->autoComplete;
     }
@@ -140,6 +142,7 @@ class Util implements ConfigurationInterface
     {
         return array(
             'route' => $this->route,
+            'route_callback' => $this->routeCallback,
             'selector_storage' => $this->targetSelector,
         );
     }
