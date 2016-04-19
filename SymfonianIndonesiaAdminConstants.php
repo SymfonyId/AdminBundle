@@ -16,26 +16,39 @@ namespace Symfonian\Indonesia\AdminBundle;
  */
 class SymfonianIndonesiaAdminConstants
 {
-    const PRE_FORM_CREATE = 'siab.pre_form_create';
-    const PRE_FORM_SUBMIT = 'siab.pre_form_submit';
+    /**
+     * Crud Events
+     */
     const PRE_SAVE = 'siab.pre_save';
     const POST_SAVE = 'siab.post_save';
     const FILTER_LIST = 'siab.filter_query';
     const PRE_DELETE = 'siab.pre_delete';
     const PRE_SHOW = 'siab.pre_show';
 
+    /**
+     * Crud Actions
+     */
     const ACTION_CREATE = 'ACTION_CREATE';
     const ACTION_UPDATE = 'ACTION_UPDATE';
     const ACTION_DELETE = 'ACTION_DELETE';
     const ACTION_READ = 'ACTION_READ';
 
+    /**
+     * Grid Actions
+     */
     const GRID_ACTION_SHOW = 'GRID_ACTION_SHOW';
     const GRID_ACTION_EDIT = 'GRID_ACTION_EDIT';
     const GRID_ACTION_DELETE = 'GRID_ACTION_DELETE';
 
+    /**
+     * Entity Utilities
+     */
     const ENTITY_ALIAS = 'e';
     const SESSION_SORTED_NAME = 'siab_sorted';
 
+    /**
+     * Templating
+     */
     const TEMPLATE_CREATE = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
     const TEMPLATE_EDIT = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
     const TEMPLATE_SHOW = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
@@ -47,5 +60,8 @@ class SymfonianIndonesiaAdminConstants
     const TEMPLATE_FORM = 'SymfonianIndonesiaAdminBundle:Form:fields.html.twig';
     const TEMPLATE_PAGINATION = 'SymfonianIndonesiaAdminBundle:Layout:pagination.html.twig';
 
+    /**
+     * Cache
+     */
     const CACHE_DIR = 'siab';
 }

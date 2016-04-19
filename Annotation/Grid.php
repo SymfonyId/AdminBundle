@@ -21,12 +21,34 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Grid implements ConfigurationInterface
 {
+    /**
+     * @var array
+     */
     private $columns = array();
+
+    /**
+     * @var array
+     */
     private $filters = array();
+
+    /**
+     * @var array
+     */
     private $sortable = array();
+
+    /**
+     * @var bool
+     */
     private $normalizeFilter = false;
+
+    /**
+     * @var bool
+     */
     private $formatNumber = true;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {

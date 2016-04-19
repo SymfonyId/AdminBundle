@@ -37,20 +37,74 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @var array
+     */
     private $showFields = array();
+
+    /**
+     * @var string
+     */
     private $entity;
+
+    /**
+     * @var string
+     */
     private $form;
+
+    /**
+     * @var string
+     */
     private $menuIcon = 'fa-bars';
+
+    /**
+     * @var string
+     */
     private $create = Constants::TEMPLATE_CREATE;
+
+    /**
+     * @var string
+     */
     private $edit = Constants::TEMPLATE_EDIT;
+
+    /**
+     * @var string
+     */
     private $show = Constants::TEMPLATE_SHOW;
+
+    /**
+     * @var string
+     */
     private $list = Constants::TEMPLATE_LIST;
+
+    /**
+     * @var string
+     */
     private $ajaxTemplate = Constants::TEMPLATE_AJAX;
+
+    /**
+     * @var bool
+     */
     private $allowCreate = true;
+
+    /**
+     * @var bool
+     */
     private $allowEdit = true;
+
+    /**
+     * @var bool
+     */
     private $allowShow = true;
+
+    /**
+     * @var bool
+     */
     private $allowDelete = true;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
@@ -124,77 +178,122 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         $this->formFactory = $formFactory;
     }
 
+    /**
+     * @return string
+     */
     public function getCreateTemplate()
     {
         return $this->create;
     }
 
+    /**
+     * @param string $createTemplate
+     */
     public function setCreateTemplate($createTemplate)
     {
         $this->create = $createTemplate;
     }
 
+    /**
+     * @return string
+     */
     public function getEditTemplate()
     {
         return $this->edit;
     }
 
+    /**
+     * @param string $editTemplate
+     */
     public function setEditTemplate($editTemplate)
     {
         $this->edit = $editTemplate;
     }
 
+    /**
+     * @return string
+     */
     public function getListTemplate()
     {
         return $this->list;
     }
 
+    /**
+     * @param string $listTemplate
+     */
     public function setListTemplate($listTemplate)
     {
         $this->list = $listTemplate;
     }
 
+    /**
+     * @return string
+     */
     public function getShowTemplate()
     {
         return $this->show;
     }
 
+    /**
+     * @param string $showTemplate
+     */
     public function setShowTemplate($showTemplate)
     {
         $this->show = $showTemplate;
     }
 
+    /**
+     * @return string
+     */
     public function getAjaxTemplate()
     {
         return $this->ajaxTemplate;
     }
 
+    /**
+     * @return string
+     */
     public function getFormClass()
     {
         return $this->form;
     }
 
+    /**
+     * @param string $formClass
+     */
     public function setFormClass($formClass)
     {
         $this->form = $formClass;
     }
 
+    /**
+     * @return string
+     */
     public function getEntityClass()
     {
         return $this->entity;
     }
 
+    /**
+     * @param string $entityClass
+     */
     public function setEntityClass($entityClass)
     {
         $this->entity = $entityClass;
     }
 
+    /**
+     * @return array
+     */
     public function getShowFields()
     {
         return $this->showFields;
     }
 
-    public function setShowFields($showFields)
+    /**
+     * @param array $showFields
+     */
+    public function setShowFields(array $showFields)
     {
         $this->showFields = $showFields;
     }
@@ -265,7 +364,6 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
     /**
      * @param EntityInterface | null $formData
-     *
      * @return FormInterface
      */
     public function getForm($formData = null)

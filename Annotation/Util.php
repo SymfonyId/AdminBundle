@@ -21,20 +21,74 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Util implements ConfigurationInterface
 {
-    private $autoComplete = array();
+    /**
+     * @var array|bool
+     */
+    private $autoComplete = false;
+
+    /**
+     * @var bool
+     */
     private $datePicker = false;
-    private $dateFormat = 'yyyy-mm-dd';
+
+    /**
+     * @var bool
+     */
     private $htmlEditor = false;
+
+    /**
+     * @var bool
+     */
     private $fileChooser = false;
+
+    /**
+     * @var bool
+     */
     private $numeric = false;
-    private $includeJavascript;
+
+    /**
+     * @var array|mixed
+     */
     private $includeRoute = array();
+
+    /**
+     * @var string
+     */
+    private $dateFormat = 'YYYY-MM-DD';
+
+    /**
+     * @var string
+     */
+    private $includeJavascript;
+
+    /**
+     * @var string
+     */
     private $uploadable;
+
+    /**
+     * @var string
+     */
     private $targetField;
+
+    /**
+     * @var string
+     */
     private $route;
+
+    /**
+     * @var string
+     */
     private $routeCallback;
+
+    /**
+     * @var string
+     */
     private $targetSelector;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = array())
     {
         if (isset($data['autoComplete'])) {
@@ -88,6 +142,8 @@ class Util implements ConfigurationInterface
 
             $this->uploadable = $data['uploadable'];
         }
+
+        unset($data);
     }
 
     /**
@@ -138,6 +194,9 @@ class Util implements ConfigurationInterface
         return $this->autoComplete;
     }
 
+    /**
+     * @return array
+     */
     public function getAutoComplete()
     {
         return array(
@@ -180,11 +239,21 @@ class Util implements ConfigurationInterface
     }
 
     /**
+     * @param bool $autoComplete
+     */
+    public function setUseAutoComplete($autoComplete)
+    {
+        $this->autoComplete = (bool) $autoComplete;
+    }
+
+    /**
      * @param array $autoComplete
      */
     public function setAutoComplete(array $autoComplete)
     {
-        $this->autoComplete = $autoComplete;
+        $this->route = $autoComplete['route'];
+        $this->routeCallback = $autoComplete['route_callback'];
+        $this->targetSelector = $autoComplete['selector_storage'];
     }
 
     /**

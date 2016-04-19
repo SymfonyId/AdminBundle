@@ -21,9 +21,19 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
  */
 class Page implements ConfigurationInterface
 {
+    /**
+     * @var string
+     */
     private $title = 'SIAB';
+
+    /**
+     * @var string
+     */
     private $description = 'Symfonian Indonesia Admin Bundle';
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = array())
     {
         if (isset($data['value'])) {
@@ -37,13 +47,21 @@ class Page implements ConfigurationInterface
         if (isset($data['description'])) {
             $this->description = $data['description'];
         }
+
+        unset($data);
     }
 
+    /**
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription()
     {
         return $this->description;
