@@ -14,7 +14,11 @@ namespace Tests\Symfonian\Indonesia\AdminBundle\Configuration;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfony\Component\Form\FormFactory;
@@ -58,7 +62,11 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Crud::class, $this->configurator->getConfiguration(Crud::class));
         $this->assertInstanceOf(Grid::class, $this->configurator->getConfiguration(Grid::class));
         $this->assertInstanceOf(Page::class, $this->configurator->getConfiguration(Page::class));
-        $this->assertInstanceOf(Util::class, $this->configurator->getConfiguration(Util::class));
+        $this->assertInstanceOf(Plugins::class, $this->configurator->getConfiguration(Plugins::class));
+        $this->assertInstanceOf(AutoComplete::class, $this->configurator->getConfiguration(AutoComplete::class));
+        $this->assertInstanceOf(DatePicker::class, $this->configurator->getConfiguration(DatePicker::class));
+        $this->assertInstanceOf(ExternalJavascript::class, $this->configurator->getConfiguration(ExternalJavascript::class));
+        $this->assertInstanceOf(Upload::class, $this->configurator->getConfiguration(Upload::class));
     }
 
     /**
@@ -78,7 +86,11 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(Crud::class, $configurations);
         $this->assertArrayHasKey(Grid::class, $configurations);
         $this->assertArrayHasKey(Page::class, $configurations);
-        $this->assertArrayHasKey(Util::class, $configurations);
+        $this->assertArrayHasKey(Plugins::class, $configurations);
+        $this->assertArrayHasKey(AutoComplete::class, $configurations);
+        $this->assertArrayHasKey(DatePicker::class, $configurations);
+        $this->assertArrayHasKey(ExternalJavascript::class, $configurations);
+        $this->assertArrayHasKey(Upload::class, $configurations);
     }
 
     public function tearDown()
@@ -91,6 +103,10 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->configurator->addConfiguration(new Crud());
         $this->configurator->addConfiguration(new Grid());
         $this->configurator->addConfiguration(new Page());
-        $this->configurator->addConfiguration(new Util());
+        $this->configurator->addConfiguration(new Plugins());
+        $this->configurator->addConfiguration(new AutoComplete());
+        $this->configurator->addConfiguration(new DatePicker());
+        $this->configurator->addConfiguration(new ExternalJavascript());
+        $this->configurator->addConfiguration(new Upload());
     }
 }

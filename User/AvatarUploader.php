@@ -11,7 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\User;
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
@@ -42,9 +43,9 @@ class AvatarUploader
 
     public function setUploadField()
     {
-        /** @var Util $util */
-        $util = $this->configuration->getConfiguration(Util::class);
-        $this->uploadHandler->setFields(array($util->getUploadableField()), array($util->getTargetField()));
+        /** @var Upload $upload */
+        $upload = $this->configuration->getConfiguration(Upload::class);
+        $this->uploadHandler->setFields(array($upload->getUploadable()), array($upload->getTargetField()));
     }
 
     public function onPreSave(FilterEntityEvent $event)

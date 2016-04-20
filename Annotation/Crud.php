@@ -38,16 +38,24 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     private $container;
 
     /**
+     * Entity fields you want to display
+     *
+     * Ex: @Crud(showFields={"first_name", "last_name"})
+     *
      * @var array
      */
     private $showFields = array();
 
     /**
+     * Ex: @Crud(entity="AppBundle/Entity/Product")
+     *
      * @var string
      */
     private $entity;
 
     /**
+     * Ex: @Crud(form="AppBundle/Form/ProductType")
+     *
      * @var string
      */
     private $form;
@@ -78,6 +86,8 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     private $list = Constants::TEMPLATE_LIST;
 
     /**
+     * Internal use only
+     *
      * @var string
      */
     private $ajaxTemplate = Constants::TEMPLATE_AJAX;

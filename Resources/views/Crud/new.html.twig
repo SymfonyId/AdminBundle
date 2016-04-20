@@ -154,14 +154,13 @@
                 jQuery('.back-to-list').trigger('click');
             });
 
-            {%- if use_date_picker is same as(true) -%}
-                 target = jQuery('.datepicker');
-                 target.parent().css('position', 'relative');
-                 target.datetimepicker({
-                     format: '{{- date_picker_format -}}',
-                     locale: '{{- locale -}}'
-                 });
-             {%- endif -%}
+            var target = jQuery('.datepicker');
+            target.parent().css('position', 'relative');
+            target.datetimepicker({
+                format: '{{- date_picker['date_format'] -}}',
+                {% if date_picker['flatten'] %}useSideBySide: true,{% endif %}
+                locale: '{{- locale -}}'
+            });
 
             {%- if use_file_style is same as(true) -%}
                 jQuery(':file').filestyle({input: false});
@@ -207,7 +206,9 @@
             {%- endif -%}
         });
     </script>
-    {%- if include_javascript is defined -%}
-        {%- include include_javascript with { route: include_route } -%}
+    {%- if include_javascript -%}
+        {% for file in js_include['files'] %}
+            {%- include file with { route: route } -%}
+        {% endfor %}
     {%- endif -%}
 {%- endblock -%}

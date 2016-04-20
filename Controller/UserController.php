@@ -13,13 +13,15 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 
 /**
  * @Route("/user")
  *
  * @Page(title="page.user.title", description="page.user.description")
- * @Util(fileChooser=true, uploadable="file", targetField="avatar")
+ * @Plugins(fileChooser=true)
+ * @Upload(uploadable="file", targetField="avatar")
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */

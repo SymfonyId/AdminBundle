@@ -14,7 +14,11 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\ArrayUtil\ArrayNormalizer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -68,8 +72,20 @@ trait ConfiguratorAwareTrait
             if (Page::class === $k) {
                 $config = new Page();
             }
-            if (Util::class === $k) {
-                $config = new Util();
+            if (Plugins::class === $k) {
+                $config = new Plugins();
+            }
+            if (AutoComplete::class === $k) {
+                $config = new AutoComplete();
+            }
+            if (DatePicker::class === $k) {
+                $config = new DatePicker();
+            }
+            if (ExternalJavascript::class === $k) {
+                $config = new ExternalJavascript();
+            }
+            if (Upload::class === $k) {
+                $config = new Upload();
             }
             $configurator->addConfiguration(ArrayNormalizer::convertToObject($configuration, $config));
         }

@@ -13,7 +13,8 @@ namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
 
@@ -37,7 +38,7 @@ class ClassExtractorTest extends \PHPUnit_Framework_TestCase
         $annotations = $this->extractor->extract(new \ReflectionClass(Stub::class));
         $this->assertTrue(is_array($annotations));
         $this->assertContainsOnlyInstancesOf(ConfigurationInterface::class, $annotations);
-        $this->assertEquals(2, count($annotations));
+        $this->assertEquals(3, count($annotations));
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Page) {
@@ -45,9 +46,12 @@ class ClassExtractorTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals('description', $annotation->getDescription());
             }
 
-            if ($annotation instanceof Util) {
+            if ($annotation instanceof Plugins) {
                 $this->assertTrue($annotation->isUseFileChooser());
-                $this->assertEquals('uploadable', $annotation->getUploadableField());
+            }
+
+            if ($annotation instanceof Upload) {
+                $this->assertEquals('file', $annotation->getUploadable());
             }
         }
     }

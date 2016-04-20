@@ -18,7 +18,11 @@ use ReflectionObject;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
@@ -493,18 +497,36 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             $output['description'] = $configuration->getDescription();
         }
 
-        /** @var Util $configuration */
-        if ($configuration instanceof Util) {
-            $output['use_auto_complete'] = $configuration->isUseAutoComplete();
-            $output['auto_complete'] = $configuration->getAutoComplete();
-            $output['include_javascript'] = $configuration->getIncludeJavascript();
-            $output['include_route'] = $configuration->getIncludeRoute();
-            $output['uploadable_field'] = $configuration->getUploadableField();
-            $output['target_field'] = $configuration->getTargetField();
-            $output['use_date_picker'] = $configuration->isUseDatePicker();
+        /** @var Plugins $configuration */
+        if ($configuration instanceof Plugins) {
             $output['use_file_chooser'] = $configuration->isUseFileChooser();
             $output['use_html_editor'] = $configuration->isUseHtmlEditor();
             $output['use_numeric'] = $configuration->isUseNumeric();
+        }
+
+        /** @var AutoComplete $configuration */
+        if ($configuration instanceof AutoComplete) {
+            $output['route_store'] = $configuration->getRouteStore();
+            $output['target_selector'] = $configuration->getTargetSelector();
+            $output['route_callback'] = $configuration->getRouteCallback();
+        }
+
+        /** @var DatePicker $configuration */
+        if ($configuration instanceof DatePicker) {
+            $output['date_format'] = $configuration->getDateFormat();
+            $output['flatten'] = $configuration->isFlatten();
+        }
+
+        /** @var ExternalJavascript $configuration */
+        if ($configuration instanceof ExternalJavascript) {
+            $output['files'] = $configuration->getFiles();
+            $output['routes'] = $configuration->getRoutes();
+        }
+
+        /** @var Upload $configuration */
+        if ($configuration instanceof Upload) {
+            $output['uploadable'] = $configuration->getUploadable();
+            $output['target_field'] = $configuration->getTargetField();
         }
 
         return $output;

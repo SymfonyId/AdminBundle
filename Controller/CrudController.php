@@ -14,7 +14,10 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
@@ -163,21 +166,45 @@ abstract class CrudController extends Controller
         $crud = $configuration->getConfiguration(Crud::class);
         /** @var Page $page */
         $page = $configuration->getConfiguration(Page::class);
-        /** @var Util $util */
-        $util = $configuration->getConfiguration(Util::class);
+        /** @var Plugins $util */
+        $util = $configuration->getConfiguration(Plugins::class);
+        /** @var AutoComplete $autoComplete */
+        $autoComplete = $configuration->getConfiguration(AutoComplete::class);
+        /** @var DatePicker $datePicker */
+        $datePicker = $configuration->getConfiguration(DatePicker::class);
+        /** @var ExternalJavascript $externalJavascript */
+        $externalJavascript = $configuration->getConfiguration(ExternalJavascript::class);
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
         $this->viewParams['action_method'] = $translator->trans('page.'.strtolower($action), array(), $translationDomain);
-        $this->viewParams['use_date_picker'] = $util->isUseDatePicker();
-        $this->viewParams['date_picker_format'] = $util->getDateFormat();
         $this->viewParams['use_file_style'] = $util->isUseFileChooser();
         $this->viewParams['use_editor'] = $util->isUseHtmlEditor();
         $this->viewParams['use_numeric'] = $util->isUseNumeric();
         $this->viewParams['autocomplete'] = false;
-        if ($util->isUseAutoComplete()) {
+        $this->viewParams['include_javascript'] = false;
+        //Auto complete
+        if ($autoComplete->getRouteStore()) {
             $this->viewParams['autocomplete'] = true;
-            $this->viewParams['ac_config'] = $util->getAutoComplete();
+            $this->viewParams['ac_config'] = array(
+                'route' => $autoComplete->getRouteStore(),
+                'route_callback' => $autoComplete->getRouteCallback(),
+                'selector_storage' => $autoComplete->getTargetSelector()
+            );
+        }
+        //Date picker
+        $this->viewParams['use_date_picker'] = true;
+        $this->viewParams['date_picker'] = array(
+            'date_format' => $datePicker->getDateFormat(),
+            'flatten' => $datePicker->isFlatten(),
+        );
+        //External Javascript
+        if (!empty($externalJavascript->getFiles())) {
+            $this->viewParams['include_javascript'] = true;
+            $this->viewParams['js_include'] = array(
+                'files' => $externalJavascript->getFiles(),
+                'route' => $externalJavascript->getRoutes(),
+            );
         }
 
         $handler->setEntity($crud->getEntityClass());

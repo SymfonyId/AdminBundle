@@ -11,7 +11,7 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Cache;
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 
 /**
@@ -21,7 +21,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 {
     public function testAnnotation()
     {
-        $util = new Util();
+        $util = new Plugins();
         $this->assertInstanceOf(ConfigurationInterface::class, $util);
     }
 }

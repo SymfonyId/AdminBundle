@@ -13,13 +13,15 @@ namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
-use Symfonian\Indonesia\AdminBundle\Annotation\Util;
+use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
+use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**
  * @Page(title="title", description="description")
- * @Util(fileChooser=true, uploadable="uploadable")
+ * @Plugins(fileChooser=true)
+ * @Upload(uploadable="file")
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
