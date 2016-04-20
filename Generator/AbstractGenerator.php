@@ -60,10 +60,6 @@ class AbstractGenerator extends Generator
             mkdir(dirname($target), 0777, true);
         }
 
-        if (file_exists($target)) {
-            unlink($target);
-        }
-
         return file_put_contents($target, $this->render($template, $parameters));
     }
 }
