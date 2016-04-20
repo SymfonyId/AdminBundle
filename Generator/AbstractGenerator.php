@@ -51,7 +51,7 @@ class AbstractGenerator extends Generator
             }
         }
 
-        return array_diff($fields, $exclude);
+        return array_values(array_diff($fields, $exclude));
     }
 
     protected function renderFile($template, $target, $parameters)
