@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class ControllerGenerator extends Generator
+class ControllerGenerator extends AbstractGenerator
 {
     /**
      * @var Filesystem
@@ -81,6 +81,7 @@ class ControllerGenerator extends Generator
 
         $this->renderFile('Controller.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
+            'fields' => $this->getFieldsFromMetadata($metadata),
             'entity' => $entity,
             'entity_class' => strtolower($entityClass),
             'title' => ucwords($entityClass),

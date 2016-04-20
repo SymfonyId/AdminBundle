@@ -10,6 +10,7 @@ namespace {{ namespace }}\Controller;
 {% block use_statements %}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Annotation\Page;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 {% endblock use_statements %}
@@ -19,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
  *
  * @Page("{{ title }}", description="Description of {{ title }}")
  * @Crud("{{ entity }}", form="{{ form_class }}Type")
+ * @Grid(filters={"{{ fields[0] }}"})
  */
 {% block class_definition %}
 class {{ controller_class }} extends CrudController

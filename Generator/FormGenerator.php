@@ -12,7 +12,6 @@
 namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -23,7 +22,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author Hugo Hamon <hugo.hamon@sensio.com>
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FormGenerator extends Generator
+class FormGenerator extends AbstractGenerator
 {
     /**
      * @var Filesystem
@@ -90,37 +89,6 @@ class FormGenerator extends Generator
             'form_class' => $this->className,
             'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.substr($this->className, 0, -4)),
         ));
-    }
-
-    /**
-     * Returns an array of fields. Fields can be both column fields and
-     * association fields.
-     *
-     * @param ClassMetadataInfo $metadata
-     *
-     * @return array $fields
-     */
-    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
-    {
-        $fields = (array) $metadata->fieldNames;
-
-        $exclude = array(
-            'createdAt', 'created_at', 'createdBy', 'created_by',
-            'updatedAt', 'updated_at', 'updatedBy', 'updated_by',
-        );
-
-        // Remove the primary key field if it's not managed manually
-        if (!$metadata->isIdentifierNatural()) {
-            $fields = array_diff($fields, $metadata->identifier);
-        }
-
-        foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
-            }
-        }
-
-        return array_diff($fields, $exclude);
     }
 
     private function hasDateTimeField(ClassMetadataInfo $metadata)
