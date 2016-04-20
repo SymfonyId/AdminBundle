@@ -63,12 +63,6 @@ class ChangePasswordType extends AbstractType
                     'label' => 'form.label.repeat_password',
                 ),
             ))
-            ->add('save', SubmitType::class, array(
-                'label' => 'action.submit',
-                'attr' => array(
-                    'class' => 'btn btn-primary',
-                ),
-            ))
         ;
     }
 

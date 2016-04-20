@@ -47,12 +47,6 @@ class {{ form_class }} extends AbstractType
             ))
             {%- endif -%}
         {%- endfor -%}
-            ->add('save', SubmitType::class, array(
-                'label' => 'Submit',
-                'attr' => array(
-                    'class' => 'btn btn-primary',
-                ),
-            ))
         ;
     }
     {% endif %}

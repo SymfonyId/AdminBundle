@@ -96,12 +96,6 @@ class UserType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))->addModelTransformer(new StringToFileTransformer($this->uploadDir)))
-            ->add('save', SubmitType::class, array(
-                'label' => 'action.submit',
-                'attr' => array(
-                    'class' => 'btn btn-primary',
-                ),
-            ))
         ;
 
         $builder->addEventSubscriber(new RemovePasswordFieldListener());
