@@ -15,12 +15,14 @@ use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Symfonian\Indonesia\AdminBundle\Generator\ControllerGenerator;
 use Symfonian\Indonesia\AdminBundle\Generator\FormGenerator;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -81,6 +83,13 @@ EOT
         $controllerGenerator->generate($bundle, $entityClass, $metadata[0], $forceOverwrite);
 
         $output->writeln(sprintf('<info>Controller for entity %s has been generated</info>', $entityClass));
+
+        /** @var KernelInterface $kernel */
+        $kernel = $this->getContainer()->get('kernel');
+        $cacheClearCommand = $this->getApplication()->find('cache:clear');
+        $cacheClearCommand->run(new ArrayInput(array('--env' => $kernel->getEnvironment())), $output);
+
+        $output->writeln(sprintf('<info>CRUD Generation is successfully!</info>', $entityClass));
     }
 
     /**
@@ -102,7 +111,9 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/SymfonianIndonesiaAdminBundle/skeleton')) {
+        /** @var KernelInterface $kernel */
+        $kernel = $this->getContainer()->get('kernel');
+        if (is_dir($dir = $kernel->getRootDir().'/Resources/SymfonianIndonesiaAdminBundle/skeleton')) {
             $skeletonDirs[] = $dir;
         }
 
@@ -112,7 +123,7 @@ EOT
         return $skeletonDirs;
     }
 
-    protected function getControllerGenerator($bundle = null)
+    private function getControllerGenerator($bundle = null)
     {
         /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
         $fileSystem = $this->getContainer()->get('filesystem');

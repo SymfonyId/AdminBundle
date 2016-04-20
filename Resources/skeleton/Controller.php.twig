@@ -20,7 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
  *
  * @Page("{{ title }}", description="Description of {{ title }}")
  * @Crud("{{ entity }}", form="{{ form_class }}Type")
- * @Grid(filters={"{{ fields[0] }}"})
+ * @Grid({{ '{"' ~ fields | join('", "') ~ '"}'}}, filters={"{{ fields[0] }}"})
  */
 {% block class_definition %}
 class {{ controller_class }} extends CrudController
