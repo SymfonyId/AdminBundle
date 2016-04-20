@@ -48,7 +48,7 @@ services:
             - { name: siab.config }
 
     symfonian_id.admin.annotation.util.external_javascript:
-        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\ExtenalJavascript
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript
         tags:
             - { name: siab.config }
 
