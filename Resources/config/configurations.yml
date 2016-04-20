@@ -32,7 +32,27 @@ services:
         tags:
             - { name: siab.config }
 
-    symfonian_id.admin.annotation.util:
-        class: Symfonian\Indonesia\AdminBundle\Annotation\Util
+    symfonian_id.admin.annotation.plugins:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Plugins
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.util.autocomplete:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.util.date_picker:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.util.external_javascript:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\ExtenalJavascript
+        tags:
+            - { name: siab.config }
+
+    symfonian_id.admin.annotation.util.upload:
+        class: Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload
         tags:
             - { name: siab.config }
