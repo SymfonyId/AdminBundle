@@ -151,11 +151,13 @@
             });
 
             {%- if use_date_picker is same as(true) -%}
-                jQuery('.datepicker').datetimepicker({
-                    format: '{{- date_picker_format -}}',
-                    locale: '{{- locale -}}'
-                });
-            {%- endif -%}
+                 target = jQuery('.datepicker');
+                 target.parent().css('position', 'relative');
+                 target.datetimepicker({
+                     format: '{{- date_picker_format -}}',
+                     locale: '{{- locale -}}'
+                 });
+             {%- endif -%}
 
             {%- if use_file_style is same as(true) -%}
                 jQuery(':file').filestyle({input: false});
