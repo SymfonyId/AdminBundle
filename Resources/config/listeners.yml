@@ -41,7 +41,7 @@ services:
     symfonian_id.admin.variable_registrator:
         class: Symfonian\Indonesia\AdminBundle\Twig\VariableRegistrator
         calls:
-            - [setVariables, [{title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%', locale: '%locale%'}]]
+            - [setVariables, [{title: '%symfonian_id.admin.app_title%', short_title: '%symfonian_id.admin.app_short_title%', date_format: '%symfonian_id.admin.date_time_format%', menu: '%symfonian_id.admin.menu%', locale: '%locale%', translation_domain: '%symfonian_id.admin.translation_domain%'}]]
         arguments:
             - '@twig'
         tags:

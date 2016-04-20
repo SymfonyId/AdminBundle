@@ -12,7 +12,7 @@
             </small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{- url('home') -}}"><i class="fa fa-dashboard"></i> {{- 'link.home' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a></li>
+            <li><a href="{{- url('home') -}}"><i class="fa fa-dashboard"></i> {{- 'link.home' | trans({}, translation_domain) -}}</a></li>
             {%- if breadcrumb is not empty -%}
                 {{- breadcrumb | raw -}}
             {%- endif -%}

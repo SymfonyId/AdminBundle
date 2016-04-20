@@ -50,14 +50,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
                     </div>
                     <div class="modal-body">
                         {{- success -}}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary add_new pull-left" data-dismiss="modal">{{- 'action.add' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                        <button type="button" class="btn btn-primary success-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                        <button type="button" class="btn btn-primary add_new pull-left" data-dismiss="modal">{{- 'action.add' | trans({}, translation_domain) -}}</button>
+                        <button type="button" class="btn btn-primary success-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
                     </div>
                 </div>
             </div>
@@ -69,13 +69,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
                     </div>
                     <div class="modal-body">
-                        {{- 'message.error' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}
+                        {{- 'message.error' | trans({}, translation_domain) -}}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="box box-success box-solid">
             <div class="box-header">
-                <a href="#" class="btn btn-primary pull-right back-to-list">{{- 'action.back_to_list' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                <a href="#" class="btn btn-primary pull-right back-to-list">{{- 'action.back_to_list' | trans({}, translation_domain) -}}</a>
             </div>
             <div class="box-body">
                 {{- form_start(form, {attr: { role: 'form' }}) -}}
@@ -93,6 +93,10 @@
                         {%- for field in form.children -%}
                             {{- form_row(field) -}}
                         {%- endfor -%}
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">{{- 'action.submit' | trans({}, translation_domain) -}}</button>
+                        </div>
                     </div>
                 {{- form_end(form) -}}
             </div>

@@ -70,9 +70,9 @@
                         {%- endfor-%}
                     </div>
                     <div>
-                        <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                        <a href="{{- back -}}" class="btn btn-primary">{{- 'action.back' | trans({}, translation_domain) -}}</a>
                         {%- if action is same as(true) -%}
-                            <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</a>
+                            <a href="#" class="btn btn-danger delete margin-left-7">{{- 'action.delete' | trans({}, translation_domain) -}}</a>
                         {%- endif -%}
                     </div>
                 </div>
@@ -83,14 +83,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{- 'message.info' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
                     </div>
                     <div class="modal-body">
-                        <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</h4>
+                        <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, translation_domain) -}}</h4>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
-                        <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, 'SymfonianIndonesiaAdminBundle') -}}</button>
+                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
+                        <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
                     </div>
                 </div>
             </div>
