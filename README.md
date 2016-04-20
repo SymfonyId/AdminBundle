@@ -1,4 +1,6 @@
 #Symfonian Indonesia Admin Bundle [SIAB]#
+[![Build Status](https://travis-ci.org/SymfonyId/AdminBundle.svg?branch=master)](https://travis-ci.org/SymfonyId/AdminBundle)
+
 
 Repo Asli: [Ihsan Simple Admin Bundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
