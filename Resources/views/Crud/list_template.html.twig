@@ -1,6 +1,9 @@
 {% spaceless %}
     <table class="table table-hover table-bordered">
         <tr>
+            {%- if allow_delete is same as(true) -%}
+                <th class="text-center"><input class="check-all-action" type="checkbox"/></th>
+            {% endif %}
             <th class="text-center"><strong>No</strong></th>
             {%- for i, value in header -%}
                 {% if value['sortable'] %}
@@ -15,7 +18,7 @@
                 {%- if allow_delete is same as(true) -%}
                     <td class="text-center"><input class="bulk-action" type="checkbox" data-record="{{- identifier[key] -}}"/></td>
                 {% endif %}
-                <td>{{- start + key + 1 -}}</td>
+                <td class="text-center">{{- start + key + 1 -}}</td>
                 {%- for i, v in value -%}
                     {%- if v.timezone is defined -%}
                         <td>{{- v | date(date_time_format) -}}

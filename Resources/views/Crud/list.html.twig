@@ -78,6 +78,7 @@
 
             jQuery(document).ready(function () {
                 jQuery('.bulk-action').prop('checked', false);
+                jQuery('.check-all-action').prop('checked', false);
                 jQuery('.sfid-toggle').bootstrapToggle();
 
                 jQuery(document).on('click', '.add-new', function () {
@@ -100,6 +101,10 @@
                     jQuery('.delete-modal').modal({
                         backdrop: 'static'
                     });
+                });
+
+                jQuery(document).on('change', '.check-all-action', function () {
+                    jQuery('.bulk-action').prop('checked', true);
                 });
 
                 jQuery(document).on('click', '.delete-action', function () {
