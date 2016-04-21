@@ -34,24 +34,56 @@ class UserViewManipulator extends AbstractListener
      */
     private $kernel;
 
+    /**
+     * @var string
+     */
     private $formClass;
+
+    /**
+     * @var string
+     */
     private $entityClass;
+
+    /**
+     * @var array
+     */
     private $showFields = array();
+
+    /**
+     * @var array
+     */
     private $gridFields = array();
+
+    /**
+     * @var array
+     */
     private $gridFilters = array();
 
+    /**
+     * @param Configurator    $configurator
+     * @param KernelInterface $kernel
+     */
     public function __construct(Configurator $configurator, KernelInterface $kernel)
     {
         $this->configuration = $configurator;
         $this->kernel = $kernel;
     }
 
+    /**
+     * @param string $formClass
+     * @param string $entityClass
+     */
     public function setForm($formClass, $entityClass)
     {
         $this->formClass = $formClass;
         $this->entityClass = $entityClass;
     }
 
+    /**
+     * @param array $showFields
+     * @param array $gridFields
+     * @param array $gridFilters
+     */
     public function setView(array $showFields, array $gridFields, array $gridFilters)
     {
         $this->showFields = $showFields;
@@ -59,6 +91,11 @@ class UserViewManipulator extends AbstractListener
         $this->gridFilters = $gridFilters;
     }
 
+    /**
+     * @param FilterControllerEvent $event
+     *
+     * @throws \Exception
+     */
     public function onKernelController(FilterControllerEvent $event)
     {
         if ('prod' === strtolower($this->kernel->getEnvironment())) {

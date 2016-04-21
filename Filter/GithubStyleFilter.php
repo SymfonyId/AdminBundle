@@ -32,8 +32,8 @@ class GithubStyleFilter extends FieldFilter
     /**
      * @param QueryBuilder $queryBuilder
      * @param array        $metadata
-     * @param $alias
-     * @param $filter
+     * @param string       $alias
+     * @param string       $filter
      */
     protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
     {

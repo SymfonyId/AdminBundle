@@ -26,24 +26,45 @@ class ProfileViewManipulator
      */
     private $configuration;
 
+    /**
+     * @var string
+     */
     private $profileFields;
+
+    /**
+     * @var string
+     */
     private $formClass;
 
+    /**
+     * @param Configurator $configurator
+     */
     public function __construct(Configurator $configurator)
     {
         $this->configuration = $configurator;
     }
 
+    /**
+     * @param string $formClass
+     */
     public function setFormClass($formClass)
     {
         $this->formClass = $formClass;
     }
 
+    /**
+     * @param string $profileFields
+     */
     public function setProfileFields($profileFields)
     {
         $this->profileFields = $profileFields;
     }
 
+    /**
+     * @param FilterControllerEvent $event
+     *
+     * @throws \Exception
+     */
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();

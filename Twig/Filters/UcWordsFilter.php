@@ -14,8 +14,14 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\Filters;
 use Twig_Extension;
 use Twig_SimpleFilter;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class UcWordsFilter extends Twig_Extension
 {
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return array(

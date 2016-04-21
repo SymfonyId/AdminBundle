@@ -29,25 +29,12 @@ class FormGenerator extends AbstractGenerator
      */
     private $filesystem;
 
-    private $className;
-    private $classPath;
-
     /**
      * @param Filesystem $filesystem A Filesystem instance
      */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-    }
-
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    public function getClassPath()
-    {
-        return $this->classPath;
     }
 
     /**
@@ -91,6 +78,11 @@ class FormGenerator extends AbstractGenerator
         ));
     }
 
+    /**
+     * @param ClassMetadataInfo $metadata
+     *
+     * @return bool
+     */
     private function hasDateTimeField(ClassMetadataInfo $metadata)
     {
         $hasDateTime = false;

@@ -31,8 +31,16 @@ class AvatarUploader
      */
     private $uploadHandler;
 
+    /**
+     * @var string
+     */
     private $uploadDir;
 
+    /**
+     * @param Configurator  $configurator
+     * @param UploadHandler $uploadHandler
+     * @param string        $uploadDir
+     */
     public function __construct(Configurator $configurator, UploadHandler $uploadHandler, $uploadDir)
     {
         $this->configuration = $configurator;
@@ -47,6 +55,9 @@ class AvatarUploader
         $this->uploadHandler->setFields(array($upload->getUploadable()), array($upload->getTargetField()));
     }
 
+    /**
+     * @param FilterEntityEvent $event
+     */
     public function onPreSave(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();

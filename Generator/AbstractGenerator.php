@@ -24,6 +24,32 @@ use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 class AbstractGenerator extends Generator
 {
     /**
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var string
+     */
+    protected $classPath;
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassPath()
+    {
+        return $this->classPath;
+    }
+
+    /**
      * Returns an array of fields. Fields can be both column fields and
      * association fields.
      *
@@ -54,6 +80,13 @@ class AbstractGenerator extends Generator
         return array_values(array_diff($fields, $exclude));
     }
 
+    /**
+     * @param string $template
+     * @param string $target
+     * @param array  $parameters
+     *
+     * @return int
+     */
     protected function renderFile($template, $target, $parameters)
     {
         if (!is_dir(dirname($target))) {

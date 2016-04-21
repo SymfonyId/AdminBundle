@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Twig_Extension;
 use Twig_SimpleTest;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class SortedTest extends Twig_Extension
 {
     /**
@@ -23,11 +26,17 @@ class SortedTest extends Twig_Extension
      */
     private $session;
 
+    /**
+     * @param Session $session
+     */
     public function __construct(Session $session)
     {
         $this->session = $session;
     }
 
+    /**
+     * @return array
+     */
     public function getTests()
     {
         return array(
@@ -35,6 +44,11 @@ class SortedTest extends Twig_Extension
         );
     }
 
+    /**
+     * @param string $field
+     *
+     * @return bool
+     */
     public function isSorted($field)
     {
         $sessionField = $this->session->get(SymfonianIndonesiaAdminConstants::SESSION_SORTED_NAME);
@@ -45,6 +59,9 @@ class SortedTest extends Twig_Extension
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'is_sorted';

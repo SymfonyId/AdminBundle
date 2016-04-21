@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -44,15 +45,18 @@ class Builder
     private $extractor;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
+     * @var AuthorizationCheckerInterface
      */
     private $authorizationChecker;
 
+    /**
+     * @var string
+     */
     private $translationDomain;
 
     /**
@@ -92,11 +96,22 @@ class Builder
         return $menu;
     }
 
+    /**
+     * @param string $role
+     *
+     * @return bool
+     */
     protected function isGranted($role)
     {
         return $this->authorizationChecker->isGranted($role);
     }
 
+    /**
+     * @param FactoryInterface $factory
+     * @param array            $options
+     *
+     * @return ItemInterface
+     */
     protected function createRootMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root', array(
@@ -108,6 +123,9 @@ class Builder
         return $menu;
     }
 
+    /**
+     * @param ItemInterface $menu
+     */
     protected function addDashboardMenu(ItemInterface $menu)
     {
         $this->addMenu($menu, 'home', 'menu.dashboard');
@@ -115,11 +133,20 @@ class Builder
         $this->addMenu($menu, 'symfonian_indonesia_admin_profile_changepassword', 'menu.user.change_password');
     }
 
+    /**
+     * @param ItemInterface $menu
+     */
     protected function addUserMenu(ItemInterface $menu)
     {
         $this->addMenu($menu, 'symfonian_indonesia_admin_user_list', 'menu.user.title');
     }
 
+    /**
+     * @param ItemInterface $menu
+     * @param string        $route
+     * @param string        $name
+     * @param string        $icon
+     */
     protected function addMenu(ItemInterface $menu, $route, $name, $icon = 'fa-bars')
     {
         $menu->addChild($name, array(
@@ -132,6 +159,9 @@ class Builder
         ));
     }
 
+    /**
+     * @param ItemInterface $menu
+     */
     protected function generateMenu(ItemInterface $menu)
     {
         $routeCollection = $this->router->getRouteCollection()->all();
@@ -171,6 +201,10 @@ class Builder
         $this->iterateMenu($menu, $items);
     }
 
+    /**
+     * @param ItemInterface $menu
+     * @param array         $items
+     */
     private function iterateMenu(ItemInterface $menu, array $items)
     {
         foreach ($items as $route => $item) {
@@ -178,6 +212,10 @@ class Builder
         }
     }
 
+    /**
+     * @param string $file
+     * @param string $content
+     */
     private function writeCacheFile($file, $content)
     {
         $tmpFile = tempnam(dirname($file), basename($file));

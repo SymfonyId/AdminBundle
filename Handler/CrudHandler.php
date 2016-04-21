@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Doctrine\ORM\Query;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
@@ -48,10 +49,25 @@ class CrudHandler implements ContainerAwareInterface
      */
     private $classMetadata;
 
+    /**
+     * @var string
+     */
     private $class;
+
+    /**
+     * @var string
+     */
     private $template;
-    private $viewParams = array();
+
+    /**
+     * @var string
+     */
     private $errorMessage;
+
+    /**
+     * @var array
+     */
+    private $viewParams = array();
 
     /**
      * @param ContainerInterface $container
@@ -263,11 +279,17 @@ class CrudHandler implements ContainerAwareInterface
         $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
+    /**
+     * @return string
+     */
     public function getErrorMessage()
     {
         return $this->errorMessage;
     }
 
+    /**
+     * @param EntityInterface $entity
+     */
     private function save(EntityInterface $entity)
     {
         $preSaveEvent = new FilterEntityEvent();
@@ -284,6 +306,12 @@ class CrudHandler implements ContainerAwareInterface
         $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
     }
 
+    /**
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return PaginationInterface
+     */
     private function paginateResult($page, $perPage)
     {
         $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
@@ -303,6 +331,12 @@ class CrudHandler implements ContainerAwareInterface
         return $paginator->paginate($query, $page, $perPage);
     }
 
+    /**
+     * Dispatch Event.
+     *
+     * @param string $name
+     * @param string $handler
+     */
     private function fireEvent($name, $handler)
     {
         $dispatcher = $this->container->get('event_dispatcher');

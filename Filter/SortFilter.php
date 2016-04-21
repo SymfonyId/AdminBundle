@@ -57,6 +57,12 @@ class SortFilter extends AbstractFilter
         return $sortable;
     }
 
+    /**
+     * @param string       $entityClass
+     * @param QueryBuilder $queryBuilder
+     * @param array        $filterFields
+     * @param array        $filters
+     */
     public function createFilter($entityClass, QueryBuilder $queryBuilder, array $filterFields, array $filters = array())
     {
         foreach ($this->getMapping($this->getClassMetadata($entityClass), $filterFields) as $key => $value) {

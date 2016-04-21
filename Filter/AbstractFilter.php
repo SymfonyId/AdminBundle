@@ -14,7 +14,14 @@ abstract class AbstractFilter
      */
     private $manager;
 
+    /**
+     * @var array
+     */
     private static $ALIAS = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j');
+
+    /**
+     * @var array
+     */
     private static $ALIAS_USED = array(Constants::ENTITY_ALIAS);
 
     /**
@@ -25,16 +32,25 @@ abstract class AbstractFilter
     /**
      * @param QueryBuilder $queryBuilder
      * @param array        $metadata
-     * @param $alias
-     * @param $filter
+     * @param string       $alias
+     * @param string       $filter
      */
     abstract protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null);
 
+    /**
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->manager = $entityManager;
     }
 
+    /**
+     * @param $entityClass
+     * @param QueryBuilder $queryBuilder
+     * @param array        $filterFields
+     * @param array        $filters
+     */
     public function createFilter($entityClass, QueryBuilder $queryBuilder, array $filterFields, array $filters = array())
     {
         $filter = null;

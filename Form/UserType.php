@@ -29,11 +29,32 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UserType extends AbstractType
 {
+    /**
+     * @var string
+     */
     private $userClass;
+
+    /**
+     * @var string
+     */
     private $translationDomain;
+
+    /**
+     * @var array
+     */
     private $roleHierarchy;
+
+    /**
+     * @var string
+     */
     private $uploadDir;
 
+    /**
+     * @param string $userClass
+     * @param string $translationDomain
+     * @param array  $roleHierarchy
+     * @param string $uploadDir
+     */
     public function __construct($userClass, $translationDomain, array $roleHierarchy, $uploadDir)
     {
         $this->userClass = $userClass;
@@ -42,6 +63,10 @@ class UserType extends AbstractType
         $this->uploadDir = $uploadDir;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -100,6 +125,9 @@ class UserType extends AbstractType
         $builder->addEventSubscriber(new RemovePasswordFieldListener());
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -110,6 +138,9 @@ class UserType extends AbstractType
         ));
     }
 
+    /**
+     * @return array
+     */
     private function buildRoleList()
     {
         $roleList = array();

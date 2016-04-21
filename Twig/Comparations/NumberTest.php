@@ -14,8 +14,14 @@ namespace Symfonian\Indonesia\AdminBundle\Twig\Comparations;
 use Twig_Extension;
 use Twig_SimpleTest;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class NumberTest extends Twig_Extension
 {
+    /**
+     * @return array
+     */
     public function getTests()
     {
         return array(
@@ -23,11 +29,19 @@ class NumberTest extends Twig_Extension
         );
     }
 
+    /**
+     * @param mixed $number
+     *
+     * @return bool
+     */
     public function isNumeric($number)
     {
         return is_numeric($number);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'is_numeric';

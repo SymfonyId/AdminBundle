@@ -43,7 +43,8 @@ abstract class User extends BaseUser implements EntityInterface
      * @Assert\File(
      *     maxSize = "1024k",
      *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
-     * )
+     *
+     * @var string
      */
     protected $file;
 
@@ -84,6 +85,9 @@ abstract class User extends BaseUser implements EntityInterface
         return $this->avatar;
     }
 
+    /**
+     * @param UploadedFile $uploadedFile
+     */
     public function setFile(UploadedFile $uploadedFile)
     {
         $this->file = $uploadedFile;

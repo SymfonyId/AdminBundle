@@ -19,6 +19,9 @@ use Twig_SimpleTest;
  */
 class BooleanTest extends Twig_Extension
 {
+    /**
+     * @return array
+     */
     public function getTests()
     {
         return array(
@@ -26,11 +29,19 @@ class BooleanTest extends Twig_Extension
         );
     }
 
+    /**
+     * @param mixed $boolean
+     *
+     * @return bool
+     */
     public function isBoolean($boolean)
     {
         return is_bool($boolean);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'is_boolean';

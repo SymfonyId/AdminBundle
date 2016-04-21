@@ -15,8 +15,14 @@ use Symfonian\Indonesia\AdminBundle\User\User;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class GenerateUserAvatarFunction extends Twig_Extension
 {
+    /**
+     * @var string
+     */
     private $uploadDir;
 
     /**
@@ -27,6 +33,9 @@ class GenerateUserAvatarFunction extends Twig_Extension
         $this->uploadDir = $uploadDir;
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return array(
@@ -34,6 +43,11 @@ class GenerateUserAvatarFunction extends Twig_Extension
         );
     }
 
+    /**
+     * @param User $user
+     *
+     * @return string
+     */
     public function generateAvatar(User $user)
     {
         if ($user->getAvatar()) {
@@ -43,6 +57,9 @@ class GenerateUserAvatarFunction extends Twig_Extension
         }
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'generate_avatar';

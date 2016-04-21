@@ -20,18 +20,30 @@ class VariableRegistrator
      */
     private $twig;
 
+    /**
+     * @var array
+     */
     private $variables = array();
 
+    /**
+     * @param \Twig_Environment $twig
+     */
     public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
     }
 
+    /**
+     * @param array $variables
+     */
     public function setVariables(array $variables)
     {
         $this->variables = $variables;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $this->twig->addGlobal('title', $this->variables['title']);

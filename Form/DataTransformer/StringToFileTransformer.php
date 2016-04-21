@@ -19,13 +19,24 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class StringToFileTransformer implements DataTransformerInterface
 {
+    /**
+     * @var array
+     */
     private $uploadDir;
 
+    /**
+     * @param array $uploadDir
+     */
     public function __construct(array $uploadDir)
     {
         $this->uploadDir = $uploadDir;
     }
 
+    /**
+     * @param string $file
+     *
+     * @return string|File
+     */
     public function reverseTransform($file)
     {
         if (!$file instanceof File) {
@@ -35,6 +46,11 @@ class StringToFileTransformer implements DataTransformerInterface
         return $file;
     }
 
+    /**
+     * @param string $filename
+     *
+     * @return string|File
+     */
     public function transform($filename)
     {
         if (!$filename) {

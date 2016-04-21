@@ -18,11 +18,21 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class RoleToArrayTransformer implements DataTransformerInterface
 {
+    /**
+     * @param array $array
+     *
+     * @return string
+     */
     public function transform($array)
     {
         return $array[0];
     }
 
+    /**
+     * @param string $role
+     *
+     * @return array
+     */
     public function reverseTransform($role)
     {
         return array($role);

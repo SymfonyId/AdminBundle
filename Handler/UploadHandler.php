@@ -20,15 +20,33 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class UploadHandler
 {
+    /**
+     * @var string
+     */
     private $dirPath;
+
+    /**
+     * @var array
+     */
     private $fields = array();
+
+    /**
+     * @var array
+     */
     private $targetFields = array();
 
+    /**
+     * @param string $dirPath
+     */
     public function setUploadDir($dirPath)
     {
         $this->dirPath = $dirPath;
     }
 
+    /**
+     * @param array $fields
+     * @param array $targetFields
+     */
     public function setFields(array $fields, array $targetFields)
     {
         if (count($fields) !== count($targetFields)) {
@@ -38,6 +56,9 @@ class UploadHandler
         $this->targetFields = array_values($targetFields);
     }
 
+    /**
+     * @return bool
+     */
     public function isUploadable()
     {
         if (empty($this->fields)) {
@@ -47,6 +68,9 @@ class UploadHandler
         return true;
     }
 
+    /**
+     * @param EntityInterface $entity
+     */
     public function upload(EntityInterface $entity)
     {
         if (!is_dir($this->dirPath)) {

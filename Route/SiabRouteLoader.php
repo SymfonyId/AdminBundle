@@ -40,6 +40,12 @@ class SiabRouteLoader extends DelegatingLoader
      */
     private $kernel;
 
+    /**
+     * @param ControllerNameParser    $parser
+     * @param LoaderResolverInterface $resolver
+     * @param ExtractorFactory        $extractor
+     * @param KernelInterface         $kernel
+     */
     public function __construct(ControllerNameParser $parser, LoaderResolverInterface $resolver, ExtractorFactory $extractor, KernelInterface $kernel)
     {
         $this->extractor = $extractor;
@@ -84,11 +90,23 @@ class SiabRouteLoader extends DelegatingLoader
         return 'siab' === $type;
     }
 
+    /**
+     * @param string $resource
+     *
+     * @return array|string
+     */
     private function getControllerDir($resource)
     {
         return $this->kernel->locateResource($resource);
     }
 
+    /**
+     * Find All Controllers.
+     *
+     * @param string $dir
+     *
+     * @return array
+     */
     private function findAllControllerFromDir($dir)
     {
         $finder = new Finder();
@@ -104,6 +122,11 @@ class SiabRouteLoader extends DelegatingLoader
         return $controllers;
     }
 
+    /**
+     * @param SplFileInfo $file
+     *
+     * @return \ReflectionClass|void
+     */
     private function getReflectionClass(SplFileInfo $file)
     {
         $namespace = null;
@@ -124,6 +147,10 @@ class SiabRouteLoader extends DelegatingLoader
         return;
     }
 
+    /**
+     * @param RouteCollection  $collection
+     * @param \ReflectionClass $controller
+     */
     private function registerRoute(RouteCollection $collection, \ReflectionClass $controller)
     {
         $route = $this->parseController($controller) ?: new Route(array('path' => ''));
@@ -136,6 +163,9 @@ class SiabRouteLoader extends DelegatingLoader
         }
     }
 
+    /**
+     * @param \ReflectionClass $reflectionClass
+     */
     private function parseController(\ReflectionClass $reflectionClass)
     {
         $this->extractor->extract($reflectionClass);
@@ -148,6 +178,14 @@ class SiabRouteLoader extends DelegatingLoader
         return;
     }
 
+    /**
+     * @param string            $prefixName
+     * @param \ReflectionClass  $class
+     * @param \ReflectionMethod $method
+     * @param Route|null        $route
+     *
+     * @return RouteCollection
+     */
     private function compileRoute($prefixName, \ReflectionClass $class, \ReflectionMethod $method, Route $route = null)
     {
         $collection = new RouteCollection();
@@ -155,6 +193,10 @@ class SiabRouteLoader extends DelegatingLoader
         $this->extractor->extract($method);
         $routeAnnotations = array();
         $methodAnnotaion = null;
+
+        /*
+         * Parse method annotation
+         */
         foreach ($this->extractor->getMethodAnnotations() as $key => $annoation) {
             if ($annoation instanceof Route) {
                 $routeAnnotations[] = $annoation;
@@ -177,11 +219,23 @@ class SiabRouteLoader extends DelegatingLoader
         return $collection;
     }
 
+    /**
+     * @param \ReflectionClass  $reflectionClass
+     * @param \ReflectionMethod $reflectionMethod
+     * @param RouteCollection   $collection
+     * @param string            $name
+     * @param Route|null        $controllerRoute
+     * @param Route|null        $route
+     * @param Method|null       $method
+     */
     private function addRoute(\ReflectionClass $reflectionClass, \ReflectionMethod $reflectionMethod, RouteCollection $collection, $name, Route $controllerRoute = null, Route $route = null, Method $method = null)
     {
         $controller = $reflectionClass->getName().'::'.$reflectionMethod->getName();
         $methodName = str_replace('action', '', strtolower($reflectionMethod->getName()));
 
+        /*
+         * Compile route
+         */
         $loop = true;
         $index = 0;
         while ($loop) {
@@ -201,6 +255,9 @@ class SiabRouteLoader extends DelegatingLoader
             }
             $path = $path.$routeAction->getPath();
 
+            /*
+             * Create route
+             */
             $symfonyRoute = new SymfonyRoute(
                 $path,
                 array_merge($routeAction->getDefaults(), array('_controller' => $controller)),
@@ -217,6 +274,12 @@ class SiabRouteLoader extends DelegatingLoader
         }
     }
 
+    /**
+     * @param RouteCollection $collection
+     * @param string          $name
+     *
+     * @return string
+     */
     private function getUniqueRouteName(RouteCollection $collection, $name)
     {
         $flag = false;
@@ -232,6 +295,11 @@ class SiabRouteLoader extends DelegatingLoader
         return $name;
     }
 
+    /**
+     * @param string $methodName
+     *
+     * @return Method
+     */
     private function generateMethod($methodName)
     {
         switch ($methodName) {
@@ -259,6 +327,12 @@ class SiabRouteLoader extends DelegatingLoader
         ));
     }
 
+    /**
+     * @param string $methodName
+     * @param bool   $flag
+     *
+     * @return Route
+     */
     private function generateRoute($methodName, $flag = false)
     {
         switch ($methodName) {

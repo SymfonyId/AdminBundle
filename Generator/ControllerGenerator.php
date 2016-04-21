@@ -30,25 +30,12 @@ class ControllerGenerator extends AbstractGenerator
      */
     private $filesystem;
 
-    private $className;
-    private $classPath;
-
     /**
      * @param Filesystem $filesystem A Filesystem instance
      */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-    }
-
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    public function getClassPath()
-    {
-        return $this->classPath;
     }
 
     /**

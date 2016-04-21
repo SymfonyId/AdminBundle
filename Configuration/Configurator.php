@@ -70,8 +70,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     private $freeze = false;
 
     /**
-     * Configurator constructor.
-     *
      * @param KernelInterface  $kernel
      * @param ExtractorFactory $extractor
      * @param FormFactory      $formFactory

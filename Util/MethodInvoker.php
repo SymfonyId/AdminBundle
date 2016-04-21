@@ -13,6 +13,9 @@ namespace Symfonian\Indonesia\AdminBundle\Util;
 
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 
+/**
+ * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
+ */
 class MethodInvoker
 {
     /**
