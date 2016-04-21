@@ -53,12 +53,15 @@ abstract class CrudController extends Controller
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
+        /** @var Plugins $plugins */
+        $plugins = $configuration->getConfiguration(Plugins::class);
+        $template = $plugins->isUseBulkInsert() ? $crud->getBulkCreateTemplate() : $crud->getCreateTemplate();
 
         $entityClass = $crud->getEntityClass();
         $entity = new $entityClass();
         $form = $crud->getForm($entity);
 
-        return $this->handle($request, $entity, $form, Constants::ACTION_CREATE, $crud->getCreateTemplate());
+        return $this->handle($request, $entity, $form, Constants::ACTION_CREATE, $template);
     }
 
     /**
@@ -171,7 +174,7 @@ abstract class CrudController extends Controller
                 $isDeleted[] = $deleteMessage;
             }
 
-            $countData++;
+            ++$countData;
         }
 
         if (0 === count($isDeleted)) {
@@ -180,7 +183,7 @@ abstract class CrudController extends Controller
             $message = sprintf('Data yang berhasil dari hapus adalah %d dari %d [%s]', count($isDeleted), $countData, implode(', ', $isDeleted));
         }
 
-        return new JsonResponse(array('status' => empty($isDeleted) ? false: true, 'message' => $message));
+        return new JsonResponse(array('status' => empty($isDeleted) ? false : true, 'message' => $message));
     }
 
     /**
