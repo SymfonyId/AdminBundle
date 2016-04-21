@@ -156,7 +156,7 @@ abstract class CrudController extends Controller
 
         $isDeleted = array();
         $countData = 0;
-        foreach (explode('-', $request->get('id', '')) as $id) {
+        foreach ($request->get('id', array()) as $id) {
             $entity = $this->findOr404Error($id);
             if (!$entity instanceof BulkDeletableInterface) {
                 return;

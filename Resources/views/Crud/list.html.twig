@@ -53,7 +53,7 @@
                         <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, translation_domain) -}}</h4>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
+                        <button type="button" class="btn btn-primary action-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
                         <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
                     </div>
                 </div>
@@ -77,6 +77,7 @@
             };
 
             jQuery(document).ready(function () {
+                jQuery('.bulk-action').prop('checked', false);
                 jQuery('.sfid-toggle').bootstrapToggle();
 
                 jQuery(document).on('click', '.add-new', function () {
@@ -102,6 +103,10 @@
                 });
 
                 jQuery(document).on('click', '.delete-action', function () {
+                    jQuery(document).on('click', '.action-close', function () {
+                        window.location.reload();
+                    });
+
                     var ids = jQuery('.bulk-action:checked').map(function() {
                         return jQuery(this).data('record');
                     }).get();
@@ -114,7 +119,7 @@
                         url = temp.join('/');
                     }
 
-                    url = window.location.protocol + '//' + window.location.host + '/' + url;
+                    url = window.location.protocol + '//' + window.location.host + url;
                     jQuery.ajax({
                         url: url,
                         type: 'DELETE',
