@@ -50,6 +50,7 @@ class SymfonianIndonesiaAdminConstants
      * Templating.
      */
     const TEMPLATE_CREATE = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
+    const TEMPLATE_BULK_CREATE = 'SymfonianIndonesiaAdminBundle:Crud:bulk-new.html.twig';
     const TEMPLATE_EDIT = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
     const TEMPLATE_SHOW = 'SymfonianIndonesiaAdminBundle:Crud:show.html.twig';
     const TEMPLATE_LIST = 'SymfonianIndonesiaAdminBundle:Crud:list.html.twig';

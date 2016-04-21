@@ -385,4 +385,13 @@ abstract class CrudController extends Controller
 
         return $granted;
     }
+
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     */
+    private function setViewParam($key, $value)
+    {
+        $this->viewParams[$key] = $value;
+    }
 }

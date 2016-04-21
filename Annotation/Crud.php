@@ -73,6 +73,11 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     /**
      * @var string
      */
+    private $bulkCreate = Constants::TEMPLATE_BULK_CREATE;
+
+    /**
+     * @var string
+     */
     private $edit = Constants::TEMPLATE_EDIT;
 
     /**
@@ -127,6 +132,10 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
         if (isset($data['create'])) {
             $this->create = $data['create'];
+        }
+
+        if (isset($data['bulkCreate'])) {
+            $this->bulkCreate = $data['bulkCreate'];
         }
 
         if (isset($data['edit'])) {
@@ -202,6 +211,22 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     public function setCreateTemplate($createTemplate)
     {
         $this->create = $createTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBulkCreateTemplate()
+    {
+        return $this->bulkCreate;
+    }
+
+    /**
+     * @param string $bulkCreateTemplate
+     */
+    public function setBulkCreateTemplate($bulkCreateTemplate)
+    {
+        $this->bulkCreate = $bulkCreateTemplate;
     }
 
     /**

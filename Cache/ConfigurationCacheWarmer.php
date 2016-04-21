@@ -226,6 +226,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         /** @var Crud $crud */
         $crud = $this->configuration->getConfiguration(Crud::class);
         $crud->setCreateTemplate($this->template['new']);
+        $crud->setBulkCreateTemplate($this->template['bulk_new']);
         $crud->setEditTemplate($this->template['edit']);
         $crud->setShowTemplate($this->template['show']);
         $crud->setListTemplate($this->template['list']);
@@ -337,8 +338,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         if ($entity->getName() === $crud->getEntityClass()) {
             /** @var Grid $grid */
             $grid = $config->getConfiguration(Grid::class);
-            $grid = $this->parsePropertyAnnotation($entity, $grid);
-            $config->addConfiguration($grid);
+            $config->addConfiguration($this->parsePropertyAnnotation($entity, $grid));
         }
 
         return $config;
@@ -482,6 +482,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             $output['form_class'] = $configuration->getFormClass();
             $output['show_fields'] = $configuration->getShowFields();
             $output['create_template'] = $configuration->getCreateTemplate();
+            $output['bulk_create_template'] = $configuration->getBulkCreateTemplate();
             $output['edit_template'] = $configuration->getEditTemplate();
             $output['list_template'] = $configuration->getListTemplate();
             $output['show_template'] = $configuration->getShowTemplate();

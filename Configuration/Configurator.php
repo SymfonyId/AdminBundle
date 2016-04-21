@@ -162,6 +162,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         /** @var Crud $crud */
         $crud = $this->getConfiguration(Crud::class);
         $crud->setCreateTemplate($this->template['new']);
+        $crud->setBulkCreateTemplate($this->template['bulk_new']);
         $crud->setEditTemplate($this->template['edit']);
         $crud->setShowTemplate($this->template['show']);
         $crud->setListTemplate($this->template['list']);
