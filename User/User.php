@@ -41,8 +41,9 @@ abstract class User extends BaseUser implements EntityInterface
 
     /**
      * @Assert\File(
-     *     maxSize = "1024k",
-     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     maxSize="1024k",
+     *     mimeTypes={"image/jpeg", "image/gif", "image/png", "image/tiff"}
+     * )
      *
      * @var string
      */
