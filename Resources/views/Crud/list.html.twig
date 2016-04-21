@@ -106,14 +106,15 @@
                         return jQuery(this).data('record');
                     }).get();
 
-                    var url = document.URL.replace('list', 'delete').replace('#', '');
-                    if (0 > url.indexOf('delete')) {
+                    var url = window.location.pathname.replace('list', 'bulk-delete').replace('#', '');
+                    if (0 > url.indexOf('bulk-delete')) {
                         var temp = url.split('/');
                         temp.clean();
                         temp.push('bulk-delete');
                         url = temp.join('/');
                     }
 
+                    url = window.location.protocol + '//' + window.location.host + '/' + url;
                     jQuery.ajax({
                         url: url,
                         type: 'DELETE',

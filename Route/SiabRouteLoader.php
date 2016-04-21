@@ -315,6 +315,7 @@ class SiabRouteLoader extends DelegatingLoader
                     'methods' => array('GET'),
                 ));
                 break;
+            case 'bulkdelete':
             case 'delete':
                 return new Method(array(
                     'methods' => array('DELETE'),
@@ -353,6 +354,11 @@ class SiabRouteLoader extends DelegatingLoader
             case 'delete':
                 return new Route(array(
                     'path' => '/{id}/'.$methodName.'/',
+                ));
+                break;
+            case 'bulkdelete':
+                return new Route(array(
+                    'path' => '/bulk-delete/',
                 ));
                 break;
         }

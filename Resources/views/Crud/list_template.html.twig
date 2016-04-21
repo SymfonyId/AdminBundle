@@ -12,7 +12,9 @@
         </tr>
         {%- for key, value in record -%}
             <tr>
-                <td class="text-center"><input name="bulk[]" type="checkbox" data-record="{{- identifier[key] -}}"/></td>
+                {%- if allow_delete is same as(true) -%}
+                    <td class="text-center"><input class="bulk-action" type="checkbox" data-record="{{- identifier[key] -}}"/></td>
+                {% endif %}
                 <td>{{- start + key + 1 -}}</td>
                 {%- for i, v in value -%}
                     {%- if v.timezone is defined -%}
@@ -49,6 +51,9 @@
         <div class="pull-left">
             {%- if allow_create is same as(true) -%}
                 <a href = "#" class="btn btn-primary add-new">{{- 'action.add' | trans({}, translation_domain) -}}</a>
+            {% endif %}
+            {%- if allow_delete is same as(true) -%}
+                <button type="button" class="btn btn-danger bulk-delete margin-left-7">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
             {% endif %}
         </div>
         <div class="pull-right">

@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
+use Symfonian\Indonesia\AdminBundle\Model\BulkDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfony\Component\Form\FormInterface;
@@ -155,15 +156,19 @@ abstract class CrudController extends Controller
 
         $isDeleted = array();
         $countData = 0;
-        foreach ($request->get('id', array()) as $id) {
+        foreach (explode('-', $request->get('id', '')) as $id) {
             /** @var EntityInterface $entity */
             $entity = $this->findOr404Error($id);
+            if (!$entity instanceof BulkDeletableInterface) {
+                return;
+            }
+
             /** @var CrudHandler $handler */
             $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
             $handler->setEntity($crud->getEntityClass());
             if (true === $handler->remove($entity)) {
-                $isDeleted[] = $entity->getId();
+                $isDeleted[] = $id;
             }
 
             $countData++;
@@ -216,10 +221,18 @@ abstract class CrudController extends Controller
         }, $filters));
         $this->viewParams['filter_fields_entity'] = implode(', ', $filters);
 
+        $allowBulkDelete = false;
+        $reflectionEntity = new \ReflectionClass($crud->getEntityClass());
+        foreach ($reflectionEntity->getInterfaces() as $reflectionClass) {
+            if ($reflectionClass->getName() === BulkDeletableInterface::class && $crud->isAllowDelete()) {
+                $allowBulkDelete = true;
+            }
+        }
+
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $crud->isAllowDelete(), $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $allowBulkDelete, $grid->isFormatNumber());
 
         return $handler->getResponse();
     }
