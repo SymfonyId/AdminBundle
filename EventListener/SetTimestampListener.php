@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -40,33 +39,6 @@ class SetTimestampListener
     public function onPreSaveUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
-        if (!$entity instanceof TimestampableInterface) {
-            return;
-        }
-
-        $token = $this->tokenStorage->getToken();
-        if (!$token) {
-            return;
-        }
-
-        $now = new \DateTime();
-        $username = $token->getUsername();
-
-        if (!$entity->getId()) {
-            $entity->setCreatedAt($now);
-            $entity->setCreatedBy($username);
-        }
-
-        $entity->setUpdatedAt($now);
-        $entity->setUpdatedBy($username);
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function prePersist(LifecycleEventArgs $event)
-    {
-        $entity = $event->getObject();
         if (!$entity instanceof TimestampableInterface) {
             return;
         }

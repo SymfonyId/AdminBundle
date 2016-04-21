@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\User;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
@@ -69,18 +68,5 @@ class AvatarUploader
         }
 
         $event->setEntity($entity);
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function prePersist(LifecycleEventArgs $event)
-    {
-        $entity = $event->getObject();
-
-        if ($this->uploadHandler->isUploadable() && $entity instanceof User) {
-            $this->uploadHandler->setUploadDir($this->uploadDir['server_path']);
-            $this->uploadHandler->upload($entity);
-        }
     }
 }
