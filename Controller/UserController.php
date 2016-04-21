@@ -27,6 +27,9 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
  */
 class UserController extends CrudController
 {
+    /**
+     * @return string
+     */
     protected function getClassName()
     {
         return __CLASS__;

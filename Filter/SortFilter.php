@@ -75,6 +75,7 @@ class SortFilter extends AbstractFilter
      * @param array        $metadata
      * @param $alias
      * @param $filter
+     *
      * @throws \Exception
      */
     protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)

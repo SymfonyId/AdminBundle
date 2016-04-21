@@ -22,21 +22,21 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 class AutoComplete implements ConfigurationInterface
 {
     /**
-     * Route to search action
+     * Route to search action.
      *
      * @var string
      */
     private $routeStore;
 
     /**
-     * Route to get id action
+     * Route to get id action.
      *
      * @var string
      */
     private $routeCallback;
 
     /**
-     * jQuery selector to store value
+     * jQuery selector to store value.
      *
      * @var string
      */

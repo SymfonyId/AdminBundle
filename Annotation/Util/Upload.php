@@ -23,7 +23,7 @@ class Upload implements ConfigurationInterface
 {
     /**
      * - Entity field to be uploadable
-     * - Must has setter getter method
+     * - Must has setter getter method.
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class Upload implements ConfigurationInterface
 
     /**
      * - Entity field to store file path
-     * - Must has setter getter method
+     * - Must has setter getter method.
      *
      * @var string
      */

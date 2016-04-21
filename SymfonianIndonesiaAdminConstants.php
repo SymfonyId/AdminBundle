@@ -17,7 +17,7 @@ namespace Symfonian\Indonesia\AdminBundle;
 class SymfonianIndonesiaAdminConstants
 {
     /**
-     * Crud Events
+     * Crud Events.
      */
     const PRE_SAVE = 'siab.pre_save';
     const POST_SAVE = 'siab.post_save';
@@ -26,7 +26,7 @@ class SymfonianIndonesiaAdminConstants
     const PRE_SHOW = 'siab.pre_show';
 
     /**
-     * Crud Actions
+     * Crud Actions.
      */
     const ACTION_CREATE = 'ACTION_CREATE';
     const ACTION_UPDATE = 'ACTION_UPDATE';
@@ -34,20 +34,20 @@ class SymfonianIndonesiaAdminConstants
     const ACTION_READ = 'ACTION_READ';
 
     /**
-     * Grid Actions
+     * Grid Actions.
      */
     const GRID_ACTION_SHOW = 'GRID_ACTION_SHOW';
     const GRID_ACTION_EDIT = 'GRID_ACTION_EDIT';
     const GRID_ACTION_DELETE = 'GRID_ACTION_DELETE';
 
     /**
-     * Entity Utilities
+     * Entity Utilities.
      */
     const ENTITY_ALIAS = 'e';
     const SESSION_SORTED_NAME = 'siab_sorted';
 
     /**
-     * Templating
+     * Templating.
      */
     const TEMPLATE_CREATE = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
     const TEMPLATE_EDIT = 'SymfonianIndonesiaAdminBundle:Crud:new.html.twig';
@@ -61,7 +61,7 @@ class SymfonianIndonesiaAdminConstants
     const TEMPLATE_PAGINATION = 'SymfonianIndonesiaAdminBundle:Layout:pagination.html.twig';
 
     /**
-     * Cache
+     * Cache.
      */
     const CACHE_DIR = 'siab';
 }

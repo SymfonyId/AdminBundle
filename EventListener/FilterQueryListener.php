@@ -37,6 +37,11 @@ class FilterQueryListener extends AbstractQueryListener
      */
     private $filter;
 
+    /**
+     * FilterQueryListener constructor.
+     * @param FieldFilter $fieldFilter
+     * @param GithubStyleFilter $githubStyleFilter
+     */
     public function __construct(FieldFilter $fieldFilter, GithubStyleFilter $githubStyleFilter)
     {
         $this->fieldFilter = $fieldFilter;
@@ -81,6 +86,9 @@ class FilterQueryListener extends AbstractQueryListener
         }
 
         if (strpos($this->filter, ':')) {
+            /**
+             * Parse Github Style Search
+             */
             $splitBySpace = array_filter(explode(' ', $this->filter), function ($value) {
                 return strpos($value, ':') ? true : false;
             });

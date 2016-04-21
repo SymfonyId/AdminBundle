@@ -33,8 +33,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 abstract class CrudController extends Controller
 {
+    /**
+     * View variables store.
+     *
+     * @var array
+     */
     private $viewParams = array();
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function newAction(Request $request)
     {
         /** @var Configurator $configuration */
@@ -50,6 +60,12 @@ abstract class CrudController extends Controller
         return $this->handle($request, $entity, $form, Constants::ACTION_CREATE, $crud->getCreateTemplate());
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     *
+     * @return Response
+     */
     public function editAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
@@ -64,6 +80,12 @@ abstract class CrudController extends Controller
         return $this->handle($request, $entity, $form, Constants::ACTION_UPDATE, $crud->getEditTemplate());
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     *
+     * @return Response
+     */
     public function showAction(Request $request, $id)
     {
         /** @var Configurator $configuration */
@@ -93,6 +115,11 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
+    /**
+     * @param $id
+     *
+     * @return bool|JsonResponse|Response
+     */
     public function deleteAction($id)
     {
         /** @var Configurator $configuration */
@@ -115,6 +142,11 @@ abstract class CrudController extends Controller
         return new JsonResponse(array('status' => $returnHandler, 'message' => $handler->getErrorMessage()));
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function listAction(Request $request)
     {
         $translator = $this->container->get('translator');
@@ -139,6 +171,10 @@ abstract class CrudController extends Controller
 
         $this->viewParams['page_title'] = $translator->trans($page->getTitle(), array(), $translationDomain);
         $this->viewParams['page_description'] = $translator->trans($page->getDescription(), array(), $translationDomain);
+
+        /*
+         * Translate tentity fields
+         */
         $this->viewParams['filter_fields'] = implode(', ', array_map(function ($value) use ($translator, $translationDomain) {
             return $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain);
         }, $filters));
@@ -152,6 +188,15 @@ abstract class CrudController extends Controller
         return $handler->getResponse();
     }
 
+    /**
+     * @param Request         $request
+     * @param EntityInterface $data
+     * @param FormInterface   $form
+     * @param $action
+     * @param $template
+     *
+     * @return Response
+     */
     private function handle(Request $request, EntityInterface $data, FormInterface $form, $action, $template)
     {
         $translator = $this->container->get('translator');
@@ -189,7 +234,7 @@ abstract class CrudController extends Controller
             $this->viewParams['ac_config'] = array(
                 'route' => $autoComplete->getRouteStore(),
                 'route_callback' => $autoComplete->getRouteCallback(),
-                'selector_storage' => $autoComplete->getTargetSelector()
+                'selector_storage' => $autoComplete->getTargetSelector(),
             );
         }
         //Date picker
@@ -230,6 +275,7 @@ abstract class CrudController extends Controller
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
+        /** @var EntityInterface $entity */
         $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($crud->getEntityClass())->find($id);
 
         if (!$entity) {

@@ -49,11 +49,33 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
      */
     private $extractor;
 
+    /**
+     * @var array
+     */
     private $configurations = array();
+
+    /**
+     * @var array
+     */
     private $template = array();
+
+    /**
+     * @var array
+     */
     protected $filters = array();
+
+    /**
+     * @var bool
+     */
     private $freeze = false;
 
+    /**
+     * Configurator constructor.
+     *
+     * @param KernelInterface  $kernel
+     * @param ExtractorFactory $extractor
+     * @param FormFactory      $formFactory
+     */
     public function __construct(KernelInterface $kernel, ExtractorFactory $extractor, FormFactory $formFactory)
     {
         $this->kernel = $kernel;
@@ -77,6 +99,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $this->filters = $filter;
     }
 
+    /**
+     * @param array $template
+     */
     public function setTemplate(array $template)
     {
         $this->template = $template;
@@ -105,6 +130,8 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
     /**
      * @param $name
+     *
+     * @throws \InvalidArgumentException
      *
      * @return ConfigurationInterface
      */

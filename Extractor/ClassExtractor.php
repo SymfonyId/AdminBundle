@@ -23,11 +23,18 @@ class ClassExtractor implements ExtractorInterface
      */
     private $reader;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @param \Reflector $reflectionClass
+     * @return array
+     */
     public function extract(\Reflector $reflectionClass)
     {
         if (!$reflectionClass instanceof \ReflectionClass) {

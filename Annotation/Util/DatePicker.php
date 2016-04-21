@@ -58,7 +58,7 @@ class DatePicker implements ConfigurationInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isFlatten()
     {
@@ -74,7 +74,7 @@ class DatePicker implements ConfigurationInterface
     }
 
     /**
-     * @param boolean $flatten
+     * @param bool $flatten
      */
     public function setFlatten($flatten)
     {

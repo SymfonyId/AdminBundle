@@ -49,6 +49,14 @@ trait ConfiguratorAwareTrait
         return $this->fetchFromCache($configurator, $key);
     }
 
+    /**
+     * @param Configurator $configurator
+     * @param $cacheKey
+     *
+     * @return Configurator
+     *
+     * @throws \Exception
+     */
     private function fetchFromCache(Configurator $configurator, $cacheKey)
     {
         $cacheDir = $this->getContainer()->getParameter('kernel.cache_dir');

@@ -56,7 +56,6 @@ class ParameterBuilder
         $this->containerBuilder->setParameter('symfonian_id.admin.date_time_format', $config['date_time_format']);
         $this->containerBuilder->setParameter('symfonian_id.admin.translation_domain', $config['translation_domain']);
 
-
         $number = array(
             'decimal_precision' => $config['number_format']['decimal_precision'],
             'decimal_separator' => $config['number_format']['decimal_separator'],

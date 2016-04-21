@@ -45,6 +45,7 @@ class RemovePasswordFieldListener implements EventSubscriberInterface
             return;
         }
 
+        //Remove password field on edit
         $form->remove('plainPassword');
     }
 }

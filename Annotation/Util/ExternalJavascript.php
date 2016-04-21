@@ -22,14 +22,14 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 class ExternalJavascript implements ConfigurationInterface
 {
     /**
-     * Ex: @ExternalJavascript(files={"@AppBundle/Resources/views/ajax/ajax.js.twig", "@AppBundle/Resources/views/ajax/second-ajax.js.twig"})
+     * Ex: @ExternalJavascript(files={"@AppBundle/Resources/views/ajax/ajax.js.twig", "@AppBundle/Resources/views/ajax/second-ajax.js.twig"}).
      *
      * @var array
      */
     private $files = array();
 
     /**
-     * Ex: @ExternalJavascript(routes={"routeName1", "routeName2"})
+     * Ex: @ExternalJavascript(routes={"routeName1", "routeName2"}).
      *
      * @var array
      */

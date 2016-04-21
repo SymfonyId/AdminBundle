@@ -29,6 +29,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class GenerateCrudCommand extends GenerateDoctrineCommand
 {
+    /**
+     * Command configuration.
+     */
     protected function configure()
     {
         $this
@@ -48,10 +51,22 @@ EOT
         ;
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $questionHelper = $this->getQuestionHelper();
 
+        /*
+         * Question helper
+         */
         if ($input->isInteractive()) {
             $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you confirm generation', 'yes', '?'), true);
             if (!$questionHelper->ask($input, $output, $question)) {
@@ -103,6 +118,18 @@ EOT
         return new FormGenerator($fileSystem);
     }
 
+    /**
+     * Lookup in priority.
+     *
+     * - <Bundle>/Resources/SymfonianIndonesiaAdminBundle/skeleton
+     * - app/Resources/SymfonianIndonesiaAdminBundle/skeleton
+     * - <ThisBundleDir>/Resources/skeleton
+     * - <ThisBundleDir/Resources
+     *
+     * @param BundleInterface|null $bundle
+     *
+     * @return array
+     */
     protected function getSkeletonDirs(BundleInterface $bundle = null)
     {
         $skeletonDirs = array();
@@ -123,6 +150,11 @@ EOT
         return $skeletonDirs;
     }
 
+    /**
+     * @param null $bundle
+     *
+     * @return ControllerGenerator
+     */
     private function getControllerGenerator($bundle = null)
     {
         /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */

@@ -19,8 +19,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PaginationTemplateCompiler implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
+        /*
+         * Override knp paginator template
+         */
         if ($container->hasParameter('knp_paginator.template.pagination')) {
             $container->setParameter('knp_paginator.template.pagination', $container->getParameter('symfonian_id.admin.themes.pagination'));
         }

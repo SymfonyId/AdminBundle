@@ -21,9 +21,20 @@ class ExtractorFactory
      */
     private $object;
 
+    /**
+     * @var array
+     */
     private $extractors = array();
+
+    /**
+     * @var bool
+     */
     private $freeze = false;
 
+    /**
+     * @param ExtractorInterface $extractor
+     * @throws \Exception
+     */
     public function addExtractor(ExtractorInterface $extractor)
     {
         if ($this->freeze) {
@@ -33,11 +44,17 @@ class ExtractorFactory
         $this->extractors[get_class($extractor)] = $extractor;
     }
 
+    /**
+     * @param \Reflector $reflector
+     */
     public function extract(\Reflector $reflector)
     {
         $this->object = $reflector;
     }
 
+    /**
+     * @return array
+     */
     public function getClassAnnotations()
     {
         $annotations = array();
@@ -51,6 +68,9 @@ class ExtractorFactory
         return $annotations;
     }
 
+    /**
+     * @return array
+     */
     public function getMethodAnnotations()
     {
         $annotations = array();
@@ -70,6 +90,9 @@ class ExtractorFactory
         return $annotations;
     }
 
+    /**
+     * @return array
+     */
     public function getPropertyAnnotations()
     {
         $annotations = array();
@@ -93,6 +116,10 @@ class ExtractorFactory
         $this->freeze = true;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     private function getExtractor($name)
     {
         if (!array_key_exists($name, $this->extractors)) {

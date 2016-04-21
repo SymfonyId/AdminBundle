@@ -37,7 +37,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
 
     /**
      * @param KernelInterface $kernel
-     * @param array $plugins
+     * @param array           $plugins
      */
     public function __construct(KernelInterface $kernel, array $plugins = array())
     {
@@ -55,7 +55,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
     }
 
     /**
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     public function load(array $config, ContainerBuilder $container)

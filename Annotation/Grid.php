@@ -22,7 +22,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 class Grid implements ConfigurationInterface
 {
     /**
-     * Entity fields you want to display
+     * Entity fields you want to display.
      *
      * Ex: @Grid(columns={"first_name", "last_name"})
      *
@@ -31,7 +31,7 @@ class Grid implements ConfigurationInterface
     private $columns = array();
 
     /**
-     * Entity fields you want to be filterable
+     * Entity fields you want to be filterable.
      *
      * Ex: @Grid(filters={"first_name", "last_name"})
      *
@@ -40,7 +40,7 @@ class Grid implements ConfigurationInterface
     private $filters = array();
 
     /**
-     * Entity fields you want to be sortable
+     * Entity fields you want to be sortable.
      *
      * Ex: @Grid(sortable={"first_name", "last_name"})
      *
@@ -49,14 +49,14 @@ class Grid implements ConfigurationInterface
     private $sortable = array();
 
     /**
-     * Uppercase filter keyword
+     * Uppercase filter keyword.
      *
      * @var bool
      */
     private $normalizeFilter = false;
 
     /**
-     * To be able number formatting on grid record
+     * To be able number formatting on grid record.
      *
      * @var bool
      */

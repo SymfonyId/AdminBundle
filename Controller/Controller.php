@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfiguratorAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -21,9 +22,16 @@ abstract class Controller extends Base
 {
     use ConfiguratorAwareTrait;
 
+    /**
+     * Get controller class name.
+     *
+     * @return string
+     */
     abstract protected function getClassName();
 
     /**
+     * Dispatch event.
+     *
      * @param $name
      * @param $handler
      */
@@ -33,6 +41,9 @@ abstract class Controller extends Base
         $dispatcher->dispatch($name, $handler);
     }
 
+    /**
+     * @return ContainerInterface
+     */
     protected function getContainer()
     {
         return $this->container;

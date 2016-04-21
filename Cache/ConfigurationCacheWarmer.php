@@ -115,9 +115,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private $profileFields = array();
 
     /**
-     * @param Configurator $configuration
+     * @param Configurator     $configuration
      * @param ExtractorFactory $extractorFactory
-     * @param FormFactory $formFactory
+     * @param FormFactory      $formFactory
      */
     public function __construct(Configurator $configuration, ExtractorFactory $extractorFactory, FormFactory $formFactory)
     {
@@ -268,6 +268,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param string $cacheDir
+     *
      * @throws \Exception
      */
     private function compileUserController($cacheDir)
@@ -322,8 +323,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param ReflectionClass $entity
-     * @param Configurator $configuration
+     * @param Configurator    $configuration
+     *
      * @return Configurator
+     *
      * @throws \Exception
      */
     private function configureGrid(ReflectionClass $entity, Configurator $configuration)
@@ -343,8 +346,10 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param ReflectionClass $reflectionClass
-     * @param Configurator $configuration
+     * @param Configurator    $configuration
+     *
      * @return Configurator
+     *
      * @throws \Exception
      */
     private function parseClassAnnotation(ReflectionClass $reflectionClass, Configurator $configuration)
@@ -370,7 +375,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param ReflectionClass $reflectionClass
-     * @param Grid $grid
+     * @param Grid            $grid
+     *
      * @return Grid
      */
     private function parsePropertyAnnotation(ReflectionClass $reflectionClass, Grid $grid)
@@ -446,6 +452,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param string $controller
+     *
      * @return string
      */
     private function parseController($controller)
@@ -462,6 +469,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param ConfigurationInterface $configuration
+     *
      * @return array
      */
     private function parseConfiguration(ConfigurationInterface $configuration)
@@ -534,8 +542,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
     /**
      * @param Configurator $configurator
-     * @param string $cacheDir
-     * @param string $class
+     * @param string       $cacheDir
+     * @param string       $class
      */
     private function write(Configurator $configurator, $cacheDir, $class)
     {

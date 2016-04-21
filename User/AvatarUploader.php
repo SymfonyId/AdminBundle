@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\User;
 
-use Symfonian\Indonesia\AdminBundle\Annotation\Plugins;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;

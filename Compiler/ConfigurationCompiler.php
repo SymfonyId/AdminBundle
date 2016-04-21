@@ -20,12 +20,18 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ConfigurationCompiler implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('symfonian_id.admin.congiration.configurator')) {
             return;
         }
 
+        /*
+         * Add all service with tag name siab.config
+         */
         $definition = $container->findDefinition('symfonian_id.admin.congiration.configurator');
         $taggedServices = $container->findTaggedServiceIds('siab.config');
         foreach ($taggedServices as $id => $tags) {

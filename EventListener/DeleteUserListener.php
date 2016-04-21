@@ -32,6 +32,9 @@ class DeleteUserListener
      */
     private $translator;
 
+    /**
+     * @var string
+     */
     private $translationDomain;
 
     /**
@@ -49,6 +52,9 @@ class DeleteUserListener
         $this->translationDomain = $translationDomain;
     }
 
+    /**
+     * @param FilterEntityEvent $event
+     */
     public function onDeleteUser(FilterEntityEvent $event)
     {
         $entity = $event->getEntity();
@@ -57,6 +63,7 @@ class DeleteUserListener
             return;
         }
 
+        //Can't delete your self
         if ($this->user->getUsername() === $entity->getUsername()) {
             $response = new JsonResponse(array(
                 'status' => false,

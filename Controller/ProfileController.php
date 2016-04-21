@@ -127,6 +127,10 @@ class ProfileController extends Controller
 
         return $this->render($this->container->getParameter('symfonian_id.admin.themes.change_password'), $this->viewParams);
     }
+
+    /**
+     * @return string
+     */
     protected function getClassName()
     {
         return __CLASS__;

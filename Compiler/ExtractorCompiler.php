@@ -20,12 +20,18 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ExtractorCompiler implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('symfonian_id.admin.extractor.extractor_factory')) {
             return;
         }
 
+        /*
+         * Add all service with tag name siab.extractor
+         */
         $definition = $container->findDefinition('symfonian_id.admin.extractor.extractor_factory');
         $taggedServices = $container->findTaggedServiceIds('siab.extractor');
         foreach ($taggedServices as $id => $tags) {
