@@ -510,6 +510,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
             $output['use_file_chooser'] = $configuration->isUseFileChooser();
             $output['use_html_editor'] = $configuration->isUseHtmlEditor();
             $output['use_numeric'] = $configuration->isUseNumeric();
+            $output['use_bulk_insert'] = $configuration->isUseBulkInsert();
         }
 
         /** @var AutoComplete $configuration */

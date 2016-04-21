@@ -37,6 +37,11 @@ class Plugins implements ConfigurationInterface
     private $numeric = false;
 
     /**
+     * @var bool
+     */
+    private $bulkInsert = false;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data = array())
@@ -51,6 +56,10 @@ class Plugins implements ConfigurationInterface
 
         if (isset($data['numeric'])) {
             $this->numeric = (boolean) $data['numeric'];
+        }
+
+        if (isset($data['bulkInsert'])) {
+            $this->bulkInsert = (boolean) $data['bulkInsert'];
         }
 
         unset($data);
@@ -81,6 +90,14 @@ class Plugins implements ConfigurationInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isUseBulkInsert()
+    {
+        return $this->bulkInsert;
+    }
+
+    /**
      * @param bool $htmlEditor
      */
     public function setUseHtmlEditor($htmlEditor)
@@ -102,5 +119,13 @@ class Plugins implements ConfigurationInterface
     public function setUseNumeric($numeric)
     {
         $this->numeric = (bool) $numeric;
+    }
+
+    /**
+     * @param bool $bulkInsert
+     */
+    public function setUseBulkInsert($bulkInsert)
+    {
+        $this->bulkInsert = (bool) $bulkInsert;
     }
 }
