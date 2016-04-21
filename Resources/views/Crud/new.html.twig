@@ -142,6 +142,8 @@
         }
 
         jQuery(document).ready(function () {
+            jQuery('form').find('input[type=text],textarea,select').filter(':visible:first').focus();
+
             jQuery(document).on('click', '.back-to-list', function () {
                 createActionUrl('list');
             });
