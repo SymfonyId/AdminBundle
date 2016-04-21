@@ -16,5 +16,10 @@ namespace Symfonian\Indonesia\AdminBundle\Extractor;
  */
 interface ExtractorInterface
 {
+    /**
+     * @param \Reflector $reflectionClass
+     *
+     * @return mixed
+     */
     public function extract(\Reflector $reflectionClass);
 }

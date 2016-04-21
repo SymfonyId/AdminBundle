@@ -23,11 +23,19 @@ class MethodExtractor implements ExtractorInterface
      */
     private $reader;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @param \Reflector $reflectionMethod
+     *
+     * @return array
+     */
     public function extract(\Reflector $reflectionMethod)
     {
         if (!$reflectionMethod instanceof \ReflectionMethod) {

@@ -23,11 +23,19 @@ class PropertyExtractor implements ExtractorInterface
      */
     private $reader;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @param \Reflector $reflectionProperty
+     *
+     * @return array
+     */
     public function extract(\Reflector $reflectionProperty)
     {
         if (!$reflectionProperty instanceof \ReflectionProperty) {
