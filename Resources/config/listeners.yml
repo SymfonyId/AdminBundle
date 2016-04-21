@@ -62,14 +62,14 @@ services:
         arguments:
             - '@security.token_storage'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+            - { name: doctrine.event_listener, event: prePersist }
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         arguments:
             - '%symfonian_id.admin.user.auto_enable%'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+            - { name: doctrine.event_listener, event: prePersist }
 
     symfonian_id.admin.upload_avatar:
         class: Symfonian\Indonesia\AdminBundle\User\AvatarUploader
@@ -80,7 +80,7 @@ services:
             - '@symfonian_id.admin.handler.upload'
             - '%symfonian_id.admin.upload_dir%'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave }
+            - { name: doctrine.event_listener, event: prePersist }
 
     symfonian_id.admin.filter_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FilterQueryListener

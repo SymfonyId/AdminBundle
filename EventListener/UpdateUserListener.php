@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use FOS\UserBundle\Model\User;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 
@@ -34,6 +35,10 @@ class UpdateUserListener
      */
     public function onPreSaveUser(FilterEntityEvent $event)
     {
+        if (!$this->autoEnable) {
+            return;
+        }
+
         $entity = $event->getEntity();
 
         if (!$entity instanceof User) {
@@ -44,7 +49,25 @@ class UpdateUserListener
             return;
         }
 
+        $entity->setEnabled(true);
+    }
+
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function prePersist(LifecycleEventArgs $event)
+    {
         if (!$this->autoEnable) {
+            return;
+        }
+
+        $entity = $event->getObject();
+
+        if (!$entity instanceof User) {
+            return;
+        }
+
+        if ($entity->getId() || $entity->isEnabled()) {
             return;
         }
 
