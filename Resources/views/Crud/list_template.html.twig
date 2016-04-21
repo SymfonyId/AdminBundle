@@ -12,6 +12,7 @@
         </tr>
         {%- for key, value in record -%}
             <tr>
+                <td class="text-center"><input name="bulk[]" type="checkbox" data-record="{{- identifier[key] -}}"/></td>
                 <td>{{- start + key + 1 -}}</td>
                 {%- for i, v in value -%}
                     {%- if v.timezone is defined -%}
@@ -40,7 +41,7 @@
                     </td>
                 {%- endfor -%}
 
-                {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' -%}
+                {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' with {key: key} -%}
             </tr>
         {%- endfor -%}
     </table>

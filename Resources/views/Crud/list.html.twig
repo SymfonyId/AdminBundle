@@ -43,6 +43,22 @@
                 </div>
             </div>
         </div>
+        <div class="modal modal-warning delete-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, translation_domain) -}}</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
+                        <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endspaceless %}
 {%- endblock -%}
 
@@ -50,6 +66,16 @@
     {% spaceless %}
         <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
         <script type="text/javascript">
+            Array.prototype.clean = function() {
+                for (var i = 0; i < this.length; i++) {
+                    if ('' === this[i] || 'undefined' === typeof this[i] || null === this[i]) {
+                        this.splice(i, 1);
+                        i--;
+                    }
+                }
+                return this;
+            };
+
             jQuery(document).ready(function () {
                 jQuery('.sfid-toggle').bootstrapToggle();
 
@@ -67,6 +93,40 @@
 
                 jQuery(document).on('click', '.delete', function () {
                     window.location = createActionUrl(jQuery(this).data('record') + '/show?delete');
+                });
+
+                jQuery(document).on('click', '.bulk-delete', function () {
+                    jQuery('.delete-modal').modal({
+                        backdrop: 'static'
+                    });
+                });
+
+                jQuery(document).on('click', '.delete-action', function () {
+                    var ids = jQuery('.bulk-action:checked').map(function() {
+                        return jQuery(this).data('record');
+                    }).get();
+
+                    var url = document.URL.replace('list', 'delete').replace('#', '');
+                    if (0 > url.indexOf('delete')) {
+                        var temp = url.split('/');
+                        temp.clean();
+                        temp.push('bulk-delete');
+                        url = temp.join('/');
+                    }
+
+                    jQuery.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            id: ids
+                        }
+                    }).done(function (response) {
+                        jQuery('.response-message').html(response.message);
+                        jQuery('.delete-action').remove();
+                        jQuery('.delete-modal').modal({
+                            backdrop: 'static'
+                        });
+                    });
                 });
             });
 

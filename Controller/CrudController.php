@@ -143,6 +143,42 @@ abstract class CrudController extends Controller
     }
 
     /**
+     * @return bool|JsonResponse
+     */
+    public function bulkDeleteAction(Request $request)
+    {
+        /** @var Configurator $configuration */
+        $configuration = $this->getConfigurator($this->getClassName());
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
+
+        $isDeleted = array();
+        $countData = 0;
+        foreach ($request->get('id', array()) as $id) {
+            /** @var EntityInterface $entity */
+            $entity = $this->findOr404Error($id);
+            /** @var CrudHandler $handler */
+            $handler = $this->container->get('symfonian_id.admin.handler.crud');
+
+            $handler->setEntity($crud->getEntityClass());
+            if (true === $handler->remove($entity)) {
+                $isDeleted[] = $entity->getId();
+            }
+
+            $countData++;
+        }
+
+        if (0 === count($isDeleted)) {
+            $message = 'Tidak ada data yang berhasil dihapus. Kemungkinan data-data tersebut berelasi.';
+        } else {
+            $message = sprintf('Data yang berhasil dari hapus adalah %d dari %d dengan id %s', count($isDeleted), $countData, implode(', ', $isDeleted));
+        }
+
+        return new JsonResponse(array('status' => empty($isDeleted) ? false: true, 'message' => $message));
+    }
+
+    /**
      * @param Request $request
      *
      * @return Response
@@ -183,7 +219,7 @@ abstract class CrudController extends Controller
         $handler->setEntity($crud->getEntityClass());
         $handler->setViewParams($this->viewParams);
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $crud->isAllowDelete(), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }

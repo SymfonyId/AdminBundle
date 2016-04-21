@@ -117,9 +117,10 @@ class CrudHandler implements ContainerAwareInterface
      * @param array     $gridFields
      * @param array     $actionAllowed
      * @param bool|true $allowCreate
+     * @param bool|true $allowDelete
      * @param bool|true $formatNumber
      */
-    public function viewList(Request $request, array $gridFields, array $actionAllowed, $allowCreate = true, $formatNumber = true)
+    public function viewList(Request $request, array $gridFields, array $actionAllowed, $allowCreate = true, $allowDelete = true, $formatNumber = true)
     {
         $page = $request->query->get('page', 1);
         $perPage = $this->container->getParameter('symfonian_id.admin.per_page');
@@ -171,6 +172,7 @@ class CrudHandler implements ContainerAwareInterface
         $viewParams['identifier'] = $identifier;
         $viewParams['action'] = $actionAllowed;
         $viewParams['allow_create'] = $allowCreate;
+        $viewParams['allow_delete'] = $allowDelete;
         $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
         $viewParams['formating_number'] = $formatNumber;
         $viewParams['record'] = $data;
