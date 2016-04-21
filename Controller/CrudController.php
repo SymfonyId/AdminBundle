@@ -157,18 +157,18 @@ abstract class CrudController extends Controller
         $isDeleted = array();
         $countData = 0;
         foreach (explode('-', $request->get('id', '')) as $id) {
-            /** @var EntityInterface $entity */
             $entity = $this->findOr404Error($id);
             if (!$entity instanceof BulkDeletableInterface) {
                 return;
             }
+            $deleteMessage = $entity->getDeleteInformation();
 
             /** @var CrudHandler $handler */
             $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
             $handler->setEntity($crud->getEntityClass());
             if (true === $handler->remove($entity)) {
-                $isDeleted[] = $id;
+                $isDeleted[] = $deleteMessage;
             }
 
             $countData++;
@@ -177,7 +177,7 @@ abstract class CrudController extends Controller
         if (0 === count($isDeleted)) {
             $message = 'Tidak ada data yang berhasil dihapus. Kemungkinan data-data tersebut berelasi.';
         } else {
-            $message = sprintf('Data yang berhasil dari hapus adalah %d dari %d dengan id %s', count($isDeleted), $countData, implode(', ', $isDeleted));
+            $message = sprintf('Data yang berhasil dari hapus adalah %d dari %d [%s]', count($isDeleted), $countData, implode(', ', $isDeleted));
         }
 
         return new JsonResponse(array('status' => empty($isDeleted) ? false: true, 'message' => $message));
