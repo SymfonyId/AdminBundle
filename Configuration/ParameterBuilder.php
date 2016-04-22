@@ -79,6 +79,7 @@ class ParameterBuilder
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.change_password', $config['themes']['change_password']);
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.form_theme', $config['themes']['form_theme']);
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.new_view', $config['themes']['new_view']);
+        $this->containerBuilder->setParameter('symfonian_id.admin.themes.bulk_new', $config['themes']['bulk_new_view']);
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.edit_view', $config['themes']['edit_view']);
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.show_view', $config['themes']['show_view']);
         $this->containerBuilder->setParameter('symfonian_id.admin.themes.list_view', $config['themes']['list_view']);
