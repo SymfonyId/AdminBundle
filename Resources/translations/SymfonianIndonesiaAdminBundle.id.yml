@@ -19,6 +19,9 @@ message:
     old_password_invalid: 'Password lama yang Anda masukkan salah'
     cant_delete_your_self: 'Anda tidak dapat menghapus data Anda sendiri'
     select_empty: '---Pilih Salah Satu---'
+    delete_failed: 'Data tidak dapat dihapus karena telah berelasi atau sudah dihapus sebelumnya'
+    delete_bulk_failed: 'Tidak ada data yang dapat dihapus. Kemungkinan telah berelasi atau sudah dihapus sebelumnya'
+    delete_bulk: 'Berhasil menghapus %deleted% dari %count% dengan rincian [<b>%data%</b>]'
 
 action:
     login: 'Masuk'

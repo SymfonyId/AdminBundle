@@ -200,7 +200,7 @@ class CrudHandler implements ContainerAwareInterface
             $this->manager->remove($data);
             $this->manager->flush();
         } catch (\Exception $ex) {
-            $this->errorMessage = 'Data tidak dapat dihapus karena berelasi atau telah dihapus sebelumnya.';
+            $this->errorMessage = 'message.delete_failed';
 
             return false;
         }

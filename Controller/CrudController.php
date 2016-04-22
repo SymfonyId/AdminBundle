@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\Translator;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -143,7 +144,14 @@ abstract class CrudController extends Controller
             return $returnHandler;
         }
 
-        return new JsonResponse(array('status' => $returnHandler, 'message' => $handler->getErrorMessage()));
+        /** @var Translator $translator */
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
+        return new JsonResponse(array(
+            'status' => $returnHandler,
+            'message' => $translator->trans($handler->getErrorMessage(), array('id' => $entity->getId()), $translationDomain),
+        ));
     }
 
     /**
@@ -177,13 +185,24 @@ abstract class CrudController extends Controller
             ++$countData;
         }
 
+        /** @var Translator $translator */
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
+
         if (0 === count($isDeleted)) {
-            $message = 'Tidak ada data yang berhasil dihapus. Kemungkinan data-data tersebut berelasi.';
+            $message = 'message.delete_bulk_failed';
         } else {
-            $message = sprintf('Data yang berhasil dari hapus adalah %d dari %d [%s]', count($isDeleted), $countData, implode(', ', $isDeleted));
+            $message = 'message.delete_bulk';
         }
 
-        return new JsonResponse(array('status' => empty($isDeleted) ? false : true, 'message' => $message));
+        return new JsonResponse(array(
+            'status' => empty($isDeleted) ? false : true,
+            'message' => $translator->trans($message, array(
+                '%count%' => count($isDeleted),
+                '%deleted%' => $countData,
+                '%data%' => implode(', ', $isDeleted),
+            ), $translationDomain),
+        ));
     }
 
     /**
