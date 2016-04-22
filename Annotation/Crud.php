@@ -130,6 +130,18 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
             $this->entity = $data['entity'];
         }
 
+        if (isset($data['form'])) {
+            $this->form = $data['form'];
+        }
+
+        if (isset($data['menuIcon'])) {
+            $this->menuIcon = $data['menuIcon'];
+        }
+
+        if (isset($data['showFields'])) {
+            $this->setShowFields((array) $data['showFields']);
+        }
+
         if (isset($data['create'])) {
             $this->create = $data['create'];
         }
@@ -148,18 +160,6 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
 
         if (isset($data['show'])) {
             $this->show = $data['show'];
-        }
-
-        if (isset($data['form'])) {
-            $this->form = $data['form'];
-        }
-
-        if (isset($data['menuIcon'])) {
-            $this->menuIcon = $data['menuIcon'];
-        }
-
-        if (isset($data['showFields'])) {
-            $this->setShowFields((array) $data['showFields']);
         }
 
         if (isset($data['allowCreate'])) {

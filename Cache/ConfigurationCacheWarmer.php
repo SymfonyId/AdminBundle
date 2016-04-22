@@ -480,6 +480,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         if ($configuration instanceof Crud) {
             $output['entity_class'] = $configuration->getEntityClass();
             $output['form_class'] = $configuration->getFormClass();
+            $output['menu_icon'] = $configuration->getMenuIcon();
             $output['show_fields'] = $configuration->getShowFields();
             $output['create_template'] = $configuration->getCreateTemplate();
             $output['bulk_create_template'] = $configuration->getBulkCreateTemplate();
@@ -508,8 +509,8 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
 
         /** @var Plugins $configuration */
         if ($configuration instanceof Plugins) {
-            $output['use_file_chooser'] = $configuration->isUseFileChooser();
             $output['use_html_editor'] = $configuration->isUseHtmlEditor();
+            $output['use_file_chooser'] = $configuration->isUseFileChooser();
             $output['use_numeric'] = $configuration->isUseNumeric();
             $output['use_bulk_insert'] = $configuration->isUseBulkInsert();
         }
