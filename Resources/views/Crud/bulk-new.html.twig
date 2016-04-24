@@ -25,10 +25,13 @@
     {% spaceless %}
         <div class="col-md-12 col-lg-12 col-sm-12">
             <div class="box box-success box-solid">
-                <div class="box-header">
-                    <h3>{{ 'page.bulk_insert' | trans({}, translation_domain) }}</h3>
-                </div>
                 <div class="box-body with-border table-responsive padding-7">
+                    {% set header = [] %}
+                    {% for field in form.children %}
+                        {% if field.vars.name is sameas('_token') %}
+                            {% set header = header | merge([field]) %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
