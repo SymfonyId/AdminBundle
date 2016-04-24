@@ -23,3 +23,7 @@ label.required:after {
     padding-left: 3px;
     color: red;
 }
+
+.text-plain {
+    font-weight: normal !important;
+}

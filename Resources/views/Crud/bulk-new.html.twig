@@ -25,7 +25,10 @@
     {% spaceless %}
         <div class="col-md-12 col-lg-12 col-sm-12">
             <div class="box box-success box-solid">
-                <div class="box-body with-border table-responsive padding-7 sfid-content">
+                <div class="box-header">
+                    <h3>{{ 'page.bulk_insert' | trans({}, translation_domain) }}</h3>
+                </div>
+                <div class="box-body with-border table-responsive padding-7">
                 </div>
             </div>
         </div>
@@ -38,7 +41,27 @@
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 jQuery('.sfid-toggle').bootstrapToggle();
+                var url = window.location.href;
+                getList(url.replace('new', 'list'));
+
+                jQuery(document).on('click', '.sfid-pagination a.btn-success', function (e) {
+                    e.preventDefault();
+
+                    var url = jQuery(this).attr('href');
+                    getList(url);
+                });
             });
+
+            function getList(url) {
+                jQuery.ajax({
+                    url: url + '?do',
+                    type:'GET',
+                    dataType: 'html'
+                }).done (function (response) {
+                    jQuery('.sfid-content').html(response);
+                    jQuery('.sfid-toggle').bootstrapToggle();
+                });
+            };
         </script>
     {% endspaceless %}
 {%- endblock -%}

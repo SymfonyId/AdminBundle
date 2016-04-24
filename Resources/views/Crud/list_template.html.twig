@@ -1,18 +1,21 @@
 {% spaceless %}
     <table class="table table-hover table-bordered">
-        <tr>
-            {%- if allow_delete is same as(true) -%}
-                <th class="text-center"><input class="check-all-action" type="checkbox"/></th>
-            {% endif %}
-            <th class="text-center"><strong>No</strong></th>
-            {%- for i, value in header -%}
-                {% if value['sortable'] %}
-                    <th class="text-center header-sortable" data-field="{{- value['field'] -}}">{% if value['field'] is sorted %}<i class="fa fa-fw sorted"></i>{% else %}<i class="fa fa-fw sortable"></i>{% endif %}{{- value['title'] | upper -}}</th>
-                {% else %}
-                    <th class="text-center"><strong>{{- value['title'] | upper -}}</strong></th>
+        <thead>
+            <tr>
+                {%- if allow_delete is same as(true) -%}
+                    <th class="text-center"><input class="check-all-action" type="checkbox"/></th>
                 {% endif %}
-            {%- endfor -%}
-        </tr>
+                <th class="text-center"><strong>No</strong></th>
+                {%- for i, value in header -%}
+                    {% if value['sortable'] %}
+                        <th class="text-center header-sortable" data-field="{{- value['field'] -}}">{% if value['field'] is sorted %}<i class="fa fa-fw sorted"></i>{% else %}<i class="fa fa-fw sortable"></i>{% endif %}{{- value['title'] | upper -}}</th>
+                    {% else %}
+                        <th class="text-center"><strong>{{- value['title'] | upper -}}</strong></th>
+                    {% endif %}
+                {%- endfor -%}
+            </tr>
+        </thead>
+        <tbody>
         {%- for key, value in record -%}
             <tr>
                 {%- if allow_delete is same as(true) -%}
@@ -49,6 +52,7 @@
                 {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' with {key: key} -%}
             </tr>
         {%- endfor -%}
+        </tbody>
     </table>
     <div class="padding-top-7">
         <div class="pull-left">
