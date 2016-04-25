@@ -165,7 +165,13 @@
             });
 
             {%- if use_file_style is same as(true) -%}
-                jQuery('input:file').fileinput({input: false});
+                jQuery('input:file').fileinput({
+                    showUpload: false,
+                    showCaption: false,
+                    browseClass: 'btn btn-default',
+                    fileType: ['jpg', 'png'],
+                    allowedFileExtensions : ['jpg', 'png']
+                });
             {%- endif -%}
 
             {%- if use_editor is same as(true) -%}
