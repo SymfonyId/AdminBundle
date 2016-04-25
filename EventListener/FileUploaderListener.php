@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\User;
+namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
