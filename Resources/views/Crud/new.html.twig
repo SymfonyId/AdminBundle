@@ -160,7 +160,7 @@
             target.parent().css('position', 'relative');
             target.datetimepicker({
                 format: '{{- date_picker['date_format'] -}}',
-                {% if date_picker['flatten'] %}useSideBySide: true,{% endif %}
+                {% if date_picker['flatten'] %}sideBySide: true,{% endif %}
                 locale: '{{- locale -}}'
             });
 
