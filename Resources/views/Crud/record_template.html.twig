@@ -1,0 +1,40 @@
+{% spaceless %}
+    {%- for key, value in record -%}
+        <tr>
+            {%- if allow_delete is same as(true) -%}
+                <td class="text-center"><input class="bulk-action" type="checkbox" data-record="{{- identifier[key] -}}"/></td>
+            {% endif %}
+            <td class="text-center">{{- start + key + 1 -}}</td>
+            {%- for i, v in value -%}
+                {%- if v.timezone is defined -%}
+                    <td>{{- v | date(date_time_format) -}}
+                {%- else -%}
+                    {%- if v is iterable -%}
+                        {%- set value = '' -%}
+                        {%- for i, v in v -%}
+                            {%- set value = value ~ v ~ ', ' -%}
+                        {%- endfor -%}
+                        <td>{{- value | trim(', ')-}}
+                    {%- else -%}
+                        {% if v is numeric and formating_number %}
+                            <td>{{- v | number_format(number['decimal_precision'], number['decimal_separator'], number['thousand_separator']) -}}
+                        {% else %}
+                            {% if v is boolean %}
+                                <td class="text-center"><label>
+                                <input {% if v is same as(true) %}{{ 'checked' }}{% endif %} disabled class="sfid-toggle" data-onstyle="success" type="checkbox">
+                            </label>
+                            {% else %}
+                                <td>{{- v | raw -}}
+                            {% endif %}
+                        {% endif %}
+                    {%- endif -%}
+                {%- endif -%}
+                </td>
+            {%- endfor -%}
+
+            {% if include_action is sameas(true) %}
+                {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' with {key: key} -%}
+            {% endif %}
+        </tr>
+    {%- endfor -%}
+{% endspaceless %}
