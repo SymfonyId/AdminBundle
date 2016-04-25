@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Symfonian\Indonesia\AdminBundle\User\User;
+use Symfonian\Indonesia\AdminBundle\Model\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

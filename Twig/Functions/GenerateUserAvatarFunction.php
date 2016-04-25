@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Twig\Functions;
 
-use Symfonian\Indonesia\AdminBundle\User\User;
+use Symfonian\Indonesia\AdminBundle\Model\User;
 use Twig_Extension;
 use Twig_SimpleFunction;
 

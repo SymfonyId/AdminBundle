@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\User;
+namespace Symfonian\Indonesia\AdminBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
-use Symfonian\Indonesia\AdminBundle\Model\BulkDeletableInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableEntity;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,8 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-abstract class User extends BaseUser implements EntityInterface, BulkDeletableInterface
+abstract class User extends BaseUser implements EntityInterface, TimestampableInterface, BulkDeletableInterface
 {
+    use TimestampableEntity;
+
     /**
      * @Assert\NotBlank(groups={"Registration"})
      * @ORM\Column(name="full_name", type="string", length=77, nullable=true)
