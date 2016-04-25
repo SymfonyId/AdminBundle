@@ -32,9 +32,7 @@
                 </td>
             {%- endfor -%}
 
-            {% if include_action is sameas(true) %}
-                {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' with {key: key} -%}
-            {% endif %}
+            {%- include 'SymfonianIndonesiaAdminBundle:Crud:action_template.html.twig' with {key: key} -%}
         </tr>
     {%- endfor -%}
 {% endspaceless %}
