@@ -19,7 +19,7 @@ use Symfonian\Indonesia\AdminBundle\Handler\UploadHandler;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class AvatarUploader
+class FileUploaderListener
 {
     /**
      * @var Configurator
@@ -62,7 +62,7 @@ class AvatarUploader
     {
         $entity = $event->getEntity();
 
-        if ($this->uploadHandler->isUploadable() && $entity instanceof User) {
+        if ($this->uploadHandler->isUploadable()) {
             $this->uploadHandler->setUploadDir($this->uploadDir['server_path']);
             $this->uploadHandler->upload($entity);
         }

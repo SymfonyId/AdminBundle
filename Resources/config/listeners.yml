@@ -72,7 +72,7 @@ services:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
 
     symfonian_id.admin.upload_avatar:
-        class: Symfonian\Indonesia\AdminBundle\User\AvatarUploader
+        class: Symfonian\Indonesia\AdminBundle\EventListener\FileUploaderListener
         calls:
             - [setUploadField, []]
         arguments:
