@@ -165,7 +165,7 @@
             });
 
             {%- if use_file_style is same as(true) -%}
-                jQuery(':file').filestyle({input: false});
+                jQuery('input:file').fileinput({input: false});
             {%- endif -%}
 
             {%- if use_editor is same as(true) -%}

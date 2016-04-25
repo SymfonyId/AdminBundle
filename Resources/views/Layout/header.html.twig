@@ -49,6 +49,10 @@
     <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/plugins/select2/select2-bootstrap.css') -}}" />
 {%- endif -%}
 
+{%- if use_file_style is not empty -%}
+    <script src="{{- asset('bundles/symfonianindonesiaadmin/plugins/bootstrap-fileinput/css/fileinput.css') -}}" type="text/javascript"></script>
+{%- endif -%}
+
 {%- if css is not empty -%}
     {{- css | raw -}}
 {%- endif -%}
