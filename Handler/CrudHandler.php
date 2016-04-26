@@ -19,10 +19,12 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -50,6 +52,11 @@ class CrudHandler implements ContainerAwareInterface
     private $classMetadata;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * @var string
      */
     private $class;
@@ -68,6 +75,11 @@ class CrudHandler implements ContainerAwareInterface
      * @var array
      */
     private $viewParams = array();
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
 
     /**
      * @param ContainerInterface $container
@@ -197,8 +209,7 @@ class CrudHandler implements ContainerAwareInterface
         }
 
         try {
-            $this->manager->remove($data);
-            $this->manager->flush();
+            $this->delete($data);
         } catch (\Exception $ex) {
             $this->errorMessage = 'message.delete_failed';
 
@@ -331,6 +342,18 @@ class CrudHandler implements ContainerAwareInterface
         $paginator = $this->container->get('knp_paginator');
 
         return $paginator->paginate($query, $page, $perPage);
+    }
+
+    private function delete(EntityInterface $entity)
+    {
+        if ($entity instanceof SoftDeletableInterface) {
+            $entity->isDeleted(true);
+            $entity->setDeletedAt(new \DateTime());
+            $entity->setDeletedBy($this->tokenStorage->getToken()->getUsername());
+        } else {
+            $this->manager->remove($entity);
+            $this->manager->flush();
+        }
     }
 
     /**

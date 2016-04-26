@@ -11,6 +11,8 @@ services:
 
     symfonian_id.admin.handler.crud:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
+        arguments:
+            - '@security.token_storage'
         calls:
             - [setContainer, ['@service_container']]
 
