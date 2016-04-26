@@ -31,31 +31,36 @@
                     {% for field in form.children %}
                         {% set fieldName = field.vars.name %}
                         {% if field.vars.name is not sameas('_token') %}
-                            {% set header = header | merge([fieldName]) %}
+                            {% set header = header | merge([field]) %}
                             {% set fieldList = fieldList | merge([field]) %}
                         {% endif %}
                     {% endfor %}
                     <table class="table table-hover table-bordered">
                         <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                {% for value in header %}
-                                    <th class="text-center">{{- 'entity.fields.' ~ value | trans({}, translation_domain) -}}</th>
-                                {% endfor %}
-                                <th class="text-center">{{- 'entity.fields.action' | trans({}, translation_domain) -}}</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center">#</th>
-                                {% for value in fieldList %}
-                                    <th class="text-center">{{- form_widget(value) -}}</th>
-                                {% endfor %}
-                                <th class="text-center">
-                                    <button class="btn btn-block btn-primary save">{{ 'action.submit' | trans({}, translation_domain) }}</button>
-                                </th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">No</th>
+                            {% for value in header %}
+                                <th class="text-center">{{- form_label(value) -}}</th>
+                            {% endfor %}
+                            <th class="text-center">{{- 'entity.fields.action' | trans({}, translation_domain) -}}</th>
+                        </tr>
+                        <tr>
+                            {{- form_start(form) -}}
+                            <th class="text-center">#</th>
+                            {% for value in fieldList %}
+                                <th class="text-center text-plain">{{- form_widget(value) -}}</th>
+                            {% endfor %}
+                            <th class="text-center">
+                                <button type="submit" class="btn btn-block btn-primary save">{{ 'action.submit' | trans({}, translation_domain) }}</button>
+                            </th>
+                            {{- form_end(form) -}}
+                        </tr>
                         </thead>
                         <tbody class="bulk-record"></tbody>
                     </table>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-block btn-success">{{ 'action.submit_all' | trans({}, translation_domain) }}</button>
                 </div>
             </div>
         </div>
@@ -68,27 +73,39 @@
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 jQuery('.sfid-toggle').bootstrapToggle();
-                var url = window.location.href;
-                getList(url.replace('new', 'list'));
+                if (null === localStorage.getItem('form')) {
+                    localStorage.setItem('form', JSON.stringify([]));
+                }
+                renderTable();
 
-                jQuery(document).on('click', '.sfid-pagination a.btn-success', function (e) {
+                jQuery('form').submit(function (e) {
                     e.preventDefault();
-
-                    var url = jQuery(this).attr('href');
-                    getList(url);
+                    var formData = jQuery(this).serializeArray();
+                    save(formData);
+                    renderTable();
                 });
+
+                function save(formData) {
+                    var storedData = JSON.parse(localStorage.getItem('form'));
+                    localStorage.setItem('form', JSON.stringify(storedData.concat([formData])));
+                }
+
+                function renderTable() {
+                    var storedData = JSON.parse(localStorage.getItem('form'));
+                    var table = '';
+                    storedData.forEach(function (formData, key) {
+                        table = table + '<tr><td class="text-center">' + (key + 1) + '</td>';
+                        formData.forEach(function (data) {
+                            if (-1 === data.name.indexOf('_token')) {
+                                table = table + '<td>' + data.value + '</td>';
+                            }
+                        });
+                        table = table + '<td class="text-center"><button data-id="' + key + '" class="btn btn-danger delete-record">{{- 'action.delete' | trans({}, translation_domain) -}}</button></td></tr>';
+                    });
+
+                    jQuery('.bulk-record').html(table);
+                }
             });
-
-            function getList(url) {
-                jQuery.ajax({
-                    url: url + '?do',
-                    type:'GET',
-                    dataType: 'html'
-                }).done (function (response) {
-                    jQuery('.sfid-content').html(response);
-                    jQuery('.sfid-toggle').bootstrapToggle();
-                });
-            };
         </script>
     {% endspaceless %}
 {%- endblock -%}

@@ -34,6 +34,7 @@ action:
     edit: 'Edit'
     delete: 'Hapus'
     submit: 'Simpan'
+    submit_all: 'Simpan Semua'
 
 link:
     home: 'DASHBOARD'
