@@ -22,7 +22,7 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableIn
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-abstract class AdvanceUser extends User implements SoftDeletableInterface, TimestampableInterface
+abstract class AdvancedUser extends User implements SoftDeletableInterface, TimestampableInterface
 {
     use SoftDeletableEntity;
 
