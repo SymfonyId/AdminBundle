@@ -112,6 +112,16 @@ abstract class User extends BaseUser implements EntityInterface, BulkDeletableIn
         return str_replace(array('ROLE_', '_'), array('', ' '), $roles[0]);
     }
 
+    public function getRoles()
+    {
+        $roles = parent::getRoles();
+        if (1 < count($roles)) {
+            array_pop($roles);
+        }
+
+        return $roles;
+    }
+
     /**
      * @return string
      */

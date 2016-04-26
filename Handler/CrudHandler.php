@@ -350,6 +350,9 @@ class CrudHandler implements ContainerAwareInterface
             $entity->isDeleted(true);
             $entity->setDeletedAt(new \DateTime());
             $entity->setDeletedBy($this->tokenStorage->getToken()->getUsername());
+
+            $this->manager->persist($entity);
+            $this->manager->flush();
         } else {
             $this->manager->remove($entity);
             $this->manager->flush();
