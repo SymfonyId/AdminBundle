@@ -335,6 +335,15 @@ class CrudHandler implements ContainerAwareInterface
         $filterList->setEntityClass($this->class);
         $this->fireEvent(Constants::FILTER_LIST, $filterList);
 
+        $reflection = new \ReflectionClass($this->class);
+        foreach ($reflection->getInterfaces() as $reflectionClass) {
+            if ($reflectionClass->getName() === SoftDeletableInterface::class) {
+                $queryBuilder->andWhere(Constants::ENTITY_ALIAS.'.isDeleted = false');
+
+                break;
+            }
+        }
+
         $query = $queryBuilder->getQuery();
         $query->useQueryCache(true);
         $query->useResultCache(true, 1, serialize($query->getParameters()));
