@@ -60,7 +60,20 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-block btn-success">{{ 'action.submit_all' | trans({}, translation_domain) }}</button>
+                    <button type="submit" class="btn btn-block btn-success save-all">{{ 'action.submit_all' | trans({}, translation_domain) }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal modal-success message-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary action-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,6 +84,22 @@
     {% spaceless %}
         <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
         <script type="text/javascript">
+            jQuery.fn.serializeObject = function() {
+                var o = {};
+                var a = this.serializeArray();
+                jQuery.each(a, function() {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
             jQuery(document).ready(function () {
                 jQuery('.sfid-toggle').bootstrapToggle();
                 if (null === localStorage.getItem('form')) {
@@ -80,32 +109,57 @@
 
                 jQuery('form').submit(function (e) {
                     e.preventDefault();
-                    var formData = jQuery(this).serializeArray();
+                    var formData = jQuery(this).serializeObject();
                     save(formData);
+                    renderTable();
+                    jQuery('input').val('');
+                });
+
+                jQuery(document).on('click', '.delete-record', function () {
+                    var id = jQuery(this).data('id');
+                    var storedData = JSON.parse(localStorage.getItem('form'));
+                    storedData.splice(id, 1);
+                    localStorage.setItem('form', JSON.stringify(storedData));
                     renderTable();
                 });
 
-                function save(formData) {
-                    var storedData = JSON.parse(localStorage.getItem('form'));
-                    localStorage.setItem('form', JSON.stringify(storedData.concat([formData])));
-                }
-
-                function renderTable() {
-                    var storedData = JSON.parse(localStorage.getItem('form'));
-                    var table = '';
-                    storedData.forEach(function (formData, key) {
-                        table = table + '<tr><td class="text-center">' + (key + 1) + '</td>';
-                        formData.forEach(function (data) {
-                            if (-1 === data.name.indexOf('_token')) {
-                                table = table + '<td>' + data.value + '</td>';
-                            }
+                jQuery(document).on('click', '.save-all', function () {
+                    var url = document.URL.replace('new', 'bulk-new');
+                    jQuery.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            'form': JSON.parse(localStorage.getItem('form'))
+                        }
+                    }).done(function (response) {
+                        jQuery('.response-message').html(response.message);
+                        jQuery('.message-modal').modal({
+                            backdrop: 'static'
                         });
-                        table = table + '<td class="text-center"><button data-id="' + key + '" class="btn btn-danger delete-record">{{- 'action.delete' | trans({}, translation_domain) -}}</button></td></tr>';
                     });
-
-                    jQuery('.bulk-record').html(table);
-                }
+                });
             });
+
+            function save(formData) {
+                var storedData = JSON.parse(localStorage.getItem('form'));
+                localStorage.setItem('form', JSON.stringify(storedData.concat([formData])));
+            }
+
+            function renderTable() {
+                var storedData = JSON.parse(localStorage.getItem('form'));
+                var table = '';
+                jQuery.each(storedData, function (key, formData) {
+                    table = table + '<tr><td class="text-center">' + (key + 1) + '</td>';
+                    jQuery.each(formData, function (key, data) {
+                        if (-1 === key.indexOf('_token')) {
+                            table = table + '<td>' + data + '</td>';
+                        }
+                    });
+                    table = table + '<td class="text-center"><button data-id="' + key + '" class="btn btn-danger delete-record">{{- 'action.delete' | trans({}, translation_domain) -}}</button></td></tr>';
+                });
+
+                jQuery('.bulk-record').html(table);
+            }
         </script>
     {% endspaceless %}
 {%- endblock -%}
