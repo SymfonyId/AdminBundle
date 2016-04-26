@@ -45,7 +45,7 @@ abstract class User extends BaseUser implements EntityInterface, BulkDeletableIn
      *     mimeTypes={"image/jpeg", "image/gif", "image/png", "image/tiff"}
      * )
      *
-     * @var string
+     * @var UploadedFile
      */
     protected $file;
 
