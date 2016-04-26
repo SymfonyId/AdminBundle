@@ -30,11 +30,32 @@
                     {% set fieldList = [] %}
                     {% for field in form.children %}
                         {% set fieldName = field.vars.name %}
-                        {% if field.vars.name is sameas('_token') %}
+                        {% if field.vars.name is not sameas('_token') %}
                             {% set header = header | merge([fieldName]) %}
                             {% set fieldList = fieldList | merge([field]) %}
                         {% endif %}
                     {% endfor %}
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                {% for value in header %}
+                                    <th class="text-center">{{- 'entity.fields.' ~ value | trans({}, translation_domain) -}}</th>
+                                {% endfor %}
+                                <th class="text-center">{{- 'entity.fields.action' | trans({}, translation_domain) -}}</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">#</th>
+                                {% for value in fieldList %}
+                                    <th class="text-center">{{- form_widget(value) -}}</th>
+                                {% endfor %}
+                                <th class="text-center">
+                                    <button class="btn btn-block btn-primary save">{{ 'action.submit' | trans({}, translation_domain) }}</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bulk-record"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
