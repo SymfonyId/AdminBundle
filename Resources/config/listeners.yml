@@ -94,6 +94,14 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
 
+    symfonian_id.admin.soft_deletable:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\FilterSoftDeletableListener
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
+
     symfonian_id.admin.sort_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
         calls:
