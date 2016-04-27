@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\Translator;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -89,8 +90,8 @@ abstract class CrudController extends Controller
                 /** @var EntityInterface $entity */
                 $entity = new $entityClass();
                 $form = $crud->getForm($entity);
-                $form->submit($formRequest);
 
+                $form->submit($formRequest[$form->getName()]);
                 if ($form->isValid()) {
                     if (true === $handler->save($entity)) {
                         $isInserted[] = $entity->getId();
@@ -112,7 +113,7 @@ abstract class CrudController extends Controller
         }
 
         return new JsonResponse(array(
-            'status' => empty($isDeleted) ? false : true,
+            'status' => empty($isInserted) ? false : true,
             'message' => $translator->trans($message, array(
                 '%count%' => count($isInserted),
                 '%inserted%' => $countData,

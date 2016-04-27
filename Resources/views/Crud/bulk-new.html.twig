@@ -70,7 +70,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
                     </div>
-                    <div class="modal-body"></div>
+                    <div class="modal-body response-message"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary action-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
                     </div>
@@ -87,15 +87,17 @@
             jQuery.fn.serializeObject = function() {
                 var o = {};
                 var a = this.serializeArray();
-                jQuery.each(a, function() {
-                    if (o[this.name] !== undefined) {
-                        if (!o[this.name].push) {
-                            o[this.name] = [o[this.name]];
-                        }
-                        o[this.name].push(this.value || '');
-                    } else {
-                        o[this.name] = this.value || '';
+                jQuery.each(a, function(k, v) {
+                    var s = v.name.split('[');
+                    if (o[s[0]] === undefined) {
+                        o[s[0]] = {};
                     }
+
+                    if (s[1].substr(-1) == ']') {
+                        s[1] = s[1].substr(0, s[1].length - 1);
+                    }
+
+                    o[s[0]][s[1]] = v.value;
                 });
                 return o;
             };
@@ -124,9 +126,13 @@
                 });
 
                 jQuery(document).on('click', '.save-all', function () {
-                    var url = document.URL.replace('new', 'bulk-new');
+                    var urlInsert = document.URL.replace('new', 'bulk-new');
+                    var urlList = document.URL.replace('new', '');
+                    if ('/' === urlList.slice(-1)) {
+                        urlList = urlList.slice(0, -1);
+                    }
                     jQuery.ajax({
-                        url: url,
+                        url: urlInsert,
                         type: 'POST',
                         data: {
                             'form': JSON.parse(localStorage.getItem('form'))
@@ -139,11 +145,16 @@
                             });
 
                             localStorage.setItem('form', JSON.stringify([]));
+
+                            jQuery(document).on('click', '.action-close', function () {
+                                window.location = urlList;
+                            });
                         } else {
+                            var selector = jQuery('.message-modal');
                             jQuery('.response-message').html(response.message);
-                            jQuery.removeClass('modal-success');
-                            jQuery.addClass('modal-warning');
-                            jQuery('.message-modal').modal({
+                            selector.removeClass('modal-success');
+                            selector.addClass('modal-warning');
+                            selector.modal({
                                 backdrop: 'static'
                             });
                         }
@@ -162,9 +173,11 @@
                 jQuery.each(storedData, function (key, formData) {
                     table = table + '<tr><td class="text-center">' + (key + 1) + '</td>';
                     jQuery.each(formData, function (key, data) {
-                        if (-1 === key.indexOf('_token')) {
-                            table = table + '<td>' + data + '</td>';
-                        }
+                        jQuery.each(data, function (k, v) {
+                            if ('_token' !== k) {
+                                table = table + '<td>' + v + '</td>';
+                            }
+                        });
                     });
                     table = table + '<td class="text-center"><button data-id="' + key + '" class="btn btn-danger delete-record">{{- 'action.delete' | trans({}, translation_domain) -}}</button></td></tr>';
                 });
