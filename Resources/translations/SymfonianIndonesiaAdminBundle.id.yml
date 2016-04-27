@@ -22,6 +22,8 @@ message:
     delete_failed: 'Data tidak dapat dihapus karena telah berelasi atau sudah dihapus sebelumnya'
     delete_bulk_failed: 'Tidak ada data yang dapat dihapus. Kemungkinan telah berelasi atau sudah dihapus sebelumnya'
     delete_bulk: 'Berhasil menghapus %deleted% dari %count% dengan rincian [<b>%data%</b>]'
+    insert_bulk_failed: 'Tidak ada data yang dapat disimpan. Pastikan data yang diinput sudah benar'
+    delete_bulk: 'Berhasil menghapus %inserted% dari %count% dengan rincian [<b>%data%</b>]'
 
 action:
     login: 'Masuk'
