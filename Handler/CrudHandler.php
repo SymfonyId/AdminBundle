@@ -18,6 +18,7 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
+use Symfonian\Indonesia\AdminBundle\View\View;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -71,11 +72,6 @@ class CrudHandler implements ContainerAwareInterface
      */
     private $errorMessage;
 
-    /**
-     * @var array
-     */
-    private $viewParams = array();
-
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
@@ -95,15 +91,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function getResponse()
     {
-        return $this->container->get('templating')->renderResponse($this->template, $this->viewParams);
-    }
-
-    /**
-     * @param array $viewParams
-     */
-    public function setViewParams(array $viewParams)
-    {
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
+        return $this->container->get('templating')->renderResponse($this->template, $this->container->get('symfonian_id.admin.view.view')->getParams());
     }
 
     /**
@@ -170,26 +158,26 @@ class CrudHandler implements ContainerAwareInterface
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $viewParams['pagination'] = $pagination;
-        $viewParams['start'] = ($page - 1) * $perPage;
-        $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['header'] = array_map(function ($value) use ($translator, $translationDomain) {
+        /** @var View $view */
+        $view = $this->container->get('symfonian_id.admin.view.view');
+        $view->setParam('pagination', $pagination);
+        $view->setParam('start', ($page - 1) * $perPage);
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
+        $view->setParam('header', array_map(function ($value) use ($translator, $translationDomain) {
             return array(
                 'title' => $translator->trans(sprintf('entity.fields.%s', $value), array(), $translationDomain),
                 'field' => $value,
                 'sortable' => $value === 'action' ? false : true,
             );
-        }, array_merge($gridFields, array('action')));
-        $viewParams['action_method'] = $translator->trans('page.list', array(), $translationDomain);
-        $viewParams['identifier'] = $identifier;
-        $viewParams['action'] = $actionAllowed;
-        $viewParams['allow_create'] = $allowCreate;
-        $viewParams['allow_delete'] = $allowBulkDelete;
-        $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
-        $viewParams['formating_number'] = $formatNumber;
-        $viewParams['record'] = $data;
-
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
+        }, array_merge($gridFields, array('action'))));
+        $view->setParam('action_method', $translator->trans('page.list', array(), $translationDomain));
+        $view->setParam('identifier', $identifier);
+        $view->setParam('action', $actionAllowed);
+        $view->setParam('allow_create', $allowCreate);
+        $view->setParam('allow_delete', $allowBulkDelete);
+        $view->setParam('number', $this->container->getParameter('symfonian_id.admin.number'));
+        $view->setParam('formating_number', $formatNumber);
+        $view->setParam('record', $data);
     }
 
     /**
@@ -249,15 +237,15 @@ class CrudHandler implements ContainerAwareInterface
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $viewParams['data'] = $output;
-        $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
-        $viewParams['action_method'] = $translator->trans('page.show', array(), $translationDomain);
-        $viewParams['back'] = $referer;
-        $viewParams['action'] = $allowDelete;
-        $viewParams['number'] = $this->container->getParameter('symfonian_id.admin.number');
-        $viewParams['upload_dir'] = $this->container->getParameter('symfonian_id.admin.upload_dir');
-
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
+        /** @var View $view */
+        $view = $this->container->get('symfonian_id.admin.view.view');
+        $view->setParam('data', $output);
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
+        $view->setParam('action_method', $translator->trans('page.show', array(), $translationDomain));
+        $view->setParam('back', $referer);
+        $view->setParam('action', $allowDelete);
+        $view->setParam('number', $this->container->getParameter('symfonian_id.admin.number'));
+        $view->setParam('upload_dir', $this->container->getParameter('symfonian_id.admin.upload_dir'));
     }
 
     /**
@@ -275,21 +263,21 @@ class CrudHandler implements ContainerAwareInterface
 
         $form->handleRequest($request);
 
-        $viewParams['form'] = $form->createView();
-        $viewParams['form_theme'] = $this->container->getParameter('symfonian_id.admin.themes.form_theme');
-        $viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        /** @var View $view */
+        $view = $this->container->get('symfonian_id.admin.view.view');
+        $view->setParam('form', $form->createView());
+        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
 
         if ($request->isMethod('POST')) {
             if (!$form->isValid()) {
-                $viewParams['errors'] = true;
+                $view->setParam('errors', true);
             } else {
                 $this->save($form->getData());
 
-                $viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
+                $view->setParam('success', $translator->trans('message.data_saved', array(), $translationDomain));
             }
         }
-
-        $this->viewParams = array_merge($this->viewParams, $viewParams);
     }
 
     /**

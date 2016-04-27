@@ -19,6 +19,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
+use Symfonian\Indonesia\AdminBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -85,15 +86,17 @@ class ProfileController extends Controller
         $form = $crud->getForm($user);
         $form->handleRequest($request);
 
-        $this->viewParams['page_title'] = $translator->trans('page.change_password.title', array(), $translationDomain);
-        $this->viewParams['page_description'] = $translator->trans('page.change_password.description', array(), $translationDomain);
-        $this->viewParams['form'] = $form->createView();
-        $this->viewParams['form_theme'] = $this->container->getParameter('symfonian_id.admin.themes.form_theme');
-        $this->viewParams['menu'] = $this->container->getParameter('symfonian_id.admin.menu');
+        /** @var View $view */
+        $view = $this->get('symfonian_id.admin.view.view');
+        $view->setParam('page_title', $translator->trans('page.change_password.title', array(), $translationDomain));
+        $view->setParam('page_description', $translator->trans('page.change_password.description', array(), $translationDomain));
+        $view->setParam('form', $form->createView());
+        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
 
         if ($request->isMethod('POST')) {
             if (!$form->isValid()) {
-                $this->viewParams['errors'] = true;
+                $view->setParam('errors', true);
             } elseif ($form->isValid()) {
                 /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
                 $encoderFactory = $this->container->get('security.encoder_factory');
@@ -103,7 +106,7 @@ class ProfileController extends Controller
                 $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
 
                 if ($password !== $user->getPassword()) {
-                    $this->viewParams['current_password_invalid'] = true;
+                    $view->setParam('current_password_invalid', true);
 
                     return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $this->viewParams);
                 }
@@ -121,11 +124,11 @@ class ProfileController extends Controller
                 $userManager->updateUser($entity);
                 $this->fireEvent(Constants::POST_SAVE, $event);
 
-                $this->viewParams['success'] = $translator->trans('message.data_saved', array(), $translationDomain);
+                $view->setParam('success', $translator->trans('message.data_saved', array(), $translationDomain));
             }
         }
 
-        return $this->render($this->container->getParameter('symfonian_id.admin.themes.change_password'), $this->viewParams);
+        return $this->render($this->container->getParameter('symfonian_id.admin.themes.change_password'), $view->getParams());
     }
 
     /**

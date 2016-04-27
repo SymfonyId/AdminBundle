@@ -18,3 +18,6 @@ services:
 
     symfonian_id.admin.handler.upload:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
+
+    symfonian_id.admin.view.view:
+        class: Symfonian\Indonesia\AdminBundle\View\View
