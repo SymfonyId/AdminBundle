@@ -438,6 +438,11 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         return $action;
     }
 
+    public function setMenuIcon($menuIcon)
+    {
+        return $this->menuIcon;
+    }
+
     /**
      * @return string
      */

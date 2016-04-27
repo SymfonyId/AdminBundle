@@ -10,9 +10,9 @@ services:
             - [setFilter, ['%symfonian_id.admin.filter%']]
             - [setTemplate, [{new: '%symfonian_id.admin.themes.new_view%', bulk_new: '%symfonian_id.admin.themes.bulk_new%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: configureGrid, priority: 255 }
-            - { name: kernel.event_listener, event: kernel.controller, method: configureTemplate, priority: 255 }
-            - { name: kernel.event_listener, event: kernel.controller, method: parseAnnotation, priority: -255 }
+            - { name: kernel.event_listener, event: kernel.controller, method: configureGrid, priority: 1027 }
+            - { name: kernel.event_listener, event: kernel.controller, method: configureTemplate, priority: 1027 }
+            - { name: kernel.event_listener, event: kernel.controller, method: parseAnnotation, priority: -1027 }
 
     symfonian_id.admin.annotation.crud:
         class: Symfonian\Indonesia\AdminBundle\Annotation\Crud

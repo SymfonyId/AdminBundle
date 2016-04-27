@@ -9,7 +9,7 @@ services:
             - '@symfonian_id.admin.congiration.configurator'
             - '@kernel'
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.profile_controller_compiler:
         class: Symfonian\Indonesia\AdminBundle\View\ProfileViewManipulator
@@ -19,7 +19,7 @@ services:
         arguments:
             - '@symfonian_id.admin.congiration.configurator'
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 0 }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.configuration_cache_warmer:
         class: Symfonian\Indonesia\AdminBundle\Cache\ConfigurationCacheWarmer
@@ -36,7 +36,7 @@ services:
             - [setProfileForm, ['%symfonian_id.admin.user.password_form%']]
             - [setProfileFields, ['%symfonian_id.admin.profile_fields%']]
         tags:
-            - { name: kernel.cache_warmer, priority: 0 }
+            - { name: kernel.cache_warmer }
 
     symfonian_id.admin.variable_registrator:
         class: Symfonian\Indonesia\AdminBundle\Twig\VariableRegistrator
@@ -55,21 +55,21 @@ services:
             - '@translator'
             - '%symfonian_id.admin.translation_domain%'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_delete, method: onDeleteUser }
+            - { name: kernel.event_listener, event: siab.pre_delete, method: onDeleteUser, priority: 1027 }
 
     symfonian_id.admin.set_timestamp:
         class: Symfonian\Indonesia\AdminBundle\EventListener\SetTimestampListener
         arguments:
             - '@security.token_storage'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser, priority: 1027 }
 
     symfonian_id.admin.update_user:
         class: Symfonian\Indonesia\AdminBundle\EventListener\UpdateUserListener
         arguments:
             - '%symfonian_id.admin.user.auto_enable%'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser }
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSaveUser, priority: 1027 }
 
     symfonian_id.admin.upload_avatar:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FileUploaderListener
@@ -80,7 +80,7 @@ services:
             - '@symfonian_id.admin.handler.upload'
             - '%symfonian_id.admin.upload_dir%'
         tags:
-            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave }
+            - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave, priority: 1027 }
 
     symfonian_id.admin.filter_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FilterQueryListener
@@ -92,7 +92,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1027 }
 
     symfonian_id.admin.soft_deletable:
         class: Symfonian\Indonesia\AdminBundle\EventListener\FilterSoftDeletableListener
@@ -100,7 +100,7 @@ services:
             - [setContainer, ['@service_container']]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1025 }
 
     symfonian_id.admin.sort_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
@@ -111,4 +111,4 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
