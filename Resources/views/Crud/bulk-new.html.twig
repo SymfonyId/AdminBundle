@@ -132,10 +132,21 @@
                             'form': JSON.parse(localStorage.getItem('form'))
                         }
                     }).done(function (response) {
-                        jQuery('.response-message').html(response.message);
-                        jQuery('.message-modal').modal({
-                            backdrop: 'static'
-                        });
+                        if (response.status) {
+                            jQuery('.response-message').html(response.message);
+                            jQuery('.message-modal').modal({
+                                backdrop: 'static'
+                            });
+
+                            localStorage.setItem('form', JSON.stringify([]));
+                        } else {
+                            jQuery('.response-message').html(response.message);
+                            jQuery.removeClass('modal-success');
+                            jQuery.addClass('modal-warning');
+                            jQuery('.message-modal').modal({
+                                backdrop: 'static'
+                            });
+                        }
                     });
                 });
             });
