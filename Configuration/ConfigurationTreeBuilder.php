@@ -11,8 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
