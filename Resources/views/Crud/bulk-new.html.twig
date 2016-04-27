@@ -160,6 +160,63 @@
                         }
                     });
                 });
+
+                var target = jQuery('.datepicker');
+                target.parent().css('position', 'relative');
+                target.datetimepicker({
+                    format: '{{- date_picker['date_format'] -}}',
+                    {% if date_picker['flatten'] %}sideBySide: true,{% endif %}
+                    locale: '{{- locale -}}'
+                });
+
+                {%- if use_file_style is same as(true) -%}
+                jQuery('input:file').fileinput({
+                    showUpload: false,
+                    showCaption: false,
+                    browseClass: 'btn btn-default',
+                    fileType: ['jpg', 'png'],
+                    allowedFileExtensions : ['jpg', 'png']
+                });
+                {%- endif -%}
+
+                {%- if use_editor is same as(true) -%}
+                jQuery('.editor').wysihtml5();
+                {%- endif -%}
+
+                {% if use_numeric is same as(true) %}
+                jQuery('.numeric').numeric();
+                jQuery('.positive').numeric({ negative: false });
+                {% endif %}
+
+                {%- if autocomplete -%}
+                jQuery('.autocomplete').select2({
+                    minimumInputLength: 3,
+                    ajax: {
+                        url: Routing.generate('{{- ac_config['route'] -}}'),
+                        dataType: 'json',
+                        quietMillis: 250,
+                        data: function (term, page) {
+                            return {
+                                q: term
+                            };
+                        },
+                        results: function (data, page) {
+                            return { results: data };
+                        },
+                        cache: true
+                    },
+                    initSelection : function (element, callback) {
+                        jQuery.ajax(Routing.generate('{{- ac_config['route_callback'] -}}', {id:  jQuery(element).val()}), {
+                            dataType: 'json'
+                        }).done(function(data) {
+                            callback(data);
+                        });
+                    }
+                });
+                jQuery(document).on('select2:select', '.autocomplete', function (e) {
+                    jQuery('{{- ac_config['selector_storage']-}}').val(e.params.data.id);
+                });
+                {%- endif -%}
             });
 
             function save(formData) {
