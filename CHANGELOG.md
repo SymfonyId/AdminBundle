@@ -1,0 +1,28 @@
+## Changes since 2015-03-23
+
+ * @ihsanudin: Add Bulk Insert (#27)
+ * @pitraadytia: hack bootstrap datepicker to prevent ugly position (#26)
+ * @pitraadytia: bug fix autocomplete and improve js autocomplete initSelection (#24)
+ * @ihsanudin: Remove button from form, use default button instead (#23)
+ * @ihsanudin: Add Batch Delete (#22)
+ * @ihsanudin: Change to cdn instaed using local assets (#21)
+ * @ihsanudin: Generator Command Bug Fix (#20)
+ * @ihsanudin: Function documentation (#19)
+ * @ihsanudin: Remove Bundle Plugins and Use Symfony Structure (#18)
+ * @ihsanudin: Remove form event (#17)
+ * @ihsanudin: Improve autocomplete to support new version of select2 (#16)
+ * @ihsanudin: Github Filter Style (#15)
+ * @ncrypthic: Trying to call `isSubclassOf` method of `null` (#14)
+ * @ihsanudin: Add Sort Record (#13)
+ * @ihsanudin: Filter using association field (#12)
+ * @ihsanudin: Optimize Code (#11)
+ * @ihsanudin: Simplify Menu [Create Menu Generator] (#9)
+ * @ihsanudin: Improve Crud Generator (#8)
+ * @ihsanudin: New Route Loader (#7)
+ * @ihsanudin: Create testing (#6)
+ * @ihsanudin: Add Cache Warmer for Production (#5)
+ * @ihsanudin: [Annotation] use Entity Annotation (#4)
+ * @ihsanudin: [Template] Split Action button to Twig (#3)
+ * @ihsanudin: [Generator] Date, Datetime, Time, Object Support (#1)
+
+
