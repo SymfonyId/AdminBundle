@@ -6,6 +6,7 @@
 
 **Closed issues:**
 
+- \[Improvement\] Change html editor to summernote [\#31](https://github.com/SymfonyId/AdminBundle/issues/31)
 - Add Bulk Insert [\#27](https://github.com/SymfonyId/AdminBundle/issues/27)
 
 ## [6.1.1](https://github.com/SymfonyId/AdminBundle/tree/6.1.1) (2016-04-26)
