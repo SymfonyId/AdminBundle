@@ -32,6 +32,7 @@ class View
 
     /**
      * @param string $key
+     *
      * @return null|string
      */
     public function getParam($key)
