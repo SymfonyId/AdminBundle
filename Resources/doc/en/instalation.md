@@ -1,6 +1,6 @@
 ### How to install AdminBundle (Symfonian Indonesia Admin Bundle)###
 
-**Existing Bundle**
+### Existing Project### 
 
 Add dependencies into your `composer.json` file
 
@@ -39,7 +39,7 @@ new Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminBundle($this),
 new Snc\RedisBundle\SncRedisBundle(),
 ```
 
-### New Project###
+### New Project### 
 
 For new project, using `SKeleton` is very recomended.
 
