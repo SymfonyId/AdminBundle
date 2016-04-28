@@ -30,7 +30,7 @@
                     {% set fieldList = [] %}
                     {% for field in form.children %}
                         {% set fieldName = field.vars.name %}
-                        {% if field.vars.name is not sameas('_token') %}
+                        {% if field.vars.name is not same as('_token') %}
                             {% set header = header | merge([field]) %}
                             {% set fieldList = fieldList | merge([field]) %}
                         {% endif %}
