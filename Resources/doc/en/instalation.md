@@ -53,6 +53,7 @@ assetic:
             bin: /usr/local/bin/uglifycss #change to your path
             apply_to: '\.css$'
 
+# Required
 framework:
     translator: { fallbacks: ["%locale%"] }
 
