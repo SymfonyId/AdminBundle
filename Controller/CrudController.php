@@ -296,17 +296,9 @@ abstract class CrudController extends Controller
         }, $filters)));
         $view->setParam('filter_fields_entity', implode(', ', $filters));
 
-        $allowBulkDelete = false;
-        $reflectionEntity = new \ReflectionClass($crud->getEntityClass());
-        foreach ($reflectionEntity->getInterfaces() as $reflectionClass) {
-            if ($reflectionClass->getName() === BulkDeletableInterface::class && $crud->isAllowDelete()) {
-                $allowBulkDelete = true;
-            }
-        }
-
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($listTemplate);
-        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $allowBulkDelete, $grid->isFormatNumber());
+        $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $this->isAllowDelete($crud), $grid->isFormatNumber());
 
         return $handler->getResponse();
     }
@@ -459,5 +451,23 @@ abstract class CrudController extends Controller
         }
 
         return $granted;
+    }
+
+    /**
+     * @param Crud $crud
+     *
+     * @return bool
+     */
+    private function isAllowDelete(Crud $crud)
+    {
+        $allowBulkDelete = false;
+        $reflectionEntity = new \ReflectionClass($crud->getEntityClass());
+        foreach ($reflectionEntity->getInterfaces() as $reflectionClass) {
+            if ($reflectionClass->getName() === BulkDeletableInterface::class && $crud->isAllowDelete()) {
+                $allowBulkDelete = true;
+            }
+        }
+
+        return $allowBulkDelete;
     }
 }

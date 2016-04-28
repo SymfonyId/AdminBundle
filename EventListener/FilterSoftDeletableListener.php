@@ -10,6 +10,7 @@
  */
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
+
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableInterface;
 

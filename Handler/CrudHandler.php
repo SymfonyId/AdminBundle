@@ -175,6 +175,7 @@ class CrudHandler implements ContainerAwareInterface
         $view->setParam('action', $actionAllowed);
         $view->setParam('allow_create', $allowCreate);
         $view->setParam('allow_delete', $allowBulkDelete);
+        $view->setParam('allow_download', $this->isAllowDownload());
         $view->setParam('number', $this->container->getParameter('symfonian_id.admin.number'));
         $view->setParam('formating_number', $formatNumber);
         $view->setParam('record', $data);
@@ -290,6 +291,7 @@ class CrudHandler implements ContainerAwareInterface
 
     /**
      * @param EntityInterface $entity
+     *
      * @return bool
      */
     public function save(EntityInterface $entity)
@@ -341,6 +343,9 @@ class CrudHandler implements ContainerAwareInterface
         return $paginator->paginate($query, $page, $perPage);
     }
 
+    /**
+     * @param EntityInterface $entity
+     */
     private function delete(EntityInterface $entity)
     {
         if ($entity instanceof SoftDeletableInterface) {
@@ -354,6 +359,22 @@ class CrudHandler implements ContainerAwareInterface
             $this->manager->remove($entity);
             $this->manager->flush();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isAllowDownload()
+    {
+        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+        $queryBuilder->select(sprintf('COUNT(%s.id)', Constants::ENTITY_ALIAS));
+
+        $totalResult = $queryBuilder->getQuery()->getSingleScalarResult();
+        if (100 < $totalResult) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
