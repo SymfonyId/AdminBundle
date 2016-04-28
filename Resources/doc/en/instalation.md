@@ -12,7 +12,7 @@ Add dependencies into your `composer.json` file
 "symfonyid/symfony-bundle-plugins": "dev-master",
 "friendsofsymfony/user-bundle": "dev-master",
 "friendsofsymfony/jsrouting-bundle": "dev-master",
-"symfonyid/admin-bundle": "dev-master"
+"symfonyid/admin-bundle": "^6.1"
 ```
 
 **Composer Update**
