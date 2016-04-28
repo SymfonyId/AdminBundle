@@ -27,3 +27,7 @@ label.required:after {
 .text-plain {
     font-weight: normal !important;
 }
+
+.note-editable {
+    min-height: 327px !important;
+}
