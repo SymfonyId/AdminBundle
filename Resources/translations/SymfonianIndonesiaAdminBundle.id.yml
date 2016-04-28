@@ -37,7 +37,7 @@ action:
     delete: 'Hapus'
     submit: 'Simpan'
     submit_all: 'Simpan Semua'
-    download: 'Export'
+    download: 'Export Csv'
 
 link:
     home: 'DASHBOARD'
