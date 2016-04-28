@@ -12,6 +12,27 @@ Originally: [SimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
 #### Key Features####
 
++ Admin Generator
+
++ User Management
+
++ CRUD Generator
+
++ Menu Generator
+
++ Bulk Insert
+
++ Auto Complete
+
++ Date(time) Picker
+
++ Soft Deletable
+
++ Timestampable
+
++ Filter and Sorting
+
++ Easy To Use
 
 #### Installation####
 
