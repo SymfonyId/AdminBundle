@@ -100,7 +100,9 @@ fos_user:
 
 ### New Project###
 
-For new project, using `SKeleton` is very recomended. Skeleton need redis to store session, you can remove this dependency. 
+For new project, using `SKeleton` is very recomended. 
+
+Be careful, Skeleton need **redis** to store session, you can remove this dependency. 
 
 Before install, create **empty database** first and then clone `Skeleton` repository
 
