@@ -30,6 +30,6 @@ and then just add class `editor` in your form options
 
 + numeric for only numeric input. same as htmlEditor, you need to add class `numeric` in your form type to activating this plugin
 
-+ bulkInsert for bulk insert
++ bulkInsert for bulk insert. You need to disable CRSF Protection on your form type to use this plugin
 
 [Next: How To Create Auto Complete Form With AdminBundle](autocomplete.md)
