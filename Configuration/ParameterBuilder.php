@@ -52,6 +52,7 @@ class ParameterBuilder
         $this->containerBuilder->setParameter('symfonian_id.admin.menu', $config['menu']);
         $this->containerBuilder->setParameter('symfonian_id.admin.profile_fields', $config['profile_fields']);
         $this->containerBuilder->setParameter('symfonian_id.admin.identifier', $config['identifier']);
+        $this->containerBuilder->setParameter('symfonian_id.admin.max_records', $config['max_records']);
         $this->containerBuilder->setParameter('symfonian_id.admin.filter', $config['filter']);
         $this->containerBuilder->setParameter('symfonian_id.admin.date_time_format', $config['date_time_format']);
         $this->containerBuilder->setParameter('symfonian_id.admin.translation_domain', $config['translation_domain']);

@@ -25,6 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -319,6 +321,53 @@ class CrudHandler implements ContainerAwareInterface
     }
 
     /**
+     * @param array $columns
+     *
+     * @return array
+     */
+    public function exportData(array $columns)
+    {
+        $csvData = $this->getCsvData($columns);
+        $response = new StreamedResponse(function () use ($csvData) {
+            $resources = fopen('php://output', 'w');
+
+            foreach ($csvData as $item) {
+                fputcsv($resources, $item);
+            }
+        });
+
+        $dispositionHeader = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, sprintf('%.csv', date('YmdHis')));
+        
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+    }
+
+    private function getCsvData(array $columns)
+    {
+        $output = array($columns);
+
+        if (!$this->isAllowDownload()) {
+            return $output;
+        }
+
+        /** @var EntityInterface $record */
+        foreach ($this->repository->findAll() as $record) {
+            $temp = array();
+            foreach ($columns as $column) {
+                $temp[] = MethodInvoker::invokeGet($record, $column);
+            }
+
+            $output[] = $temp;
+        }
+
+        return $output;
+    }
+
+    /**
      * @param int $page
      * @param int $perPage
      *
@@ -370,7 +419,7 @@ class CrudHandler implements ContainerAwareInterface
         $queryBuilder->select(sprintf('COUNT(%s.id)', Constants::ENTITY_ALIAS));
 
         $totalResult = $queryBuilder->getQuery()->getSingleScalarResult();
-        if (100 < $totalResult) {
+        if ($this->container->getParameter('symfonian_id.admin.max_records') < $totalResult) {
             return false;
         }
 

@@ -310,6 +310,7 @@ class SiabRouteLoader extends DelegatingLoader
                 ));
                 break;
             case 'show':
+            case 'download':
             case 'list':
                 return new Method(array(
                     'methods' => array('GET'),
@@ -343,6 +344,7 @@ class SiabRouteLoader extends DelegatingLoader
     {
         switch ($methodName) {
             case 'new':
+            case 'download':
             case 'list':
                 if (!$flag) {
                     return new Route(array(

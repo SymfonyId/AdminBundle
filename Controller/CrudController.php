@@ -206,6 +206,8 @@ abstract class CrudController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
      * @return bool|JsonResponse
      */
     public function bulkDeleteAction(Request $request)
@@ -263,13 +265,14 @@ abstract class CrudController extends Controller
      */
     public function listAction(Request $request)
     {
-        $translator = $this->container->get('translator');
-        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
+        /** @var Translator $translator */
+        $translator = $this->container->get('translator');
+        $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
@@ -301,6 +304,28 @@ abstract class CrudController extends Controller
         $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $this->isAllowDelete($crud), $grid->isFormatNumber());
 
         return $handler->getResponse();
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function downloadAction(Request $request)
+    {
+        /** @var Configurator $configuration */
+        $configuration = $this->getConfigurator($this->getClassName());
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_READ);
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+
+        /** @var Grid $grid */
+        $grid = $configuration->getConfiguration(Grid::class);
+        $columns = $grid->getColumns() ?: $this->getEntityFields($crud);
+
+        return $handler->exportData($columns);
     }
 
     /**

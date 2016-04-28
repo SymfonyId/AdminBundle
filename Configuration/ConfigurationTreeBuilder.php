@@ -41,6 +41,7 @@ class ConfigurationTreeBuilder
                 ->scalarNode('app_short_title')->defaultValue('SFID')->end()
                 ->integerNode('per_page')->defaultValue(10)->end()
                 ->scalarNode('identifier')->defaultValue('id')->end()
+                ->integerNode('max_records')->defaultValue(100)->end()
                 ->scalarNode('date_time_format')->defaultValue('d-m-Y')->end()
                 ->scalarNode('menu')->defaultValue('symfonian_indonesia_admin_main_menu')->end()
                 ->scalarNode('upload_dir')->defaultValue('uploads')->end()
