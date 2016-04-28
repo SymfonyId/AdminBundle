@@ -68,7 +68,7 @@ class IdName implements EntityInterface, BulkDeletableInterface
 **Running the generator**
 
 ```lang=shell
-php bin/console siab:generator:crud AppBundle:IdName --override
+php bin/console siab:generator:crud AppBundle:IdName --overwrite
 ```
 
 The command above automaticly generate `Form Type` and `Controller` for your entity and also add your entity to menu
