@@ -23,6 +23,8 @@ Originally: [SimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
 + Bulk Insert
 
++ Bulk Delete
+
 + Auto Complete
 
 + Date(time) Picker

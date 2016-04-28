@@ -31,6 +31,9 @@
             {%- if allow_delete is same as(true) -%}
                 <button type="button" class="btn btn-danger bulk-delete margin-left-7">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
             {% endif %}
+            {%- if allow_download is same as(true) -%}
+                <button type="button" class="btn btn-danger download-record margin-left-7"><i class="fa fa-file-excel-o" aria-hidden="true"></i>{{- 'action.download' | trans({}, translation_domain) -}}</button>
+            {% endif %}
         </div>
         <div class="pull-right">
             {{- knp_pagination_render(pagination) -}}

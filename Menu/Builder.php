@@ -151,7 +151,7 @@ class Builder
     {
         $menu->addChild($name, array(
             'route' => $route,
-            'label' => sprintf('<i class="fa %s"></i> <span>%s</span>', $icon, $this->translator->trans($name, array(), $this->translationDomain)),
+            'label' => sprintf('<i class="fa %s" aria-hidden="true"></i> <span>%s</span>', $icon, $this->translator->trans($name, array(), $this->translationDomain)),
             'extras' => array('safe_label' => true),
             'attributes' => array(
                 'class' => 'treeview',
