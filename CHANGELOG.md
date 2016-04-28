@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/SymfonyId/AdminBundle/tree/HEAD)
 
-[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.1...HEAD)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.3...HEAD)
+
+**Closed issues:**
+
+- Export data to csv [\#30](https://github.com/SymfonyId/AdminBundle/issues/30)
+
+## [6.1.3](https://github.com/SymfonyId/AdminBundle/tree/6.1.3) (2016-04-28)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.1...6.1.3)
 
 **Closed issues:**
 
