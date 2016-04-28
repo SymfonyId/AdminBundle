@@ -51,7 +51,7 @@ class ControllerGenerator extends AbstractGenerator
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Controller';
-        $dirPath = $bundle->getPath().'/Controller';
+        $dirPath = $bundle->getPath().'/Admin';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entityClass).'Controller.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
