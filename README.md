@@ -32,7 +32,7 @@ Originally: [SimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
 + Filter and Sorting
 
-+ Easy To Use
++ Easy To Customize
 
 #### Installation####
 
