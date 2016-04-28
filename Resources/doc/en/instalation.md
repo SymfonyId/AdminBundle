@@ -102,7 +102,7 @@ fos_user:
 
 For new project, using `SKeleton` is very recomended. 
 
-Be careful, Skeleton need **redis** to store session, you can remove this dependency. 
+Be careful, Skeleton need **redis** to store session, you can remove this dependency after clone is finished 
 
 Before install, create **empty database** first and then clone `Skeleton` repository
 
