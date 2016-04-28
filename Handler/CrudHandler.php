@@ -353,7 +353,8 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function getCsvData(array $columns)
     {
-        $output = array(array_merge(array('id'), $columns));
+        $columns = array_merge(array('id'), $columns);
+        $output = array($columns);
 
         if (!$this->isAllowDownload()) {
             return $output;
