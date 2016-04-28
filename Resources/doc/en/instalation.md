@@ -12,9 +12,7 @@ Add dependencies into your `composer.json` file
 "symfonyid/symfony-bundle-plugins": "dev-master",
 "friendsofsymfony/user-bundle": "dev-master",
 "friendsofsymfony/jsrouting-bundle": "dev-master",
-"symfonyid/admin-bundle": "dev-master",
-"predis/predis": "^1.0",
-"snc/redis-bundle": "2.x-dev"
+"symfonyid/admin-bundle": "dev-master"
 ```
 
 **Composer Update**
@@ -36,7 +34,6 @@ new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 new Symfonian\Indonesia\CoreBundle\SymfonianIndonesiaCoreBundle(),
 new Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminBundle($this),
-new Snc\RedisBundle\SncRedisBundle(),
 ```
 
 ### New Project###
