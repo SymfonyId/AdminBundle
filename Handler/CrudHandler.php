@@ -336,8 +336,8 @@ class CrudHandler implements ContainerAwareInterface
             }
         });
 
-        $dispositionHeader = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, sprintf('%.csv', date('YmdHis')));
-        
+        $dispositionHeader = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, sprintf('%s.csv', date('YmdHis')));
+
         $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
         $response->headers->set('Pragma', 'public');
         $response->headers->set('Cache-Control', 'maxage=1');
@@ -346,9 +346,14 @@ class CrudHandler implements ContainerAwareInterface
         return $response;
     }
 
+    /**
+     * @param array $columns
+     *
+     * @return array
+     */
     private function getCsvData(array $columns)
     {
-        $output = array($columns);
+        $output = array(array_merge(array('id'), $columns));
 
         if (!$this->isAllowDownload()) {
             return $output;

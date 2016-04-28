@@ -104,6 +104,10 @@
                     });
                 });
 
+                jQuery(document).on('click', '.download-record', function () {
+                    window.location = createActionUrl('download');
+                });
+
                 jQuery(document).on('change', '.check-all-action', function () {
                     jQuery('.bulk-action').prop('checked', true);
                 });

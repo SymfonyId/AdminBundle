@@ -320,6 +320,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setEntity($crud->getEntityClass());
 
         /** @var Grid $grid */
         $grid = $configuration->getConfiguration(Grid::class);
