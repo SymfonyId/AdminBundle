@@ -1,10 +1,11 @@
 # Symfonian Indonesia AdminBundle [SIAB]#
+
 [![Build Status](https://travis-ci.org/SymfonyId/AdminBundle.svg?branch=master)](https://travis-ci.org/SymfonyId/AdminBundle)
 [![Total Downloads](https://poser.pugx.org/symfonyid/admin-bundle/downloads)](https://packagist.org/packages/symfonyid/admin-bundle) 
 [![Latest Stable Version](https://poser.pugx.org/symfonyid/admin-bundle/v/stable)](https://packagist.org/packages/symfonyid/admin-bundle) 
 [![Latest Unstable Version](https://poser.pugx.org/symfonyid/admin-bundle/v/unstable)](https://packagist.org/packages/symfonyid/admin-bundle) 
 [![License](https://poser.pugx.org/symfonyid/admin-bundle/license)](https://packagist.org/packages/symfonyid/admin-bundle)
-
+[![knpbundles.com](http://knpbundles.com/SymfonyId/AdminBundle/badge-short)](http://knpbundles.com/SymfonyId/AdminBundle)
 
 Originally: [SimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
 
