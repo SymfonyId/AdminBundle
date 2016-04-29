@@ -1,163 +1,72 @@
-{%- extends 'SymfonianIndonesiaAdminBundle::layout.html.twig' -%}
+{% spaceless %}
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery(document).on('click', '.sfid-pagination a.btn-success', function (e) {
+                e.preventDefault();
 
-{% block css %}
-    <link rel="stylesheet" href="{{- asset('bundles/symfonianindonesiaadmin/css/bootstrap-toggle.min.css') -}}" />
-{% endblock %}
+                var url = jQuery(this).attr('href');
 
-{%- block breadcrumb -%}
-    <li><a href="#" class="active">{{- page_title | upper -}}</a></li>
-    <li><a href="#" class="active">{{- (action_method ~ ' ' ~ page_title) | upper -}}</a></li>
-{%- endblock -%}
-
-{%- block page_title -%}
-    {{- page_title -}}
-{%- endblock -%}
-
-{%- block page_description -%}
-    {{- page_description -}}
-{%- endblock -%}
-
-{%- block menu -%}
-    {{- knp_menu_render(menu, { currentClass: 'active', 'allow_safe_labels': true }) -}}
-{%- endblock -%}
-
-{%- block content -%}
-    {% spaceless %}
-        <div class="col-md-12 col-lg-12 col-sm-12">
-            <div class="box box-success box-solid">
-                <div class="box-header">
-                    <form role="form">
-                        <div class="input-group">
-                            <input type="text" name="filter" class="form-control siab-search" placeholder="{{- 'message.search' | trans({'%filters%': filter_fields}, 'SymfonianIndonesiaAdminBundle') -}}">
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning" type="submit"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                <div class="box-body with-border table-responsive padding-7 sfid-content">
-                    {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_template.html.twig' -%}
-                </div>
-                <div class="box-footer">
-                    <em><b style="color: #ff0000;">*)</b>&nbsp;{{ 'message.search_advance' | trans({'%filters%': filter_fields_entity}, 'SymfonianIndonesiaAdminBundle') | raw }}</em>
-                </div>
-            </div>
-        </div>
-        <div class="modal modal-warning delete-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{- 'message.info' | trans({}, translation_domain) -}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <h4 class="response-message">{{- 'message.delete_confirmation' | trans({}, translation_domain) -}}</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary action-close pull-left" data-dismiss="modal">{{- 'action.close' | trans({}, translation_domain) -}}</button>
-                        <button type="button" class="btn btn-danger delete-action pull-left">{{- 'action.delete' | trans({}, translation_domain) -}}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endspaceless %}
-{%- endblock -%}
-
-{%- block javascript -%}
-    {% spaceless %}
-        <script src="{{- asset('bundles/symfonianindonesiaadmin/js/bootstrap-toggle.min.js') -}}" type="text/javascript"></script>
-        <script type="text/javascript">
-            Array.prototype.clean = function() {
-                for (var i = 0; i < this.length; i++) {
-                    if ('' === this[i] || 'undefined' === typeof this[i] || null === this[i]) {
-                        this.splice(i, 1);
-                        i--;
-                    }
-                }
-                return this;
-            };
-
-            jQuery(document).ready(function () {
-                //All Checkbox is unchecked by default
-                jQuery('.bulk-action').prop('checked', false);
-                jQuery('.check-all-action').prop('checked', false);
-                jQuery('.sfid-toggle').bootstrapToggle();
-
-                jQuery(document).on('click', '.add-new', function () {
-                    window.location = createActionUrl('new');
+                jQuery.ajax({
+                    url: url,
+                    type:'GET',
+                    dataType: 'html'
+                }).done (function (response) {
+                    jQuery('.sfid-content').html(response);
+                    jQuery('.sfid-toggle').bootstrapToggle();
                 });
+            });
 
-                jQuery(document).on('click', '.show', function () {
-                    window.location = createActionUrl(jQuery(this).data('record') + '/show');
-                });
+            jQuery(document).on('click', '.header-sortable', function (e) {
+                getUrlVars(function (queryString) {
+                    queryString['sort_by'] = jQuery(this).data('field');
 
-                jQuery(document).on('click', '.edit', function () {
-                    window.location = createActionUrl(jQuery(this).data('record') + '/edit');
-                });
-
-                jQuery(document).on('click', '.delete', function () {
-                    window.location = createActionUrl(jQuery(this).data('record') + '/show?delete');
-                });
-
-                jQuery(document).on('click', '.bulk-delete', function () {
-                    jQuery('.delete-modal').modal({
-                        backdrop: 'static'
-                    });
-                });
-
-                jQuery(document).on('click', '.download-record', function () {
-                    window.location = createActionUrl('download');
-                });
-
-                jQuery(document).on('change', '.check-all-action', function () {
-                    jQuery('.bulk-action').prop('checked', true);
-                });
-
-                jQuery(document).on('click', '.delete-action', function () {
-                    jQuery(document).on('click', '.action-close', function () {
-                        window.location.reload();
-                    });
-
-                    var ids = jQuery('.bulk-action:checked').map(function() {
-                        return jQuery(this).data('record');
-                    }).get();
-
-                    var url = window.location.pathname.replace('list', 'bulk-delete').replace('#', '');
-                    if (0 > url.indexOf('bulk-delete')) {
-                        var temp = url.split('/');
-                        temp.clean();
-                        temp.push('bulk-delete');
-                        url = temp.join('/');
+                    var url = document.location.pathname;
+                    if (!0 < url.indexOf('?')) {
+                        url = url + '?';
                     }
 
-                    url = window.location.protocol + '//' + window.location.host + url;
-                    jQuery.ajax({
-                        url: url,
-                        type: 'DELETE',
-                        data: {
-                            id: ids
-                        }
-                    }).done(function (response) {
-                        jQuery('.response-message').html(response.message);
-                        jQuery('.delete-action').remove();
-                        jQuery('.delete-modal').modal({
-                            backdrop: 'static'
-                        });
+                    encodeUrl(url , queryString, function (encodedUrl) {
+                        window.location = encodedUrl;
                     });
                 });
             });
 
-            function createActionUrl(actionUrl) {
-                var url = document.location.pathname;
-                url = (0 < url.indexOf('?'))? url.split('?')[0]: url;
-                if (0 < url.indexOf('list')) {
-                    url = url.replace('list', actionUrl);
-                } else {
-                    url = url + actionUrl;
-                }
+            jQuery('.sortable').addClass('fa-sort');
+            jQuery('.sorted').addClass('fa-sort-asc');
+            jQuery('.header-sortable').css('cursor', 'pointer');
+            jQuery('.siab-search').val(getQueryString('filter'));
+        });
 
-                return url;
+        function getUrlVars(callback) {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+            for(var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars[hash[0]] = hash[1];
             }
-        </script>
-        {%- include 'SymfonianIndonesiaAdminBundle:Crud:list_jquery.html.twig' -%}
-    {% endspaceless %}
-{%- endblock -%}
+
+            callback(vars);
+        };
+
+        function encodeUrl(url , data, callback) {
+            var ret = [];
+            jQuery.each(data, function(key, value) {
+                if ('undefined' !== typeof data[value]) {
+                    ret.push(encodeURIComponent(value) + '=' + encodeURIComponent(data[value]));
+                }
+            });
+
+            callback(url + ret.join('&'));
+        };
+
+        function getQueryString(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        };
+    </script>
+{% endspaceless %}

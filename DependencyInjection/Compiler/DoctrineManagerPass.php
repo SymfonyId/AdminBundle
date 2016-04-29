@@ -26,13 +26,14 @@ class DoctrineManagerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('symfonian_id.admin.managerFactory.factory')) {
+        if (!$container->has('symfonian_id.admin.manager.factory')) {
             return;
         }
 
-        $definition = $container->findDefinition('symfonian_id.admin.managerFactory.factory');
-        foreach ($container->getParameter('symfonian_id.admin.driver') as $driver) {
-            $definition->addMethodCall('addManager', array(new Reference(ManagerFactory::$DRIVERS[$driver])));
-        }
+        $definition = $container->findDefinition('symfonian_id.admin.manager.factory');
+        $definition->addMethodCall('addManager', array(
+            $container->getParameter('symfonian_id.admin.driver'),
+            new Reference(ManagerFactory::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')])
+        ));
     }
 }
