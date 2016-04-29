@@ -20,7 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
-use Symfonian\Indonesia\AdminBundle\Toolkit\Util\ArrayUtil\ArrayNormalizer;
+use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -95,7 +95,7 @@ trait ConfigurationAwareTrait
             if (Upload::class === $k) {
                 $config = new Upload();
             }
-            $configurator->addConfiguration(ArrayNormalizer::convertToObject($configuration, $config));
+            $configurator->addConfiguration(MethodInvoker::bindSet($configuration, $config));
         }
 
         return $configurator;

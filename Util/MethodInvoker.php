@@ -11,12 +11,10 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Util;
 
-use Symfonian\Indonesia\AdminBundle\Toolkit\Util\StringUtil\CamelCasizer;
-
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class MethodInvoker
+final class MethodInvoker
 {
     /**
      * @param mixed  $object   Object
@@ -26,19 +24,50 @@ class MethodInvoker
      */
     public static function invokeGet($object, $property)
     {
-        $method = CamelCasizer::underScoretToCamelCase($property);
+        $method = CamelCaser::underScoretToCamelCase($property);
         if (method_exists($object, $method)) {
             return call_user_func_array(array($object, $method), array());
         }
 
-        $method = CamelCasizer::underScoretToCamelCase('get_'.$property);
+        $method = CamelCaser::underScoretToCamelCase('get_'.$property);
         if (method_exists($object, $method)) {
             return call_user_func_array(array($object, $method), array());
         }
 
-        $method = CamelCasizer::underScoretToCamelCase('is_'.$property);
+        $method = CamelCaser::underScoretToCamelCase('is_'.$property);
         if (method_exists($object, $method)) {
             return call_user_func_array(array($object, $method), array());
         }
+    }
+
+    /**
+     * @param array $data with key => value
+     * @param mixed $object Object that you want to bind
+     *
+     * @return mixed $object Object
+     */
+    public static function bindSet(array $data, $object)
+    {
+        if (!is_object($object)) {
+            return;
+        }
+
+        foreach ($data as $key => $value) {
+            $method = CamelCaser::underScoretToCamelCase(sprintf('set_%s', $key));
+
+            if (method_exists($object, $method)) {
+                call_user_func_array(array($object, $method), array($value));
+            } else {
+                $method = CamelCaser::underScoretToCamelCase($key);
+
+                if (!method_exists($object, $method)) {
+                    $method = CamelCaser::underScoretToCamelCase(sprintf('is_%s', $key));
+                }
+
+                call_user_func_array(array($object, $method), array($value));
+            }
+        }
+
+        return $object;
     }
 }
