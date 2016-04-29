@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.2.1...HEAD)
 
+**Fixed bugs:**
+
+- \[Bug\] Crud Configuration can't call method setCreate of null [\#34](https://github.com/SymfonyId/AdminBundle/issues/34)
+
 **Closed issues:**
 
 - Performance Improvement [\#33](https://github.com/SymfonyId/AdminBundle/issues/33)
