@@ -19,6 +19,11 @@ services:
     symfonian_id.admin.handler.upload:
         class: Symfonian\Indonesia\AdminBundle\Handler\UploadHandler
 
+    symfonian_id.admin.manager.factory:
+        class: Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
     symfonian_id.admin.view.view:
         class: Symfonian\Indonesia\AdminBundle\View\View
 

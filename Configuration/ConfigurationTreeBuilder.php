@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
@@ -45,6 +46,11 @@ class ConfigurationTreeBuilder
                 ->scalarNode('date_time_format')->defaultValue('d-m-Y')->end()
                 ->scalarNode('menu')->defaultValue('symfonian_indonesia_admin_main_menu')->end()
                 ->scalarNode('upload_dir')->defaultValue('uploads')->end()
+                ->arrayNode('driver')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')->end()
+                ->end()
                 ->scalarNode('translation_domain')
                     ->isRequired()
                     ->cannotBeEmpty()

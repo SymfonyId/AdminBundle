@@ -11,6 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
+use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -56,6 +58,14 @@ class ParameterBuilder
         $this->containerBuilder->setParameter('symfonian_id.admin.filter', $config['filter']);
         $this->containerBuilder->setParameter('symfonian_id.admin.date_time_format', $config['date_time_format']);
         $this->containerBuilder->setParameter('symfonian_id.admin.translation_domain', $config['translation_domain']);
+
+        foreach ($config['driver'] as $value) {
+            if (!in_array($value, array(ManagerFactory::DOCTRINE_ORM, ManagerFactory::DOCTRINE_ODM))) {
+                throw new KeyNotMatchException(sprintf('Invalid driver "%s"', $value));
+            }
+        }
+
+        $this->containerBuilder->setParameter('symfonian_id.admin.driver', $config['driver']);
 
         $number = array(
             'decimal_precision' => $config['number_format']['decimal_precision'],
