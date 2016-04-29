@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/SymfonyId/AdminBundle/tree/HEAD)
 
-[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.3...HEAD)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.2.1...HEAD)
+
+**Closed issues:**
+
+- Performance Improvement [\#33](https://github.com/SymfonyId/AdminBundle/issues/33)
+
+## [6.2.1](https://github.com/SymfonyId/AdminBundle/tree/6.2.1) (2016-04-29)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.3...6.2.1)
 
 **Closed issues:**
 
