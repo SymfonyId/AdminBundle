@@ -12,8 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
@@ -82,6 +81,21 @@ class FieldFilter extends AbstractFilter
      */
     protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
     {
+        if ($this->getDriver() === ManagerFactory::DOCTRINE_ORM) {
+            $this->ormFilter($queryBuilder, $metadata, $alias, $filter);
+        } else {
+            $this->odmFilter($queryBuilder, $metadata, $alias, $filter);
+        }
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param string $alias
+     * @param string $filter
+     */
+    protected function ormFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    {
         if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
             $date = \DateTime::createFromFormat($this->getDateTimeFormat(), $filter);
             if ($date) {
@@ -97,6 +111,18 @@ class FieldFilter extends AbstractFilter
             }
         }
     }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param string $alias
+     * @param string $filter
+     */
+    protected function odmFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    {
+        // TODO: Implement odmFilter() method.
+    }
+
 
     /**
      * @return string

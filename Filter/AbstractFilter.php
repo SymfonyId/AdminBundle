@@ -3,7 +3,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
@@ -41,6 +41,22 @@ abstract class AbstractFilter
      * @param string       $filter
      */
     abstract protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null);
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array        $metadata
+     * @param string       $alias
+     * @param string       $filter
+     */
+    abstract protected function ormFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null);
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array        $metadata
+     * @param string       $alias
+     * @param string       $filter
+     */
+    abstract protected function odmFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null);
 
     /**
      * @param ManagerFactory $managerFactory

@@ -12,7 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 
 /**
@@ -35,7 +35,7 @@ class GithubStyleFilter extends FieldFilter
      * @param string       $alias
      * @param string       $filter
      */
-    protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    protected function ormFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
     {
         if (in_array($metadata['type'], array('date', 'datetime', 'time'))) {
             $date = \DateTime::createFromFormat($this->getDateTimeFormat(), $filter);
@@ -50,5 +50,16 @@ class GithubStyleFilter extends FieldFilter
             $queryBuilder->orWhere(sprintf('%s.%s = :%s', $alias, $metadata['fieldName'], $metadata['fieldName']));
             $queryBuilder->setParameter($metadata['fieldName'], $filter);
         }
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param string $alias
+     * @param string $filter
+     */
+    protected function odmFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    {
+        // TODO: Implement odmFilter() method.
     }
 }

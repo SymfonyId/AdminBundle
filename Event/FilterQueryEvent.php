@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Event;
 
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

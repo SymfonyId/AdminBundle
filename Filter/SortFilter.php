@@ -12,7 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Exception\MethodNotImplementedException;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
@@ -90,6 +90,32 @@ class SortFilter extends AbstractFilter
      * @throws MethodNotImplementedException
      */
     protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    {
+        throw new MethodNotImplementedException(sprintf('%s is not implemented', __METHOD__));
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param string $alias
+     * @param string $filter
+     *
+     * @throws MethodNotImplementedException
+     */
+    protected function ormFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
+    {
+        throw new MethodNotImplementedException(sprintf('%s is not implemented', __METHOD__));
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array $metadata
+     * @param string $alias
+     * @param string $filter
+     *
+     * @throws MethodNotImplementedException
+     */
+    protected function odmFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
     {
         throw new MethodNotImplementedException(sprintf('%s is not implemented', __METHOD__));
     }
