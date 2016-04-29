@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\View;
+namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class ProfileViewManipulator
+class ProfileConfigurationListener
 {
     /**
      * @var Configurator

@@ -28,6 +28,7 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Controller\ProfileController;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
@@ -219,7 +220,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     }
 
     /**
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function setDefaultConfig()
     {
@@ -270,7 +271,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     /**
      * @param string $cacheDir
      *
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function compileUserController($cacheDir)
     {
@@ -328,7 +329,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      *
      * @return Configurator
      *
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function configureGrid(ReflectionClass $entity, Configurator $configuration)
     {
@@ -350,7 +351,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      *
      * @return Configurator
      *
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function parseClassAnnotation(ReflectionClass $reflectionClass, Configurator $configuration)
     {

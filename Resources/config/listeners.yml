@@ -1,7 +1,7 @@
 services:
 #Symfony Listeners
     symfonian_id.admin.user_template_manipulator:
-        class: Symfonian\Indonesia\AdminBundle\View\UserViewManipulator
+        class: Symfonian\Indonesia\AdminBundle\EventListener\UserConfigurationListener
         calls:
             - [setForm, ['%symfonian_id.admin.user.user_form%', '%symfonian_id.admin.user.user_entity%']]
             - [setView, ['%symfonian_id.admin.user.show_fields%', '%symfonian_id.admin.user.grid_fields%', '%symfonian_id.admin.user.grid_filters%']]
@@ -12,7 +12,7 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.profile_controller_compiler:
-        class: Symfonian\Indonesia\AdminBundle\View\ProfileViewManipulator
+        class: Symfonian\Indonesia\AdminBundle\EventListener\ProfileConfigurationListener
         calls:
             - [setFormClass, ['%symfonian_id.admin.user.password_form%']]
             - [setProfileFields, ['%symfonian_id.admin.profile_fields%']]

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\View;
+namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class UserViewManipulator extends AbstractListener
+class UserConfigurationListener extends AbstractListener
 {
     /**
      * @var Configurator

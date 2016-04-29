@@ -19,6 +19,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util\AutoComplete;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\DatePicker;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,7 +56,7 @@ trait ConfigurationAwareTrait
      *
      * @return Configurator
      *
-     * @throws \Exception
+     * @throws RuntimeException
      */
     private function fetchFromCache(Configurator $configurator, $cacheKey)
     {

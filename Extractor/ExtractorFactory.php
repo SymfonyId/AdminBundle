@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -36,12 +37,12 @@ class ExtractorFactory
     /**
      * @param ExtractorInterface $extractor
      *
-     * @throws \Exception
+     * @throws RuntimeException
      */
     public function addExtractor(ExtractorInterface $extractor)
     {
         if ($this->freeze) {
-            throw new \Exception('Can\'t change any extractor during runtime');
+            throw new RuntimeException('Can\'t change any extractor during runtime');
         }
 
         $this->extractors[get_class($extractor)] = $extractor;
