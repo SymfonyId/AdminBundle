@@ -2,17 +2,17 @@ services:
     symfonian_id.admin.filter.fields:
         class: Symfonian\Indonesia\AdminBundle\Filter\FieldFilter
         arguments:
-            - '@symfonian_id.admin.managerFactory.factory'
+            - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
 
     symfonian_id.admin.filter.github_style:
         class: Symfonian\Indonesia\AdminBundle\Filter\GithubStyleFilter
         arguments:
-            - '@symfonian_id.admin.managerFactory.factory'
+            - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
 
     symfonian_id.admin.filter.sort:
         class: Symfonian\Indonesia\AdminBundle\Filter\SortFilter
         arguments:
-            - '@symfonian_id.admin.managerFactory.factory'
+            - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'

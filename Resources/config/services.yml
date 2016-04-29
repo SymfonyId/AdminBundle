@@ -13,7 +13,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:
             - '@security.token_storage'
-            - '@symfonian_id.admin.managerFactory.factory'
+            - '@symfonian_id.admin.manager.factory'
         calls:
             - [setContainer, ['@service_container']]
 
