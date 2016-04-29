@@ -124,6 +124,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         }
         if ($configuration instanceof Crud) {
             $configuration->setFormFactory($this->formFactory);
+            $configuration->setTemplate($this->template);
         }
 
         $this->configurations[get_class($configuration)] = $configuration;

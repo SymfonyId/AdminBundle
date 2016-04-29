@@ -71,32 +71,8 @@ trait ConfigurationAwareTrait
         $configurations = require $fullPath;
         /** @var array $configuration */
         foreach ($configurations as $k => $configuration) {
-            $config = null;
-            if (Crud::class === $k) {
-                $config = new Crud();
-            }
-            if (Grid::class === $k) {
-                $config = new Grid();
-            }
-            if (Page::class === $k) {
-                $config = new Page();
-            }
-            if (Plugins::class === $k) {
-                $config = new Plugins();
-            }
-            if (AutoComplete::class === $k) {
-                $config = new AutoComplete();
-            }
-            if (DatePicker::class === $k) {
-                $config = new DatePicker();
-            }
-            if (ExternalJavascript::class === $k) {
-                $config = new ExternalJavascript();
-            }
-            if (Upload::class === $k) {
-                $config = new Upload();
-            }
-            $configurator->addConfiguration(MethodInvoker::bindSet($configuration, $config));
+            //$k is string presentate of config class
+            $configurator->addConfiguration(MethodInvoker::bindSet($configuration, $configurator->getConfiguration($k)));
         }
 
         return $configurator;
