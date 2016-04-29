@@ -21,3 +21,12 @@ services:
 
     symfonian_id.admin.view.view:
         class: Symfonian\Indonesia\AdminBundle\View\View
+
+    symfonian_id.admin.view.template:
+        class: Symfonian\Indonesia\AdminBundle\View\Template
+        calls:
+            - [setCreate, ['%symfonian_id.admin.themes.new_view%']]
+            - [setBulkCreate, ['%symfonian_id.admin.themes.bulk_new%']]
+            - [setEdit, ['%symfonian_id.admin.themes.edit_view%']]
+            - [setShow, ['%symfonian_id.admin.themes.show_view%']]
+            - [setList, ['%symfonian_id.admin.themes.list_view%']]

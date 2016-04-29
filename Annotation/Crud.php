@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\Annotation;
 use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -36,6 +37,11 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * @var Template
+     */
+    private $template;
 
     /**
      * Entity fields you want to display.
@@ -64,38 +70,6 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      * @var string
      */
     private $menuIcon = 'fa-bars';
-
-    /**
-     * @var string
-     */
-    private $create = Constants::TEMPLATE_CREATE;
-
-    /**
-     * @var string
-     */
-    private $bulkCreate = Constants::TEMPLATE_BULK_CREATE;
-
-    /**
-     * @var string
-     */
-    private $edit = Constants::TEMPLATE_EDIT;
-
-    /**
-     * @var string
-     */
-    private $show = Constants::TEMPLATE_SHOW;
-
-    /**
-     * @var string
-     */
-    private $list = Constants::TEMPLATE_LIST;
-
-    /**
-     * Internal use only.
-     *
-     * @var string
-     */
-    private $ajaxTemplate = Constants::TEMPLATE_AJAX;
 
     /**
      * @var bool
@@ -143,23 +117,23 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         }
 
         if (isset($data['create'])) {
-            $this->create = $data['create'];
+            $this->template->setCreate($data['create']);
         }
 
         if (isset($data['bulkCreate'])) {
-            $this->bulkCreate = $data['bulkCreate'];
+            $this->template->setBulkCreate($data['bulkCreate']);
         }
 
         if (isset($data['edit'])) {
-            $this->edit = $data['edit'];
+            $this->template->setEdit($data['edit']);
         }
 
         if (isset($data['list'])) {
-            $this->list = $data['list'];
+            $this->template->setList($data['list']);
         }
 
         if (isset($data['show'])) {
-            $this->show = $data['show'];
+            $this->template->setShow($data['show']);
         }
 
         if (isset($data['allowCreate'])) {
@@ -190,6 +164,14 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
     }
 
     /**
+     * @param Template $template
+     */
+    public function setTemplate(Template $template)
+    {
+        $this->template = $template;
+    }
+
+    /**
      * @param FormFactory $formFactory
      */
     public function setFormFactory(FormFactory $formFactory)
@@ -202,7 +184,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getCreateTemplate()
     {
-        return $this->create;
+        return $this->template->getCreate();
     }
 
     /**
@@ -210,7 +192,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function setCreateTemplate($createTemplate)
     {
-        $this->create = $createTemplate;
+        $this->template->setCreate($createTemplate);
     }
 
     /**
@@ -218,7 +200,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getBulkCreateTemplate()
     {
-        return $this->bulkCreate;
+        return $this->template->getBulkCreate();
     }
 
     /**
@@ -226,7 +208,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function setBulkCreateTemplate($bulkCreateTemplate)
     {
-        $this->bulkCreate = $bulkCreateTemplate;
+        $this->template->setBulkCreate($bulkCreateTemplate);
     }
 
     /**
@@ -234,7 +216,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getEditTemplate()
     {
-        return $this->edit;
+        return $this->template->getEdit();
     }
 
     /**
@@ -242,7 +224,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function setEditTemplate($editTemplate)
     {
-        $this->edit = $editTemplate;
+        $this->template->setEdit($editTemplate);
     }
 
     /**
@@ -250,7 +232,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getListTemplate()
     {
-        return $this->list;
+        return $this->template->getList();
     }
 
     /**
@@ -258,7 +240,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function setListTemplate($listTemplate)
     {
-        $this->list = $listTemplate;
+        $this->template->setList($listTemplate);
     }
 
     /**
@@ -266,7 +248,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getShowTemplate()
     {
-        return $this->show;
+        return $this->template->getShow();
     }
 
     /**
@@ -274,7 +256,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function setShowTemplate($showTemplate)
     {
-        $this->show = $showTemplate;
+        $this->template->setShow($showTemplate);
     }
 
     /**
@@ -282,7 +264,7 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
      */
     public function getAjaxTemplate()
     {
-        return $this->ajaxTemplate;
+        return $this->template->getAjaxTemplate();
     }
 
     /**

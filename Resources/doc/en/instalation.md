@@ -46,12 +46,12 @@ assetic:
     filters:
         cssrewrite:
             apply_to: '\.css$'
-        uglifyjs2:
-            bin: /usr/local/bin/uglifyjs #change to your path
-            apply_to: '\.js$'
-        uglifycss:
-            bin: /usr/local/bin/uglifycss #change to your path
-            apply_to: '\.css$'
+#        uglifyjs2:
+#            bin: /usr/local/bin/uglifyjs #change to your path
+#            apply_to: '\.js$'
+#        uglifycss:
+#            bin: /usr/local/bin/uglifycss #change to your path
+#            apply_to: '\.css$'
 
 # Required
 framework:
@@ -70,10 +70,6 @@ knp_menu:
         template: knp_menu.html.twig
     templating: false
     default_renderer: twig
-
-symfonyid_core:
-    micro_cache:
-        cache_lifetime: 5
 
 symfonyid_admin:
     app_title: 'SKELETON'

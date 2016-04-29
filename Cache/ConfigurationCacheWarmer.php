@@ -34,6 +34,7 @@ use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
+use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -66,6 +67,11 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     private $formFactory;
 
     /**
+     * @var Template
+     */
+    private $template;
+
+    /**
      * @var string
      */
     private $userForm;
@@ -84,11 +90,6 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
      * @var array
      */
     private $configurations = array();
-
-    /**
-     * @var array
-     */
-    private $template = array();
 
     /**
      * @var array
@@ -136,9 +137,9 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     }
 
     /**
-     * @param array $template
+     * @param Template $template
      */
-    public function setTemplate(array $template)
+    public function setTemplate(Template $template)
     {
         $this->template = $template;
     }
@@ -226,11 +227,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
     {
         /** @var Crud $crud */
         $crud = $this->configuration->getConfiguration(Crud::class);
-        $crud->setCreateTemplate($this->template['new']);
-        $crud->setBulkCreateTemplate($this->template['bulk_new']);
-        $crud->setEditTemplate($this->template['edit']);
-        $crud->setShowTemplate($this->template['show']);
-        $crud->setListTemplate($this->template['list']);
+        $crud->setTemplate($this->template);
 
         /** @var Grid $grid */
         $grid = $this->configuration->getConfiguration(Grid::class);

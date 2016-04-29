@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
+use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -52,14 +53,14 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     private $extractor;
 
     /**
-     * @var array
+     * @var Template
      */
-    private $configurations = array();
+    private $template;
 
     /**
      * @var array
      */
-    private $template = array();
+    private $configurations = array();
 
     /**
      * @var array
@@ -100,9 +101,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     }
 
     /**
-     * @param array $template
+     * @param Template $template
      */
-    public function setTemplate(array $template)
+    public function setTemplate(Template $template)
     {
         $this->template = $template;
     }
@@ -163,11 +164,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
         /** @var Crud $crud */
         $crud = $this->getConfiguration(Crud::class);
-        $crud->setCreateTemplate($this->template['new']);
-        $crud->setBulkCreateTemplate($this->template['bulk_new']);
-        $crud->setEditTemplate($this->template['edit']);
-        $crud->setShowTemplate($this->template['show']);
-        $crud->setListTemplate($this->template['list']);
+        $crud->setTemplate($this->template);
 
         $this->addConfiguration($crud);
     }

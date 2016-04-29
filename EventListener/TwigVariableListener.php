@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\Twig;
+namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-class VariableRegistrator
+class TwigVariableListener
 {
     /**
      * @var \Twig_Environment
@@ -34,11 +34,51 @@ class VariableRegistrator
     }
 
     /**
-     * @param array $variables
+     * @param string $title
      */
-    public function setVariables(array $variables)
+    public function setTitle($title)
     {
-        $this->variables = $variables;
+        $this->variables['title'] = $title;
+    }
+
+    /**
+     * @param string $shortTitle
+     */
+    public function setShortTitle($shortTitle)
+    {
+        $this->variables['short_title'] = $shortTitle;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setDateTimeFormat($format)
+    {
+        $this->variables['date_format'] = $format;
+    }
+
+    /**
+     * @param string $menu
+     */
+    public function setMenu($menu)
+    {
+        $this->variables['menu'] = $menu;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->variables['locale'] = $locale;
+    }
+
+    /**
+     * @param string $translationDomain
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->variables['translation_domain'] = $translationDomain;
     }
 
     /**

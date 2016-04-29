@@ -8,7 +8,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
             - [setFilter, ['%symfonian_id.admin.filter%']]
-            - [setTemplate, [{new: '%symfonian_id.admin.themes.new_view%', bulk_new: '%symfonian_id.admin.themes.bulk_new%', edit: '%symfonian_id.admin.themes.edit_view%', show: '%symfonian_id.admin.themes.show_view%', list: '%symfonian_id.admin.themes.list_view%'}]]
+            - [setTemplate, ['@symfonian_id.admin.view.template']]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: configureGrid, priority: 1027 }
             - { name: kernel.event_listener, event: kernel.controller, method: configureTemplate, priority: 1027 }
@@ -18,6 +18,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Annotation\Crud
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplate, ['@symfonian_id.admin.view.template']]
             - [setFormFactory, ['@form.factory']]
         tags:
             - { name: siab.config }
