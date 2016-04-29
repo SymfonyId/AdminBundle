@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfiguratorAwareTrait;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as Base;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class Controller extends Base
 {
-    use ConfiguratorAwareTrait;
+    use ConfigurationAwareTrait;
 
     /**
      * Get controller class name.

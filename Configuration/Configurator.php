@@ -14,6 +14,8 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
+use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
@@ -113,7 +115,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     public function addConfiguration(ConfigurationInterface $configuration)
     {
         if ($this->freeze) {
-            throw new \Exception('Can\'t change any configuration during production');
+            throw new RuntimeException('Can\'t change any configuration during production');
         }
 
         if ($configuration instanceof ContainerAwareInterface) {
@@ -136,7 +138,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     public function getConfiguration($name)
     {
         if (!array_key_exists($name, $this->configurations)) {
-            throw new \InvalidArgumentException(sprintf('Configuration for %s not found.', $name));
+            throw new ClassNotFoundException(sprintf('Configuration for %s not found.', $name));
         }
 
         return $this->configurations[$name];

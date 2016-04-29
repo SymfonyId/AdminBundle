@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfiguratorAwareTrait;
+use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
  */
 abstract class AbstractQueryListener extends AbstractListener implements ContainerAwareInterface
 {
-    use ConfiguratorAwareTrait;
+    use ConfigurationAwareTrait;
 
     /**
      * @var ContainerInterface

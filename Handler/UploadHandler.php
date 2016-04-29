@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
+use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
 use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
 use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,7 +51,7 @@ class UploadHandler
     public function setFields(array $fields, array $targetFields)
     {
         if (count($fields) !== count($targetFields)) {
-            throw new \InvalidArgumentException('Fields dan Target Fields harus sama jumlahnya.');
+            throw new KeyNotMatchException('message.key_not_match');
         }
         $this->fields = array_values($fields);
         $this->targetFields = array_values($targetFields);

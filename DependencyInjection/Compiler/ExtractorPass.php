@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\Compiler;
+namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,24 +18,26 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class ConfigurationCompiler implements CompilerPassInterface
+class ExtractorPass implements CompilerPassInterface
 {
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('symfonian_id.admin.congiration.configurator')) {
+        if (!$container->has('symfonian_id.admin.extractor.extractor_factory')) {
             return;
         }
 
         /*
-         * Add all service with tag name siab.config
+         * Add all service with tag name siab.extractor
          */
-        $definition = $container->findDefinition('symfonian_id.admin.congiration.configurator');
-        $taggedServices = $container->findTaggedServiceIds('siab.config');
+        $definition = $container->findDefinition('symfonian_id.admin.extractor.extractor_factory');
+        $taggedServices = $container->findTaggedServiceIds('siab.extractor');
         foreach ($taggedServices as $id => $tags) {
-            $definition->addMethodCall('addConfiguration', array(new Reference($id)));
+            $definition->addMethodCall('addExtractor', array(new Reference($id)));
         }
+
+        $definition->addMethodCall('freeze');
     }
 }

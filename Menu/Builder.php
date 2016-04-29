@@ -15,6 +15,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfonian\Indonesia\AdminBundle\Extractor\ClassExtractor;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\HttpKernel\Kernel;
@@ -225,6 +226,6 @@ class Builder
             return;
         }
 
-        throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $file));
+        throw new RuntimeException(sprintf('Failed to write cache file "%s".', $file));
     }
 }

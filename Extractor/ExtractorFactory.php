@@ -11,6 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
+use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
+
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
@@ -125,7 +127,7 @@ class ExtractorFactory
     private function getExtractor($name)
     {
         if (!array_key_exists($name, $this->extractors)) {
-            throw new \InvalidArgumentException(sprintf('Extrator for %s not found.', $name));
+            throw new ClassNotFoundException(sprintf('Extrator for %s not found.', $name));
         }
 
         return $this->extractors[$name];

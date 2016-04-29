@@ -17,6 +17,11 @@ namespace Symfonian\Indonesia\AdminBundle;
 class SymfonianIndonesiaAdminConstants
 {
     /**
+     * Configuration
+     */
+    const CONFIGURATION_ALIAS = 'symfonyid_admin';
+
+    /**
      * Crud Events.
      */
     const PRE_SAVE = 'siab.pre_save';

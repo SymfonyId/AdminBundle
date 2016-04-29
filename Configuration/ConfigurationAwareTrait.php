@@ -24,7 +24,7 @@ use Symfonian\Indonesia\CoreBundle\Toolkit\Util\ArrayUtil\ArrayNormalizer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-trait ConfiguratorAwareTrait
+trait ConfigurationAwareTrait
 {
     /**
      * @return ContainerInterface

@@ -24,6 +24,7 @@ message:
     delete_bulk: 'Berhasil menghapus %deleted% dari %count% dengan rincian [<b>%data%</b>]'
     insert_bulk_failed: 'Tidak ada data yang dapat disimpan. Pastikan data yang diinput sudah benar'
     insert_bulk: 'Berhasil menyimpan %inserted% dari %count% dengan rincian [<b>%data%</b>]'
+    key_not_match: 'Jumlah field dan target harus sama'
 
 action:
     login: 'Masuk'

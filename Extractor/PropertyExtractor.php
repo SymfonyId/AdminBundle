@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -34,12 +35,14 @@ class PropertyExtractor implements ExtractorInterface
     /**
      * @param \Reflector $reflectionProperty
      *
+     * @throws InvalidArgumentException
+     *
      * @return array
      */
     public function extract(\Reflector $reflectionProperty)
     {
         if (!$reflectionProperty instanceof \ReflectionProperty) {
-            throw new \InvalidArgumentException(sprintf('extract() need \ReflectionProperty method as parameter, got %s', get_class($reflectionProperty)));
+            throw new InvalidArgumentException(sprintf('extract() need \ReflectionProperty method as parameter, got %s', get_class($reflectionProperty)));
         }
 
         return $this->reader->getPropertyAnnotations($reflectionProperty);

@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
 use Symfonian\Indonesia\AdminBundle\Generator\ControllerGenerator;
 use Symfonian\Indonesia\AdminBundle\Generator\FormGenerator;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -84,7 +85,7 @@ EOT
         try {
             $metadata = $this->getEntityMetadata($entityClass);
         } catch (\Exception $e) {
-            throw new \RuntimeException(sprintf('Entity "%s" does not exist in the "%s" bundle. Create it before and then execute this command again.', $entity, $bundle));
+            throw new ClassNotFoundException(sprintf('Entity "%s" does not exist in the "%s" bundle. Create it before and then execute this command again.', $entity, $bundle));
         }
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 

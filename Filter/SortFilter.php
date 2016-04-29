@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\Filter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Symfonian\Indonesia\AdminBundle\Exception\MethodNotImplementedException;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
@@ -86,6 +87,6 @@ class SortFilter extends AbstractFilter
      */
     protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null)
     {
-        throw new \Exception(sprintf('%s is not implemented', __METHOD__));
+        throw new MethodNotImplementedException(sprintf('%s is not implemented', __METHOD__));
     }
 }

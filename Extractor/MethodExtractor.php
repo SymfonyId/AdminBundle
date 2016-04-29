@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -34,12 +35,14 @@ class MethodExtractor implements ExtractorInterface
     /**
      * @param \Reflector $reflectionMethod
      *
+     * @throws InvalidArgumentException
+     *
      * @return array
      */
     public function extract(\Reflector $reflectionMethod)
     {
         if (!$reflectionMethod instanceof \ReflectionMethod) {
-            throw new \InvalidArgumentException(sprintf('extract() need \ReflectionMethod method as parameter, got %s', get_class($reflectionMethod)));
+            throw new InvalidArgumentException(sprintf('extract() need \ReflectionMethod method as parameter, got %s', get_class($reflectionMethod)));
         }
 
         return $this->reader->getMethodAnnotations($reflectionMethod);

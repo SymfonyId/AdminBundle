@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -55,11 +56,11 @@ class FormGenerator extends AbstractGenerator
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
-            throw new \RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
+            throw new RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
         }
 
         if (count($metadata->identifier) > 1) {
-            throw new \RuntimeException('The form generator does not support entity classes with multiple primary keys.');
+            throw new RuntimeException('The form generator does not support entity classes with multiple primary keys.');
         }
 
         $parts = explode('\\', $entity);

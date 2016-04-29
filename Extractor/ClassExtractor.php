@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -34,12 +35,14 @@ class ClassExtractor implements ExtractorInterface
     /**
      * @param \Reflector $reflectionClass
      *
+     * @throws InvalidArgumentException
+     *
      * @return array
      */
     public function extract(\Reflector $reflectionClass)
     {
         if (!$reflectionClass instanceof \ReflectionClass) {
-            throw new \InvalidArgumentException(sprintf('extract() need \ReflectionClass method as parameter, got %s', get_class($reflectionClass)));
+            throw new InvalidArgumentException(sprintf('extract() need \ReflectionClass method as parameter, got %s', get_class($reflectionClass)));
         }
 
         return $this->reader->getClassAnnotations($reflectionClass);
