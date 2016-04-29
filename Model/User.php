@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\BulkDeletableInterface;
 
 /**
  * @ORM\MappedSuperclass
