@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\Model\BulkDeletableInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
 
 /**
  * @ORM\Entity

@@ -32,7 +32,7 @@ new FOS\UserBundle\FOSUserBundle(),
 new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-new Symfonian\Indonesia\CoreBundle\SymfonianIndonesiaCoreBundle(),
+new Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminBundle(),
 new Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminBundle($this),
 ```
 

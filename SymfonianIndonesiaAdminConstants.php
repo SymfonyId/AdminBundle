@@ -17,7 +17,7 @@ namespace Symfonian\Indonesia\AdminBundle;
 class SymfonianIndonesiaAdminConstants
 {
     /**
-     * Configuration
+     * Configuration.
      */
     const CONFIGURATION_ALIAS = 'symfonyid_admin';
 

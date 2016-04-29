@@ -23,7 +23,7 @@ use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
 use Symfonian\Indonesia\AdminBundle\Model\BulkDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\View\View;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

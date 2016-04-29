@@ -12,10 +12,6 @@
 namespace Symfonian\Indonesia\AdminBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableEntity;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableEntity;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\TimestampableInterface;
 
 /**
  * @ORM\MappedSuperclass

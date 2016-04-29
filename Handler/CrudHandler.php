@@ -19,8 +19,8 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\SoftDeletableInterface;
+use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Model\SoftDeletableInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
@@ -129,7 +129,7 @@ class CrudHandler implements ContainerAwareInterface
         $pagination = $this->paginateResult($page, $perPage);
         $data = array();
         $identifier = array();
-        /** @var \Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface $record */
+        /** @var \Symfonian\Indonesia\AdminBundle\Model\EntityInterface $record */
         foreach ($pagination as $key => $record) {
             $temp = array();
             $identifier[$key] = $record->getId();

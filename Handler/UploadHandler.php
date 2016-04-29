@@ -12,8 +12,8 @@
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
 use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
-use Symfonian\Indonesia\CoreBundle\Toolkit\DoctrineManager\Model\EntityInterface;
-use Symfonian\Indonesia\CoreBundle\Toolkit\Util\StringUtil\CamelCasizer;
+use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Toolkit\Util\StringUtil\CamelCasizer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
