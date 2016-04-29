@@ -12,7 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
-use Symfonian\Indonesia\AdminBundle\Model\SoftDeletableInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>

@@ -12,7 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Event;
 
 use Doctrine\ORM\EntityManager;
-use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -11,9 +11,9 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
-use Symfonian\Indonesia\AdminBundle\Model\EntityInterface;
-use Symfonian\Indonesia\AdminBundle\Toolkit\Util\StringUtil\CamelCasizer;
+use Symfonian\Indonesia\AdminBundle\Util\CamelCaser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -80,7 +80,7 @@ class UploadHandler
 
         $file = null;
         foreach ($this->fields as $key => $field) {
-            $getter = CamelCasizer::underScoretToCamelCase('get_'.$field);
+            $getter = CamelCaser::underScoretToCamelCase('get_'.$field);
             if (method_exists($entity, $getter)) {
                 /** @var UploadedFile $file */
                 $file = call_user_func_array(array($entity, $getter), array());
@@ -93,7 +93,7 @@ class UploadHandler
                     $file->move($this->dirPath, $fileName);
                 }
 
-                $setter = CamelCasizer::underScoretToCamelCase('set_'.$this->targetFields[$key]);
+                $setter = CamelCaser::underScoretToCamelCase('set_'.$this->targetFields[$key]);
                 if (method_exists($entity, $setter)) {
                     call_user_func_array(array($entity, $setter), array($fileName));
                 }
