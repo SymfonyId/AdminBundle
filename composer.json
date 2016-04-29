@@ -29,7 +29,6 @@
         "knplabs/knp-paginator-bundle": "dev-master",
         "knplabs/knp-menu-bundle": "dev-master",
         "symfonyid/core-bundle": "dev-master",
-        "symfonyid/symfony-bundle-plugins": "dev-master",
         "friendsofsymfony/user-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "dev-master"
     },
