@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Event;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -27,9 +28,9 @@ class FilterEntityEvent extends Event
     private $entity;
 
     /**
-     * @var EntityManager
+     * @var ObjectManager
      */
-    private $entityManager;
+    private $manager;
 
     /**
      * @var Response
@@ -37,19 +38,19 @@ class FilterEntityEvent extends Event
     private $response;
 
     /**
-     * @param EntityManager $entityManager
+     * @param ObjectManager $objectManager
      */
-    public function setEntityManager(EntityManager $entityManager)
+    public function setManager(ObjectManager $objectManager)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $objectManager;
     }
 
     /**
      * @return EntityManager
      */
-    public function getEntityManager()
+    public function getManager()
     {
-        return $this->entityManager;
+        return $this->manager;
     }
 
     /**

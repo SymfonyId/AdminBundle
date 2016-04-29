@@ -13,6 +13,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Handler\CrudHandler
         arguments:
             - '@security.token_storage'
+            - '@symfonian_id.admin.managerFactory.factory'
         calls:
             - [setContainer, ['@service_container']]
 
@@ -21,8 +22,6 @@ services:
 
     symfonian_id.admin.manager.factory:
         class: Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory
-        arguments:
-            - '@doctrine.orm.entity_manager'
 
     symfonian_id.admin.view.view:
         class: Symfonian\Indonesia\AdminBundle\View\View

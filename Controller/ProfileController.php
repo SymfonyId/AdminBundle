@@ -12,11 +12,14 @@
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
 use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
+use Symfonian\Indonesia\AdminBundle\Handler\CrudHandler;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
@@ -111,14 +114,15 @@ class ProfileController extends Controller
                     return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $this->viewParams);
                 }
 
+                /** @var UserManager $userManager */
                 $userManager = $this->container->get('fos_user.user_manager');
                 $entity = $form->getData();
-
-                /** @var \Doctrine\ORM\EntityManager $entityManager */
-                $entityManager = $this->container->get('doctrine.orm.entity_manager');
+                
+                /** @var ManagerFactory $managerFactory */
+                $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
 
                 $event = new FilterEntityEvent();
-                $event->setEntityManager($entityManager);
+                $event->setManager($managerFactory->getManager($configuration->getDriver()));
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);

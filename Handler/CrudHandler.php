@@ -11,20 +11,24 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Handler;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
-use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
-use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -40,17 +44,17 @@ class CrudHandler implements ContainerAwareInterface
     private $container;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var ManagerFactory
      */
-    private $manager;
+    private $managerFactory;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityRepository
      */
     private $repository;
 
     /**
-     * @var \Doctrine\ORM\Mapping\ClassMetadata
+     * @var ClassMetadata
      */
     private $classMetadata;
 
@@ -58,6 +62,11 @@ class CrudHandler implements ContainerAwareInterface
      * @var TokenStorageInterface
      */
     private $tokenStorage;
+
+    /**
+     * @var string
+     */
+    private $driver;
 
     /**
      * @var string
@@ -74,9 +83,10 @@ class CrudHandler implements ContainerAwareInterface
      */
     private $errorMessage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage, ManagerFactory $managerFactory)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->managerFactory = $managerFactory;
     }
 
     /**
@@ -85,11 +95,10 @@ class CrudHandler implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->manager = $container->get('doctrine.orm.entity_manager');
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getResponse()
     {
@@ -97,7 +106,15 @@ class CrudHandler implements ContainerAwareInterface
     }
 
     /**
-     * @param $template
+     * @param string $driver
+     */
+    public function setDriver($driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * @param string $template
      */
     public function setTemplate($template)
     {
@@ -105,12 +122,13 @@ class CrudHandler implements ContainerAwareInterface
     }
 
     /**
-     * @param $class
+     * @param string $class
      */
     public function setEntity($class)
     {
-        $this->repository = $this->manager->getRepository($class);
-        $this->classMetadata = $this->manager->getClassMetadata($class);
+        $manager = $this->managerFactory->getManager($this->driver);
+        $this->repository = $manager->getRepository($class);
+        $this->classMetadata = $manager->getClassMetadata($class);
         $this->class = $this->classMetadata->getName();
     }
 
@@ -129,7 +147,7 @@ class CrudHandler implements ContainerAwareInterface
         $pagination = $this->paginateResult($page, $perPage);
         $data = array();
         $identifier = array();
-        /** @var \Symfonian\Indonesia\AdminBundle\Model\EntityInterface $record */
+        /** @var \Symfonian\Indonesia\AdminBundle\Contract\EntityInterface $record */
         foreach ($pagination as $key => $record) {
             $temp = array();
             $identifier[$key] = $record->getId();
@@ -190,9 +208,10 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function remove(EntityInterface $data)
     {
+        $manager = $this->managerFactory->getManager($this->driver);
         $event = new FilterEntityEvent();
         $event->setEntity($data);
-        $event->setEntityManager($this->manager);
+        $event->setManager($manager);
         $this->fireEvent(Constants::PRE_DELETE, $event);
 
         if ($event->getResponse()) {
@@ -298,17 +317,18 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function save(EntityInterface $entity)
     {
+        $manager = $this->managerFactory->getManager($this->driver);
         $preSaveEvent = new FilterEntityEvent();
         $preSaveEvent->setEntity($entity);
-        $preSaveEvent->setEntityManager($this->manager);
+        $preSaveEvent->setManager($manager);
         $this->fireEvent(Constants::PRE_SAVE, $preSaveEvent);
 
         try {
-            $this->manager->persist($preSaveEvent->getEntity());
-            $this->manager->flush();
+            $manager->persist($preSaveEvent->getEntity());
+            $manager->flush();
 
             $postSaveEvent = new FilterEntityEvent();
-            $postSaveEvent->setEntityManager($this->manager);
+            $postSaveEvent->setManager($manager);
             $postSaveEvent->setEntity($entity);
             $this->fireEvent(Constants::POST_SAVE, $postSaveEvent);
         } catch (\Exception $ex) {
@@ -318,6 +338,16 @@ class CrudHandler implements ContainerAwareInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return EntityInterface
+     */
+    public function find($id)
+    {
+        return $this->managerFactory->getManager($this->driver)->getRepository($this->class)->find($id);
     }
 
     /**
@@ -403,16 +433,17 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function delete(EntityInterface $entity)
     {
+        $manager = $this->managerFactory->getManager($this->driver);
         if ($entity instanceof SoftDeletableInterface) {
             $entity->isDeleted(true);
             $entity->setDeletedAt(new \DateTime());
             $entity->setDeletedBy($this->tokenStorage->getToken()->getUsername());
 
-            $this->manager->persist($entity);
-            $this->manager->flush();
+            $manager->persist($entity);
+            $manager->flush();
         } else {
-            $this->manager->remove($entity);
-            $this->manager->flush();
+            $manager->remove($entity);
+            $manager->flush();
         }
     }
 

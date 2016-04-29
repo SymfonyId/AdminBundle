@@ -2,17 +2,17 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
 abstract class AbstractFilter
 {
     /**
-     * @var EntityManager
+     * @var ManagerFactory
      */
-    private $manager;
+    private $managerFactory;
 
     /**
      * @var array
@@ -23,6 +23,11 @@ abstract class AbstractFilter
      * @var array
      */
     private static $ALIAS_USED = array(Constants::ENTITY_ALIAS);
+
+    /**
+     * @var string DB Driver
+     */
+    private $driver;
 
     /**
      * @param string $class
@@ -38,11 +43,11 @@ abstract class AbstractFilter
     abstract protected function doFilter(QueryBuilder $queryBuilder, array $metadata, $alias, $filter = null);
 
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerFactory $managerFactory
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ManagerFactory $managerFactory)
     {
-        $this->manager = $entityManager;
+        $this->managerFactory = $managerFactory;
     }
 
     /**
@@ -74,6 +79,22 @@ abstract class AbstractFilter
     /**
      * @return string
      */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
+
+    /**
+     * @param string $driver
+     */
+    public function setDriver($driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * @return string
+     */
     protected function getAlias()
     {
         $available = array_values(array_diff(self::$ALIAS, self::$ALIAS_USED));
@@ -90,7 +111,7 @@ abstract class AbstractFilter
      */
     protected function getClassMetadata($entityClass)
     {
-        return $this->manager->getClassMetadata($entityClass);
+        return $this->managerFactory->getManager($this->getDriver())->getClassMetadata($entityClass);
     }
 
     /**

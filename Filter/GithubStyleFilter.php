@@ -12,8 +12,8 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -21,12 +21,12 @@ use Doctrine\ORM\QueryBuilder;
 class GithubStyleFilter extends FieldFilter
 {
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerFactory $managerFactory
      * @param Reader        $reader
      */
-    public function __construct(EntityManager $entityManager, Reader $reader)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader)
     {
-        parent::__construct($entityManager, $reader);
+        parent::__construct($managerFactory, $reader);
     }
 
     /**

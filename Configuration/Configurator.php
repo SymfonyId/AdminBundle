@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Column;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -66,6 +67,11 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
      * @var array
      */
     protected $filters = array();
+
+    /**
+     * @var string
+     */
+    private $driver;
 
     /**
      * @var bool
@@ -241,6 +247,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
                 if ($annotation instanceof Sortable) {
                     $sortable[] = $reflectionProperty->getName();
                 }
+                if ($annotation instanceof Driver) {
+                    $this->setDriver($annotation->getDriver());
+                }
             }
         }
 
@@ -258,8 +267,24 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $this->addConfiguration($grid);
     }
 
+    /**
+     * @return string
+     */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
+
     public function freeze()
     {
         $this->freeze = true;
+    }
+
+    /**
+     * @param string $driver
+     */
+    private function setDriver($driver)
+    {
+        $this->driver = $driver;
     }
 }

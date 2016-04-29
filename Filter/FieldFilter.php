@@ -15,6 +15,8 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -32,12 +34,12 @@ class FieldFilter extends AbstractFilter
     private $dateTimeFormat;
 
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerFactory $managerFactory
      * @param Reader        $reader
      */
-    public function __construct(EntityManager $entityManager, Reader $reader)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader)
     {
-        parent::__construct($entityManager);
+        parent::__construct($managerFactory);
         $this->reader = $reader;
     }
 
@@ -62,6 +64,9 @@ class FieldFilter extends AbstractFilter
             foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $annotation) {
                 if ($annotation instanceof Filter) {
                     $filters[] = $reflectionProperty->getName();
+                }
+                if ($annotation instanceof Driver) {
+                    $this->setDriver($annotation->getDriver());
                 }
             }
         }

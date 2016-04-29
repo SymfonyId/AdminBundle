@@ -73,6 +73,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver());
 
         $isInserted = array();
         $countData = 0;
@@ -164,6 +165,7 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver());
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($crud->getShowTemplate());
         $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud), $crud->isAllowDelete());
@@ -189,6 +191,7 @@ abstract class CrudController extends Controller
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
+        $handler->setDriver($configuration->getDriver());
         $handler->setEntity($crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
         if ($returnHandler instanceof Response) {
@@ -217,6 +220,9 @@ abstract class CrudController extends Controller
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
         $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver());
 
         $isDeleted = array();
         $countData = 0;
@@ -226,9 +232,6 @@ abstract class CrudController extends Controller
                 return;
             }
             $deleteMessage = $entity->getDeleteInformation();
-
-            /** @var CrudHandler $handler */
-            $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
             $handler->setEntity($crud->getEntityClass());
             if (true === $handler->remove($entity)) {
@@ -299,6 +302,7 @@ abstract class CrudController extends Controller
         }, $filters)));
         $view->setParam('filter_fields_entity', implode(', ', $filters));
 
+        $handler->setDriver($configuration->getDriver());
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($listTemplate);
         $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $this->isAllowDelete($crud), $grid->isFormatNumber());
@@ -320,6 +324,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver());
         $handler->setEntity($crud->getEntityClass());
 
         /** @var Grid $grid */
@@ -345,7 +350,6 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
@@ -395,6 +399,7 @@ abstract class CrudController extends Controller
             ));
         }
 
+        $handler->setDriver($configuration->getDriver());
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($this, $request, $data, $form);
@@ -412,14 +417,18 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
+        $handler->setDriver($configuration->getDriver());
+        $handler->setEntity($crud->getEntityClass());
+        
         /** @var EntityInterface $entity */
-        $entity = $this->container->get('doctrine.orm.entity_manager')->getRepository($crud->getEntityClass())->find($id);
-
+        $entity = $handler->find($id);
         if (!$entity) {
             throw new NotFoundHttpException($translator->trans('message.data_not_found', array('%id%' => $id), $translationDomain));
         }

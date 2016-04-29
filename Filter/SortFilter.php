@@ -12,10 +12,11 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Exception\MethodNotImplementedException;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
 /**
@@ -29,12 +30,12 @@ class SortFilter extends AbstractFilter
     private $reader;
 
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerFactory $managerFactory
      * @param Reader        $reader
      */
-    public function __construct(EntityManager $entityManager, Reader $reader)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader)
     {
-        parent::__construct($entityManager);
+        parent::__construct($managerFactory);
         $this->reader = $reader;
     }
 
@@ -51,6 +52,9 @@ class SortFilter extends AbstractFilter
             foreach ($this->reader->getPropertyAnnotations($reflectionProperty) as $annotation) {
                 if ($annotation instanceof Sortable) {
                     $sortable[] = $reflectionProperty->getName();
+                }
+                if ($annotation instanceof Driver) {
+                    $this->setDriver($annotation->getDriver());
                 }
             }
         }
