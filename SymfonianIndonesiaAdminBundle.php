@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ConfigurationPass;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ExtractorPass;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\PaginationTemplatePass;
+use Symfonian\Indonesia\AdminBundle\DependencyInjection\SymfonianIndonesiaAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -46,5 +47,13 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->addCompilerPass(new PaginationTemplatePass());
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new ExtractorPass());
+    }
+
+    /**
+     * @return SymfonianIndonesiaAdminExtension
+     */
+    public function getContainerExtension()
+    {
+        return new SymfonianIndonesiaAdminExtension();
     }
 }

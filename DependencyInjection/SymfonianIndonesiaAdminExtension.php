@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\DependencyInjection;
 
 use Symfonian\Indonesia\AdminBundle\Configuration\ParameterBuilder;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -34,10 +35,9 @@ class SymfonianIndonesiaAdminExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $parameterBuilder = new ParameterBuilder($container);
-        $parameterBuilder->build($configs);
+        $processor = new Processor();
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('configurations.yml');
         $loader->load('extractors.yml');
         $loader->load('filters.yml');
@@ -46,6 +46,12 @@ class SymfonianIndonesiaAdminExtension extends Extension
         $loader->load('menu.yml');
         $loader->load('services.yml');
         $loader->load('twig.yml');
+
+        $configuration = new Configuration();
+        $config = $processor->processConfiguration($configuration, $configs);
+
+        $parameterBuilder = new ParameterBuilder($container);
+        $parameterBuilder->build($config);
     }
 
     /**
