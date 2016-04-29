@@ -6,7 +6,10 @@
 
 **Closed issues:**
 
+- Remove BundlePlugins as dependency [\#32](https://github.com/SymfonyId/AdminBundle/issues/32)
 - Export data to csv [\#30](https://github.com/SymfonyId/AdminBundle/issues/30)
+- Bulk update via csv [\#29](https://github.com/SymfonyId/AdminBundle/issues/29)
+- Add Bulk Insert via csv [\#28](https://github.com/SymfonyId/AdminBundle/issues/28)
 
 ## [6.1.3](https://github.com/SymfonyId/AdminBundle/tree/6.1.3) (2016-04-28)
 [Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.1.1...6.1.3)
