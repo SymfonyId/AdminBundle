@@ -3,7 +3,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
