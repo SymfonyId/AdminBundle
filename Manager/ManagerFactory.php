@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
 
 /**
@@ -51,13 +52,15 @@ class ManagerFactory
      * @param null|string $driver
      *
      * @return ObjectManager
+     *
+     * @throws InvalidArgumentException
      */
-    public function getManager($driver = null)
+    public function getManager($driver)
     {
         if ($driver) {
             return $this->manager[$driver];
         }
 
-        return array_pop($this->manager);
+        throw new InvalidArgumentException(sprintf('%s driver not found'));
     }
 }
