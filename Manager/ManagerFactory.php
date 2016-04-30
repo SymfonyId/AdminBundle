@@ -63,4 +63,13 @@ class ManagerFactory
 
         throw new InvalidArgumentException(sprintf('%s driver not found'));
     }
+
+    /**
+     * @param string $driver
+     * @param string $entityClass
+     */
+    public function getQueryBuilder($driver, $entityClass)
+    {
+
+    }
 }
