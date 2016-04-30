@@ -126,7 +126,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function setEntity($class)
     {
-        $manager = $this->managerFactory->getManager($this->driver);
+        $manager = $this->managerFactory->getManager($this->getDriver());
         $this->repository = $manager->getRepository($class);
         $this->classMetadata = $manager->getClassMetadata($class);
         $this->class = $this->classMetadata->getName();
@@ -208,7 +208,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function remove(EntityInterface $data)
     {
-        $manager = $this->managerFactory->getManager($this->driver);
+        $manager = $this->managerFactory->getManager($this->getDriver());
         $event = new FilterEntityEvent();
         $event->setEntity($data);
         $event->setManager($manager);
@@ -317,7 +317,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function save(EntityInterface $entity)
     {
-        $manager = $this->managerFactory->getManager($this->driver);
+        $manager = $this->managerFactory->getManager($this->getDriver());
         $preSaveEvent = new FilterEntityEvent();
         $preSaveEvent->setEntity($entity);
         $preSaveEvent->setManager($manager);
@@ -347,7 +347,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     public function find($id)
     {
-        return $this->managerFactory->getManager($this->driver)->getRepository($this->class)->find($id);
+        return $this->managerFactory->getManager($this->getDriver())->getRepository($this->class)->find($id);
     }
 
     /**
@@ -433,7 +433,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function delete(EntityInterface $entity)
     {
-        $manager = $this->managerFactory->getManager($this->driver);
+        $manager = $this->managerFactory->getManager($this->getDriver());
         if ($entity instanceof SoftDeletableInterface) {
             $entity->isDeleted(true);
             $entity->setDeletedAt(new \DateTime());
@@ -461,6 +461,14 @@ class CrudHandler implements ContainerAwareInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDriver()
+    {
+        return $this->driver?: $this->container->getParameter('symfonian_id.admin.driver');
     }
 
     /**
