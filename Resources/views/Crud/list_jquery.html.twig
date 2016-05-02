@@ -45,9 +45,11 @@
         };
 
         function encodeUrl(data) {
+            var unlist = ['undefined', 'function'];
             var ret = [];
+
             for (var d in data) {
-                if ('undefined' !== typeof data[d]) {
+                if (unlist.indexOf( typeof data[d] ) == -1) {
                     ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
                 }
             }
