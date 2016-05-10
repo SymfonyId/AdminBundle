@@ -99,13 +99,13 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1027 }
 
-    symfonian_id.admin.soft_deletable:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\FilterSoftDeletableListener
-        calls:
-            - [setContainer, ['@service_container']]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1025 }
+#    symfonian_id.admin.soft_deletable:
+#        class: Symfonian\Indonesia\AdminBundle\EventListener\FilterSoftDeletableListener
+#        calls:
+#            - [setContainer, ['@service_container']]
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+#            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1025 }
 
     symfonian_id.admin.sort_query:
         class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
@@ -117,3 +117,10 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
+
+    symfonian_id.admin.soft_deletable:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\EnableSoftDeletableFilterListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

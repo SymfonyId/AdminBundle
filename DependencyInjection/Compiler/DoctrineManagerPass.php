@@ -21,16 +21,18 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class DoctrineManagerPass implements CompilerPassInterface
 {
+    const MANAGER_FACTORY = 'symfonian_id.admin.manager.factory';
+
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('symfonian_id.admin.manager.factory')) {
+        if (!$container->has(self::MANAGER_FACTORY)) {
             return;
         }
 
-        $definition = $container->findDefinition('symfonian_id.admin.manager.factory');
+        $definition = $container->findDefinition(self::MANAGER_FACTORY);
         $definition->addMethodCall('addManager', array(
             $container->getParameter('symfonian_id.admin.driver'),
             new Reference(ManagerFactory::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')])

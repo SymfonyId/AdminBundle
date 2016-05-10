@@ -23,26 +23,21 @@ class DoctrineFilterPass implements CompilerPassInterface
     /**
      * @var string
      */
-    const NAME_CONFIGURATION = 'doctrine.orm.default_configuration';
-
-    /**
-     * @var string
-     */
-    const NAME_CONFIGURATOR = 'doctrine.orm.default_manager_configurator';
+    const DOCTRINE_CONFIGURATION = 'doctrine.orm.default_configuration';
 
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::NAME_CONFIGURATION)) {
+        if (!$container->hasDefinition(self::DOCTRINE_CONFIGURATION)) {
             return;
         }
 
         /*
          * Add all service with tag name siab.filter
          */
-        $definition = $container->findDefinition(self::NAME_CONFIGURATION);
+        $definition = $container->findDefinition(self::DOCTRINE_CONFIGURATION);
         $taggedServices = $container->findTaggedServiceIds('siab.filter');
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addFilter', array($id, new Reference($id)));

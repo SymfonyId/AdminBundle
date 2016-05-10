@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle;
 
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ConfigurationPass;
+use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\DoctrineFilterPass;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\DoctrineManagerPass;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\ExtractorPass;
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\PaginationTemplatePass;
@@ -49,6 +50,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new ExtractorPass());
         $container->addCompilerPass(new DoctrineManagerPass());
+        $container->addCompilerPass(new DoctrineFilterPass());
     }
 
     /**
