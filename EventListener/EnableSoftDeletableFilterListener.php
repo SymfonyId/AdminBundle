@@ -11,7 +11,9 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
+use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
@@ -20,21 +22,22 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class EnableSoftDeletableFilterListener
 {
     /**
-     * @var EntityManager
+     * @var EntityManager|DocumentManager
      */
-    private $entityManager;
+    private $manager;
 
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerFactory $managerFactory
+     * @param string $driver
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ManagerFactory $managerFactory, $driver)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $managerFactory->getManager($driver);
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $filter = $this->entityManager->getFilters()->enable('symfonian_id.admin.filter.soft_deletable');
+        $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.soft_deletable');
         $filter->setParameter('isDeleted', false);
     }
 }

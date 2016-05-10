@@ -12,7 +12,7 @@
 namespace Tests\Symfonian\Indonesia\AdminBundle\Cache;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>

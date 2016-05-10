@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
+use Symfonian\Indonesia\AdminBundle\Contract\ExtractorInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>

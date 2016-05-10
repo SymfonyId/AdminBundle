@@ -11,7 +11,7 @@
 
 namespace Tests\Symfonian\Indonesia\AdminBundle\Cache;
 
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**

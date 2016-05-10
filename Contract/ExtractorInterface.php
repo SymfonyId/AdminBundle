@@ -9,11 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\Builder;
+namespace Symfonian\Indonesia\AdminBundle\Contract;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FilterBuilder
+interface ExtractorInterface
 {
+    /**
+     * @param \Reflector $reflectionClass
+     *
+     * @return mixed
+     */
+    public function extract(\Reflector $reflectionClass);
 }

@@ -13,6 +13,8 @@ namespace Symfonian\Indonesia\AdminBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
 use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
 
@@ -31,7 +33,7 @@ class ManagerFactory
     );
 
     /**
-     * @var ObjectManager[]
+     * @var EntityManager|DocumentManager[]
      */
     private $manager = array();
 
@@ -51,7 +53,7 @@ class ManagerFactory
     /**
      * @param null|string $driver
      *
-     * @return ObjectManager
+     * @return EntityManager|DocumentManager
      *
      * @throws InvalidArgumentException
      */
@@ -62,14 +64,5 @@ class ManagerFactory
         }
 
         throw new InvalidArgumentException(sprintf('%s driver not found'));
-    }
-
-    /**
-     * @param string $driver
-     * @param string $entityClass
-     */
-    public function getQueryBuilder($driver, $entityClass)
-    {
-
     }
 }

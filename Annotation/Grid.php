@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 
 /**
  * @Annotation

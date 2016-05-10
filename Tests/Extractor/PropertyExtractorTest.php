@@ -12,7 +12,7 @@
 namespace Tests\Symfonian\Indonesia\AdminBundle\Extractor;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfonian\Indonesia\AdminBundle\Configuration\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\Extractor\PropertyExtractor;
 
 /**

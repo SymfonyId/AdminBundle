@@ -11,6 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Extractor;
 
+use Symfonian\Indonesia\AdminBundle\Contract\ExtractorInterface;
 use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
 use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 

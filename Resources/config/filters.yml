@@ -22,10 +22,3 @@ services:
         arguments:
             - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
-
-    symfonian_id.admin.filter.soft_deletable:
-        class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\SoftDeletableFilter
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: siab.filter }

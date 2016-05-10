@@ -20,21 +20,20 @@ use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
  */
 class SoftDeletableFilter extends SQLFilter
 {
-
     /**
      * Gets the SQL query part to add to a query.
      *
      * @param ClassMetadata $targetEntity
-     * @param string $targetTableAlias
+     * @param string        $targetTableAlias
      *
      * @return string The constraint SQL if there is available, empty string otherwise.
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if ($targetEntity->getReflectionClass()->getName() !== SoftDeletableInterface::class) {
-            return '';
+        if ($targetEntity->getReflectionClass()->implementsInterface(SoftDeletableInterface::class)) {
+            return sprintf('%s.isDeleted = %s', $targetTableAlias, $this->getParameter('isDeleted'));
         }
 
-        return sprintf('%s.isDeleted = %s', $targetTableAlias, $this->getParameter('isDeleted'));
+        return '';
     }
 }
