@@ -13,6 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
+use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 use Symfonian\Indonesia\AdminBundle\EventListener\AbstractListener;
 use Symfonian\Indonesia\AdminBundle\Exception\ClassNotFoundException;
 use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
