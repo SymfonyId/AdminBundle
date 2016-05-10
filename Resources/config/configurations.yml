@@ -1,3 +1,9 @@
+doctrine:
+    orm:
+        filters:
+            symfonian_id.admin.filter.soft_deletable: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\SoftDeletableFilter
+            enabled: true
+
 services:
     symfonian_id.admin.congiration.configurator:
         class: Symfonian\Indonesia\AdminBundle\Configuration\Configurator
