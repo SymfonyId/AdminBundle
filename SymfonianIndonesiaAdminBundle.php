@@ -50,6 +50,7 @@ class SymfonianIndonesiaAdminBundle extends Bundle
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new ExtractorPass());
         $container->addCompilerPass(new DoctrineManagerPass());
+        $container->addCompilerPass(new DoctrineFilterPass());
     }
 
     /**

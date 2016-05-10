@@ -19,23 +19,27 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class DoctrineManagerPass implements CompilerPassInterface
+class DoctrineFilterPass implements CompilerPassInterface
 {
-    const MANAGER_FACTORY = 'symfonian_id.admin.manager.factory';
+    const DEFAULT_CONFIGURATION = 'doctrine.orm.default_configuration';
 
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(self::MANAGER_FACTORY)) {
+        if (!$container->has(self::DEFAULT_CONFIGURATION)) {
             return;
         }
 
-        $definition = $container->findDefinition(self::MANAGER_FACTORY);
-        $definition->addMethodCall('addManager', array(
-            $container->getParameter('symfonian_id.admin.driver'),
-            new Reference(ManagerFactory::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')]),
-        ));
+        /*
+         * Add all service with tag name siab.extractor
+         */
+        $definition = $container->findDefinition(self::DEFAULT_CONFIGURATION);
+        $taggedServices = $container->findTaggedServiceIds('siab.filter');
+        foreach ($taggedServices as $id => $tags) {
+            $filter = $container->findDefinition($id);
+            $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+        }
     }
 }
