@@ -86,11 +86,20 @@ class TwigVariableListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $this->twig->addGlobal('title', $this->variables['title']);
-        $this->twig->addGlobal('short_title', $this->variables['short_title']);
-        $this->twig->addGlobal('date_time_format', $this->variables['date_format']);
-        $this->twig->addGlobal('menu', $this->variables['menu']);
-        $this->twig->addGlobal('locale', $this->variables['locale']);
-        $this->twig->addGlobal('translation_domain', $this->variables['translation_domain']);
+        $needToMerge = array(
+            'title' => $this->variables['title'],
+            'short_title' => $this->variables['short_title'],
+            'date_time_format' => $this->variables['date_format'],
+            'menu' => $this->variables['menu'],
+            'locale' => $this->variables['locale'],
+            'translation_domain' => $this->variables['translation_domain'],
+        );
+
+        $globals = $this->twig->getGlobals();
+        foreach ($needToMerge as $key => $value) {
+            if (!array_key_exists($key, $globals)) {
+                $this->twig->addGlobal($key, $value);
+            }
+        }
     }
 }
