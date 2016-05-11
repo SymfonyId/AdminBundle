@@ -35,6 +35,7 @@ class FieldsFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
+        //@todo: use class annotation to get fields
         if (!$targetEntity->getReflectionClass()->implementsInterface(SoftDeletableInterface::class)) {
             return '';
         }
