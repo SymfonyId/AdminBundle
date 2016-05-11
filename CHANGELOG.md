@@ -6,6 +6,8 @@
 
 **Fixed bugs:**
 
+- Twig Listener Register Global Variable Deprecated [\#37](https://github.com/SymfonyId/AdminBundle/issues/37)
+- \[Bug\] Bug in sort list \(URL Generator\) [\#36](https://github.com/SymfonyId/AdminBundle/issues/36)
 - \[Bug\] Crud Configuration can't call method setCreate of null [\#34](https://github.com/SymfonyId/AdminBundle/issues/34)
 
 **Closed issues:**
