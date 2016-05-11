@@ -9,7 +9,6 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 
 {% block use_statements %}
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 {% if has_datetime_field %}
 use Symfony\Component\Form\Extension\Core\Type\DateType;
