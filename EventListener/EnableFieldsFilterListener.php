@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class EnableSoftDeletableFilterListener
+class EnableFieldsFilterListener
 {
     /**
      * @var EntityManager|DocumentManager
@@ -37,7 +37,8 @@ class EnableSoftDeletableFilterListener
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.soft_deletable');
-        $filter->setParameter('isDeleted', false);
+        $request = $event->getRequest();
+        $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.fields');
+        $filter->setParameter('keyword', $request->query->get('q'));
     }
 }

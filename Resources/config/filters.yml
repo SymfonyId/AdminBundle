@@ -27,3 +27,8 @@ services:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\SoftDeletableFilter
         tags:
             - { name: siab.filter }
+
+    symfonian_id.admin.filter.fields:
+        class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\FieldsFilter
+        tags:
+            - { name: siab.filter }
