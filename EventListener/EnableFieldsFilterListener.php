@@ -39,6 +39,6 @@ class EnableFieldsFilterListener
     {
         $request = $event->getRequest();
         $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.fields');
-        $filter->setParameter('keyword', $request->query->get('q'));
+        $filter->setParameter('keyword', $request->query->get('filter'));
     }
 }
