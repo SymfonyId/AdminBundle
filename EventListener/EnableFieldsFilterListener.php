@@ -12,12 +12,12 @@
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
+use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -25,9 +25,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class EnableFieldsFilterListener
 {
     /**
-     * @var EntityManager|DocumentManager
+     * @var ManagerFactory
      */
-    private $manager;
+    private $managerFactory;
 
     /**
      * @var Reader
@@ -48,29 +48,57 @@ class EnableFieldsFilterListener
      * @param ManagerFactory $managerFactory
      * @param Reader         $reader
      * @param string         $driver
+     * @param string         $dateTimeFormat
      */
     public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver, $dateTimeFormat)
     {
-        $this->manager = $managerFactory->getManager($driver);
+        $this->managerFactory = $managerFactory;
         $this->reader = $reader;
         $this->driver = $driver;
         $this->dateTimeFormat = $dateTimeFormat;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelController(FilterControllerEvent $event)
     {
+        $controller = $event->getController();
+        if (!is_array($controller)) {
+            return;
+        }
+
+        $controller = $controller[0];
+        if (!$controller instanceof CrudController) {
+            return;
+        }
+
         $request = $event->getRequest();
         if (!$request->query->get('filter')) {
             return;
         }
 
-        if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
-            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
+        $driver = $this->driver;
+
+        /**
+         * Override default driver
+         */
+        $reflectionController = new \ReflectionObject($controller);
+        $properties = $reflectionController->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED);
+        foreach ($properties as $property) {
+            $annotations = $this->reader->getPropertyAnnotations($property);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Driver) {
+                    $driver = $annotation->getDriver();
+                }
+            }
+        }
+
+        $manager = $this->managerFactory->getManager($driver);
+        if (ManagerFactory::DOCTRINE_ORM === $driver) {
+            $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }
 
-        if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
-            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.odm.fields');
+        if (ManagerFactory::DOCTRINE_ODM === $driver) {
+            $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.odm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }
     }

@@ -15,7 +15,6 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
-use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**

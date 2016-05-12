@@ -114,4 +114,4 @@ services:
             - '%symfonian_id.admin.driver%'
             - '%symfonian_id.admin.date_time_format%'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
