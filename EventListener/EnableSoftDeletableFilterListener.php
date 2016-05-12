@@ -27,17 +27,30 @@ class EnableSoftDeletableFilterListener
     private $manager;
 
     /**
+     * @var string
+     */
+    private $driver;
+
+    /**
      * @param ManagerFactory $managerFactory
      * @param string         $driver
      */
     public function __construct(ManagerFactory $managerFactory, $driver)
     {
         $this->manager = $managerFactory->getManager($driver);
+        $this->driver = $driver;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.soft_deletable');
-        $filter->setParameter('isDeleted', false);
+        if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
+            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.orm.soft_deletable');
+            $filter->setParameter('isDeleted', false);
+        }
+
+        if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
+            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.odm.soft_deletable');
+            $filter->setParameter('isDeleted', false);
+        }
     }
 }

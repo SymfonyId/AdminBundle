@@ -11,19 +11,22 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter;
 
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
+use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FieldsFilter extends SQLFilter
+class FieldsFilter extends SQLFilter implements FieldsFilterInterface
 {
     /**
-     * @var array
+     * @var Reader
      */
-    private $fields;
+    private $reader;
 
     /**
      * Gets the SQL query part to add to a query.
@@ -35,13 +38,28 @@ class FieldsFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        //@todo: use class annotation to get fields
+        if (!$this->reader) {
+            return '';
+        }
+
         if (!$targetEntity->getReflectionClass()->implementsInterface(SoftDeletableInterface::class)) {
             return '';
         }
 
+        $fields = array();
+        $properties = $targetEntity->getReflectionProperties();
+        /** @var \ReflectionProperty $property */
+        foreach ($properties as $property) {
+            $annotations = $this->reader->getPropertyAnnotations($property);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Filter) {
+                    $fields[] = $property->getName();
+                }
+            }
+        }
+
         $filter = '';
-        foreach ($this->fields as $field) {
+        foreach ($fields as $field) {
             $filter .= sprintf('%s.%s LIKE %%%s% OR', $targetTableAlias, $field, $this->getParameter('filter'));
         }
 
@@ -49,10 +67,10 @@ class FieldsFilter extends SQLFilter
     }
 
     /**
-     * @param array $fields
+     * @param Reader $reader
      */
-    public function setFields(array $fields)
+    public function setAnnotationReader(Reader $reader)
     {
-        $this->fields = $fields;
+        $this->reader = $reader;
     }
 }

@@ -11,8 +11,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Filter\SQLFilter;
+use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -27,18 +30,49 @@ class EnableFieldsFilterListener
     private $manager;
 
     /**
+     * @var Reader
+     */
+    private $reader;
+
+    /**
+     * @var string
+     */
+    private $driver;
+
+    /**
      * @param ManagerFactory $managerFactory
+     * @param Reader         $reader
      * @param string         $driver
      */
-    public function __construct(ManagerFactory $managerFactory, $driver)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver)
     {
         $this->manager = $managerFactory->getManager($driver);
+        $this->reader = $reader;
+        $this->driver = $driver;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.fields');
-        $filter->setParameter('keyword', $request->query->get('filter'));
+
+        if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
+            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
+            $this->applyFilter($filter, $request->query->get('filter'));
+        }
+
+        if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
+            $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.odm.fields');
+            $this->applyFilter($filter, $request->query->get('filter'));
+        }
+    }
+
+    /**
+     * @param FieldsFilterInterface|SQLFilter $filter
+     * @param string                          $keyword
+     */
+    private function applyFilter(FieldsFilterInterface $filter, $keyword)
+    {
+        $filter->setAnnotationReader($this->reader);
+        $filter->setParameter('keyword', $keyword);
     }
 }
