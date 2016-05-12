@@ -1,20 +1,4 @@
 services:
-    symfonian_id.admin.filter.fields:
-        class: Symfonian\Indonesia\AdminBundle\Filter\FieldFilter
-        calls:
-            - [setDriver, ['%symfonian_id.admin.driver%']]
-        arguments:
-            - '@symfonian_id.admin.manager.factory'
-            - '@annotation_reader'
-
-    symfonian_id.admin.filter.github_style:
-        class: Symfonian\Indonesia\AdminBundle\Filter\GithubStyleFilter
-        calls:
-            - [setDriver, ['%symfonian_id.admin.driver%']]
-        arguments:
-            - '@symfonian_id.admin.manager.factory'
-            - '@annotation_reader'
-
     symfonian_id.admin.filter.sort:
         class: Symfonian\Indonesia\AdminBundle\Filter\SortFilter
         calls:
@@ -35,5 +19,10 @@ services:
 
     symfonian_id.admin.filter.orm.fields:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\FieldsFilter
+        tags:
+            - { name: siab.filter }
+
+    symfonian_id.admin.filter.odm.fields:
+        class: Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter\FieldsFilter
         tags:
             - { name: siab.filter }

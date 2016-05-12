@@ -26,6 +26,7 @@ class SoftDeletableFilter extends BsonFilter
      * If there is no criteria for the class, an empty array should be returned.
      *
      * @param ClassMetadata $targetDocument
+     *
      * @return array
      */
     public function addFilterCriteria(ClassMetadata $targetDocument)

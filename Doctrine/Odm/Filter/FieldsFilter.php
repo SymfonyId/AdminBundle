@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter;
+namespace Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Filter\SQLFilter;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
@@ -21,7 +21,7 @@ use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class FieldsFilter extends SQLFilter implements FieldsFilterInterface
+class FieldsFilter extends BsonFilter implements FieldsFilterInterface
 {
     /**
      * @var Reader
@@ -34,40 +34,41 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
     private $dateTimeFormat;
 
     /**
-     * Gets the SQL query part to add to a query.
+     * Gets the criteria array to add to a query.
      *
-     * @param ClassMetadata $targetEntity
-     * @param string $targetTableAlias
+     * If there is no criteria for the class, an empty array should be returned.
      *
-     * @return string The constraint SQL if there is available, empty string otherwise.
+     * @param ClassMetadata $targetDocument
+     *
+     * @return array
      */
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
+    public function addFilterCriteria(ClassMetadata $targetDocument)
     {
         $fields = array();
-        $properties = $targetEntity->getReflectionProperties();
+        $properties = $targetDocument->getReflectionProperties();
         /** @var \ReflectionProperty $property */
         foreach ($properties as $property) {
             $annotations = $this->reader->getPropertyAnnotations($property);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Filter) {
-                    $fields[] = $targetEntity->getFieldName($property->getName());
+                    $fields[] = $property->getName();
                 }
             }
         }
 
-        $filter = '';
+        $output = array();
         foreach ($fields as $field) {
             if (in_array($field['type'], array('date', 'datetime', 'time'))) {
                 $date = \DateTime::createFromFormat($this->dateTimeFormat, $this->getParameter('filter'));
                 if ($date) {
-                    $filter .= sprintf('%s.%s = %s OR', $targetTableAlias, $field['fieldName'], $date->format($this->dateTimeFormat));
+                    $output[$field['fieldName']] = $date->format($this->dateTimeFormat);
                 }
             } else {
-                $filter .= sprintf('%s.%s LIKE %%%s% OR', $targetTableAlias, $field['fieldName'], $this->getParameter('filter'));
+                $output[$field['fieldName']] = new \MongoRegex(sprintf('/.*%s.*/i', $this->getParameter('filter')));
             }
         }
 
-        return rtrim($filter, ' OR');
+        return $output;
     }
 
     /**

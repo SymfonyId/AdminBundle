@@ -40,20 +40,29 @@ class EnableFieldsFilterListener
     private $driver;
 
     /**
+     * @var string
+     */
+    private $dateTimeFormat;
+
+    /**
      * @param ManagerFactory $managerFactory
      * @param Reader         $reader
      * @param string         $driver
      */
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver, $dateTimeFormat)
     {
         $this->manager = $managerFactory->getManager($driver);
         $this->reader = $reader;
         $this->driver = $driver;
+        $this->dateTimeFormat = $dateTimeFormat;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+        if (!$request->query->get('filter')) {
+            return;
+        }
 
         if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
             $filter = $this->manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
@@ -73,6 +82,7 @@ class EnableFieldsFilterListener
     private function applyFilter(FieldsFilterInterface $filter, $keyword)
     {
         $filter->setAnnotationReader($this->reader);
+        $filter->setDateTimeFormat($this->dateTimeFormat);
         $filter->setParameter('keyword', $keyword);
     }
 }

@@ -10,4 +10,9 @@ interface FieldsFilterInterface
      * @param Reader $reader
      */
     public function setAnnotationReader(Reader $reader);
+
+    /**
+     * @param string $dateTimeFormat
+     */
+    public function setDateTimeFormat($dateTimeFormat);
 }
