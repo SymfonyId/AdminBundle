@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
@@ -26,6 +27,11 @@ class FieldsFilter extends BsonFilter implements FieldsFilterInterface
      * @var Reader
      */
     private $reader;
+    
+    /**
+     * @var Configurator
+     */
+    private $configurator;
 
     /**
      * @var string
@@ -84,5 +90,13 @@ class FieldsFilter extends BsonFilter implements FieldsFilterInterface
     public function setDateTimeFormat($format)
     {
         $this->dateTimeFormat = $format;
+    }
+
+    /**
+     * @param Configurator $configurator
+     */
+    public function setConfigurator(Configurator $configurator)
+    {
+        $this->configurator = $configurator;
     }
 }

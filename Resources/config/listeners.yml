@@ -87,16 +87,16 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave, priority: 1027 }
 
-    symfonian_id.admin.sort_query:
-        class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
-        calls:
-            - [setContainer, ['@service_container']]
-        arguments:
-            - '@symfonian_id.admin.filter.sort'
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
+#    symfonian_id.admin.sort_query:
+#        class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
+#        calls:
+#            - [setContainer, ['@service_container']]
+#        arguments:
+#            - '@symfonian_id.admin.filter.sort'
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+#            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+#            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
 
     symfonian_id.admin.soft_deletable_filter:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableSoftDeletableFilterListener
@@ -111,6 +111,7 @@ services:
         arguments:
             - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
+            - '@symfonian_id.admin.congiration.configurator'
             - '%symfonian_id.admin.driver%'
             - '%symfonian_id.admin.date_time_format%'
         tags:

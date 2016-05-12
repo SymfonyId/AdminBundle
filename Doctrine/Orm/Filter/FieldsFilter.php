@@ -14,8 +14,9 @@ namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
+use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
-use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**
@@ -27,6 +28,11 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
      * @var Reader
      */
     private $reader;
+
+    /**
+     * @var Configurator
+     */
+    private $configurator;
 
     /**
      * @var string
@@ -50,24 +56,36 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
             $annotations = $this->reader->getPropertyAnnotations($property);
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof Filter) {
-                    $fields[] = $targetEntity->getFieldName($property->getName());
+                    $fields[] = $property->getName();
                 }
             }
+        }
+
+        /** @var Grid $grid */
+        $grid = $this->configurator->getConfiguration(Grid::class);
+        $fields = !empty($fields) ? $fields : $grid->getFilters();
+
+        foreach ($fields as $key => $field) {
+            $fields[$key] = $targetEntity->getFieldMapping($targetEntity->getFieldName($field));
         }
 
         $filter = '';
+        $parameter = str_replace('\'', '', $this->getParameter('filter'));//Remove single quote from paramter
+        /**
+         * Filter is low level query so you can't use property name as field filter, use column name instead
+         */
         foreach ($fields as $field) {
             if (in_array($field['type'], array('date', 'datetime', 'time'))) {
-                $date = \DateTime::createFromFormat($this->dateTimeFormat, $this->getParameter('filter'));
+                $date = \DateTime::createFromFormat($this->dateTimeFormat, $parameter);
                 if ($date) {
-                    $filter .= sprintf('%s.%s = %s OR', $targetTableAlias, $field['fieldName'], $date->format($this->dateTimeFormat));
+                    $filter .= sprintf('%s.%s = \'%s\' OR ', $targetTableAlias, $field['columnName'], $date->format($this->dateTimeFormat));
                 }
             } else {
-                $filter .= sprintf('%s.%s LIKE %%%s% OR', $targetTableAlias, $field['fieldName'], $this->getParameter('filter'));
+                $filter .= sprintf('%s.%s LIKE \'%%%s%%\' OR ', $targetTableAlias, $field['columnName'], $parameter);
             }
         }
 
-        return rtrim($filter, ' OR');
+        return rtrim($filter, ' OR ');
     }
 
     /**
@@ -84,5 +102,13 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
     public function setDateTimeFormat($format)
     {
         $this->dateTimeFormat = $format;
+    }
+
+    /**
+     * @param Configurator $configurator
+     */
+    public function setConfigurator(Configurator $configurator)
+    {
+        $this->configurator = $configurator;
     }
 }
