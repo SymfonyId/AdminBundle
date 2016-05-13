@@ -12,14 +12,18 @@
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
+use Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter\FieldsSorter;
+use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class EnableFieldsSorterListener extends AbstractListener
+class EnableFieldsSorterListener extends AbstractListener implements ContainerAwareInterface
 {
     /**
      * @var ManagerFactory
@@ -30,6 +34,11 @@ class EnableFieldsSorterListener extends AbstractListener
      * @var Reader
      */
     private $reader;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * @var string
@@ -69,14 +78,28 @@ class EnableFieldsSorterListener extends AbstractListener
         }
     }
 
-    public function onFilterQuery()
+    public function onFilterQuery(FilterQueryEvent $event)
     {
         if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
-            //@todo use container to get service
+            /** @var FieldsSorter $filter */
+            $filter = $this->container->get('symfonian_id.admin.filter.orm.sort');
+            $filter->sort($event->getEntityClass(), $event->getQueryBuilder());
         }
 
         if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
-            //@todo use container to get service
+            /** @var FieldsSorter $filter */
+            $filter = $this->container->get('symfonian_id.admin.filter.odm.sort');
+            $filter->sort($event->getEntityClass(), $event->getQueryBuilder());
         }
+    }
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }
