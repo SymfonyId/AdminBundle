@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
+use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
@@ -27,7 +28,7 @@ class FieldsFilter extends BsonFilter implements FieldsFilterInterface
      * @var Reader
      */
     private $reader;
-    
+
     /**
      * @var Configurator
      */
@@ -59,6 +60,14 @@ class FieldsFilter extends BsonFilter implements FieldsFilterInterface
                     $fields[] = $property->getName();
                 }
             }
+        }
+
+        /** @var Grid $grid */
+        $grid = $this->configurator->getConfiguration(Grid::class);
+        $fields = !empty($fields) ? $fields : $grid->getFilters();
+
+        foreach ($fields as $key => $field) {
+            $fields[$key] = $targetDocument->getFieldMapping($field);
         }
 
         $output = array();
