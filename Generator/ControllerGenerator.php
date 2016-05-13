@@ -45,6 +45,8 @@ class ControllerGenerator extends AbstractGenerator
      * @param string            $entity         The entity relative class name
      * @param ClassMetadataInfo $metadata       The entity metadata class
      * @param bool              $forceOverwrite If true, remove any existing form class before generating it again
+     *
+     * @throws RuntimeException
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite = false)
     {
