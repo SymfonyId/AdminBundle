@@ -56,7 +56,7 @@ class FieldsSorter implements SorterInterface
     public function sort($entityClass, $queryBuilder, $sortBy)
     {
         $classMetadata = $this->getClassMetadata($entityClass);
-        $metadata = $classMetadata->getFieldMapping($classMetadata->getFieldName($sortBy));
+        $metadata = $classMetadata->getFieldMapping($sortBy);
         $queryBuilder->sort(array(
             $metadata['fieldName'] => 'asc'
         ));
