@@ -90,7 +90,7 @@ class EnableSoftDeletableFilterListener extends AbstractListener
         }
 
         if (Driver::DOCTRINE_ODM === $driver) {
-            $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.odm.soft_deletable');
+            $filter = $manager->getFilterCollection()->enable('symfonian_id.admin.filter.odm.soft_deletable');
             $filter->setParameter('isDeleted', false);
         }
     }
