@@ -16,6 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\SorterInterface;
 use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 
 /**
@@ -23,6 +24,8 @@ use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
  */
 class FieldsSorter implements SorterInterface
 {
+    const DRIVER = Driver::DOCTRINE_ODM;
+
     /**
      * @var ManagerFactory
      */
@@ -38,17 +41,11 @@ class FieldsSorter implements SorterInterface
      */
     private $configurator;
 
-    /**
-     * @var string
-     */
-    private $driver;
-
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator, $driver)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator)
     {
         $this->managerFactory = $managerFactory;
         $this->reader = $reader;
         $this->configurator = $configurator;
-        $this->driver = $driver;
     }
 
     /**
@@ -72,14 +69,6 @@ class FieldsSorter implements SorterInterface
      */
     private function getClassMetadata($entityClass)
     {
-        return $this->managerFactory->getManager($this->getDriver())->getClassMetadata($entityClass);
-    }
-
-    /**
-     * @return string
-     */
-    private function getDriver()
-    {
-        return $this->driver;
+        return $this->managerFactory->getManager(self::DRIVER)->getClassMetadata($entityClass);
     }
 }

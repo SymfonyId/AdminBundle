@@ -5,7 +5,6 @@ services:
             - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
             - '@symfonian_id.admin.congiration.configurator'
-            - '%symfonian_id.admin.driver%'
 
     symfonian_id.admin.filter.odm.sort:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Sorter\FieldsSorter
@@ -13,7 +12,6 @@ services:
             - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
             - '@symfonian_id.admin.congiration.configurator'
-            - '%symfonian_id.admin.driver%'
 
     symfonian_id.admin.filter.orm.soft_deletable:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\SoftDeletableFilter

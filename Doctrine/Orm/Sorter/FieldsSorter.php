@@ -14,6 +14,7 @@ namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter;
 use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\SorterInterface;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
@@ -22,6 +23,8 @@ use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constant
  */
 class FieldsSorter implements SorterInterface
 {
+    const DRIVER = Driver::DOCTRINE_ORM;
+
     /**
      * @var ManagerFactory
      */
@@ -37,17 +40,11 @@ class FieldsSorter implements SorterInterface
      */
     private $configurator;
 
-    /**
-     * @var string
-     */
-    private $driver;
-
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator, $driver)
+    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator)
     {
         $this->managerFactory = $managerFactory;
         $this->reader = $reader;
         $this->configurator = $configurator;
-        $this->driver = $driver;
     }
 
     /**
