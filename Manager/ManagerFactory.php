@@ -12,7 +12,6 @@
 namespace Symfonian\Indonesia\AdminBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;

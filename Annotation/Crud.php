@@ -12,8 +12,8 @@
 namespace Symfonian\Indonesia\AdminBundle\Annotation;
 
 use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
-use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

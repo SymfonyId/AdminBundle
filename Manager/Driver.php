@@ -15,7 +15,7 @@ use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
 
 /**
  * @Annotation
- * @Target({"PROPERTY"})
+ * @Target({"CLASS"})
  *
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */

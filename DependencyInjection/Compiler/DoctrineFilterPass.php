@@ -11,10 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
-use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>

@@ -12,6 +12,8 @@
 namespace Symfonian\Indonesia\AdminBundle\Event;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use Symfonian\Indonesia\AdminBundle\Exception\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -24,14 +26,27 @@ class FilterQueryEvent extends Event
      */
     private $queryBuilder;
 
+    /**
+     * @var string
+     */
     private $entityClass;
+
+    /**
+     * @var string
+     */
     private $alias;
 
     /**
-     * @param QueryBuilder $queryBuilder
+     * @param QueryBuilder|Builder $queryBuilder
+     *
+     * @throws InvalidArgumentException
      */
-    public function setQueryBuilder(QueryBuilder $queryBuilder)
+    public function setQueryBuilder($queryBuilder)
     {
+        if (!$queryBuilder instanceof QueryBuilder && !$queryBuilder instanceof Builder) {
+            throw new InvalidArgumentException(sprintf('%s is not valid query builder object', get_class($queryBuilder)));
+        }
+        
         $this->queryBuilder = $queryBuilder;
     }
 

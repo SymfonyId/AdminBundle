@@ -89,13 +89,10 @@ class EnableFieldsFilterListener
          * Override default driver
          */
         $reflectionController = new \ReflectionObject($controller);
-        $properties = $reflectionController->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED);
-        foreach ($properties as $property) {
-            $annotations = $this->reader->getPropertyAnnotations($property);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Driver) {
-                    $driver = $annotation->getDriver();
-                }
+        $annotations = $this->reader->getClassAnnotations($reflectionController);
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Driver) {
+                $driver = $annotation->getDriver();
             }
         }
 

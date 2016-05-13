@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
-use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 

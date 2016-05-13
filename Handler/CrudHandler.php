@@ -411,7 +411,11 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function paginateResult($page, $perPage)
     {
-        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+        if (ManagerFactory::DOCTRINE_ORM) {
+            $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+        } else {
+            $queryBuilder = $this->managerFactory->getManager($this->getDriver())->createQueryBuilder($this->class);
+        }
 
         $filterList = new FilterQueryEvent();
         $filterList->setQueryBuilder($queryBuilder);
@@ -420,9 +424,6 @@ class CrudHandler implements ContainerAwareInterface
         $this->fireEvent(Constants::FILTER_LIST, $filterList);
 
         $query = $queryBuilder->getQuery();
-        $query->useQueryCache(true);
-        $query->useResultCache(true, 1, serialize($query->getParameters()));
-
         $paginator = $this->container->get('knp_paginator');
 
         return $paginator->paginate($query, $page, $perPage);
@@ -452,10 +453,17 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function isAllowDownload()
     {
-        $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
-        $queryBuilder->select(sprintf('COUNT(%s.id)', Constants::ENTITY_ALIAS));
+        if (ManagerFactory::DOCTRINE_ORM) {
+            $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
+            $queryBuilder->select(sprintf('COUNT(%s.id)', Constants::ENTITY_ALIAS));
+            $totalResult = $queryBuilder->getQuery()->getSingleScalarResult();
+        } else {
+            $queryBuilder = $this->managerFactory->getManager($this->getDriver())->createQueryBuilder($this->class);
+            $queryBuilder->eagerCursor(true);
+            $queryBuilder->prime(true);
+            $totalResult = $queryBuilder->getQuery()->execute()->count();
+        }
 
-        $totalResult = $queryBuilder->getQuery()->getSingleScalarResult();
         if ($this->container->getParameter('symfonian_id.admin.max_records') < $totalResult) {
             return false;
         }
