@@ -31,7 +31,7 @@ class SoftDeletableFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if ($targetEntity->getReflectionClass()->implementsInterface(SoftDeletableInterface::class)) {
-            return sprintf('%s.isDeleted = %s', $targetTableAlias, $this->getParameter('isDeleted'));
+            return sprintf('%s.is_deleted = %s', $targetTableAlias, $this->getParameter('isDeleted'));
         }
 
         return '';
