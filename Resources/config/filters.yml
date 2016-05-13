@@ -18,19 +18,19 @@ services:
     symfonian_id.admin.filter.orm.soft_deletable:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\SoftDeletableFilter
         tags:
-            - { name: siab.filter }
+            - { name: siab.orm_filter }
 
     symfonian_id.admin.filter.odm.soft_deletable:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter\SoftDeletableFilter
         tags:
-            - { name: siab.filter }
+            - { name: siab.odm_filter }
 
     symfonian_id.admin.filter.orm.fields:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter\FieldsFilter
         tags:
-            - { name: siab.filter }
+            - { name: siab.orm_filter }
 
     symfonian_id.admin.filter.odm.fields:
         class: Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter\FieldsFilter
         tags:
-            - { name: siab.filter }
+            - { name: siab.odm_filter }

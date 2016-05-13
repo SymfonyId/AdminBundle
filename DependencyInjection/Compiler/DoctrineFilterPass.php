@@ -19,22 +19,33 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class DoctrineFilterPass implements CompilerPassInterface
 {
-    const DEFAULT_CONFIGURATION = 'doctrine.orm.default_configuration';
+    const ORM_CONFIGURATION = 'doctrine.orm.default_configuration';
+    const ODM_CONFIGURATION = 'doctrine_mongodb.odm.default_configuration';
 
     /**
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(self::DEFAULT_CONFIGURATION)) {
+        if (!$container->has(self::ORM_CONFIGURATION) || !$container->has(self::ODM_CONFIGURATION)) {
             return;
         }
 
         /*
-         * Add all service with tag name siab.extractor
+         * Add all service with tag name siab.orm_filter
          */
-        $definition = $container->findDefinition(self::DEFAULT_CONFIGURATION);
-        $taggedServices = $container->findTaggedServiceIds('siab.filter');
+        $definition = $container->findDefinition(self::ORM_CONFIGURATION);
+        $taggedServices = $container->findTaggedServiceIds('siab.orm_filter');
+        foreach ($taggedServices as $id => $tags) {
+            $filter = $container->findDefinition($id);
+            $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+        }
+
+        /*
+         * Add all service with tag name siab.odm_filter
+         */
+        $definition = $container->findDefinition(self::ODM_CONFIGURATION);
+        $taggedServices = $container->findTaggedServiceIds('siab.odm_filter');
         foreach ($taggedServices as $id => $tags) {
             $filter = $container->findDefinition($id);
             $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
