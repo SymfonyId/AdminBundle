@@ -85,6 +85,10 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
 
     public function onFilterQuery(FilterQueryEvent $event)
     {
+        if (!$this->sortBy) {
+            return;
+        }
+
         if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
             /** @var FieldsSorter $filter */
             $filter = $this->container->get('symfonian_id.admin.filter.orm.sort');
