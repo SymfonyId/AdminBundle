@@ -73,7 +73,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
 
         $isInserted = array();
         $countData = 0;
@@ -165,7 +165,7 @@ abstract class CrudController extends Controller
 
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($crud->getShowTemplate());
         $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud), $crud->isAllowDelete());
@@ -191,7 +191,7 @@ abstract class CrudController extends Controller
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
 
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
         if ($returnHandler instanceof Response) {
@@ -222,7 +222,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
 
         $isDeleted = array();
         $countData = 0;
@@ -302,7 +302,7 @@ abstract class CrudController extends Controller
         }, $filters)));
         $view->setParam('filter_fields_entity', implode(', ', $filters));
 
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($listTemplate);
         $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $this->isAllowDelete($crud), $grid->isFormatNumber());
@@ -324,7 +324,7 @@ abstract class CrudController extends Controller
         $this->isAllowOr404Error($crud, Constants::ACTION_READ);
         /** @var CrudHandler $handler */
         $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
 
         /** @var Grid $grid */
@@ -399,7 +399,7 @@ abstract class CrudController extends Controller
             ));
         }
 
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($this, $request, $data, $form);
@@ -424,7 +424,7 @@ abstract class CrudController extends Controller
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
-        $handler->setDriver($configuration->getDriver());
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
         
         /** @var EntityInterface $entity */
@@ -446,7 +446,7 @@ abstract class CrudController extends Controller
         $fields = array();
         $reflection = new \ReflectionClass($crud->getEntityClass());
 
-        foreach ($reflection->getProperties() as $key => $property) {
+        foreach ($reflection->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED) as $key => $property) {
             if ('id' !== $name = $property->getName()) {
                 $fields[] = $name;
             }

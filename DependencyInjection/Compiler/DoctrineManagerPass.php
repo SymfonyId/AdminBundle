@@ -33,9 +33,18 @@ class DoctrineManagerPass implements CompilerPassInterface
         }
 
         $definition = $container->findDefinition(self::MANAGER_FACTORY);
-        $definition->addMethodCall('addManager', array(
-            $container->getParameter('symfonian_id.admin.driver'),
-            new Reference(Driver::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')]),
-        ));
+        if ($container->hasDefinition(Driver::$DRIVERS[Driver::DOCTRINE_ORM])) {
+            $definition->addMethodCall('addManager', array(
+                Driver::DOCTRINE_ORM,
+                new Reference(Driver::$DRIVERS[Driver::DOCTRINE_ORM]),
+            ));
+        }
+
+        if ($container->hasDefinition(Driver::$DRIVERS[Driver::DOCTRINE_ODM])) {
+            $definition->addMethodCall('addManager', array(
+                Driver::DOCTRINE_ODM,
+                new Reference(Driver::$DRIVERS[Driver::DOCTRINE_ODM]),
+            ));
+        }
     }
 }

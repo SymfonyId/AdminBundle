@@ -20,6 +20,7 @@ use Symfonian\Indonesia\AdminBundle\Contract\SoftDeletableInterface;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
@@ -411,7 +412,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function paginateResult($page, $perPage)
     {
-        if (ManagerFactory::DOCTRINE_ORM) {
+        if ($this->getDriver() === Driver::DOCTRINE_ORM) {
             $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
         } else {
             $queryBuilder = $this->managerFactory->getManager($this->getDriver())->createQueryBuilder($this->class);
@@ -453,7 +454,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function isAllowDownload()
     {
-        if (ManagerFactory::DOCTRINE_ORM) {
+        if ($this->getDriver() === Driver::DOCTRINE_ORM) {
             $queryBuilder = $this->repository->createQueryBuilder(Constants::ENTITY_ALIAS);
             $queryBuilder->select(sprintf('COUNT(%s.id)', Constants::ENTITY_ALIAS));
             $totalResult = $queryBuilder->getQuery()->getSingleScalarResult();
@@ -476,7 +477,7 @@ class CrudHandler implements ContainerAwareInterface
      */
     private function getDriver()
     {
-        return $this->driver?: $this->container->getParameter('symfonian_id.admin.driver');
+        return $this->driver;
     }
 
     /**

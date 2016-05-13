@@ -236,7 +236,18 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $sortable = array();
 
         $reflection = new \ReflectionClass($class);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+
+        $this->extractor->extract($reflection);
+
+        foreach ($this->extractor->getClassAnnotations() as $annotation) {
+            if ($annotation instanceof ConfigurationInterface) {
+                if ($annotation instanceof Driver) {
+                    $this->setDriver($annotation->getDriver());
+                }
+            }
+        }
+
+        foreach ($reflection->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
             $this->extractor->extract($reflectionProperty);
             foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {
@@ -247,9 +258,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
                 }
                 if ($annotation instanceof Sortable) {
                     $sortable[] = $reflectionProperty->getName();
-                }
-                if ($annotation instanceof Driver) {
-                    $this->setDriver($annotation->getDriver());
                 }
             }
         }
@@ -269,11 +277,27 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     }
 
     /**
+     * @param $entityClass
+     *
      * @return string
      */
-    public function getDriver()
+    public function getDriver($entityClass)
     {
-        return $this->driver;
+        if (!$this->driver) {
+            $reflection = new \ReflectionClass($entityClass);
+
+            $this->extractor->extract($reflection);
+
+            foreach ($this->extractor->getClassAnnotations() as $annotation) {
+                if ($annotation instanceof ConfigurationInterface) {
+                    if ($annotation instanceof Driver) {
+                        $this->setDriver($annotation->getDriver());
+                    }
+                }
+            }
+        }
+
+        return $this->driver?: $this->container->getParameter('symfonian_id.admin.driver');
     }
 
     public function freeze()

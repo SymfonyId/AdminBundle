@@ -384,7 +384,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $filters = array();
         $sortable = array();
 
-        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
             $this->extractor->extract($reflectionProperty);
             foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {

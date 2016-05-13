@@ -121,7 +121,7 @@ class ProfileController extends Controller
                 $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
 
                 $event = new FilterEntityEvent();
-                $event->setManager($managerFactory->getManager($configuration->getDriver()));
+                $event->setManager($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())));
                 $event->setEntity($entity);
 
                 $userManager->updateUser($entity);
