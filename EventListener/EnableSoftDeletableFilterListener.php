@@ -73,13 +73,16 @@ class EnableSoftDeletableFilterListener extends AbstractListener
                 break;
             }
         }
-        $reflectionEntity = new \ReflectionClass($entityClass);
-        $annotations = $this->reader->getClassAnnotations($reflectionEntity);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Driver) {
-                $driver = $annotation->getDriver();
 
-                break;
+        if ($entityClass) {
+            $reflectionEntity = new \ReflectionClass($entityClass);
+            $annotations = $this->reader->getClassAnnotations($reflectionEntity);
+            foreach ($annotations as $annotation) {
+                if ($annotation instanceof Driver) {
+                    $driver = $annotation->getDriver();
+
+                    break;
+                }
             }
         }
 
