@@ -16,6 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter\FieldsSorter;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
+use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -88,6 +89,13 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
         if (!$this->sortBy) {
             return;
         }
+
+        $session = $this->container->get('session');
+        if (!$this->sortBy) {
+            $session->set(Constants::SESSION_SORTED_NAME, null);
+            return;
+        }
+        $session->set(Constants::SESSION_SORTED_NAME, $this->sortBy);
 
         if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
             /** @var FieldsSorter $filter */
