@@ -88,12 +88,12 @@ class EnableFieldsFilterListener extends AbstractListener
         }
 
         $manager = $this->managerFactory->getManager($driver);
-        if (ManagerFactory::DOCTRINE_ORM === $driver) {
+        if (Driver::DOCTRINE_ORM === $driver) {
             $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }
 
-        if (ManagerFactory::DOCTRINE_ODM === $driver) {
+        if (Driver::DOCTRINE_ODM === $driver) {
             $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.odm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }

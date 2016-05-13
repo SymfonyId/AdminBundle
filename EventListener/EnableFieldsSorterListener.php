@@ -97,13 +97,13 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
         }
         $session->set(Constants::SESSION_SORTED_NAME, $this->sortBy);
 
-        if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
+        if (Driver::DOCTRINE_ORM === $this->driver) {
             /** @var FieldsSorter $filter */
             $filter = $this->container->get('symfonian_id.admin.filter.orm.sort');
             $filter->sort($event->getEntityClass(), $event->getQueryBuilder(), $this->sortBy);
         }
 
-        if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
+        if (Driver::DOCTRINE_ODM === $this->driver) {
             /** @var FieldsSorter $filter */
             $filter = $this->container->get('symfonian_id.admin.filter.odm.sort');
             $filter->sort($event->getEntityClass(), $event->getQueryBuilder(), $this->sortBy);

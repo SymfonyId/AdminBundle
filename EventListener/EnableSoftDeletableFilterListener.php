@@ -71,12 +71,12 @@ class EnableSoftDeletableFilterListener extends AbstractListener
         }
 
         $manager = $this->managerFactory->getManager($driver);
-        if (ManagerFactory::DOCTRINE_ORM === $driver) {
+        if (Driver::DOCTRINE_ORM === $driver) {
             $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.orm.soft_deletable');
             $filter->setParameter('isDeleted', false);
         }
 
-        if (ManagerFactory::DOCTRINE_ODM === $driver) {
+        if (Driver::DOCTRINE_ODM === $driver) {
             $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.odm.soft_deletable');
             $filter->setParameter('isDeleted', false);
         }

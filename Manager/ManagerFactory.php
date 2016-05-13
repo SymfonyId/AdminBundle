@@ -22,15 +22,6 @@ use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
  */
 class ManagerFactory
 {
-    const DOCTRINE_ORM = 'orm';
-
-    const DOCTRINE_ODM = 'odm';
-
-    public static $DRIVERS = array(
-        self::DOCTRINE_ORM => 'doctrine',
-        self::DOCTRINE_ODM => 'doctrine_mongodb',
-    );
-
     /**
      * @var EntityManager|DocumentManager[]
      */
@@ -42,7 +33,7 @@ class ManagerFactory
      */
     public function addManager($name, ManagerRegistry $objectManager)
     {
-        if (!in_array($name, array(self::DOCTRINE_ORM, self::DOCTRINE_ODM))) {
+        if (!in_array($name, array(Driver::DOCTRINE_ORM, Driver::DOCTRINE_ODM))) {
             throw new KeyNotMatchException(sprintf('%s is not valid object managerFactory', $name));
         }
 

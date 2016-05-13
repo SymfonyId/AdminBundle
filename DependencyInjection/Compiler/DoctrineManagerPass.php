@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler;
 
-use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -35,7 +35,7 @@ class DoctrineManagerPass implements CompilerPassInterface
         $definition = $container->findDefinition(self::MANAGER_FACTORY);
         $definition->addMethodCall('addManager', array(
             $container->getParameter('symfonian_id.admin.driver'),
-            new Reference(ManagerFactory::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')]),
+            new Reference(Driver::$DRIVERS[$container->getParameter('symfonian_id.admin.driver')]),
         ));
     }
 }

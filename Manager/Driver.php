@@ -12,6 +12,7 @@
 namespace Symfonian\Indonesia\AdminBundle\Manager;
 
 use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
+use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
 
 /**
  * @Annotation
@@ -21,6 +22,15 @@ use Symfonian\Indonesia\AdminBundle\Contract\ConfigurationInterface;
  */
 class Driver implements ConfigurationInterface
 {
+    const DOCTRINE_ORM = 'orm';
+
+    const DOCTRINE_ODM = 'odm';
+
+    public static $DRIVERS = array(
+        self::DOCTRINE_ORM => 'doctrine',
+        self::DOCTRINE_ODM => 'doctrine_mongodb',
+    );
+
     /**
      * @var string
      */
@@ -32,6 +42,10 @@ class Driver implements ConfigurationInterface
     public function __construct(array $data)
     {
         if (isset($data['value']) && is_string($data['value'])) {
+            if (!in_array($data['value'], array(self::DOCTRINE_ORM, self::DOCTRINE_ODM))) {
+                throw new KeyNotMatchException(sprintf('%s is not valid object managerFactory', $data['value']));
+            }
+
             $this->value = $data['value'];
         }
     }
