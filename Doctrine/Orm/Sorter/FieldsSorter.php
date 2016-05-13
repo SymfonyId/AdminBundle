@@ -66,14 +66,6 @@ class FieldsSorter implements SorterInterface
      */
     private function getClassMetadata($entityClass)
     {
-        return $this->managerFactory->getManager($this->getDriver())->getClassMetadata($entityClass);
-    }
-
-    /**
-     * @return string
-     */
-    private function getDriver()
-    {
-        return $this->driver;
+        return $this->managerFactory->getManager(self::DRIVER)->getClassMetadata($entityClass);
     }
 }
