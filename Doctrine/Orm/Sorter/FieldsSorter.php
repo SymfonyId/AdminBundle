@@ -12,10 +12,8 @@
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter;
 
 use Doctrine\Common\Annotations\Reader;
-use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\SorterInterface;
-use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 
@@ -53,35 +51,15 @@ class FieldsSorter implements SorterInterface
     }
 
     /**
-     * @param string $entityClass
+     * @param string                                                         $entityClass
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
+     * @param string                                                         $sortBy
      */
-    public function sort($entityClass, $queryBuilder)
+    public function sort($entityClass, $queryBuilder, $sortBy)
     {
-        $fields = array();
         $classMetadata = $this->getClassMetadata($entityClass);
-        $properties = $classMetadata->getReflectionProperties();
-        /** @var \ReflectionProperty $property */
-        foreach ($properties as $property) {
-            $annotations = $this->reader->getPropertyAnnotations($property);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Sortable) {
-                    $fields[] = $property->getName();
-                }
-            }
-        }
-
-        /** @var Grid $grid */
-        $grid = $this->configurator->getConfiguration(Grid::class);
-        $fields = !empty($fields) ? $fields : $grid->getFilters();
-
-        foreach ($fields as $key => $field) {
-            $fields[$key] = $classMetadata->getFieldMapping($classMetadata->getFieldName($field));
-        }
-
-        foreach ($fields as $field) {
-            $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $field['fieldName']));
-        }
+        $metadata = $classMetadata->getFieldMapping($classMetadata->getFieldName($sortBy));
+        $queryBuilder->addOrderBy(sprintf('%s.%s', Constants::ENTITY_ALIAS, $metadata['fieldName']));
     }
 
     /**

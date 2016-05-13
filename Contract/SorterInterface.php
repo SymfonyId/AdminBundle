@@ -19,6 +19,7 @@ interface SorterInterface
     /**
      * @param string $entityClass
      * @param \Doctrine\ORM\QueryBuilder|Doctrine\ODM\MongoDB\Query\Builder
+     * @param string
      */
-    public function sort($entityClass, $queryBuilder);
+    public function sort($entityClass, $queryBuilder, $sortBy);
 }

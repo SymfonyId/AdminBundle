@@ -46,6 +46,11 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
     private $driver;
 
     /**
+     * @var string
+     */
+    private $sortBy;
+
+    /**
      * @param ManagerFactory $managerFactory
      * @param Reader         $reader
      * @param string         $driver
@@ -62,7 +67,7 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
         $this->isValidCrudListener($event);
 
         $request = $event->getRequest();
-        if (!$request->query->get('sort_by')) {
+        if (!$this->sortBy = $request->query->get('sort_by')) {
             return;
         }
 
@@ -83,13 +88,13 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
         if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
             /** @var FieldsSorter $filter */
             $filter = $this->container->get('symfonian_id.admin.filter.orm.sort');
-            $filter->sort($event->getEntityClass(), $event->getQueryBuilder());
+            $filter->sort($event->getEntityClass(), $event->getQueryBuilder(), $this->sortBy);
         }
 
         if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
             /** @var FieldsSorter $filter */
             $filter = $this->container->get('symfonian_id.admin.filter.odm.sort');
-            $filter->sort($event->getEntityClass(), $event->getQueryBuilder());
+            $filter->sort($event->getEntityClass(), $event->getQueryBuilder(), $this->sortBy);
         }
     }
 
