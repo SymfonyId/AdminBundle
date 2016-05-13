@@ -103,6 +103,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableSoftDeletableFilterListener
         arguments:
             - '@symfonian_id.admin.manager.factory'
+            - '@annotation_reader'
             - '%symfonian_id.admin.driver%'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
