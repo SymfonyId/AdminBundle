@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class EnableSoftDeletableFilterListener extends AbstractListener
+class EnableFieldsSorterListener extends AbstractListener
 {
     /**
      * @var ManagerFactory
@@ -53,11 +53,9 @@ class EnableSoftDeletableFilterListener extends AbstractListener
         $this->isValidCrudListener($event);
 
         $request = $event->getRequest();
-        if (!$request->query->get('filter')) {
+        if (!$request->query->get('sort_by')) {
             return;
         }
-
-        $driver = $this->driver;
 
         /*
          * Override default driver
@@ -66,19 +64,19 @@ class EnableSoftDeletableFilterListener extends AbstractListener
         $annotations = $this->reader->getClassAnnotations($reflectionController);
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Driver) {
-                $driver = $annotation->getDriver();
+                $this->driver = $annotation->getDriver();
             }
         }
+    }
 
-        $manager = $this->managerFactory->getManager($driver);
-        if (ManagerFactory::DOCTRINE_ORM === $driver) {
-            $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.orm.soft_deletable');
-            $filter->setParameter('isDeleted', false);
+    public function onFilterQuery()
+    {
+        if (ManagerFactory::DOCTRINE_ORM === $this->driver) {
+            //@todo use container to get service
         }
 
-        if (ManagerFactory::DOCTRINE_ODM === $driver) {
-            $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.odm.soft_deletable');
-            $filter->setParameter('isDeleted', false);
+        if (ManagerFactory::DOCTRINE_ODM === $this->driver) {
+            //@todo use container to get service
         }
     }
 }

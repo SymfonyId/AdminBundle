@@ -15,7 +15,6 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
-use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -23,7 +22,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
-class EnableFieldsFilterListener
+class EnableFieldsFilterListener extends AbstractListener
 {
     /**
      * @var ManagerFactory
@@ -68,15 +67,7 @@ class EnableFieldsFilterListener
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $controller = $event->getController();
-        if (!is_array($controller)) {
-            return;
-        }
-
-        $controller = $controller[0];
-        if (!$controller instanceof CrudController) {
-            return;
-        }
+        $this->isValidCrudListener($event);
 
         $request = $event->getRequest();
         if (!$request->query->get('filter')) {
@@ -85,10 +76,10 @@ class EnableFieldsFilterListener
 
         $driver = $this->driver;
 
-        /**
+        /*
          * Override default driver
          */
-        $reflectionController = new \ReflectionObject($controller);
+        $reflectionController = new \ReflectionObject($this->getController());
         $annotations = $this->reader->getClassAnnotations($reflectionController);
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Driver) {

@@ -87,16 +87,16 @@ services:
         tags:
             - { name: kernel.event_listener, event: siab.pre_save, method: onPreSave, priority: 1027 }
 
-#    symfonian_id.admin.sort_query:
-#        class: Symfonian\Indonesia\AdminBundle\EventListener\SortQueryListener
-#        calls:
-#            - [setContainer, ['@service_container']]
-#        arguments:
-#            - '@symfonian_id.admin.filter.sort'
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-#            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-#            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
+    symfonian_id.admin.sort_query:
+        class: Symfonian\Indonesia\AdminBundle\EventListener\EnableFieldsSorterListener
+        calls:
+            - [setContainer, ['@service_container']]
+        arguments:
+            - '@symfonian_id.admin.manager.factory'
+            - '%symfonian_id.admin.driver%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: siab.filter_query, method: onFilterQuery, priority: 1023 }
 
     symfonian_id.admin.soft_deletable_filter:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableSoftDeletableFilterListener
@@ -104,7 +104,7 @@ services:
             - '@symfonian_id.admin.manager.factory'
             - '%symfonian_id.admin.driver%'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
     symfonian_id.admin.fields_filter:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableFieldsFilterListener
