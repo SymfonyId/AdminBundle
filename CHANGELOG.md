@@ -2,7 +2,32 @@
 
 ## [Unreleased](https://github.com/SymfonyId/AdminBundle/tree/HEAD)
 
-[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.2.1...HEAD)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.13...HEAD)
+
+**Implemented enhancements:**
+
+- Add Support for Doctrine ODM [\#35](https://github.com/SymfonyId/AdminBundle/issues/35)
+
+## [7.0.13](https://github.com/SymfonyId/AdminBundle/tree/7.0.13) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.11...7.0.13)
+
+## [7.0.11](https://github.com/SymfonyId/AdminBundle/tree/7.0.11) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.9...7.0.11)
+
+## [7.0.9](https://github.com/SymfonyId/AdminBundle/tree/7.0.9) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.7...7.0.9)
+
+## [7.0.7](https://github.com/SymfonyId/AdminBundle/tree/7.0.7) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.3...7.0.7)
+
+## [7.0.3](https://github.com/SymfonyId/AdminBundle/tree/7.0.3) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.5...7.0.3)
+
+## [7.0.5](https://github.com/SymfonyId/AdminBundle/tree/7.0.5) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/7.0.1...7.0.5)
+
+## [7.0.1](https://github.com/SymfonyId/AdminBundle/tree/7.0.1) (2016-05-13)
+[Full Changelog](https://github.com/SymfonyId/AdminBundle/compare/6.2.1...7.0.1)
 
 **Fixed bugs:**
 
