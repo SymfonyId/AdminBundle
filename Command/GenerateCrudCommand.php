@@ -113,10 +113,7 @@ EOT
      */
     protected function createGenerator()
     {
-        /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
-        $fileSystem = $this->getContainer()->get('filesystem');
-
-        return new FormGenerator($fileSystem);
+        return new FormGenerator();
     }
 
     /**
@@ -158,9 +155,7 @@ EOT
      */
     private function getControllerGenerator($bundle = null)
     {
-        /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
-        $fileSystem = $this->getContainer()->get('filesystem');
-        $generator = new ControllerGenerator($fileSystem);
+        $generator = new ControllerGenerator();
         $generator->setSkeletonDirs($this->getSkeletonDirs($bundle));
 
         return $generator;

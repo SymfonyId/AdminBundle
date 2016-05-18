@@ -26,19 +26,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 class FormGenerator extends AbstractGenerator
 {
     /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @param Filesystem $filesystem A Filesystem instance
-     */
-    public function __construct(Filesystem $filesystem)
-    {
-        $this->filesystem = $filesystem;
-    }
-
-    /**
      * Generates the entity form class.
      *
      * @param BundleInterface   $bundle         The bundle in which to create the class
