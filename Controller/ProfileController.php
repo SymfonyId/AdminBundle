@@ -78,17 +78,14 @@ class ProfileController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
-        }
+        $this->isAllowed($translator, $translationDomain);
 
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
-        $form = $crud->getForm($user);
+        $form = $crud->getForm($this->getUser());
         $form->handleRequest($request);
 
         /** @var View $view */
@@ -177,5 +174,17 @@ class ProfileController extends Controller
         $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
 
         return $view;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param $translationDomain
+     */
+    private function isAllowed(TranslatorInterface $translator, $translationDomain)
+    {
+        $user = $this->getUser();
+        if (!is_object($user) || !$user instanceof UserInterface) {
+            throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
+        }
     }
 }
