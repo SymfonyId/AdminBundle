@@ -27,19 +27,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class SymfonianIndonesiaAdminBundle extends Bundle
 {
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
-    /**
      * @param ContainerBuilder $container
      */
     public function build(ContainerBuilder $container)

@@ -11,16 +11,13 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
-use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 trait ConfigurationAwareTrait
 {
     /**
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     abstract protected function getContainer();
 
@@ -31,7 +28,7 @@ trait ConfigurationAwareTrait
      */
     protected function getConfigurator($key)
     {
-        /** @var KernelInterface $kernel */
+        /** @var \Symfony\Component\HttpKernel\KernelInterface $kernel */
         $kernel = $this->getContainer()->get('kernel');
         /** @var Configurator $configurator */
         $configurator = $this->getContainer()->get('symfonian_id.admin.congiration.configurator');
@@ -48,7 +45,7 @@ trait ConfigurationAwareTrait
      *
      * @return Configurator
      *
-     * @throws RuntimeException
+     * @throws \Symfonian\Indonesia\AdminBundle\Exception\RuntimeException
      */
     private function fetchFromCache(Configurator $configurator, $cacheKey)
     {
