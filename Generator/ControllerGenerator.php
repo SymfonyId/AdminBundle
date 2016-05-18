@@ -13,7 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
