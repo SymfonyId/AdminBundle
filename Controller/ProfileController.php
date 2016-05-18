@@ -11,12 +11,14 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
@@ -103,11 +105,7 @@ class ProfileController extends Controller
 
                 /** @var ManagerFactory $managerFactory */
                 $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
-
-                $event = new FilterEntityEvent();
-                $event->setManager($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())));
-                $event->setEntity($form->getData());
-                $this->fireEvent(Constants::POST_SAVE, $event);
+                $this->fire($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())), $form->getData());
 
                 $view->setParam('success', $translator->trans('message.data_saved', array(), $translationDomain));
             }
@@ -151,5 +149,13 @@ class ProfileController extends Controller
         /** @var UserManager $userManager */
         $userManager = $this->container->get('fos_user.user_manager');
         $userManager->updateUser($form->getData());
+    }
+
+    private function fire(ObjectManager $manager, EntityInterface $data)
+    {
+        $event = new FilterEntityEvent();
+        $event->setManager($manager);
+        $event->setEntity($data);
+        $this->fireEvent(Constants::POST_SAVE, $event);
     }
 }
