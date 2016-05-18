@@ -5,6 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/symfonyid/admin-bundle/v/stable)](https://packagist.org/packages/symfonyid/admin-bundle) 
 [![Latest Unstable Version](https://poser.pugx.org/symfonyid/admin-bundle/v/unstable)](https://packagist.org/packages/symfonyid/admin-bundle) 
 [![License](https://poser.pugx.org/symfonyid/admin-bundle/license)](https://packagist.org/packages/symfonyid/admin-bundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/501a8902-e660-46c0-b526-0282ef48b8c6/mini.png)](https://insight.sensiolabs.com/projects/501a8902-e660-46c0-b526-0282ef48b8c6)
 [![knpbundles.com](http://knpbundles.com/SymfonyId/AdminBundle/badge-short)](http://knpbundles.com/SymfonyId/AdminBundle)
 
 Originally: [SimpleAdminBundle](https://github.com/ihsanudin/SimpleAdminBundle)
