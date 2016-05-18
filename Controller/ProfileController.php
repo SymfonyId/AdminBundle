@@ -116,7 +116,7 @@ class ProfileController extends Controller
                 /** @var UserManager $userManager */
                 $userManager = $this->container->get('fos_user.user_manager');
                 $entity = $form->getData();
-                
+
                 /** @var ManagerFactory $managerFactory */
                 $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
 

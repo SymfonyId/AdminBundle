@@ -43,7 +43,7 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
      * Gets the SQL query part to add to a query.
      *
      * @param ClassMetadata $targetEntity
-     * @param string $targetTableAlias
+     * @param string        $targetTableAlias
      *
      * @return string The constraint SQL if there is available, empty string otherwise.
      */
@@ -71,7 +71,7 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
 
         $filter = '';
         $parameter = str_replace('\'', '', $this->getParameter('filter'));//Remove single quote from paramter
-        /**
+        /*
          * Filter is low level query so you can't use property name as field filter, use column name instead
          */
         foreach ($fields as $field) {

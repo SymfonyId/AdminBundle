@@ -13,9 +13,7 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Filter\SQLFilter;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
@@ -108,15 +106,15 @@ class EnableFieldsFilterListener extends AbstractListener
 
         $manager = $this->managerFactory->getManager($driver);
         if (Driver::DOCTRINE_ORM === $driver) {
-            /** @var EntityManager $manager */
-            /** @var FieldsFilterInterface $filter */
+            /* @var EntityManager $manager */
+            /* @var FieldsFilterInterface $filter */
             $filter = $manager->getFilters()->enable('symfonian_id.admin.filter.orm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }
 
         if (Driver::DOCTRINE_ODM === $driver) {
-            /** @var DocumentManager $manager */
-            /** @var FieldsFilterInterface $filter */
+            /* @var DocumentManager $manager */
+            /* @var FieldsFilterInterface $filter */
             $filter = $manager->getFilterCollection()->enable('symfonian_id.admin.filter.odm.fields');
             $this->applyFilter($filter, $request->query->get('filter'));
         }
@@ -124,7 +122,7 @@ class EnableFieldsFilterListener extends AbstractListener
 
     /**
      * @param FieldsFilterInterface $filter
-     * @param string                          $keyword
+     * @param string                $keyword
      */
     private function applyFilter(FieldsFilterInterface $filter, $keyword)
     {

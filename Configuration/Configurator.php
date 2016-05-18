@@ -297,7 +297,7 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
             }
         }
 
-        return $this->driver?: $this->container->getParameter('symfonian_id.admin.driver');
+        return $this->driver ?: $this->container->getParameter('symfonian_id.admin.driver');
     }
 
     public function freeze()

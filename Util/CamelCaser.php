@@ -18,6 +18,7 @@ final class CamelCaser
 {
     /**
      * @param $string
+     *
      * @return string
      */
     public static function underScoretToCamelCase($string)
@@ -27,6 +28,7 @@ final class CamelCaser
 
     /**
      * @param $string
+     *
      * @return string
      */
     public static function camelCaseToUnderScore($string)

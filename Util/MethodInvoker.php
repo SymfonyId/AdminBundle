@@ -41,7 +41,7 @@ final class MethodInvoker
     }
 
     /**
-     * @param array $data with key => value
+     * @param array $data   with key => value
      * @param mixed $object Object that you want to bind
      *
      * @return mixed $object Object

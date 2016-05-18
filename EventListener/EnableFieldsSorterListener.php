@@ -109,6 +109,7 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
         $session = $this->container->get('session');
         if (!$this->sortBy) {
             $session->set(Constants::SESSION_SORTED_NAME, null);
+
             return;
         }
         $session->set(Constants::SESSION_SORTED_NAME, $this->sortBy);

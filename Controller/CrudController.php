@@ -426,7 +426,7 @@ abstract class CrudController extends Controller
 
         $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
         $handler->setEntity($crud->getEntityClass());
-        
+
         /** @var EntityInterface $entity */
         $entity = $handler->find($id);
         if (!$entity) {
@@ -446,7 +446,7 @@ abstract class CrudController extends Controller
         $fields = array();
         $reflection = new \ReflectionClass($crud->getEntityClass());
 
-        foreach ($reflection->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED) as $key => $property) {
+        foreach ($reflection->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED) as $key => $property) {
             if ('id' !== $name = $property->getName()) {
                 $fields[] = $name;
             }
