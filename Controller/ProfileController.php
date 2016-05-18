@@ -117,6 +117,14 @@ class ProfileController extends Controller
     }
 
     /**
+     * @return string
+     */
+    protected function getClassName()
+    {
+        return __CLASS__;
+    }
+
+    /**
      * @param FormInterface $form
      * @param Request $request
      *
@@ -143,13 +151,5 @@ class ProfileController extends Controller
         /** @var UserManager $userManager */
         $userManager = $this->container->get('fos_user.user_manager');
         $userManager->updateUser($form->getData());
-    }
-
-    /**
-     * @return string
-     */
-    protected function getClassName()
-    {
-        return __CLASS__;
     }
 }
