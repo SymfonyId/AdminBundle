@@ -194,37 +194,14 @@ abstract class CrudController extends Controller
      */
     public function bulkDeleteAction(Request $request)
     {
-        /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator($this->getClassName());
-        /** @var Crud $crud */
-        $crud = $configuration->getConfiguration(Crud::class);
-        $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-
-        $isDeleted = array();
-        $countData = 0;
-        foreach ($request->get('id', array()) as $id) {
-            $entity = $this->findOr404Error($id);
-            if (!$entity instanceof BulkDeletableInterface) {
-                return;
-            }
-            $deleteMessage = $entity->getDeleteInformation();
-
-            $handler->setEntity($crud->getEntityClass());
-            if (true === $handler->remove($entity)) {
-                $isDeleted[] = $deleteMessage;
-            }
-
-            ++$countData;
-        }
 
         /** @var Translator $translator */
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        if (0 === count($isDeleted)) {
+        $output = $this->bulkDelete($request);
+
+        if (0 === count($output['data'])) {
             $message = 'message.delete_bulk_failed';
         } else {
             $message = 'message.delete_bulk';
@@ -233,9 +210,9 @@ abstract class CrudController extends Controller
         return new JsonResponse(array(
             'status' => empty($isDeleted) ? false : true,
             'message' => $translator->trans($message, array(
-                '%count%' => count($isDeleted),
-                '%deleted%' => $countData,
-                '%data%' => implode(', ', $isDeleted),
+                '%count%' => count($output['data']),
+                '%deleted%' => $output['count'],
+                '%data%' => implode(', ', $output['data']),
             ), $translationDomain),
         ));
     }
@@ -524,6 +501,41 @@ abstract class CrudController extends Controller
         return array(
             'count' => $countData,
             'data' => $isInserted,
+        );
+    }
+
+    private function bulkDelete(Request $request)
+    {
+
+        /** @var Configurator $configuration */
+        $configuration = $this->getConfigurator($this->getClassName());
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_DELETE);
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
+
+        $isDeleted = array();
+        $countData = 0;
+        foreach ($request->get('id', array()) as $id) {
+            $entity = $this->findOr404Error($id);
+            if (!$entity instanceof BulkDeletableInterface) {
+                return;
+            }
+            $deleteMessage = $entity->getDeleteInformation();
+
+            $handler->setEntity($crud->getEntityClass());
+            if (true === $handler->remove($entity)) {
+                $isDeleted[] = $deleteMessage;
+            }
+
+            ++$countData;
+        }
+
+        return array(
+            'count' => $countData,
+            'data' => $isDeleted,
         );
     }
 }
