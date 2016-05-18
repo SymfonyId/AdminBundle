@@ -22,6 +22,7 @@ use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -30,8 +31,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProfileController extends Controller
 {
-    private $viewParams = array();
-
     /**
      * @Route("/profile/")
      * @Method({"GET"})
@@ -100,31 +99,14 @@ class ProfileController extends Controller
             if (!$form->isValid()) {
                 $view->setParam('errors', true);
             } elseif ($form->isValid()) {
-                /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
-                $encoderFactory = $this->container->get('security.encoder_factory');
-
-                /** @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
-                $encoder = $encoderFactory->getEncoder($user);
-                $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
-
-                if ($password !== $user->getPassword()) {
-                    $view->setParam('current_password_invalid', true);
-
-                    return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $this->viewParams);
-                }
-
-                /** @var UserManager $userManager */
-                $userManager = $this->container->get('fos_user.user_manager');
-                $entity = $form->getData();
+                $this->updateUser($form, $request);
 
                 /** @var ManagerFactory $managerFactory */
                 $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
 
                 $event = new FilterEntityEvent();
                 $event->setManager($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())));
-                $event->setEntity($entity);
-
-                $userManager->updateUser($entity);
+                $event->setEntity($form->getData());
                 $this->fireEvent(Constants::POST_SAVE, $event);
 
                 $view->setParam('success', $translator->trans('message.data_saved', array(), $translationDomain));
@@ -132,6 +114,35 @@ class ProfileController extends Controller
         }
 
         return $this->render($this->container->getParameter('symfonian_id.admin.themes.change_password'), $view->getParams());
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    private function updateUser(FormInterface $form, Request $request)
+    {
+        /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
+        $encoderFactory = $this->container->get('security.encoder_factory');
+
+        $user = $this->getUser();
+        /** @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
+        $encoder = $encoderFactory->getEncoder($user);
+        $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
+
+        if ($password !== $user->getPassword()) {
+            /** @var View $view */
+            $view = $this->get('symfonian_id.admin.view.view');
+            $view->setParam('current_password_invalid', true);
+
+            return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $view->getParams());
+        }
+
+        /** @var UserManager $userManager */
+        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager->updateUser($form->getData());
     }
 
     /**
