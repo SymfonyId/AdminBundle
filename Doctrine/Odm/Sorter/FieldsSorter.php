@@ -29,21 +29,9 @@ class FieldsSorter implements SorterInterface
      */
     private $managerFactory;
 
-    /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
-     * @var Configurator
-     */
-    private $configurator;
-
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator)
+    public function __construct(ManagerFactory $managerFactory)
     {
         $this->managerFactory = $managerFactory;
-        $this->reader = $reader;
-        $this->configurator = $configurator;
     }
 
     /**

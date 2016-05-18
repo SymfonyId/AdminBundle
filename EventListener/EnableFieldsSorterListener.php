@@ -28,11 +28,6 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 class EnableFieldsSorterListener extends AbstractListener implements ContainerAwareInterface
 {
     /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-
-    /**
      * @var Reader
      */
     private $reader;
@@ -53,15 +48,12 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
     private $sortBy;
 
     /**
-     * @param ManagerFactory $managerFactory
      * @param Reader         $reader
      * @param string         $driver
      */
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver)
+    public function __construct(Reader $reader, $driver)
     {
-        $this->managerFactory = $managerFactory;
-        $this->reader = $reader;
-        $this->driver = $driver;
+        parent::__construct($reader, $driver);
     }
 
     public function onKernelController(FilterControllerEvent $event)

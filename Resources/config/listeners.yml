@@ -92,7 +92,6 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
-            - '@symfonian_id.admin.manager.factory'
             - '@annotation_reader'
             - '%symfonian_id.admin.driver%'
         tags:
