@@ -143,9 +143,7 @@ abstract class CrudController extends Controller
         $view->setParam('page_description', $translator->trans($page->getDescription(), array(), $translationDomain));
 
         /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-        $handler->setEntity($crud->getEntityClass());
+        $handler = $this->getHandler($configuration->getDriver($crud->getEntityClass()), $crud->getEntityClass());
         $handler->setTemplate($crud->getShowTemplate());
         $handler->showDetail($request, $entity, $crud->getShowFields() ?: $this->getEntityFields($crud), $crud->isAllowDelete());
 
@@ -168,10 +166,7 @@ abstract class CrudController extends Controller
         /** @var EntityInterface $entity */
         $entity = $this->findOr404Error($id);
         /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-        $handler->setEntity($crud->getEntityClass());
+        $handler = $this->getHandler($configuration->getDriver($crud->getEntityClass()), $crud->getEntityClass());
         $returnHandler = $handler->remove($entity);
         if ($returnHandler instanceof Response) {
             return $returnHandler;
@@ -194,7 +189,6 @@ abstract class CrudController extends Controller
      */
     public function bulkDeleteAction(Request $request)
     {
-
         /** @var Translator $translator */
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
@@ -233,8 +227,6 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         $configuration->parseClass($crud->getEntityClass());
         /** @var Page $page */
         $page = $configuration->getConfiguration(Page::class);
@@ -258,8 +250,7 @@ abstract class CrudController extends Controller
         }, $filters)));
         $view->setParam('filter_fields_entity', implode(', ', $filters));
 
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-        $handler->setEntity($crud->getEntityClass());
+        $handler = $this->getHandler($configuration->getDriver($crud->getEntityClass()), $crud->getEntityClass());
         $handler->setTemplate($listTemplate);
         $handler->viewList($request, $columns, $crud->getAction(), $crud->isAllowCreate(), $this->isAllowDelete($crud), $grid->isFormatNumber());
 
@@ -304,8 +295,6 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
@@ -355,8 +344,7 @@ abstract class CrudController extends Controller
             ));
         }
 
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-        $handler->setEntity($crud->getEntityClass());
+        $handler = $this->getHandler($configuration->getDriver($crud->getEntityClass()), $crud->getEntityClass());
         $handler->setTemplate($template);
         $handler->createNewOrUpdate($this, $request, $data, $form);
 
@@ -373,15 +361,12 @@ abstract class CrudController extends Controller
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-        $handler->setEntity($crud->getEntityClass());
+        $handler = $this->getHandler($configuration->getDriver($crud->getEntityClass()), $crud->getEntityClass());
 
         /** @var EntityInterface $entity */
         $entity = $handler->find($id);
@@ -504,6 +489,11 @@ abstract class CrudController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return array|void
+     */
     private function bulkDelete(Request $request)
     {
 
@@ -537,5 +527,21 @@ abstract class CrudController extends Controller
             'count' => $countData,
             'data' => $isDeleted,
         );
+    }
+
+    /**
+     * @param $driver
+     * @param $entityClass
+     *
+     * @return CrudHandler
+     */
+    private function getHandler($driver, $entityClass)
+    {
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($driver);
+        $handler->setEntity($entityClass);
+
+        return $handler;
     }
 }
