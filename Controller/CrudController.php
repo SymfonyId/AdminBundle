@@ -66,41 +66,20 @@ abstract class CrudController extends Controller
      */
     public function bulkNewAction(Request $request)
     {
-        /** @var Configurator $configuration */
-        $configuration = $this->getConfigurator($this->getClassName());
-        /** @var Crud $crud */
-        $crud = $configuration->getConfiguration(Crud::class);
-        $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
-        /** @var CrudHandler $handler */
-        $handler = $this->container->get('symfonian_id.admin.handler.crud');
-        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
-
-        $isInserted = array();
-        $countData = 0;
-        $entityClass = $crud->getEntityClass();
-        $formRequests = $request->get('form');
-        if ($request->isMethod('POST')) {
-            foreach ($formRequests as $formRequest) {
-                /** @var EntityInterface $entity */
-                $entity = new $entityClass();
-                $form = $crud->getForm($entity);
-
-                $form->submit($formRequest[$form->getName()]);
-                if ($form->isValid()) {
-                    if (true === $handler->save($entity)) {
-                        $isInserted[] = $entity->getId();
-                    }
-
-                    ++$countData;
-                }
-            }
-        }
-
         /** @var Translator $translator */
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        if (0 === count($isInserted)) {
+        $output = array(
+            'count' => 0,
+            'data' => array(),
+        );
+
+        if ($request->isMethod('POST')) {
+            $output = $this->bulkSave($request);
+        }
+
+        if (0 === count($output['data'])) {
             $message = 'message.insert_bulk_failed';
         } else {
             $message = 'message.insert_bulk';
@@ -109,9 +88,9 @@ abstract class CrudController extends Controller
         return new JsonResponse(array(
             'status' => empty($isInserted) ? false : true,
             'message' => $translator->trans($message, array(
-                '%count%' => count($isInserted),
-                '%inserted%' => $countData,
-                '%data%' => implode(', ', $isInserted),
+                '%count%' => count($output['data']),
+                '%inserted%' => $output['count'],
+                '%data%' => implode(', ', $output['data']),
             ), $translationDomain),
         ));
     }
@@ -504,5 +483,47 @@ abstract class CrudController extends Controller
         }
 
         return $allowBulkDelete;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function bulkSave(Request $request)
+    {
+        /** @var Configurator $configuration */
+        $configuration = $this->getConfigurator($this->getClassName());
+        /** @var Crud $crud */
+        $crud = $configuration->getConfiguration(Crud::class);
+        $this->isAllowOr404Error($crud, Constants::ACTION_CREATE);
+        /** @var CrudHandler $handler */
+        $handler = $this->container->get('symfonian_id.admin.handler.crud');
+        $handler->setDriver($configuration->getDriver($crud->getEntityClass()));
+
+        $isInserted = array();
+        $countData = 0;
+        $entityClass = $crud->getEntityClass();
+        $formRequests = $request->get('form');
+
+        foreach ($formRequests as $formRequest) {
+            /** @var EntityInterface $entity */
+            $entity = new $entityClass();
+            $form = $crud->getForm($entity);
+
+            $form->submit($formRequest[$form->getName()]);
+            if ($form->isValid()) {
+                if (true === $handler->save($entity)) {
+                    $isInserted[] = $entity->getId();
+                }
+
+                ++$countData;
+            }
+        }
+
+        return array(
+            'count' => $countData,
+            'data' => $isInserted,
+        );
     }
 }
