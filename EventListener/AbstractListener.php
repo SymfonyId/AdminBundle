@@ -66,9 +66,11 @@ abstract class AbstractListener
     }
 
     /**
+     * @param string|null $entityClass
+     *
      * @return string
      */
-    protected function getDriver()
+    protected function getDriver($entityClass = null)
     {
         $this->overrideDefaultDriver();
 

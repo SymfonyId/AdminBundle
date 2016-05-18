@@ -277,11 +277,11 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     }
 
     /**
-     * @param $entityClass
+     * @param string|null $entityClass
      *
      * @return string
      */
-    public function getDriver($entityClass)
+    public function getDriver($entityClass = null)
     {
         if (!$this->driver) {
             $reflection = new \ReflectionClass($entityClass);
