@@ -27,6 +27,7 @@ use Symfonian\Indonesia\AdminBundle\View\View;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -73,6 +74,7 @@ class ProfileController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
+        /** @var TranslatorInterface $translator */
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
@@ -90,12 +92,8 @@ class ProfileController extends Controller
         $form->handleRequest($request);
 
         /** @var View $view */
-        $view = $this->get('symfonian_id.admin.view.view');
-        $view->setParam('page_title', $translator->trans('page.change_password.title', array(), $translationDomain));
-        $view->setParam('page_description', $translator->trans('page.change_password.description', array(), $translationDomain));
+        $view = $this->getView($translator, $translationDomain);
         $view->setParam('form', $form->createView());
-        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
-        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
 
         if ($request->isMethod('POST')) {
             if (!$form->isValid()) {
@@ -151,11 +149,33 @@ class ProfileController extends Controller
         $userManager->updateUser($form->getData());
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @param EntityInterface $data
+     */
     private function fire(ObjectManager $manager, EntityInterface $data)
     {
         $event = new FilterEntityEvent();
         $event->setManager($manager);
         $event->setEntity($data);
         $this->fireEvent(Constants::POST_SAVE, $event);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param $translationDomain
+     *
+     * @return View
+     */
+    private function getView(TranslatorInterface $translator, $translationDomain)
+    {
+        /** @var View $view */
+        $view = $this->get('symfonian_id.admin.view.view');
+        $view->setParam('page_title', $translator->trans('page.change_password.title', array(), $translationDomain));
+        $view->setParam('page_description', $translator->trans('page.change_password.description', array(), $translationDomain));
+        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
+
+        return $view;
     }
 }
