@@ -32,19 +32,9 @@ class EnableFieldsFilterListener extends AbstractListener
     private $managerFactory;
 
     /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
      * @var Configurator
      */
     private $configurator;
-
-    /**
-     * @var string
-     */
-    private $driver;
 
     /**
      * @var string
@@ -61,10 +51,9 @@ class EnableFieldsFilterListener extends AbstractListener
     public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator, $driver, $dateTimeFormat)
     {
         $this->managerFactory = $managerFactory;
-        $this->reader = $reader;
         $this->configurator = $configurator;
-        $this->driver = $driver;
         $this->dateTimeFormat = $dateTimeFormat;
+        parent::__construct($reader, $driver);
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -76,33 +65,7 @@ class EnableFieldsFilterListener extends AbstractListener
             return;
         }
 
-        $driver = $this->driver;
-
-        /*
-         * Override default driver
-         */
-        $entityClass = null;
-        $reflectionController = new \ReflectionObject($this->getController());
-        $annotations = $this->reader->getClassAnnotations($reflectionController);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Crud) {
-                $entityClass = $annotation->getEntityClass();
-
-                break;
-            }
-        }
-
-        if ($entityClass) {
-            $reflectionEntity = new \ReflectionClass($entityClass);
-            $annotations = $this->reader->getClassAnnotations($reflectionEntity);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Driver) {
-                    $driver = $annotation->getDriver();
-
-                    break;
-                }
-            }
-        }
+        $driver = $this->getDriver();
 
         $manager = $this->managerFactory->getManager($driver);
         if (Driver::DOCTRINE_ORM === $driver) {
@@ -126,7 +89,7 @@ class EnableFieldsFilterListener extends AbstractListener
      */
     private function applyFilter(FieldsFilterInterface $filter, $keyword)
     {
-        $filter->setAnnotationReader($this->reader);
+        $filter->setAnnotationReader($this->getReader());
         $filter->setConfigurator($this->configurator);
         $filter->setDateTimeFormat($this->dateTimeFormat);
         $filter->setParameter('filter', $keyword);
