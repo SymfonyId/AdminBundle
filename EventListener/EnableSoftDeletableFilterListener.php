@@ -12,7 +12,6 @@
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
-use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;

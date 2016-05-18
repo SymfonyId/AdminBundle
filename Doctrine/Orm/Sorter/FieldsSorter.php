@@ -11,8 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter;
 
-use Doctrine\Common\Annotations\Reader;
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\SorterInterface;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;

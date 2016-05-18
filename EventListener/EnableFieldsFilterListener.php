@@ -14,7 +14,6 @@ namespace Symfonian\Indonesia\AdminBundle\EventListener;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;

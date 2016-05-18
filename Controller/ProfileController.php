@@ -126,7 +126,7 @@ class ProfileController extends Controller
 
     /**
      * @param FormInterface $form
-     * @param Request $request
+     * @param Request       $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

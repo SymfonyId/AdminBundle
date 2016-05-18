@@ -16,7 +16,6 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter\FieldsSorter;
 use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
-use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,8 +47,8 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
     private $sortBy;
 
     /**
-     * @param Reader         $reader
-     * @param string         $driver
+     * @param Reader $reader
+     * @param string $driver
      */
     public function __construct(Reader $reader, $driver)
     {
