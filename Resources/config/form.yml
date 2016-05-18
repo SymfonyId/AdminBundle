@@ -1,6 +1,6 @@
 services:
     symfonian_id.admin.change_password_form:
-        class: Symfonian\Indonesia\AdminBundle\Form\ChangePasswordType
+        class: Symfonian\Indonesia\AdminBundle\Form\Type\ChangePasswordType
         arguments:
             - '%symfonian_id.admin.user.user_entity%'
             - '%symfonian_id.admin.translation_domain%'
@@ -8,7 +8,7 @@ services:
             - { name: form.type }
 
     symfonian_id.admin.user_form:
-        class: Symfonian\Indonesia\AdminBundle\Form\UserType
+        class: Symfonian\Indonesia\AdminBundle\Form\Type\UserType
         arguments:
             - '%symfonian_id.admin.user.user_entity%'
             - '%symfonian_id.admin.translation_domain%'

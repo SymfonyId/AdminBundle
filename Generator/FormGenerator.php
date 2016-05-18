@@ -45,6 +45,8 @@ class FormGenerator extends AbstractGenerator
      * @param string            $entity         The entity relative class name
      * @param ClassMetadataInfo $metadata       The entity metadata class
      * @param bool              $forceOverwrite If true, remove any existing form class before generating it again
+     *
+     * @throws RuntimeException
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite = false)
     {
@@ -52,7 +54,7 @@ class FormGenerator extends AbstractGenerator
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
+        $dirPath = $bundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
