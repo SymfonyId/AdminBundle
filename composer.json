@@ -26,10 +26,10 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "sensio/generator-bundle": "^3.0",
-        "knplabs/knp-paginator-bundle": "dev-master",
-        "knplabs/knp-menu-bundle": "dev-master",
-        "friendsofsymfony/user-bundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "~2.5@dev",
+        "knplabs/knp-menu-bundle": "~2.1@dev",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "friendsofsymfony/jsrouting-bundle": "~2.0@dev"
     },
     "suggest": {
         "doctrine/mongodb-odm": "Needed when using the odm implementation",
