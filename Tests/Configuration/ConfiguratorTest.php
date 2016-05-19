@@ -45,7 +45,7 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         /** @var FormFactory $formFactory Mock */
         $formFactory = $this->getMockBuilder(FormFactory::class)->disableOriginalConstructor()->getMock();
 
-        $this->configurator = new Configurator($kernel, $extractor, $formFactory, Driver::DOCTRINE_ORM);
+        $this->configurator = new Configurator($kernel, $extractor, $formFactory, Driver::DOCTRINE_ODM);
         $this->configurator->setTemplate(new Template());
     }
 
