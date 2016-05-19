@@ -11,8 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
 class TwigVariableListener
 {
     /**
