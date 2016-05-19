@@ -13,7 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -26,25 +25,14 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 class FormGenerator extends AbstractGenerator
 {
     /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @param Filesystem $filesystem A Filesystem instance
-     */
-    public function __construct(Filesystem $filesystem)
-    {
-        $this->filesystem = $filesystem;
-    }
-
-    /**
      * Generates the entity form class.
      *
      * @param BundleInterface   $bundle         The bundle in which to create the class
      * @param string            $entity         The entity relative class name
      * @param ClassMetadataInfo $metadata       The entity metadata class
      * @param bool              $forceOverwrite If true, remove any existing form class before generating it again
+     *
+     * @throws RuntimeException
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite = false)
     {
@@ -52,7 +40,7 @@ class FormGenerator extends AbstractGenerator
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
+        $dirPath = $bundle->getPath().'/Form/Type';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {

@@ -19,26 +19,12 @@ use Symfonian\Indonesia\AdminBundle\DependencyInjection\Compiler\PaginationTempl
 use Symfonian\Indonesia\AdminBundle\DependencyInjection\SymfonianIndonesiaAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
 class SymfonianIndonesiaAdminBundle extends Bundle
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @param KernelInterface $kernel
-     */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     /**
      * @param ContainerBuilder $container
      */

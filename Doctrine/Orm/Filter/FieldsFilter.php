@@ -11,12 +11,12 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Filter;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 
 /**
@@ -25,9 +25,9 @@ use Symfonian\Indonesia\AdminBundle\Grid\Filter;
 class FieldsFilter extends SQLFilter implements FieldsFilterInterface
 {
     /**
-     * @var Reader
+     * @var ExtractorFactory
      */
-    private $reader;
+    private $extractor;
 
     /**
      * @var Configurator
@@ -43,7 +43,7 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
      * Gets the SQL query part to add to a query.
      *
      * @param ClassMetadata $targetEntity
-     * @param string $targetTableAlias
+     * @param string        $targetTableAlias
      *
      * @return string The constraint SQL if there is available, empty string otherwise.
      */
@@ -53,8 +53,8 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
         $properties = $targetEntity->getReflectionProperties();
         /** @var \ReflectionProperty $property */
         foreach ($properties as $property) {
-            $annotations = $this->reader->getPropertyAnnotations($property);
-            foreach ($annotations as $annotation) {
+            $this->extractor->extract($property);
+            foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {
                     $fields[] = $property->getName();
                 }
@@ -71,7 +71,7 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
 
         $filter = '';
         $parameter = str_replace('\'', '', $this->getParameter('filter'));//Remove single quote from paramter
-        /**
+        /*
          * Filter is low level query so you can't use property name as field filter, use column name instead
          */
         foreach ($fields as $field) {
@@ -89,11 +89,11 @@ class FieldsFilter extends SQLFilter implements FieldsFilterInterface
     }
 
     /**
-     * @param Reader $reader
+     * @param ExtractorFactory $extractor
      */
-    public function setAnnotationReader(Reader $reader)
+    public function setExtractor(ExtractorFactory $extractor)
     {
-        $this->reader = $reader;
+        $this->extractor = $extractor;
     }
 
     /**

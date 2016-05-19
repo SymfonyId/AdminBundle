@@ -80,13 +80,12 @@ class Builder
 
     /**
      * @param FactoryInterface $factory
-     * @param array            $options
      *
      * @return ItemInterface
      */
-    public function mainMenu(FactoryInterface $factory, array $options)
+    public function mainMenu(FactoryInterface $factory)
     {
-        $menu = $this->createRootMenu($factory, $options);
+        $menu = $this->createRootMenu($factory);
         $this->addDashboardMenu($menu);
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             $this->addUserMenu($menu);
@@ -109,11 +108,10 @@ class Builder
 
     /**
      * @param FactoryInterface $factory
-     * @param array            $options
      *
      * @return ItemInterface
      */
-    protected function createRootMenu(FactoryInterface $factory, array $options)
+    protected function createRootMenu(FactoryInterface $factory)
     {
         $menu = $factory->createItem('root', array(
             'childrenAttributes' => array(

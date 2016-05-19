@@ -13,7 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfonian\Indonesia\AdminBundle\Exception\RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -25,19 +24,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class ControllerGenerator extends AbstractGenerator
 {
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @param Filesystem $filesystem A Filesystem instance
-     */
-    public function __construct(Filesystem $filesystem)
-    {
-        $this->filesystem = $filesystem;
-    }
-
     /**
      * Generates the entity form class.
      *

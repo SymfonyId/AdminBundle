@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfonian\Indonesia\AdminBundle\Form;
+namespace Symfonian\Indonesia\AdminBundle\Form\Type;
 
 use Symfonian\Indonesia\AdminBundle\EventListener\RemovePasswordFieldListener;
 use Symfonian\Indonesia\AdminBundle\Form\DataTransformer\RoleToArrayTransformer;

@@ -11,27 +11,29 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfonian\Indonesia\AdminBundle\Event\FilterEntityEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
  */
 class ProfileController extends Controller
 {
-    private $viewParams = array();
-
     /**
      * @Route("/profile/")
      * @Method({"GET"})
@@ -72,60 +74,33 @@ class ProfileController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
+        /** @var TranslatorInterface $translator */
         $translator = $this->container->get('translator');
         $translationDomain = $this->container->getParameter('symfonian_id.admin.translation_domain');
 
-        $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
-        }
+        $this->isAllowed($translator, $translationDomain);
 
         /** @var Configurator $configuration */
         $configuration = $this->getConfigurator($this->getClassName());
         /** @var Crud $crud */
         $crud = $configuration->getConfiguration(Crud::class);
 
-        $form = $crud->getForm($user);
+        $form = $crud->getForm($this->getUser());
         $form->handleRequest($request);
 
         /** @var View $view */
-        $view = $this->get('symfonian_id.admin.view.view');
-        $view->setParam('page_title', $translator->trans('page.change_password.title', array(), $translationDomain));
-        $view->setParam('page_description', $translator->trans('page.change_password.description', array(), $translationDomain));
+        $view = $this->getView($translator, $translationDomain);
         $view->setParam('form', $form->createView());
-        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
-        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
 
         if ($request->isMethod('POST')) {
             if (!$form->isValid()) {
                 $view->setParam('errors', true);
             } elseif ($form->isValid()) {
-                /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
-                $encoderFactory = $this->container->get('security.encoder_factory');
+                $this->updateUser($form, $request);
 
-                /** @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
-                $encoder = $encoderFactory->getEncoder($user);
-                $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
-
-                if ($password !== $user->getPassword()) {
-                    $view->setParam('current_password_invalid', true);
-
-                    return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $this->viewParams);
-                }
-
-                /** @var UserManager $userManager */
-                $userManager = $this->container->get('fos_user.user_manager');
-                $entity = $form->getData();
-                
                 /** @var ManagerFactory $managerFactory */
                 $managerFactory = $this->container->get('symfonian_id.admin.manager.factory');
-
-                $event = new FilterEntityEvent();
-                $event->setManager($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())));
-                $event->setEntity($entity);
-
-                $userManager->updateUser($entity);
-                $this->fireEvent(Constants::POST_SAVE, $event);
+                $this->fire($managerFactory->getManager($configuration->getDriver($crud->getEntityClass())), $form->getData());
 
                 $view->setParam('success', $translator->trans('message.data_saved', array(), $translationDomain));
             }
@@ -140,5 +115,76 @@ class ProfileController extends Controller
     protected function getClassName()
     {
         return __CLASS__;
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param Request       $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    private function updateUser(FormInterface $form, Request $request)
+    {
+        /** @var \Symfony\Component\Security\Core\Encoder\EncoderFactory $encoderFactory */
+        $encoderFactory = $this->container->get('security.encoder_factory');
+
+        $user = $this->getUser();
+        /** @var \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface $encoder */
+        $encoder = $encoderFactory->getEncoder($user);
+        $password = $encoder->encodePassword($form->get('current_password')->getData(), $user->getSalt());
+
+        if ($password !== $user->getPassword()) {
+            /** @var View $view */
+            $view = $this->get('symfonian_id.admin.view.view');
+            $view->setParam('current_password_invalid', true);
+
+            return $this->render('SymfonianIndonesiaAdminBundle:Index:change_password.html.twig', $view->getParams());
+        }
+
+        /** @var UserManager $userManager */
+        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager->updateUser($form->getData());
+    }
+
+    /**
+     * @param ObjectManager   $manager
+     * @param EntityInterface $data
+     */
+    private function fire(ObjectManager $manager, EntityInterface $data)
+    {
+        $event = new FilterEntityEvent();
+        $event->setManager($manager);
+        $event->setEntity($data);
+        $this->fireEvent(Constants::POST_SAVE, $event);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param $translationDomain
+     *
+     * @return View
+     */
+    private function getView(TranslatorInterface $translator, $translationDomain)
+    {
+        /** @var View $view */
+        $view = $this->get('symfonian_id.admin.view.view');
+        $view->setParam('page_title', $translator->trans('page.change_password.title', array(), $translationDomain));
+        $view->setParam('page_description', $translator->trans('page.change_password.description', array(), $translationDomain));
+        $view->setParam('form_theme', $this->container->getParameter('symfonian_id.admin.themes.form_theme'));
+        $view->setParam('menu', $this->container->getParameter('symfonian_id.admin.menu'));
+
+        return $view;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param $translationDomain
+     */
+    private function isAllowed(TranslatorInterface $translator, $translationDomain)
+    {
+        $user = $this->getUser();
+        if (!is_object($user) || !$user instanceof UserInterface) {
+            throw new AccessDeniedException($translator->trans('message.access_denied', array(), $translationDomain));
+        }
     }
 }

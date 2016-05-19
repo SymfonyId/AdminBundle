@@ -11,8 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Orm\Sorter;
 
-use Doctrine\Common\Annotations\Reader;
-use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\SorterInterface;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
@@ -30,21 +28,9 @@ class FieldsSorter implements SorterInterface
      */
     private $managerFactory;
 
-    /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
-     * @var Configurator
-     */
-    private $configurator;
-
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator)
+    public function __construct(ManagerFactory $managerFactory)
     {
         $this->managerFactory = $managerFactory;
-        $this->reader = $reader;
-        $this->configurator = $configurator;
     }
 
     /**

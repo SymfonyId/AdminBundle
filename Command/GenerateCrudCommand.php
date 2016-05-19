@@ -113,10 +113,7 @@ EOT
      */
     protected function createGenerator()
     {
-        /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
-        $fileSystem = $this->getContainer()->get('filesystem');
-
-        return new FormGenerator($fileSystem);
+        return new FormGenerator();
     }
 
     /**
@@ -145,8 +142,9 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
-        $skeletonDirs[] = __DIR__.'/../Resources';
+        $reflClass = new \ReflectionClass(get_class($this));
+        $skeletonDirs[] = dirname($reflClass->getFileName()).'/../Resources/skeleton';
+        $skeletonDirs[] = dirname($reflClass->getFileName()).'/../Resources';
 
         return $skeletonDirs;
     }
@@ -158,9 +156,7 @@ EOT
      */
     private function getControllerGenerator($bundle = null)
     {
-        /** @var \Symfony\Component\Filesystem\Filesystem $fileSystem */
-        $fileSystem = $this->getContainer()->get('filesystem');
-        $generator = new ControllerGenerator($fileSystem);
+        $generator = new ControllerGenerator();
         $generator->setSkeletonDirs($this->getSkeletonDirs($bundle));
 
         return $generator;

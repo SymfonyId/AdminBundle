@@ -46,7 +46,7 @@ class FilterQueryEvent extends Event
         if (!$queryBuilder instanceof QueryBuilder && !$queryBuilder instanceof Builder) {
             throw new InvalidArgumentException(sprintf('%s is not valid query builder object', get_class($queryBuilder)));
         }
-        
+
         $this->queryBuilder = $queryBuilder;
     }
 

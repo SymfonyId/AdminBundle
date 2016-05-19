@@ -11,8 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
 class TwigVariableListener
 {
     /**
@@ -81,10 +79,7 @@ class TwigVariableListener
         $this->variables['translation_domain'] = $translationDomain;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest()
     {
         $needToMerge = array(
             'title' => $this->variables['title'],

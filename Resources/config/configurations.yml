@@ -5,6 +5,7 @@ services:
             - '@kernel'
             - '@symfonian_id.admin.extractor.extractor_factory'
             - '@form.factory'
+            - '%symfonian_id.admin.driver%'
         calls:
             - [setContainer, ['@service_container']]
             - [setFilter, ['%symfonian_id.admin.filter%']]

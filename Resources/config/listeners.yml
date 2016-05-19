@@ -92,8 +92,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments:
-            - '@symfonian_id.admin.manager.factory'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.extractor.extractor_factory'
             - '%symfonian_id.admin.driver%'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
@@ -103,7 +102,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableSoftDeletableFilterListener
         arguments:
             - '@symfonian_id.admin.manager.factory'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.extractor.extractor_factory'
             - '%symfonian_id.admin.driver%'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
@@ -112,7 +111,7 @@ services:
         class: Symfonian\Indonesia\AdminBundle\EventListener\EnableFieldsFilterListener
         arguments:
             - '@symfonian_id.admin.manager.factory'
-            - '@annotation_reader'
+            - '@symfonian_id.admin.extractor.extractor_factory'
             - '@symfonian_id.admin.congiration.configurator'
             - '%symfonian_id.admin.driver%'
             - '%symfonian_id.admin.date_time_format%'

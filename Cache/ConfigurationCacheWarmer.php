@@ -36,7 +36,7 @@ use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
@@ -46,10 +46,7 @@ use Symfony\Component\Routing\Route;
  */
 class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    use ContainerAwareTrait;
 
     /**
      * @var Configurator
@@ -126,14 +123,6 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $this->configuration = $configuration;
         $this->extractor = $extractorFactory;
         $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**
@@ -384,7 +373,7 @@ class ConfigurationCacheWarmer extends CacheWarmer implements ContainerAwareInte
         $filters = array();
         $sortable = array();
 
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE|\ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
             $this->extractor->extract($reflectionProperty);
             foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {

@@ -16,7 +16,7 @@ use Symfonian\Indonesia\AdminBundle\Contract\EntityInterface;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 
@@ -28,15 +28,12 @@ use Symfony\Component\Form\FormInterface;
  */
 class Crud implements ConfigurationInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var FormFactory
      */
     private $formFactory;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * @var Template
@@ -153,14 +150,6 @@ class Crud implements ConfigurationInterface, ContainerAwareInterface
         }
 
         unset($data);
-    }
-
-    /**
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**

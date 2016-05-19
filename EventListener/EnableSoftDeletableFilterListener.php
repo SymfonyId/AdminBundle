@@ -11,8 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
-use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -28,63 +27,20 @@ class EnableSoftDeletableFilterListener extends AbstractListener
     private $managerFactory;
 
     /**
-     * @var Reader
+     * @param ManagerFactory   $managerFactory
+     * @param ExtractorFactory $extractor
+     * @param string           $driver
      */
-    private $reader;
-
-    /**
-     * @var string
-     */
-    private $driver;
-
-    /**
-     * @param ManagerFactory $managerFactory
-     * @param Reader         $reader
-     * @param string         $driver
-     */
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver)
+    public function __construct(ManagerFactory $managerFactory, ExtractorFactory $extractor, $driver)
     {
         $this->managerFactory = $managerFactory;
-        $this->reader = $reader;
-        $this->driver = $driver;
+        parent::__construct($extractor, $driver);
     }
 
     public function onKernelController(FilterControllerEvent $event)
     {
         $this->isValidCrudListener($event);
-
-        $request = $event->getRequest();
-        if (!$request->query->get('filter')) {
-            return;
-        }
-
-        $driver = $this->driver;
-
-        /*
-         * Override default driver
-         */
-        $entityClass = null;
-        $reflectionController = new \ReflectionObject($this->getController());
-        $annotations = $this->reader->getClassAnnotations($reflectionController);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Crud) {
-                $entityClass = $annotation->getEntityClass();
-
-                break;
-            }
-        }
-
-        if ($entityClass) {
-            $reflectionEntity = new \ReflectionClass($entityClass);
-            $annotations = $this->reader->getClassAnnotations($reflectionEntity);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Driver) {
-                    $driver = $annotation->getDriver();
-
-                    break;
-                }
-            }
-        }
+        $driver = $this->getDriver();
 
         $manager = $this->managerFactory->getManager($driver);
         if (Driver::DOCTRINE_ORM === $driver) {

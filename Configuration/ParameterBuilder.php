@@ -13,7 +13,6 @@ namespace Symfonian\Indonesia\AdminBundle\Configuration;
 
 use Symfonian\Indonesia\AdminBundle\Exception\KeyNotMatchException;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
-use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
