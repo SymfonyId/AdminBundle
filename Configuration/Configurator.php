@@ -47,11 +47,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     private $kernel;
 
     /**
-     * @var ExtractorFactory
-     */
-    private $extractor;
-
-    /**
      * @var Template
      */
     private $template;
@@ -75,12 +70,13 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
      * @param KernelInterface  $kernel
      * @param ExtractorFactory $extractor
      * @param FormFactory      $formFactory
+     * @param string           $driver
      */
-    public function __construct(KernelInterface $kernel, ExtractorFactory $extractor, FormFactory $formFactory)
+    public function __construct(KernelInterface $kernel, ExtractorFactory $extractor, FormFactory $formFactory, $driver)
     {
         $this->kernel = $kernel;
-        $this->extractor = $extractor;
         $this->formFactory = $formFactory;
+        parent::__construct($extractor, $driver);
     }
 
     /**
@@ -190,8 +186,8 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
         $reflectionObject = new \ReflectionObject($this->getController());
 
-        $this->extractor->extract($reflectionObject);
-        foreach ($this->extractor->getClassAnnotations() as $annotation) {
+        $this->getExtractor()->extract($reflectionObject);
+        foreach ($this->getExtractor()->getClassAnnotations() as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
                 if ($annotation instanceof ContainerAwareInterface) {
                     $annotation->setContainer($this->container);
@@ -221,9 +217,9 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
 
         $reflection = new \ReflectionClass($class);
 
-        $this->extractor->extract($reflection);
+        $this->getExtractor()->extract($reflection);
 
-        foreach ($this->extractor->getClassAnnotations() as $annotation) {
+        foreach ($this->getExtractor()->getClassAnnotations() as $annotation) {
             if ($annotation instanceof ConfigurationInterface) {
                 if ($annotation instanceof Driver) {
                     $this->setDriver($annotation->getDriver());
@@ -232,8 +228,8 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         }
 
         foreach ($reflection->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
-            $this->extractor->extract($reflectionProperty);
-            foreach ($this->extractor->getPropertyAnnotations() as $annotation) {
+            $this->getExtractor()->extract($reflectionProperty);
+            foreach ($this->getExtractor()->getPropertyAnnotations() as $annotation) {
                 if ($annotation instanceof Filter) {
                     $filters[] = $reflectionProperty->getName();
                 }

@@ -11,7 +11,7 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -27,14 +27,14 @@ class EnableSoftDeletableFilterListener extends AbstractListener
     private $managerFactory;
 
     /**
-     * @param ManagerFactory $managerFactory
-     * @param Reader         $reader
-     * @param string         $driver
+     * @param ManagerFactory   $managerFactory
+     * @param ExtractorFactory $extractor
+     * @param string           $driver
      */
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, $driver)
+    public function __construct(ManagerFactory $managerFactory, ExtractorFactory $extractor, $driver)
     {
         $this->managerFactory = $managerFactory;
-        parent::__construct($reader, $driver);
+        parent::__construct($extractor, $driver);
     }
 
     public function onKernelController(FilterControllerEvent $event)

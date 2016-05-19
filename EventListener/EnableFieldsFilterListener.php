@@ -11,11 +11,11 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Contract\FieldsFilterInterface;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\Manager\ManagerFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -41,18 +41,18 @@ class EnableFieldsFilterListener extends AbstractListener
     private $dateTimeFormat;
 
     /**
-     * @param ManagerFactory $managerFactory
-     * @param Reader         $reader
-     * @param Configurator   $configurator
-     * @param string         $driver
-     * @param string         $dateTimeFormat
+     * @param ManagerFactory   $managerFactory
+     * @param ExtractorFactory $extractor
+     * @param Configurator     $configurator
+     * @param string           $driver
+     * @param string           $dateTimeFormat
      */
-    public function __construct(ManagerFactory $managerFactory, Reader $reader, Configurator $configurator, $driver, $dateTimeFormat)
+    public function __construct(ManagerFactory $managerFactory, ExtractorFactory $extractor, Configurator $configurator, $driver, $dateTimeFormat)
     {
         $this->managerFactory = $managerFactory;
         $this->configurator = $configurator;
         $this->dateTimeFormat = $dateTimeFormat;
-        parent::__construct($reader, $driver);
+        parent::__construct($extractor, $driver);
     }
 
     public function onKernelController(FilterControllerEvent $event)

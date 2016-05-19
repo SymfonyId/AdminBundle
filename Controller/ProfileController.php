@@ -147,7 +147,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param ObjectManager $manager
+     * @param ObjectManager   $manager
      * @param EntityInterface $data
      */
     private function fire(ObjectManager $manager, EntityInterface $data)

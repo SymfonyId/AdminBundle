@@ -11,7 +11,6 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Doctrine\Odm\Filter;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Filter\BsonFilter;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
