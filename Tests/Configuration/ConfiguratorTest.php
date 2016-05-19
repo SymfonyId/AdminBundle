@@ -21,6 +21,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Util\ExternalJavascript;
 use Symfonian\Indonesia\AdminBundle\Annotation\Util\Upload;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
+use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Kernel;
@@ -44,7 +45,7 @@ class ConfiguratorTest extends \PHPUnit_Framework_TestCase
         /** @var FormFactory $formFactory Mock */
         $formFactory = $this->getMockBuilder(FormFactory::class)->disableOriginalConstructor()->getMock();
 
-        $this->configurator = new Configurator($kernel, $extractor, $formFactory);
+        $this->configurator = new Configurator($kernel, $extractor, $formFactory, Driver::DOCTRINE_ORM);
         $this->configurator->setTemplate(new Template());
     }
 
