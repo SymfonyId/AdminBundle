@@ -67,11 +67,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
     protected $filters = array();
 
     /**
-     * @var string
-     */
-    private $driver;
-
-    /**
      * @var bool
      */
     private $freeze = false;
@@ -265,40 +260,8 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $this->addConfiguration($grid);
     }
 
-    /**
-     * @param string|null $entityClass
-     *
-     * @return string
-     */
-    public function getDriver($entityClass = null)
-    {
-        if (!$this->driver) {
-            $reflection = new \ReflectionClass($entityClass);
-
-            $this->extractor->extract($reflection);
-
-            foreach ($this->extractor->getClassAnnotations() as $annotation) {
-                if ($annotation instanceof ConfigurationInterface) {
-                    if ($annotation instanceof Driver) {
-                        $this->setDriver($annotation->getDriver());
-                    }
-                }
-            }
-        }
-
-        return $this->driver ?: $this->container->getParameter('symfonian_id.admin.driver');
-    }
-
     public function freeze()
     {
         $this->freeze = true;
-    }
-
-    /**
-     * @param string $driver
-     */
-    private function setDriver($driver)
-    {
-        $this->driver = $driver;
     }
 }

@@ -11,8 +11,8 @@
 
 namespace Symfonian\Indonesia\AdminBundle\Contract;
 
-use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 
 /**
  * @author Muhammad Surya Ihsanuddin <surya.kejawen@gmail.com>
@@ -20,9 +20,9 @@ use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 interface FieldsFilterInterface
 {
     /**
-     * @param Reader $reader
+     * @param ExtractorFactory $extractor
      */
-    public function setAnnotationReader(Reader $reader);
+    public function setExtractor(ExtractorFactory $extractor);
 
     /**
      * @param Configurator $configurator

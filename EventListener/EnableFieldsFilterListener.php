@@ -88,7 +88,7 @@ class EnableFieldsFilterListener extends AbstractListener
      */
     private function applyFilter(FieldsFilterInterface $filter, $keyword)
     {
-        $filter->setAnnotationReader($this->getReader());
+        $filter->setExtractor($this->getExtractor());
         $filter->setConfigurator($this->configurator);
         $filter->setDateTimeFormat($this->dateTimeFormat);
         $filter->setParameter('filter', $keyword);

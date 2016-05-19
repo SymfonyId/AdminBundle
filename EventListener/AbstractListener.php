@@ -11,9 +11,9 @@
 
 namespace Symfonian\Indonesia\AdminBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Controller\CrudController;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -28,18 +28,18 @@ abstract class AbstractListener
     private $controller;
 
     /**
-     * @var Reader
+     * @var ExtractorFactory
      */
-    private $reader;
+    private $extractor;
 
     /**
      * @var string
      */
     private $driver;
 
-    public function __construct(Reader $reader, $driver)
+    public function __construct(ExtractorFactory $extractor, $driver)
     {
-        $this->reader = $reader;
+        $this->extractor = $extractor;
         $this->driver = $driver;
     }
 
@@ -72,17 +72,25 @@ abstract class AbstractListener
      */
     protected function getDriver($entityClass = null)
     {
-        $this->overrideDefaultDriver();
+        $this->overrideDefaultDriver($entityClass);
 
         return $this->driver;
     }
 
     /**
-     * @return Reader
+     * @param string $driver
      */
-    protected function getReader()
+    protected function setDriver($driver)
     {
-        return $this->reader;
+        $this->driver = $driver;
+    }
+
+    /**
+     * @return ExtractorFactory
+     */
+    protected function getExtractor()
+    {
+        return $this->extractor;
     }
 
     /**
@@ -93,26 +101,27 @@ abstract class AbstractListener
         return $this->controller;
     }
 
-    private function overrideDefaultDriver()
+    private function overrideDefaultDriver($entityClass = null)
     {
         /*
          * Override default driver
          */
-        $entityClass = null;
-        $reflectionController = new \ReflectionObject($this->getController());
-        $annotations = $this->reader->getClassAnnotations($reflectionController);
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Crud) {
-                $entityClass = $annotation->getEntityClass();
+        if (!$entityClass) {
+            $reflectionController = new \ReflectionObject($this->getController());
+            $this->extractor->extract($reflectionController);
+            foreach ($this->extractor->getClassAnnotations() as $annotation) {
+                if ($annotation instanceof Crud) {
+                    $entityClass = $annotation->getEntityClass();
 
-                break;
+                    break;
+                }
             }
         }
 
         if ($entityClass) {
             $reflectionEntity = new \ReflectionClass($entityClass);
-            $annotations = $this->reader->getClassAnnotations($reflectionEntity);
-            foreach ($annotations as $annotation) {
+            $this->extractor->extract($reflectionEntity);
+            foreach ($this->extractor->getClassAnnotations() as $annotation) {
                 if ($annotation instanceof Driver) {
                     $this->driver = $annotation->getDriver();
 
