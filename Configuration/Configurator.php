@@ -24,7 +24,7 @@ use Symfonian\Indonesia\AdminBundle\Grid\Sortable;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\View\Template;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -34,10 +34,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class Configurator extends AbstractListener implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    use ContainerAwareTrait;
 
     /**
      * @var FormFactory
@@ -89,14 +86,6 @@ class Configurator extends AbstractListener implements ContainerAwareInterface
         $this->kernel = $kernel;
         $this->extractor = $extractor;
         $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**

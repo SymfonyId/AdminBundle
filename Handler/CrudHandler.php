@@ -26,7 +26,7 @@ use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constant
 use Symfonian\Indonesia\AdminBundle\Util\MethodInvoker;
 use Symfonian\Indonesia\AdminBundle\View\View;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,10 +39,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class CrudHandler implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    use ContainerAwareTrait;
 
     /**
      * @var ManagerFactory
@@ -88,14 +85,6 @@ class CrudHandler implements ContainerAwareInterface
     {
         $this->tokenStorage = $tokenStorage;
         $this->managerFactory = $managerFactory;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**

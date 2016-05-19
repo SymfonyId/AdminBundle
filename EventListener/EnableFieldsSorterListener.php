@@ -18,6 +18,7 @@ use Symfonian\Indonesia\AdminBundle\Event\FilterQueryEvent;
 use Symfonian\Indonesia\AdminBundle\Manager\Driver;
 use Symfonian\Indonesia\AdminBundle\SymfonianIndonesiaAdminConstants as Constants;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -26,15 +27,12 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
  */
 class EnableFieldsSorterListener extends AbstractListener implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var Reader
      */
     private $reader;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * @var string
@@ -116,15 +114,5 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
             $filter = $this->container->get('symfonian_id.admin.filter.odm.sort');
             $filter->sort($event->getEntityClass(), $event->getQueryBuilder(), $this->sortBy);
         }
-    }
-
-    /**
-     * Sets the container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 }
