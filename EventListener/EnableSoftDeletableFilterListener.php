@@ -39,7 +39,10 @@ class EnableSoftDeletableFilterListener extends AbstractListener
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $this->isValidCrudListener($event);
+        if (!$this->isValidCrudListener($event)) {
+            return;
+        }
+
         $driver = $this->getDriver();
 
         $manager = $this->managerFactory->getManager($driver);

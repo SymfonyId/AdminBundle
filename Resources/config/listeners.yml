@@ -8,6 +8,8 @@ services:
         arguments:
             - '@symfonian_id.admin.congiration.configurator'
             - '@kernel'
+            - '@symfonian_id.admin.extractor.extractor_factory'
+            - '%symfonian_id.admin.driver%'
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 

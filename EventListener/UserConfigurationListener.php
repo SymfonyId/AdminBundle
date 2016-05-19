@@ -15,6 +15,7 @@ use Symfonian\Indonesia\AdminBundle\Annotation\Crud;
 use Symfonian\Indonesia\AdminBundle\Annotation\Grid;
 use Symfonian\Indonesia\AdminBundle\Configuration\Configurator;
 use Symfonian\Indonesia\AdminBundle\Controller\UserController;
+use Symfonian\Indonesia\AdminBundle\Extractor\ExtractorFactory;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -59,13 +60,16 @@ class UserConfigurationListener extends AbstractListener
     private $gridFilters = array();
 
     /**
-     * @param Configurator    $configurator
-     * @param KernelInterface $kernel
+     * @param Configurator     $configurator
+     * @param KernelInterface  $kernel
+     * @param ExtractorFactory $extractor
+     * @param string           $driver
      */
-    public function __construct(Configurator $configurator, KernelInterface $kernel)
+    public function __construct(Configurator $configurator, KernelInterface $kernel, ExtractorFactory $extractor, $driver)
     {
         $this->configuration = $configurator;
         $this->kernel = $kernel;
+        parent::__construct($extractor, $driver);
     }
 
     /**
@@ -100,7 +104,11 @@ class UserConfigurationListener extends AbstractListener
         if ('prod' === strtolower($this->kernel->getEnvironment())) {
             return;
         }
-        $this->isValidCrudListener($event);
+
+        if (!$this->isValidCrudListener($event)) {
+            return;
+        }
+
         if (!$this->getController() instanceof UserController) {
             return;
         }

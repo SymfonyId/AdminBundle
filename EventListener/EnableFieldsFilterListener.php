@@ -57,7 +57,9 @@ class EnableFieldsFilterListener extends AbstractListener
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $this->isValidCrudListener($event);
+        if (!$this->isValidCrudListener($event)) {
+            return;
+        }
 
         $request = $event->getRequest();
         if (!$request->query->get('filter')) {

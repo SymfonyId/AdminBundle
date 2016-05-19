@@ -43,7 +43,9 @@ class EnableFieldsSorterListener extends AbstractListener implements ContainerAw
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $this->isValidCrudListener($event);
+        if (!$this->isValidCrudListener($event)) {
+            return;
+        }
 
         $request = $event->getRequest();
         if (!$this->sortBy = $request->query->get('sort_by')) {
