@@ -27,28 +27,28 @@ class DoctrineFilterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(self::ORM_CONFIGURATION) || !$container->has(self::ODM_CONFIGURATION)) {
-            return;
-        }
-
         /*
          * Add all service with tag name siab.orm_filter
          */
-        $definition = $container->findDefinition(self::ORM_CONFIGURATION);
-        $taggedServices = $container->findTaggedServiceIds('siab.orm_filter');
-        foreach ($taggedServices as $id => $tags) {
-            $filter = $container->findDefinition($id);
-            $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+        if ($container->has(self::ORM_CONFIGURATION)) {
+            $definition = $container->findDefinition(self::ORM_CONFIGURATION);
+            $taggedServices = $container->findTaggedServiceIds('siab.orm_filter');
+            foreach ($taggedServices as $id => $tags) {
+                $filter = $container->findDefinition($id);
+                $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+            }
         }
 
         /*
          * Add all service with tag name siab.odm_filter
          */
-        $definition = $container->findDefinition(self::ODM_CONFIGURATION);
-        $taggedServices = $container->findTaggedServiceIds('siab.odm_filter');
-        foreach ($taggedServices as $id => $tags) {
-            $filter = $container->findDefinition($id);
-            $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+        if ($container->has(self::ODM_CONFIGURATION)) {
+            $definition = $container->findDefinition(self::ODM_CONFIGURATION);
+            $taggedServices = $container->findTaggedServiceIds('siab.odm_filter');
+            foreach ($taggedServices as $id => $tags) {
+                $filter = $container->findDefinition($id);
+                $definition->addMethodCall('addFilter', array($id, $filter->getClass()));
+            }
         }
     }
 }
